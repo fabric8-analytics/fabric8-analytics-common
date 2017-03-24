@@ -41,7 +41,7 @@ fi
 
 for repo in $repos; do
   if ! `ls $repo &>/dev/null`; then
-    git clone "git@gitlab.cee.redhat.com:bayesian/${repo}.git"
+    git clone "git@github.com:bayesian/${repo}.git"
     if [[ $repo == "worker" ]]; then
       curl -O https://gitlab.cee.redhat.com/bayesian/secrets/raw/master/secrets.yaml
       mv secrets.yaml worker/hack/
@@ -50,7 +50,7 @@ for repo in $repos; do
   if [[ -n "$remotes" ]]; then
     pushd $repo &>/dev/null
     if ! `git remote show | grep "^fork$" &>/dev/null`; then
-      git remote add fork "git@gitlab.cee.redhat.com:${remotes}/${repo}.git"
+      git remote add fork "git@github.com:${remotes}/${repo}.git"
     fi
     popd &>/dev/null
   fi
