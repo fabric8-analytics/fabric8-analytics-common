@@ -1,0 +1,16 @@
+FROM registry.centos.org/centos/centos:7
+
+MAINTAINER Slavek Kabrda <slavek@redhat.com>
+
+ENV PGWEB_VERSION 0.9.6
+
+RUN yum -y install unzip &&\
+    yum clean all &&\
+    curl -L https://github.com/sosedoff/pgweb/releases/download/v$PGWEB_VERSION/pgweb_linux_amd64.zip -o /tmp/pgweb.zip &&\
+    unzip /tmp/pgweb.zip -d /usr/bin &&\
+    mv /usr/bin/pgweb_linux_amd64 /usr/bin/pgweb &&\
+    rm -f /tmp/pgweb.zip
+
+EXPOSE 8080
+
+CMD ["/usr/bin/pgweb", "--bind=0.0.0.0", "--listen=8080"]

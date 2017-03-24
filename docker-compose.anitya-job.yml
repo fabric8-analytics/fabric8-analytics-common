@@ -1,0 +1,16 @@
+version: "2"
+services:
+  # Requires access to anitya-postgres from the main configuration
+  anitya-update-job:
+    image: slavek/anitya-server
+    links:
+      - anitya-postgres
+    network_mode: bridge
+    container_name: anitya-update-job
+    entrypoint: /src/runupdatejob.sh
+    environment:
+      ANITYA_POSTGRES_SERVICE_HOST: anitya-postgres
+      ANITYA_POSTGRES_SERVICE_PORT: 5432
+      POSTGRESQL_USER: anitya
+      POSTGRESQL_PASSWORD: anitya
+      POSTGRESQL_DATABASE: anitya

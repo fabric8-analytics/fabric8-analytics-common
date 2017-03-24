@@ -1,0 +1,162 @@
+# Integration Tests for Bayesian Core API
+
+This repository contains integration tests for the Bayesian core API.
+
+It starts and stops Bayesian multiple times, so is not currently containerised
+itself - you need to suitably configure a Python environment on the host
+system, and the user running the integration tests currently needs to be a
+member of the `docker` group (allowing execution of `docker-compose`
+without `sudo`).
+
+## Creating new tests
+
+Feature tests are written using [behave](http://pythonhosted.org/behave/). To
+add new feature tests, simply edit an existing `<name>.feature` file in
+`features/` (or create a new one) and fill in missing steps in
+`features/steps/common.py` (or create a new step file, where appropriate).
+
+### Currently defined features
+
+* [Component analysis](features/analysis.feature): API tests for the
+  component analysis endpoints under `/api/v1/analyses/`
+* [Stack analysis](features/stackanalysis.feature): API tests for the
+  stack analysis endpoint `/api/v1/stack-analyses/`
+* [Known ecosystems](features/ecosystems.feature): API tests for the
+  known ecosystems endpoint `/api/v1/ecosystems/`
+* [Known packages](features/packages.feature): API tests for the
+  per-ecosystem known packages endpoints under `/api/v1/packages/`
+* [Known versions](features/versions.feature): API tests for the
+  per-package known versions endpoints under `/api/v1/packages/`
+* [Kerberos support](features/kerberos.feature) (deprecated): API tests for the
+  Kerberos based API token retrieval endpoint at `/api/v1/api-token`. This
+  API is deprecated, and will eventually be replaced with an API access
+  management service (presumably 3Scale)
+
+### Adding new feature files
+
+When adding a new feature file, also add it to
+[feature_list.txt](feature_list.txt), as that determines the set of
+features executed by the [runtest.sh](runtest.sh) script.
+
+### Currently defined test steps
+
+The available test steps are not currently documented, so refer to either
+the existing scenario definitions for usage examples, or else the step
+definitions in [features/steps/common.py](features/steps/common.py) and
+the adjacent step files.
+
+### Adding new test step files
+
+No additional changes are needed when adding a new test step file, as `behave`
+will automatically check all Python files in the `steps` directory for
+step definitions.
+
+Note that a single step definition can be shared amongst multiple steps
+by stacking decorators. For example::
+
+    @when('I wait {num:d} seconds')
+    @then('I wait {num:d} seconds')
+    def pause_scenario_execution(context, num):
+        time.sleep(num)
+
+Allows client pauses to be inserted into both `Then` and `When` clauses
+when defining a test scenario.
+
+
+### Writing new test steps
+
+The `behave` hooks in [features/environment.py](features/environment.py)
+and some of the common step definitions add a number of useful attributes
+and methods to the `behave` context.
+
+The available methods include:
+
+* `is_running()`: indicates whether or not the core API service is running
+* `start_system()`: Start the API service in its default configuration using
+  either Docker Compose (the default) or Kubernetes (if configured)
+* `teardown_system()`: Shut down the API service and remove all related
+  container volumes
+* `restart_system()`: Tears down and restarts the API service in its default
+  configuration
+* `run_command_in_service`: see [features/environment.py](features/environment.py)
+* `exec_command_in_container`: see [features/environment.py](features/environment.py)
+
+The available attributes include:
+
+* `response`: a [requests.Response]() instance containing the most recent
+  response retrieved from the server API (steps making requests to the API
+  should set this, steps checking responses from the server should query it)
+* `resource_manager`: a [contextlib.ExitStack](https://docs.python.org/3/library/contextlib.html#contextlib.ExitStack)
+  instance for registering resources to be cleaned up at the end up of the
+  current test scenario
+* `docker_compose_path`: `None` if running under Kubernetes, but a list
+  of Docker compose files defining the `default configuration` when running
+  under Docker Compose
+
+Due to the context lifecycle policies defined by `behave` any changes to these
+attributes in step definitions only remain in effect until the end of the
+current scenario.
+
+
+## Host environment
+
+The host environment must be configured with `docker-compose`, the `behave`
+behaviour driven development testing framework, and a few other dependencies
+for particular behavioural checks.
+
+This can be handled as either a user level component installation::
+
+    $ pip install --user -r requirements.txt
+
+Or else by setting up a Python virtual environment (either Python 2 or 3) and
+installing the necessary components::
+
+    $ pip install -r requirements.txt
+
+
+## Test execution
+
+The test suite is executed as follows::
+
+    $ ./runtest.sh <arguments>
+
+Arguments passed to the test runner are passed through to the underlying
+`behave` invocation, so consult the `behave` docs for the full list of
+available flags.
+
+By default, the integration tests are run via `docker-compose`. The use of
+Kubernetes instead can be requested:
+
+* -D kubernetes_dir=/some/path/to/kubernetes-dir`
+  (experimental, use at your own risk) - full path of directory with Kubernetes
+  files of the core API **Important: running this will erase all data in all
+  defined volumes. You've been warned.**
+
+Other custom configuration settings available:
+
+  * `-D dump_logs=true` (optional, default is not to print container logs) -
+    requests display of container logs via `docker-compose logs` when at the
+    end of each test scenario
+  * `-D dump_errors=true` (optional, default is not to print container logs) -
+    as for `dump_logs`, but only dumps the logs for scenarios that fail.
+  * `-D tail_logs=50` (optional, default is to print 50 lines) - specifies the
+    number of log lines to print for each container when dumping container
+    logs. Implies `dump_errors=true` if neither `dump_logs` nor `dump_errors`
+    is specified
+  * `-D coreapi_server_image=bayesian/bayesian-api`
+    (optional, default is `bayesian/bayesian-api`) - name of Bayesian core API server image
+  * `-D cucos_worker_image=bayesian/cucos-worker` (optional, default is `bayesian/cucos-worker`) - name of CuCoS Worker image
+  * `-D coreapi_url=http://1.2.3.4:32000` (optional, default is `http://localhost:32000`)
+  * `-D breath_time=10` (optional, default is `5`) - time to wait before testing
+
+**Important: running with non-default image settings will force-retag the given
+images as `bayesian/bayesian-api` and `bayesian/cucos-worker` so `docker-compose`
+can find them. This may affect subsequent `docker` and `docker-compose` calls**
+
+Some of the tests may be quite slow, you can skip them by passing
+`--tags=-slow` option to `behave`.
+
+## TODO
+
+- make it possible to run the integration tests from a venv even when docker
+  access requires sudo

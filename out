@@ -1,0 +1,364 @@
+commit 12be85bb0aff0df5d0f8ddc46311f6586a18d1a5
+Author: Fridolin Pokorny <fridolin@redhat.com>
+Date:   Mon Mar 20 12:50:00 2017 +0100
+
+    Remove unused job handlers and unify burst flow scheduling
+
+diff --git a/jobs/bayesian_jobs/api_v1.py b/jobs/bayesian_jobs/api_v1.py
+index 6f9f336..e95bc72 100644
+--- a/jobs/bayesian_jobs/api_v1.py
++++ b/jobs/bayesian_jobs/api_v1.py
+@@ -114,26 +114,10 @@ def post_schedule_job(scheduler, handler_name, **kwargs):
+ 
+ 
+ @uses_scheduler
+-def post_burst_flow_scheduling(scheduler, **kwargs):
+-    return post_schedule_job(scheduler, handlers.BurstFlowScheduling.__name__, **kwargs)
+-
+-
+-@uses_scheduler
+ def post_flow_scheduling(scheduler, **kwargs):
+     return post_schedule_job(scheduler, handlers.FlowScheduling.__name__, **kwargs)
+ 
+ 
+ @uses_scheduler
+-def post_query_analyses_scheduling(scheduler, **kwargs):
+-    return post_schedule_job(scheduler, handlers.BurstFlowScheduling.__name__, **kwargs)
+-
+-
+-@uses_scheduler
+-def post_burst_selective_flow_scheduling(scheduler, **kwargs):
+-    return post_schedule_job(scheduler, handlers.BurstSelectiveFlowScheduling.__name__, **kwargs)
+-
+-
+-@uses_scheduler
+ def post_selective_flow_scheduling(scheduler, **kwargs):
+     return post_schedule_job(scheduler, handlers.SelectiveFlowScheduling.__name__, **kwargs)
+-
+diff --git a/jobs/bayesian_jobs/handlers/__init__.py b/jobs/bayesian_jobs/handlers/__init__.py
+index ed2ec44..3950ffe 100644
+--- a/jobs/bayesian_jobs/handlers/__init__.py
++++ b/jobs/bayesian_jobs/handlers/__init__.py
+@@ -1,8 +1,5 @@
+ #!/usr/bin/env python3
+ 
+-from .burst_flow import BurstFlowScheduling
+-from .flow import FlowScheduling
+-from .query_analyses import QueryAnalysesScheduling
+ from .error import ErrorHandler
++from .flow import FlowScheduling
+ from .selective_flow import SelectiveFlowScheduling
+-from .selective_flow import BurstSelectiveFlowScheduling
+diff --git a/jobs/bayesian_jobs/handlers/burst_flow.py b/jobs/bayesian_jobs/handlers/burst_flow.py
+deleted file mode 100644
+index 445c36d..0000000
+--- a/jobs/bayesian_jobs/handlers/burst_flow.py
++++ /dev/null
+@@ -1,15 +0,0 @@
+-from .base import BaseHandler
+-
+-
+-class BurstFlowScheduling(BaseHandler):
+-    """ Schedule multiple flows of a type """
+-    def execute(self, flow_name, flow_arguments):
+-        """Schedule multiple flows of a type
+-
+-        :param flow_name: flow name that should be scheduled
+-        :param flow_arguments: a list of flow arguments per flow
+-        """
+-        for node_args in flow_arguments:
+-            if self.job_id:
+-                node_args['job_id'] = self.job_id
+-            self.run_selinon_flow(flow_name, node_args)
+diff --git a/jobs/bayesian_jobs/handlers/flow.py b/jobs/bayesian_jobs/handlers/flow.py
+index 2c579bf..c3fce25 100644
+--- a/jobs/bayesian_jobs/handlers/flow.py
++++ b/jobs/bayesian_jobs/handlers/flow.py
+@@ -2,13 +2,14 @@ from .base import BaseHandler
+ 
+ 
+ class FlowScheduling(BaseHandler):
+-    """ Schedule a flow """
+-    def execute(self, flow_name, node_args=None):
+-        """ Schedule a flow
++    """ Schedule multiple flows of a type """
++    def execute(self, flow_name, flow_arguments):
++        """Schedule multiple flows of a type
+ 
+-        :param flow_name: Selinon flow name that should be scheduled
+-        :param node_args: arguments supplied to the flow
++        :param flow_name: flow name that should be scheduled
++        :param flow_arguments: a list of flow arguments per flow
+         """
+-        if self.job_id:
+-            node_args['job_id'] = self.job_id
+-        self.run_selinon_flow(flow_name, node_args)
++        for node_args in flow_arguments:
++            if self.job_id:
++                node_args['job_id'] = self.job_id
++            self.run_selinon_flow(flow_name, node_args)
+diff --git a/jobs/bayesian_jobs/handlers/query_analyses.py b/jobs/bayesian_jobs/handlers/query_analyses.py
+deleted file mode 100644
+index 103df62..0000000
+--- a/jobs/bayesian_jobs/handlers/query_analyses.py
++++ /dev/null
+@@ -1,12 +0,0 @@
+-from .base import BaseHandler
+-
+-
+-class QueryAnalysesScheduling(BaseHandler):
+-    """ Run a flow based on database query """
+-    def execute(self, **kwargs):
+-        """ Run a flow based on database query
+-
+-        :param kwargs: TBD
+-        """
+-        self.log.error("Job handler '%s' not implemented", self.__class__.__name__)
+-        raise NotImplementedError()
+diff --git a/jobs/bayesian_jobs/handlers/selective_flow.py b/jobs/bayesian_jobs/handlers/selective_flow.py
+index 4ec9383..b10a253 100644
+--- a/jobs/bayesian_jobs/handlers/selective_flow.py
++++ b/jobs/bayesian_jobs/handlers/selective_flow.py
+@@ -2,23 +2,7 @@ from .base import BaseHandler
+ 
+ 
+ class SelectiveFlowScheduling(BaseHandler):
+-    """ Schedule a flow """
+-    def execute(self, flow_name, task_names, node_args=None, follow_subflows=True, run_subsequent=False):
+-        """ Schedule a selective flow
+-
+-        :param flow_name: Selinon flow name that should be scheduled
+-        :param task_names: a list of tasks that should be executed
+-        :param node_args: flow arguments
+-        :param follow_subflows: follow subflows when resolving tasks to be executed
+-        :param run_subsequent: run tasks that follow after desired tasks stated in task_names
+-        """
+-        if self.job_id:
+-            node_args['job_id'] = self.job_id
+-        self.run_selinon_flow_selective(flow_name, task_names, node_args, follow_subflows, run_subsequent)
+-
+-
+-class BurstSelectiveFlowScheduling(BaseHandler):
+-    """ Schedule multiple flows of a type """
++    """ Schedule multiple selective flows of a type """
+     def execute(self, flow_name, task_names, flow_arguments, follow_subflows=True, run_subsequent=False):
+         """ Schedule a selective flow
+ 
+diff --git a/jobs/bayesian_jobs/swagger.yaml b/jobs/bayesian_jobs/swagger.yaml
+index 88c8221..8a28d14 100644
+--- a/jobs/bayesian_jobs/swagger.yaml
++++ b/jobs/bayesian_jobs/swagger.yaml
+@@ -80,31 +80,11 @@ paths:
+        responses:
+          201:
+            description: All failed jobs were deleted
+-  '/jobs/burst-flow-scheduling':
+-    post:
+-      tags: [Add new jobs]
+-      operationId: bayesian_jobs.api_v1.post_burst_flow_scheduling
+-      summary: Schedule a new job for burst analyses
+-      parameters:
+-        - $ref: "#/parameters/job_id"
+-        - $ref: "#/parameters/periodically"
+-        - $ref: "#/parameters/when"
+-        - $ref: "#/parameters/misfire_grace_time"
+-        - $ref: "#/parameters/state"
+-        - name: kwargs
+-          in: body
+-          required: false
+-          description: Job keyword arguments for burst analyses scheduling
+-          schema:
+-            $ref: "#/definitions/BurstKwargs"
+-      responses:
+-        201:
+-          description: New analyses job scheduled
+   '/jobs/flow-scheduling':
+     post:
+       tags: [Add new jobs]
+       operationId: bayesian_jobs.api_v1.post_flow_scheduling
+-      summary: Schedule a new job for burst analyses
++      summary: Schedule a new job for analyses
+       parameters:
+         - $ref: "#/parameters/job_id"
+         - $ref: "#/parameters/periodically"
+@@ -114,57 +94,17 @@ paths:
+         - name: kwargs
+           in: body
+           required: false
+-          description: Job keyword arguments for burst analyses scheduling
++          description: Job keyword arguments for analyses scheduling
+           schema:
+             $ref: "#/definitions/FlowKwargs"
+       responses:
+         201:
+           description: New analyses job scheduled
+-  '/jobs/query-analyses-scheduling':
+-    post:
+-      tags: [Add new jobs]
+-      operationId: bayesian_jobs.api_v1.post_query_analyses_scheduling
+-      summary: Schedule a new job based on database query
+-      parameters:
+-        - $ref: "#/parameters/job_id"
+-        - $ref: "#/parameters/periodically"
+-        - $ref: "#/parameters/when"
+-        - $ref: "#/parameters/misfire_grace_time"
+-        - $ref: "#/parameters/state"
+-        - name: kwargs
+-          in: body
+-          required: false
+-          description: Job keyword arguments for query based scheduling handler
+-          schema:
+-            $ref: "#/definitions/QueryKwargs"
+-      responses:
+-        201:
+-          description: New analyses job scheduled
+-  '/jobs/burst-selective-flow-scheduling':
+-    post:
+-      tags: [Add new jobs]
+-      operationId: bayesian_jobs.api_v1.post_burst_selective_flow_scheduling
+-      summary: Schedule a new job for burst analyses only with selected tasks marked for execution
+-      parameters:
+-        - $ref: "#/parameters/job_id"
+-        - $ref: "#/parameters/periodically"
+-        - $ref: "#/parameters/when"
+-        - $ref: "#/parameters/misfire_grace_time"
+-        - $ref: "#/parameters/state"
+-        - name: kwargs
+-          in: body
+-          required: false
+-          description: Job keyword arguments for selective burst analyses scheduling
+-          schema:
+-            $ref: "#/definitions/SelectiveBurstKwargs"
+-      responses:
+-        201:
+-          description: New analyses job scheduled
+   '/jobs/selective-flow-scheduling':
+     post:
+       tags: [Add new jobs]
+       operationId: bayesian_jobs.api_v1.post_selective_flow_scheduling
+-      summary: Schedule a new job for burst analyses with selected tasks marked for execution
++      summary: Schedule a new job for analyses only with selected tasks marked for execution
+       parameters:
+         - $ref: "#/parameters/job_id"
+         - $ref: "#/parameters/periodically"
+@@ -176,12 +116,11 @@ paths:
+           required: false
+           description: Job keyword arguments for selective analyses scheduling
+           schema:
+-            $ref: "#/definitions/SelectiveFlowKwargs"
++            $ref: "#/definitions/SelectiveKwargs"
+       responses:
+         201:
+           description: New analyses job scheduled
+ 
+-
+ parameters:
+   job_id_path:
+     name: job_id
+@@ -242,21 +181,6 @@ definitions:
+     type: object
+     required:
+       - flow_name
+-      - node_args
+-    properties:
+-      flow_name: &flow_name
+-        type: string
+-        description: Selinon flow that should be run
+-        example: "bigQueryFlow"
+-      node_args:
+-        type: object
+-        description: Arguments supplied to the flow
+-        items:
+-          $ref: "#/definitions/Any"
+-  BurstKwargs:
+-    type: object
+-    required:
+-      - flow_name
+       - flow_arguments
+     properties:
+       flow_name: &flow_name_analysis
+@@ -269,22 +193,20 @@ definitions:
+         items:
+           $ref: "#/definitions/Any"
+         example:
+-          - &epv_example_1
+-            ecosystem: "npm"
++          - ecosystem: "npm"
+             name: "serve-static"
+             version: "1.7.1"
+             force: true
+-          - &epv_example_2
+-            ecosystem: "maven"
++          - ecosystem: "maven"
+             name: "net.iharder:base64"
+             version: "2.3.9"
+             force: true
+-  SelectiveFlowKwargs:
++  SelectiveKwargs:
+     type: object
+     required:
+       - flow_name
+       - task_names
+-      - node_args
++      - flow_arguments
+     properties:
+       flow_name:
+         <<: *flow_name_analysis
+@@ -296,54 +218,13 @@ definitions:
+         example:
+           - "github_details"
+           - "ResultCollector"
+-      node_args:
+-        type: object
+-        description: Arguments supplied to the flow
+-        items:
+-          $ref: "#/definitions/Any"
+-        example:
+-          <<: *epv_example_1
+-      run_subsequent: &run_subsequent
+-        type: boolean
+-        description: Run nodes that are dependent on tasks listed in task_names
+-        example: false
+-  SelectiveBurstKwargs:
+-    type: object
+-    required:
+-      - flow_name
+-      - task_names
+-      - flow_arguments
+-    properties:
+-      flow_name:
+-        <<: *flow_name_analysis
+-      task_names:
+-        <<: *task_names
+       flow_arguments:
+         <<: *flow_arguments
+       run_subsequent:
+-        <<: *run_subsequent
++        type: boolean
++        description: Run nodes that are dependent on tasks listed in task_names
++        example: false
+ 
+   Any:
+     type: object
+     additionalProperties: true
+-  QueryKwargs:
+-    type: object
+-    properties:
+-      unknown:
+-        type: string
+-        description: Unknown
+-        example: "Not implemented"
+-  MavenReleasesKwargs:
+-    type: object
+-    properties:
+-      unknown:
+-        type: string
+-        description: Unknown
+-        example: "Not implemented"
+-  NpmReleasesKwargs:
+-    type: object
+-    properties:
+-      unknown:
+-        type: string
+-        description: Unknown
+-        example: "Not implemented"

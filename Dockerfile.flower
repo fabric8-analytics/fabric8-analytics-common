@@ -1,0 +1,5 @@
+FROM fedora:25
+RUN echo 'flower --broker=amqp://guest:guest@${RABBITMQ_SERVICE_SERVICE_HOST:localhost}:5672//' > /usr/bin/run_flower.sh
+RUN chmod a+x /usr/bin/run_flower.sh
+ENTRYPOINT /bin/bash /usr/bin/run_flower.sh
+RUN pip3 install flower celery==4.0.0rc6

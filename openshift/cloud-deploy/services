@@ -1,0 +1,6 @@
+# path to creds files should be relative to this file
+dynamodb|bayesian|creds.dynamodb
+rds|bayesian|creds.rds
+sqs|bayesian|creds.sqs
+s3|bayesian|creds.s3
+emr|bayesian|creds.emr

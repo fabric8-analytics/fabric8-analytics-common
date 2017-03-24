@@ -1,0 +1,267 @@
+# NOTE: Containers use the generic "coreapi" prefix so they're independent of
+#       the particular project name. Project specific images are always built
+#       locally when using the docker-compose file.
+#
+#   The services are all configured with "network_mode: bridge" to work around
+#   name lookup problems with docker, docker-compose and the use of a local DNS
+#   resolver on the host: https://bugzilla.redhat.com/show_bug.cgi?id=1258350
+version: "2"
+services:
+  broker:
+    # if you're updating tag, don't forget to also update configuration
+    # for kubernetes in orchestration/restart-coreapi.sh
+    image: registry.centos.org/centos/rabbitmq
+    container_name: coreapi-broker
+    network_mode: bridge
+    ports:
+     - "5672:5672"
+    environment:
+      RABBITMQ_USER: guest
+      RABBITMQ_PASS: guest
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile.flower
+    image: docker-registry.usersys.redhat.com/bayesian/coreapi-flower
+    container_name: coreapi-flower
+    network_mode: bridge
+    ports:
+     - "31000:5555"
+    links:
+     - broker
+    environment:
+      RABBITMQ_SERVICE_SERVICE_HOST: broker
+  postgres:
+    image: registry.centos.org/sclo/postgresql-94-centos7:latest
+    network_mode: bridge
+    ports:
+     - "6432:5432"
+    environment:
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+    container_name: coreapi-postgres
+  pgbouncer:
+    build:
+      context: pgbouncer/
+      dockerfile: Dockerfile
+    image: docker-registry.usersys.redhat.com/bayesian/coreapi-pgbouncer
+    container_name: coreapi-pgbouncer
+    network_mode: bridge
+    links:
+     - postgres
+    ports:
+     - "5432:5432"
+    environment:
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      POSTGRESQL_INITIAL_DATABASE: postgres
+  pgweb:
+    build:
+      context: .
+      dockerfile: Dockerfile.pgweb
+    image: docker-registry.usersys.redhat.com/bayesian/coreapi-pgweb:latest
+    network_mode: bridge
+    ports:
+     - "31003:8080"
+    links:
+     - pgbouncer
+    environment:
+      DATABASE_URL: "postgres://coreapi:coreapi@coreapi-pgbouncer:5432/coreapi?sslmode=disable"
+    restart: always
+    container_name: coreapi-pgweb
+  server:
+    build:
+      context: server/
+      dockerfile: Dockerfile
+    image: docker-registry.usersys.redhat.com/bayesian/bayesian-api
+    network_mode: bridge
+    links:
+     - anitya-server
+     - broker
+     - pgbouncer
+    container_name: coreapi-server
+    environment:
+      CCS_DEBUG: 'true'
+      DEPLOYMENT_PREFIX: "${USER}"
+      # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
+      # credentials even for worker
+      #AWS_SQS_ACCESS_KEY_ID: ''
+      #AWS_SQS_SECRET_ACCESS_KEY: ''
+      # Both can be omitted, defaults to eu-west-1
+      #AWS_SQS_REGION: ''
+      #AWS_S3_REGION: ''
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+    ports:
+     - "32000:5000"
+    volumes:
+     - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./server/bayesian:/usr/lib/python3.4/site-packages/bayesian:ro,z
+     - ./server/kerberos/keytab:/mnt:ro,z
+     - ./server/coreapi-httpd.conf:/etc/httpd/conf.d/coreapi-httpd.conf:ro,z
+  jobs:
+    build:
+      context: jobs/
+      dockerfile: Dockerfile
+    image: docker-registry.usersys.redhat.com/bayesian/coreapi-jobs
+    network_mode: bridge
+    container_name: coreapi-jobs
+    restart: always
+    ports:
+     - "34000:34000"
+    depends_on:
+     # forces docker-compose to build the image after its base worker image
+     - worker
+     - pgbouncer
+    links:
+     - broker
+     - pgbouncer
+    environment:
+      # Uncomment if you want to start job service in a paused state
+      #JOB_SERVICE_PAUSED: 1
+      #JOB_SERVICE_PORT: 34000
+      DEPLOYMENT_PREFIX: "${USER}"
+      RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+      # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
+      # credentials even for server and worker
+      # Both can be omitted, defaults to eu-west-1
+      #AWS_SQS_REGION: ''
+      #AWS_S3_REGION: ''
+    volumes:
+     - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./jobs/bayesian_jobs:/usr/lib/python3.4/site-packages/bayesian_jobs:ro,z
+  worker:
+    build:
+      context: worker/
+      dockerfile: Dockerfile
+    image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
+    network_mode: bridge
+    depends_on:
+     - worker-db-migrations
+    links:
+     - anitya-server
+     - broker
+     - pgbouncer
+     - minio-s3
+    environment:
+      DEPLOYMENT_PREFIX: "${USER}"
+      RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
+      CCS_SERVER_SERVICE_HOST: coreapi-server
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+      # Sync data to Scality-S3
+      BAYESIAN_SYNC_S3: 1
+      # 0 - Bayesian runs inside RH
+      # 1 - Bayesian runs in a cloud
+      OPENSHIFT_DEPLOYMENT: 0
+      # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
+      # credentials even for server
+      #AWS_SQS_ACCESS_KEY_ID: ''
+      #AWS_SQS_SECRET_ACCESS_KEY: ''
+      #AWS_S3_ACCESS_KEY_ID: ''
+      #AWS_S3_SECRET_ACCESS_KEY: ''
+      # Both can be omitted, defaults to eu-west-1
+      #AWS_SQS_REGION: ''
+      #AWS_S3_REGION: ''
+      # If no Github API token is provided, requests will be unauthenticated, i.e. limited to 60 per hour
+      # Generate your token @ https://github.com/settings/tokens
+      #GITHUB_TOKEN: ""
+      #PULP_URL: ""
+      #PULP_USERNAME: ""
+      #PULP_PASSWORD: ""
+      #BLACKDUCK_HOST: ""
+      #BLACKDUCK_SCHEME: ""
+      #BLACKDUCK_PORT: ""
+      #BLACKDUCK_USERNAME: ""
+      #BLACKDUCK_PASSWORD: ""
+      #BLACKDUCK_PATH: ""
+      JACCARD_THRESHOLD: 0.0
+      SIMILARITY_SCORE_THRESHOLD: 0.0
+    tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
+    volumes:
+     - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./worker/hack/secrets.yaml:/var/lib/secrets/secrets.yaml:ro,z
+  worker-db-migrations:
+    build:
+      context: worker/
+      dockerfile: Dockerfile
+    image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
+    restart: on-failure
+    container_name: coreapi-worker-db-migrations
+    network_mode: bridge
+    links:
+     - pgbouncer
+    command: /alembic/run-db-migrations.sh
+    environment:
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      POSTGRESQL_INITIAL_DATABASE: postgres
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+  downstream-data-import:
+    build:
+      context: worker/
+      dockerfile: Dockerfile.downstream-data-import
+    image: docker-registry.usersys.redhat.com/bayesian/coreapi-downstream-data-import
+    network_mode: bridge
+    links:
+     - pgbouncer
+    environment:
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+    container_name: coreapi-downstream-data-import
+  anitya-postgres:
+    image: registry.centos.org/sclo/postgresql-94-centos7:latest
+    ports:
+      - "5432"
+    environment:
+      POSTGRESQL_USER: anitya
+      POSTGRESQL_PASSWORD: anitya
+      POSTGRESQL_DATABASE: anitya
+    network_mode: bridge
+    container_name: anitya-postgres
+  anitya-server:
+    image: slavek/anitya-server
+    ports:
+     - "31005:5000"
+    links:
+     - anitya-postgres
+    network_mode: bridge
+    container_name: anitya-server
+    environment:
+      ANITYA_POSTGRES_SERVICE_HOST: anitya-postgres
+      ANITYA_POSTGRES_SERVICE_PORT: 5432
+      POSTGRESQL_USER: anitya
+      POSTGRESQL_PASSWORD: anitya
+      POSTGRESQL_DATABASE: anitya
+      POSTGRESQL_INITIAL_DATABASE: postgres
+  minio-s3:
+    image: minio/minio
+    command:
+        - server
+        - --address
+        - ":33000"
+        - /export
+    container_name: coreapi-s3
+    network_mode: bridge
+    ports:
+      - "33000:33000"
+    environment:
+      MINIO_ACCESS_KEY: GNV3SAHAHA3DOT99GQII
+      MINIO_SECRET_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
+    # Uncomment this if you want to have S3 data persistent
+    #volumes:
+    # - ./hack/s3:/export:rw,z
+    # - ./hack/s3:/root/.mini:rw,z

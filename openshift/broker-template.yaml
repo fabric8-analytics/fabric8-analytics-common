@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: broker-template
+metadata:
+  name: broker-template
+  annotations:
+    description: RabbitMQ Broker
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    labels:
+      service: bayesian-broker
+    name: bayesian-broker
+  spec:
+    replicas: 1
+    selector:
+      service: bayesian-broker
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          service: bayesian-broker
+      spec:
+        containers:
+        - env:
+          - name: RABBITMQ_PASS
+            value: guest
+          - name: RABBITMQ_USER
+            value: guest
+          image: registry.centos.org/centos/rabbitmq
+          imagePullPolicy: Always
+          name: bayesian-broker
+          ports:
+          - containerPort: 5672
+            protocol: TCP
+          resources:
+            limits:
+              memory: "512Mi"
+          volumeMounts:
+          - mountPath: /var/lib/rabbitmq
+            name: rabbit-vol
+        restartPolicy: Always
+        volumes:
+        - emptyDir: {}
+          name: rabbit-vol
+    test: false
+    triggers:
+    - type: ConfigChange
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: null
+    labels:
+      service: bayesian-broker
+    name: bayesian-broker
+  spec:
+    ports:
+    - name: "5672"
+      port: 5672
+      protocol: TCP
+      targetPort: 5672
+    selector:
+      service: bayesian-broker
+  status:
+    loadBalancer: {}

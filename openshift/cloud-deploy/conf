@@ -1,0 +1,17 @@
+export PTH_ENV="BAYESIAN"
+export EC2_URL=https://ec2.us-east-1.amazonaws.com
+export AWS_DEFAULT_REGION=us-east-1
+
+if [ ! ${BAYESIAN_API_HOSTNAME} ]; then
+  case $PTH_ENV in
+    PROD)
+      export BAYESIAN_API_HOSTNAME="recommender.api.openshift.io"
+      ;;
+    STAGE)
+      export BAYESIAN_API_HOSTNAME="recommender.api.prod-preview.openshift.io"
+      ;;
+    *)
+      export BAYESIAN_API_HOSTNAME=""
+  esac
+fi
+
