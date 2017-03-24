@@ -30,6 +30,8 @@ objects:
         - env:
           - name: DEPLOYMENT_PREFIX
             value: "${DEPLOYMENT_PREFIX}"
+          - name: WORKER_ADMINISTRATION_REGION
+            value: "api"
           - name: AWS_SQS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
@@ -136,6 +138,8 @@ objects:
             value: "true"
           - name: DEPLOYMENT_PREFIX
             value: "${DEPLOYMENT_PREFIX}"
+          - name: WORKER_ADMINISTRATION_REGION
+            value: "api"
           - name: PGBOUNCER_SERVICE_HOST
             value: bayesian-pgbouncer
           - name: ANITYA_SERVICE_HOST
@@ -235,12 +239,12 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      service: bayesian-worker
-    name: bayesian-worker
+      service: bayesian-worker-${WORKER-ADMINISTRATION-REGION}
+    name: bayesian-worker-${WORKER-ADMINISTRATION-REGION}
   spec:
     replicas: 1
     selector:
-      service: bayesian-worker
+      service: bayesian-worker-${WORKER-ADMINISTRATION-REGION}
     strategy:
       type: Rolling
       rollingParams:
@@ -253,7 +257,7 @@ objects:
       metadata:
         creationTimestamp: null
         labels:
-          service: bayesian-worker
+          service: bayesian-worker-${WORKER-ADMINISTRATION-REGION}
       spec:
         containers:
         - env:
@@ -261,6 +265,8 @@ objects:
             value: "${OPENSHIFT_DEPLOYMENT}"
           - name: DEPLOYMENT_PREFIX
             value: "${DEPLOYMENT_PREFIX}"
+          - name: WORKER_ADMINISTRATION_REGION
+            value: "api"
           - name: POSTGRESQL_DATABASE
             valueFrom:
               secretKeyRef:
