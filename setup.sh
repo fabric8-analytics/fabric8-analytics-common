@@ -8,7 +8,7 @@ Usage: setup.sh [-h|--help] [-r|--remotes NAME] [repo] ...
 Arguments:
 
   -h|--help            Print this help
-  -r|--remotes NAME    Add remote "fork" ("NAME" is Gitlab user) to all repos
+  -r|--remotes NAME    Add remote "fork" ("NAME" is a GitHub user) to all repos
   repo ...             Work only on specified repositories
                        (works on all repositories by default)
 EOF
@@ -41,7 +41,7 @@ fi
 
 for repo in $repos; do
   if ! `ls $repo &>/dev/null`; then
-    git clone "git@github.com:bayesian/${repo}.git"
+    git clone "git@github.com:baytemp/${repo}.git"
     if [[ $repo == "worker" ]]; then
       curl -O https://gitlab.cee.redhat.com/bayesian/secrets/raw/master/secrets.yaml
       mv secrets.yaml worker/hack/

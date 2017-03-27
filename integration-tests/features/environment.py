@@ -18,9 +18,8 @@ def _make_compose_name(suffix='.yml'):
 
 def _set_default_compose_path(context):
     base_compose = _make_compose_name()
-    kerberos_compose = _make_compose_name('.kerberos.yml')
     # Extra containers are added as needed by integration setup commands
-    context.docker_compose_path = [base_compose, kerberos_compose]
+    context.docker_compose_path = [base_compose]
 
 ### make sure behave uses pytest improved asserts
 # Behave runner uses behave.runner.exec_file function to read, compile
