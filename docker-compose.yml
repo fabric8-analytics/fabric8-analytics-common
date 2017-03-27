@@ -44,20 +44,6 @@ services:
       POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
       POSTGRESQL_INITIAL_DATABASE: postgres
-  pgweb:
-    build:
-      context: .
-      dockerfile: Dockerfile.pgweb
-    image: docker-registry.usersys.redhat.com/bayesian/coreapi-pgweb:latest
-    network_mode: bridge
-    ports:
-     - "31003:8080"
-    links:
-     - pgbouncer
-    environment:
-      DATABASE_URL: "postgres://coreapi:coreapi@coreapi-pgbouncer:5432/coreapi?sslmode=disable"
-    restart: always
-    container_name: coreapi-pgweb
   server:
     build:
       context: server/
