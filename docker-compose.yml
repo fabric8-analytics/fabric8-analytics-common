@@ -18,19 +18,6 @@ services:
     environment:
       RABBITMQ_USER: guest
       RABBITMQ_PASS: guest
-  flower:
-    build:
-      context: .
-      dockerfile: Dockerfile.flower
-    image: docker-registry.usersys.redhat.com/bayesian/coreapi-flower
-    container_name: coreapi-flower
-    network_mode: bridge
-    ports:
-     - "31000:5555"
-    links:
-     - broker
-    environment:
-      RABBITMQ_SERVICE_SERVICE_HOST: broker
   postgres:
     image: registry.centos.org/sclo/postgresql-94-centos7:latest
     network_mode: bridge
