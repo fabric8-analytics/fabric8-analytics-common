@@ -27,10 +27,6 @@ add new feature tests, simply edit an existing `<name>.feature` file in
   per-ecosystem known packages endpoints under `/api/v1/packages/`
 * [Known versions](features/versions.feature): API tests for the
   per-package known versions endpoints under `/api/v1/packages/`
-* [Kerberos support](features/kerberos.feature) (deprecated): API tests for the
-  Kerberos based API token retrieval endpoint at `/api/v1/api-token`. This
-  API is deprecated, and will eventually be replaced with an API access
-  management service (presumably 3Scale)
 
 ### Adding new feature files
 

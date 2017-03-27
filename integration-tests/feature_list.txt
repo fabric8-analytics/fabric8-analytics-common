@@ -1,7 +1,5 @@
 # Order of the features in this file is significant, so shuffle them carefully.
 features/ecosystems.feature
-# uncomment once https://gitlab.cee.redhat.com/bayesian/Bayesian/issues/39 is fixed
-# features/kerberos.feature
 features/packages.feature
 features/versions.feature
 features/analysis.feature
