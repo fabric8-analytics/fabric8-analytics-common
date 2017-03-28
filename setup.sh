@@ -47,6 +47,7 @@ for repo in $repos; do
       mv secrets.yaml worker/hack/
     fi
   fi
+
   if [[ -n "$remotes" ]]; then
     pushd $repo &>/dev/null
     if ! `git remote show | grep "^fork$" &>/dev/null`; then
@@ -54,6 +55,8 @@ for repo in $repos; do
     fi
     popd &>/dev/null
   fi
+
+  [[ -e "${repo}/get-worker.sh" ]] && "${repo}/get-worker.sh"
 done
 
 echo "Setup done. To run the system locally, run:"
