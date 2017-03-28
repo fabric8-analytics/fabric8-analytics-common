@@ -89,6 +89,8 @@ services:
       # credentials even for worker
       #AWS_SQS_ACCESS_KEY_ID: ''
       #AWS_SQS_SECRET_ACCESS_KEY: ''
+      #AWS_S3_ACCESS_KEY_ID: ''
+      #AWS_S3_SECRET_ACCESS_KEY: ''
       # Both can be omitted, defaults to eu-west-1
       #AWS_SQS_REGION: ''
       #AWS_S3_REGION: ''
