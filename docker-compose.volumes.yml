@@ -1,0 +1,28 @@
+# NOTE: Containers use the generic "coreapi" prefix so they're independent of
+#       the particular project name. Project specific images are always built
+#       locally when using the docker-compose file.
+#
+#   The services are all configured with "network_mode: bridge" to work around
+#   name lookup problems with docker, docker-compose and the use of a local DNS
+#   resolver on the host: https://bugzilla.redhat.com/show_bug.cgi?id=1258350
+version: "2"
+services:
+  server:
+    volumes:
+     - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./server/bayesian:/usr/lib/python3.4/site-packages/bayesian:ro,z
+     - ./server/kerberos/keytab:/mnt:ro,z
+     - ./server/coreapi-httpd.conf:/etc/httpd/conf.d/coreapi-httpd.conf:ro,z
+  jobs:
+    volumes:
+     - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./jobs/bayesian_jobs:/usr/lib/python3.4/site-packages/bayesian_jobs:ro,z
+  worker:
+    volumes:
+     - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./worker/hack/secrets.yaml:/var/lib/secrets/secrets.yaml:ro,z
+  minio-s3:
+    # Uncomment this if you want to have S3 data persistent
+    #volumes:
+    # - ./hack/s3:/export:rw,z
+    # - ./hack/s3:/root/.mini:rw,z
