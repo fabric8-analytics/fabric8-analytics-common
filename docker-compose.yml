@@ -30,9 +30,6 @@ services:
       POSTGRESQL_DATABASE: coreapi
     container_name: coreapi-postgres
   pgbouncer:
-    build:
-      context: pgbouncer/
-      dockerfile: Dockerfile
     image: docker-registry.usersys.redhat.com/bayesian/coreapi-pgbouncer
     container_name: coreapi-pgbouncer
     network_mode: bridge
@@ -46,9 +43,6 @@ services:
       POSTGRESQL_DATABASE: coreapi
       POSTGRESQL_INITIAL_DATABASE: postgres
   server:
-    build:
-      context: server/
-      dockerfile: Dockerfile
     image: docker-registry.usersys.redhat.com/bayesian/bayesian-api
     network_mode: bridge
     links:
@@ -75,9 +69,6 @@ services:
     ports:
      - "32000:5000"
   jobs:
-    build:
-      context: jobs/
-      dockerfile: Dockerfile
     image: docker-registry.usersys.redhat.com/bayesian/coreapi-jobs
     network_mode: bridge
     container_name: coreapi-jobs
@@ -107,9 +98,6 @@ services:
       #AWS_SQS_REGION: ''
       #AWS_S3_REGION: ''
   worker:
-    build:
-      context: worker/
-      dockerfile: Dockerfile
     image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
     network_mode: bridge
     depends_on:
@@ -157,9 +145,6 @@ services:
       SIMILARITY_SCORE_THRESHOLD: 0.0
     tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
   worker-db-migrations:
-    build:
-      context: worker/
-      dockerfile: Dockerfile
     image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
     restart: on-failure
     container_name: coreapi-worker-db-migrations
@@ -174,9 +159,6 @@ services:
       POSTGRESQL_INITIAL_DATABASE: postgres
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
   downstream-data-import:
-    build:
-      context: worker/
-      dockerfile: Dockerfile.downstream-data-import
     image: docker-registry.usersys.redhat.com/bayesian/coreapi-downstream-data-import
     network_mode: bridge
     links:
