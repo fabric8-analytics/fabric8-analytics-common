@@ -7,20 +7,41 @@
 #   resolver on the host: https://bugzilla.redhat.com/show_bug.cgi?id=1258350
 version: "2"
 services:
+  pgbouncer:
+    build:
+      context: pgbouncer/
+      dockerfile: Dockerfile
   server:
+    build:
+      context: server/
+      dockerfile: Dockerfile
     volumes:
      - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
      - ./server/bayesian:/usr/lib/python3.4/site-packages/bayesian:ro,z
      - ./server/kerberos/keytab:/mnt:ro,z
      - ./server/coreapi-httpd.conf:/etc/httpd/conf.d/coreapi-httpd.conf:ro,z
   jobs:
+    build:
+      context: jobs/
+      dockerfile: Dockerfile
     volumes:
      - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
      - ./jobs/bayesian_jobs:/usr/lib/python3.4/site-packages/bayesian_jobs:ro,z
   worker:
+    build:
+      context: worker/
+      dockerfile: Dockerfile
     volumes:
      - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
      - ./worker/hack/secrets.yaml:/var/lib/secrets/secrets.yaml:ro,z
+  worker-db-migrations:
+    build:
+      context: worker/
+      dockerfile: Dockerfile
+  downstream-data-import:
+    build:
+      context: worker/
+      dockerfile: Dockerfile.downstream-data-import
   minio-s3:
     # Uncomment this if you want to have S3 data persistent
     #volumes:
