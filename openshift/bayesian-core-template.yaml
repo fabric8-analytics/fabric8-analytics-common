@@ -266,7 +266,7 @@ objects:
           - name: DEPLOYMENT_PREFIX
             value: "${DEPLOYMENT_PREFIX}"
           - name: WORKER_ADMINISTRATION_REGION
-            value: "api"
+            value: "${WORKER_ADMINISTRATION_REGION}"
           - name: POSTGRESQL_DATABASE
             valueFrom:
               secretKeyRef:
@@ -399,6 +399,12 @@ objects:
   status: {}
 
 parameters:
+- description: Worker region for serving tasks - api or ingestion
+  displayName: Worker administration region
+  required: true
+  name: WORKER_ADMINISTRATION_REGION
+  value: "api"
+
 - description: Deployment prefix used for deployment-specific AWS resources
   displayName: Deployment prefix
   required: true

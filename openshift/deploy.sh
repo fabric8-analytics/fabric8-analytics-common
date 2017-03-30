@@ -29,6 +29,13 @@ do
   if [[ "${template}" == "bayesian-core-template" ]]; then
     args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX} \
 -v S3_BUCKET_FOR_ANALYSES=${S3_BUCKET_FOR_ANALYSES} \
+-v WORKER_ADMINISTRATION_REGION=api \
+${BAYESIAN_API_HOSTNAME:+-v BAYESIAN_API_HOSTNAME=${BAYESIAN_API_HOSTNAME}} \
+"
+    oc_process_apply "$template_file" "$args"
+    args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX} \
+-v S3_BUCKET_FOR_ANALYSES=${S3_BUCKET_FOR_ANALYSES} \
+-v WORKER_ADMINISTRATION_REGION=ingestion \
 ${BAYESIAN_API_HOSTNAME:+-v BAYESIAN_API_HOSTNAME=${BAYESIAN_API_HOSTNAME}} \
 "
   elif [[ "${template}" == "gremlin-server-template" ]]; then
