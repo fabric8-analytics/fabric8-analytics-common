@@ -55,7 +55,7 @@ objects:
               secretKeyRef:
                 name: anitya-postgres
                 key: username
-          image: slavek/anitya-server
+          image: registry.devshift.net/slavek/anitya-server
           name: bayesian-anitya
           ports:
           - containerPort: 5000
