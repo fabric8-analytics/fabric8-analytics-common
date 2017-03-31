@@ -39,56 +39,6 @@ For an indepth example using the API see the [examples repo](https://gitlab.cee.
 
 It is possible to trigger Bayesian analyses from Jenkins. Please refer to the [documentation](sonarqube-widget/running_from_jenkins.md) for details.
 
----
----
----
+# Developing and Running the System
 
-# Developing Bayesian
-
-This section is for those interessted in contributing to the development of Bayesian. Please read through our [glossary](docs/glossary.md) in case you are not sure about terms used in the docs.
-
-## Running a Local Instance
-
-### Getting All Repos
-
-In order to have a good local development experience, the code repositories
-are mounted inside containers, so that changes can be observed live or after
-container restart (without image rebuilds).
-
-In order to achieve that, all the individual Bayesian repos have to be
-checked out. The helper script `setup.sh` is here to do that. Run `setup.sh -h`
-and follow the instructions (most of the time, you'll be fine with running
-`setup.sh` with no arguments).
-
-### With Docker Compose
-
-Follow the Docker based instructions for
-[running a local instance](docs/running_whole_bayesian.md#running-via-docker-compose).
-
-### Debugging Docker networking connectivity
-
-Network connectivity problems can sometimes arise when attempting to build
-container images locally that require access to the Red Hat internal network
-during the build process. This is particularly common when using a VPN tunnel,
-rather than being directly connected to the internal network.
-
-The following three commands can be used to help determine if a local build
-failure is due to that problem:
-
-    $ curl -sI http://coprbe.devel.redhat.com/repos/
-    $ sudo docker run --rm centos curl -sI http://coprbe.devel.redhat.com/repos/
-    $ sudo docker run --rm fedora:25 curl -sI http://coprbe.devel.redhat.com/repos/
-
-All of those should print out `HTTP/1.1 200 OK` and various other details, and
-if they don't, then there's a problem accessing the Red Hat internal COPR
-instance. The first command checks if the local host itself has internal
-network access, while the latter two check connectivity from CentOS and
-Fedora based Docker containers.
-
-For Fedora clients, this [Stack Overflow post](http://stackoverflow.com/questions/35693117/how-can-i-give-docker-containers-access-to-a-dnsmasq-local-dns-resolver-on-the-h) describes a particular
-problem that can arise with domain name resolution, as well as how to configure
-Docker to use a dedicated local resolver running on the host system.
-
-### Integration tests
-
-Refer to the [integration testing README](integration-tests/README.md)
+We have detailed [documentation](docs/developing_running.md) that describes possibilites of running whole Bayesian, doing code changes, running tests etc.
