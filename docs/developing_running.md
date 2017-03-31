@@ -153,4 +153,4 @@ the "follow" mode).
 
 ## Integration tests
 
-Refer to the [integration testing README](integration-tests/README.md)
+Refer to the [integration testing README](../integration-tests/README.md)
