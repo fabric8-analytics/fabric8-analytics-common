@@ -68,3 +68,5 @@ done
 
 echo "Setup done. To run the system locally, run:"
 echo "docker-compose up"
+echo "If you want to mount source code inside the containers, run:"
+echo "./docker-compose.sh up"
