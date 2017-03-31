@@ -57,6 +57,7 @@ EOF
       echo "Dummy worker/hack/secrets.yaml created. Modify it as necessary."
     fi
   fi
+
   if [[ -n "$remotes" ]]; then
     pushd $repo &>/dev/null
     if ! `git remote show | grep "^fork$" &>/dev/null`; then
@@ -64,6 +65,8 @@ EOF
     fi
     popd &>/dev/null
   fi
+
+  [[ -e "${repo}/get-worker.sh" ]] && "${repo}/get-worker.sh"
 done
 
 echo "Setup done. To run the system locally, run:"
