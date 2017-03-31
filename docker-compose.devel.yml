@@ -27,13 +27,15 @@ services:
     volumes:
      - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
      - ./jobs/bayesian_jobs:/usr/lib/python3.4/site-packages/bayesian_jobs:ro,z
-  worker:
+  worker-api: &worker
     build:
       context: worker/
       dockerfile: Dockerfile
     volumes:
      - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
      - ./worker/hack/secrets.yaml:/var/lib/secrets/secrets.yaml:ro,z
+  worker-ingestion:
+    <<: *worker
   worker-db-migrations:
     build:
       context: worker/
