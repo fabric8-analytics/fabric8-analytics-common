@@ -43,8 +43,18 @@ for repo in $repos; do
   if ! `ls $repo &>/dev/null`; then
     git clone "git@github.com:baytemp/${repo}.git"
     if [[ $repo == "worker" ]]; then
-      curl -O https://gitlab.cee.redhat.com/bayesian/secrets/raw/master/secrets.yaml
-      mv secrets.yaml worker/hack/
+      cat > worker/hack/secrets.yaml << \EOF
+pulp:
+  # url: "https://pulp.com"
+  # username: "user"
+  # password: "password"
+github:
+  # Generate your token at https://github.com/settings/tokens
+  # token: "123456asdf"
+bigquery:
+  # token: 'mysecrettokentobigquery'
+EOF
+      echo "Dummy worker/hack/secrets.yaml created. Modify it as necessary."
     fi
   fi
   if [[ -n "$remotes" ]]; then
