@@ -239,12 +239,12 @@ objects:
   metadata:
     creationTimestamp: null
     labels:
-      service: bayesian-worker-${WORKER-ADMINISTRATION-REGION}
-    name: bayesian-worker-${WORKER-ADMINISTRATION-REGION}
+      service: bayesian-worker-${WORKER_ADMINISTRATION_REGION}
+    name: bayesian-worker-${WORKER_ADMINISTRATION_REGION}
   spec:
     replicas: 1
     selector:
-      service: bayesian-worker-${WORKER-ADMINISTRATION-REGION}
+      service: bayesian-worker-${WORKER_ADMINISTRATION_REGION}
     strategy:
       type: Rolling
       rollingParams:
@@ -257,7 +257,7 @@ objects:
       metadata:
         creationTimestamp: null
         labels:
-          service: bayesian-worker-${WORKER-ADMINISTRATION-REGION}
+          service: bayesian-worker-${WORKER_ADMINISTRATION_REGION}
       spec:
         containers:
         - env:
