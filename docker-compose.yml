@@ -102,9 +102,6 @@ services:
       #AWS_SQS_REGION: ''
       #AWS_S3_REGION: ''
   worker-api: &worker
-    build:
-      context: worker/
-      dockerfile: Dockerfile
     image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
     network_mode: bridge
     depends_on:
