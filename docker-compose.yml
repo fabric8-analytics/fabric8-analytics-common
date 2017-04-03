@@ -168,6 +168,7 @@ services:
       POSTGRESQL_DATABASE: coreapi
       POSTGRESQL_INITIAL_DATABASE: postgres
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+      WORKER_ADMINISTRATION_REGION: ingestion
   downstream-data-import:
     image: docker-registry.usersys.redhat.com/bayesian/coreapi-downstream-data-import
     network_mode: bridge
