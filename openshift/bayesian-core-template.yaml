@@ -391,7 +391,7 @@ objects:
             requests:
               memory: "512Mi"
             limits:
-              memory: "1024Mi"
+              memory: "2048Mi"
         restartPolicy: Always
     test: false
     triggers:
