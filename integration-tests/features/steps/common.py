@@ -92,6 +92,10 @@ def wait_for_analysis(context, ecosystem, package, version, action):
 
     assert done, err.format(e=ecosystem, p=package, v=version, s=timeout)
 
+@when('I access anitya {url}')
+def anitya_url(context, url):
+    context.response = requests.get(context.anitya_url + url)
+
 @when('I access {url}')
 def access_url(context, url):
     context.response = requests.get(context.coreapi_url + url)
@@ -155,7 +159,6 @@ def check_json(context):
 @then('I should get {status:d} status code')
 def check_status_code(context, status):
     assert context.response.status_code == status
-
 
 @when('I wait {num:d} seconds')
 @then('I wait {num:d} seconds')

@@ -262,6 +262,11 @@ def _read_boolean_setting(context, setting_name):
     msg = '{!r} is not a valid option for boolean setting {!r}'
     raise ValueError(msg.format(setting, setting_name))
 
+def _add_slash(url):
+    if not url.endswith('/'):
+        url += '/'
+    return url
+
 def before_all(context):
     context.config.setup_logging()
     context.start_system = _start_system
@@ -299,10 +304,12 @@ def before_all(context):
     context.images['bayesian/cucos-worker'] = context.config.userdata.get(
         'coreapi_worker_image',
         'docker-registry.usersys.redhat.com/bayesian/cucos-worker')
-    context.coreapi_url = context.config.userdata.get('coreapi_url', 'http://localhost:32000/')
-    if not context.coreapi_url.endswith('/'):
-        context.coreapi_url += '/'
-
+    
+    context.coreapi_url = _add_slash(context.config.userdata.get('coreapi_url',
+        'http://localhost:32000/'))
+    context.anitya_url = _add_slash(context.config.userdata.get('anitya_url',
+        'http://localhost:31005/'))
+    
     context.client = docker.AutoVersionClient()
 
     for desired, actual in context.images.items():
