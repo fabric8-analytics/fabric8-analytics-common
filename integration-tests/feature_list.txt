@@ -2,3 +2,4 @@
 features/ecosystems.feature
 features/packages.feature
 features/versions.feature
+features/anitya.feature
