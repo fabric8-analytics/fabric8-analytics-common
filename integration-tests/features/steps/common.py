@@ -92,7 +92,7 @@ def wait_for_analysis(context, ecosystem, package, version, action):
 
     assert done, err.format(e=ecosystem, p=package, v=version, s=timeout)
 
-@when('I try anitya {url}')
+@when('I access anitya {url}')
 def anitya_url(context, url):
     context.response = requests.get(context.anitya_url + url)
 
