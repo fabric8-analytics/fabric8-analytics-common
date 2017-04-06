@@ -42,6 +42,16 @@ objects:
               secretKeyRef:
                 name: aws
                 key: sqs-secret-access-key
+          - name: AWS_S3_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+               name: aws
+               key: s3-access-key-id
+          - name: AWS_S3_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aws
+                key: s3-secret-access-key
           - name: BAYESIAN_SYNC_S3
             valueFrom:
               secretKeyRef:
