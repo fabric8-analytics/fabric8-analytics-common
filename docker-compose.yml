@@ -219,3 +219,34 @@ services:
     environment:
       MINIO_ACCESS_KEY: GNV3SAHAHA3DOT99GQII
       MINIO_SECRET_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
+
+  dynamodb:
+    image: hilverd/dynamodb
+    ports:
+      - "8000:8000"
+      - "4567:4567"
+    mem_limit: 2G
+
+  gremlin-http:
+    image: registry.centos.org/datamodel/gremlin:concaf
+    entrypoint: /bin/entrypoint-local.sh
+    environment:
+      - REST=1
+      - DEBUG_GRAPH_METRICS=0
+    ports:
+      - "8181:8182"
+    depends_on:
+      - dynamodb
+    mem_limit: 2G
+
+  gremlin-websocket:
+    image: registry.centos.org/datamodel/gremlin:concaf
+    entrypoint: /bin/entrypoint-local.sh
+    environment:
+      - DEBUG_GRAPH_METRICS=0
+      - INIT_DELAY=20
+    ports:
+      - "8182:8182"
+    depends_on:
+      - dynamodb
+    mem_limit: 2G
