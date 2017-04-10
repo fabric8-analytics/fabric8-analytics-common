@@ -97,7 +97,7 @@ objects:
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 60
-            timeoutSeconds: 2
+            timeoutSeconds: 6
           resources:
             limits:
               memory: "512Mi"
