@@ -72,12 +72,12 @@ objects:
             valueFrom:
               secretKeyRef:
                 name: aws
-                key: dynamodb-access-key-id
+                key: s3-access-key-id
           - name: AWS_S3_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
                 name: aws
-                key: dynamodb-secret-access-key
+                key: s3-secret-access-key
           image: ${DATA_IMPORTER_IMAGE}
           imagePullPolicy: Always
           name: bayesian-data-importer

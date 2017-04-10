@@ -8,7 +8,7 @@ function oc_process_apply() {
 
 HERE=`dirname $0`
 
-templates="anitya-template bayesian-core-template postgresql-extras-template gremlin-server-template data-model-importer-template analytics-template"
+templates="anitya-template bayesian-core-template postgresql-extras-template gremlin-server-template data-importer-template analytics-template"
 noaws_templates="anitya-postgresql-template broker-template postgresql-template"
 ( [ ! $AWS_NATIVE ] && [ ! $CLOUD_DEPLOY ] ) && templates="$templates $noaws_templates"
 
@@ -43,8 +43,8 @@ ${BAYESIAN_API_HOSTNAME:+-v BAYESIAN_API_HOSTNAME=${BAYESIAN_API_HOSTNAME}} \
     args="-v DYNAMODB_PREFIX=${DYNAMODB_PREFIX} -v MEMORY_LIMIT=2048Mi"
     oc_process_apply "$template_file" "$args"
     args="-v DYNAMODB_PREFIX=${DYNAMODB_PREFIX} -v CHANNELIZER=http -v REST_VALUE=1"
-  elif [[ "${template}" == "data-model-importer-template" ]]; then
-    args="-v S3_BUCKET_FOR_ANALYSES=${S3_BUCKET_FOR_ANALYSES}"
+  elif [[ "${template}" == "data-importer-template" ]]; then
+    args="-v AWS_BUCKET=${S3_BUCKET_FOR_ANALYSES}"
   elif [[ "${template}" == "analytics-template" ]]; then
     args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX}"
   else
