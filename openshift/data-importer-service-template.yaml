@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: bayesian-data-importer
+metadata:
+  name: bayesian-data-importer
+  annotations:
+    description: bayesian-data-importer
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: null
+    labels:
+      service: bayesian-data-importer
+    name: bayesian-data-importer
+  spec:
+    ports:
+    - name: "9192"
+      port: 9192
+      protocol: TCP
+      targetPort: 9192
+    selector:
+      service: bayesian-data-importer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    labels:
+      service: bayesian-data-importer
+    name: bayesian-data-importer
+  spec:
+    replicas: 1
+    selector:
+      service: bayesian-data-importer
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          service: bayesian-data-importer
+      spec:
+        containers:
+        - env:
+          - name: DATA_IMPORTER_SERVICE_PORT
+            value: ${DATA_IMPORTER_SERVICE_PORT}
+          - name: DATA_IMPORTER_SERVICE_TIMEOUT
+            value: ${DATA_IMPORTER_SERVICE_TIMEOUT}
+          - name: GREMLIN_USE_SECURE_CONNECTION
+            value: ${GREMLIN_USE_SECURE_CONNECTION}
+          - name: AWS_BUCKET
+            value: ${AWS_BUCKET}
+          - name: POSTGRESQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: coreapi-postgres
+                key: database
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: coreapi-postgres
+                key: password
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: coreapi-postgres
+                key: username
+          - name: AWS_S3_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: aws
+                key: dynamodb-access-key-id
+          - name: AWS_S3_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aws
+                key: dynamodb-secret-access-key
+          image: ${DATA_IMPORTER_IMAGE}
+          imagePullPolicy: Always
+          name: bayesian-data-importer
+          ports:
+          - containerPort: 9192
+            protocol: TCP
+          resources:
+            requests:
+              memory: ${MEMORY_REQUEST}
+            limits:
+              memory: ${MEMORY_LIMIT}
+          readinessProbe:
+            httpGet:
+              path: /api/v1/readiness
+              port: 9192
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /api/v1/liveness
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            timeoutSeconds: 2
+        restartPolicy: Always
+    test: false
+    triggers:
+    - type: ConfigChange
+  status: {}
+parameters:
+- description: Port number that data importer service will listen to
+  name: DATA_IMPORTER_SERVICE_PORT
+  required: true
+  value: "9192"
+
+- description: Timeout for the data importer service
+  name: DATA_IMPORTER_SERVICE_TIMEOUT
+  required: true
+  value: "3600"
+
+- description: Whether to use secure connection or not ?
+  name: GREMLIN_USE_SECURE_CONNECTION
+  required: false
+  value: "false"
+
+- description:
+  name: AWS_BUCKET
+  required: true
+  value: ""
+
+- description: DATA_IMPORTER_IMAGE
+  name: DATA_IMPORTER_IMAGE
+  required: true
+  value: "registry.devshift.net/bayesian/data-model-importer"
+
+- description: MEMORY_LIMIT
+  name: MEMORY_LIMIT
+  required: true
+  value: "1536Mi"
+
+- description: MEMORY_REQUEST
+  name: MEMORY_REQUEST
+  required: true
+  value: "1536Mi"
+
