@@ -96,15 +96,15 @@ objects:
               scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 60
-            timeoutSeconds: 2
+            timeoutSeconds: 5
           livenessProbe:
             httpGet:
               path: /api/v1/liveness
-              port: 5000
+              port: 9192
               scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 60
-            timeoutSeconds: 2
+            timeoutSeconds: 5
         restartPolicy: Always
     test: false
     triggers:
