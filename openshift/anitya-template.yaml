@@ -67,7 +67,7 @@ objects:
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 60
-            timeoutSeconds: 2
+            timeoutSeconds: 6
           livenessProbe:
             httpGet:
               path: /api/projects/names
@@ -75,7 +75,7 @@ objects:
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 60
-            timeoutSeconds: 2
+            timeoutSeconds: 6
           resources:
             limits:
               memory: "512Mi"
