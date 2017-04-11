@@ -222,13 +222,16 @@ services:
 
   dynamodb:
     image: hilverd/dynamodb
+    network_mode: bridge
     ports:
       - "8000:8000"
       - "4567:4567"
     mem_limit: 2G
+    container_name: dynamodb
 
   gremlin-http:
     image: registry.centos.org/datamodel/gremlin:concaf
+    network_mode: bridge
     entrypoint: /bin/entrypoint-local.sh
     environment:
       - REST=1
@@ -238,9 +241,13 @@ services:
     depends_on:
       - dynamodb
     mem_limit: 2G
+    container_name: bayesian-gremlin-http
+    links:
+      - dynamodb
 
   gremlin-websocket:
     image: registry.centos.org/datamodel/gremlin:concaf
+    network_mode: bridge
     entrypoint: /bin/entrypoint-local.sh
     environment:
       - DEBUG_GRAPH_METRICS=0
@@ -250,3 +257,40 @@ services:
     depends_on:
       - dynamodb
     mem_limit: 2G
+    container_name: bayesian-gremlin-websocket
+    links:
+      - dynamodb
+
+  data-model-importer:
+    image: docker-registry.usersys.redhat.com/bayesian/data-model-importer
+    network_mode: bridge
+    entrypoint:
+      - /bin/entrypoint.sh
+    # volumes:
+    #   - ./data-model/src:/src:z
+    environment:
+      DATA_IMPORTER_SERVICE_PORT: "9192"
+      DATA_IMPORTER_SERVICE_TIMEOUT: "3600"
+      # controls whether to use http/ws or https/wss
+      GREMLIN_USE_SECURE_CONNECTION: "false"
+      BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
+      BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
+      BAYESIAN_GREMLIN_WS_SERVICE_HOST: "bayesian-gremlin-websocket"
+      BAYESIAN_GREMLIN_WS_SERVICE_PORT: "8182"
+      AWS_S3_IS_LOCAL: 1
+      AWS_S3_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
+      AWS_S3_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
+      DEPLOYMENT_PREFIX: "${USER}"
+      AWS_BUCKET: "${USER}-bayesian-core-data"
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+      BAYESIAN_PGBOUNCER_SERVICE_HOST: "coreapi-pgbouncer"
+      BAYESIAN_PGBOUNCER_SERVICE_PORT: 5432
+    ports:
+      - "9192:9192"
+    links:
+      - gremlin-http
+      - gremlin-websocket
+      - minio-s3
