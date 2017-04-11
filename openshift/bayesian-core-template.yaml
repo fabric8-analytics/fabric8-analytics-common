@@ -259,7 +259,7 @@ objects:
       type: Rolling
       rollingParams:
         pre:
-          failurePolicy: Abort
+          failurePolicy: Retry
           execNewPod:
             containerName: bayesian-worker
             command: ["/alembic/run-db-migrations.sh"]
