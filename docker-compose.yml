@@ -67,6 +67,8 @@ services:
       POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+      BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
+      BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
     ports:
      - "32000:5000"
   jobs:
@@ -148,6 +150,8 @@ services:
       #BLACKDUCK_PATH: ""
       JACCARD_THRESHOLD: 0.0
       SIMILARITY_SCORE_THRESHOLD: 0.0
+      BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
+      BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
     tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
   worker-ingestion:
     <<: *worker
