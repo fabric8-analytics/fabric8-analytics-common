@@ -1,10 +1,5 @@
 Feature: Anitya functionality
 
-  Scenario: Access empty anitya
-     Given System is in initial state
-     When I access anitya /project/1
-     Then I should get 404 status code
-
   Scenario: Access anitya with packages
      Given System is running 
      When I access /api/v1/analyses/npm/sequence/2.2.1

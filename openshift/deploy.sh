@@ -12,8 +12,10 @@ templates="anitya-template bayesian-core-template postgresql-extras-template gre
 noaws_templates="anitya-postgresql-template broker-template postgresql-template"
 ( [ ! $AWS_NATIVE ] && [ ! $CLOUD_DEPLOY ] ) && templates="$templates $noaws_templates"
 
-
-if [[ $PTH_ENV ]]; then
+if [ $TESTS_DEPLOYMENT_PREFIX ]; then
+  templates="$templates integration-tests-template"
+  DEPLOYMENT_PREFIX=$TESTS_DEPLOYMENT_PREFIX
+elif [[ $PTH_ENV ]]; then
   DEPLOYMENT_PREFIX=$PTH_ENV
 else
   DEPLOYMENT_PREFIX=$(oc whoami)

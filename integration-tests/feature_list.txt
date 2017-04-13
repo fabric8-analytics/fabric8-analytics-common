@@ -1,5 +1,13 @@
 # Order of the features in this file is significant, so shuffle them carefully.
+
+# doesn't change state
 features/ecosystems.feature
-features/packages.feature
+
+# analyzes npm/sequence/2.2.1 and 2.2.0
 features/versions.feature
+
+# analyzes pypi/six/1.9.0
+features/packages.feature
+
+# analyzes npm/sequence/2.2.1
 features/anitya.feature

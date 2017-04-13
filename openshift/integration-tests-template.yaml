@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: integration-tests
+metadata:
+  name: integration-tests
+  annotations:
+    description: integration tests
+objects:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: integration-tests
+  spec:
+    containers:
+    - env:
+      image: docker.io/jpopelka/test_it
+      name: integration-tests
+      resources:
+        limits:
+          memory: "512Mi"
+    restartPolicy: Never
