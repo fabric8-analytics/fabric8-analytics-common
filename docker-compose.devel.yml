@@ -44,6 +44,10 @@ services:
     build:
       context: worker/
       dockerfile: Dockerfile.downstream-data-import
+  data-model-importer:
+    build:
+      context: data-model/
+      dockerfile: Dockerfile.data-model
   minio-s3:
     volumes:
      - /export

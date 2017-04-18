@@ -49,6 +49,7 @@ services:
      - anitya-server
      - broker
      - pgbouncer
+     - gremlin-http
     container_name: coreapi-server
     environment:
       CCS_DEBUG: 'true'
@@ -267,6 +268,7 @@ services:
 
   data-model-importer:
     image: docker-registry.usersys.redhat.com/bayesian/data-model-importer
+    restart: always
     network_mode: bridge
     entrypoint:
       - /bin/entrypoint.sh
