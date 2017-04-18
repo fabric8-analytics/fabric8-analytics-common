@@ -300,3 +300,16 @@ services:
       - gremlin-http
       - gremlin-websocket
       - minio-s3
+  cvedb-s3-dump:
+    # this service just copies pre-built CVE DB to S3 and exits
+    # https://github.com/baytemp/cvedb-s3-dump-docker
+    image: docker-registry.usersys.redhat.com/bayesian/cvedb-s3-dump
+    restart: on-failure
+    network_mode: bridge
+    environment:
+      AWS_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
+      AWS_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
+      DEPLOYMENT_PREFIX: "${USER}"
+      S3_ENDPOINT_URL: "http://coreapi-s3:33000"
+    links:
+      - minio-s3
