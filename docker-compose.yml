@@ -114,6 +114,7 @@ services:
      - broker
      - pgbouncer
      - minio-s3
+     - data-model-importer
     environment: &worker_environment
       DEPLOYMENT_PREFIX: "${USER}"
       WORKER_ADMINISTRATION_REGION: api
@@ -153,6 +154,8 @@ services:
       SIMILARITY_SCORE_THRESHOLD: 0.0
       BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
       BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
+      BAYESIAN_DATA_IMPORTER_SERVICE_HOST: "data-model-importer"
+      BAYESIAN_DATA_IMPORTER_SERVICE_PORT: "9192"
     tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
   worker-ingestion:
     <<: *worker
