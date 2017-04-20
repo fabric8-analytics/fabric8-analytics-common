@@ -49,6 +49,7 @@ services:
      - anitya-server
      - broker
      - pgbouncer
+     - gremlin-http
     container_name: coreapi-server
     environment:
       CCS_DEBUG: 'true'
@@ -113,6 +114,7 @@ services:
      - broker
      - pgbouncer
      - minio-s3
+     - data-model-importer
     environment: &worker_environment
       DEPLOYMENT_PREFIX: "${USER}"
       WORKER_ADMINISTRATION_REGION: api
@@ -152,6 +154,8 @@ services:
       SIMILARITY_SCORE_THRESHOLD: 0.0
       BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
       BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
+      BAYESIAN_DATA_IMPORTER_SERVICE_HOST: "data-model-importer"
+      BAYESIAN_DATA_IMPORTER_SERVICE_PORT: "9192"
     tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
   worker-ingestion:
     <<: *worker
@@ -267,6 +271,7 @@ services:
 
   data-model-importer:
     image: docker-registry.usersys.redhat.com/bayesian/data-model-importer
+    restart: always
     network_mode: bridge
     entrypoint:
       - /bin/entrypoint.sh
@@ -297,4 +302,17 @@ services:
     links:
       - gremlin-http
       - gremlin-websocket
+      - minio-s3
+  cvedb-s3-dump:
+    # this service just copies pre-built CVE DB to S3 and exits
+    # https://github.com/baytemp/cvedb-s3-dump-docker
+    image: docker-registry.usersys.redhat.com/bayesian/cvedb-s3-dump
+    restart: on-failure
+    network_mode: bridge
+    environment:
+      AWS_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
+      AWS_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
+      DEPLOYMENT_PREFIX: "${USER}"
+      S3_ENDPOINT_URL: "http://coreapi-s3:33000"
+    links:
       - minio-s3
