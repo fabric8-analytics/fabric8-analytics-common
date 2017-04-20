@@ -6,6 +6,26 @@
 oc new-project bayesian
 ```
 
+* Generate ConfigMap
+
+```
+./generate-config.sh
+```
+
+Note you can use `PTH_ENV` environment variable to generate config for a specific deployment, for example:
+
+```
+PTH_ENV=STAGE ./generate-config.sh
+```
+
+The command above will generate config for staging deployment.
+
+Once you have the config, you can deploy it:
+
+```
+oc apply -f config.yaml
+```
+
 * Deploy all the templates
 ```
 # you can create/modify secrets in cloud-deploy/secrects-template.yaml and rerun this any time

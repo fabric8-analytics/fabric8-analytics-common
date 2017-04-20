@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: bayesian-config
+objects:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: bayesian-config
+  data:
+    deployment-prefix: "${DEPLOYMENT_PREFIX}"
+    s3-bucket-for-analyses: "${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_ANALYSES}"
+    dynamodb-prefix: "${DEPLOYMENT_PREFIX}"
+
+parameters:
+- description: Deployment prefix used for deployment-specific AWS resources
+  displayName: Deployment prefix
+  required: true
+  name: DEPLOYMENT_PREFIX
+  value: "DEV"
+
+- description: Name of the S3 bucket where to store analyses
+  displayName: S3 bucket for analyses
+  required: true
+  name: S3_BUCKET_FOR_ANALYSES
+  value: "bayesian-core-data"
+
