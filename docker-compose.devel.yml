@@ -49,5 +49,7 @@ services:
       context: data-model/
       dockerfile: Dockerfile.data-model
   minio-s3:
-    volumes:
-     - /export
+    # Uncomment this if you want to have S3 data persistent
+    #volumes:
+    # - ./hack/s3:/export:rw,z
+    # - ./hack/s3:/root/.mini:rw,z
