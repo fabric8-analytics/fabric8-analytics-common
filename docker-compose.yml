@@ -92,6 +92,7 @@ services:
       #JOB_SERVICE_PAUSED: 1
       #JOB_SERVICE_PORT: 34000
       DEPLOYMENT_PREFIX: "${USER}"
+      DISABLE_AUTHENTICATION: "1"
       # We use ingestion in deployment, but force to api here as we have only one worker that is serving api requests by default
       WORKER_ADMINISTRATION_REGION: api
       RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
