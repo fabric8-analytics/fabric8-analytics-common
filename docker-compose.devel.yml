@@ -27,6 +27,7 @@ services:
     volumes:
      - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
      - ./jobs/bayesian_jobs:/usr/lib/python3.4/site-packages/bayesian_jobs:ro,z
+     - ./jobs/bayesian-jobs.py:/usr/bin/bayesian-jobs.py:ro,z
   worker-api: &worker
     build:
       context: worker/
@@ -34,6 +35,7 @@ services:
     volumes:
      - ./worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
      - ./worker/hack/secrets.yaml:/var/lib/secrets/secrets.yaml:ro,z
+     - ./worker/hack/workers.sh:/usr/bin/workers.sh:ro,z
   worker-ingestion:
     <<: *worker
   worker-db-migrations:
