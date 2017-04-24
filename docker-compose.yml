@@ -115,6 +115,7 @@ services:
      - pgbouncer
      - minio-s3
      - data-model-importer
+     - gremlin-http
     environment: &worker_environment
       DEPLOYMENT_PREFIX: "${USER}"
       WORKER_ADMINISTRATION_REGION: api
