@@ -1,7 +1,7 @@
 # Deploying Bayesian with cloud-deployer
 
 * dnf/yum install awscli ntpdate expect
-* git clone [cloud-deployer](https://gitlab.cee.redhat.com/dtsd/cloud-deployer)
+* git clone cloud-deployer from internal GitLab
 * CLOUD_DEPLOYER_PATH=\<path to cloned repo\> AWS_ACCESS_KEY_ID='...' AWS_SECRET_ACCESS_KEY='...' ./deploy.sh
 
 ## Customizing
