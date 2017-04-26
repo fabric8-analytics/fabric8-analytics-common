@@ -1,7 +1,7 @@
 # Developing Bayesian
 
-This section is for those interessted in contributing to the development
-of Bayesian. Please read through our [glossary](docs/glossary.md) in case
+This section is for those interested in contributing to the development
+of Bayesian. Please read through our [glossary](../docs/glossary.md) in case
 you are not sure about terms used in the docs.
 
 ## Running a Local Instance
@@ -35,8 +35,8 @@ Requirements:
 * docker >= 1.10.0
 * docker-compose >= 1.6.0
 
-Fedora 24 and 25 have docker-compose > 1.6 and docker > 1.10.0. You should be
-able to run on Fedora 24/25 without any workarounds.
+Fedora 24, 25 and 26 have docker-compose > 1.6 and docker > 1.10.0. You should be
+able to run on Fedora 24/25/26 without any workarounds.
 
 You'll need to configure docker to use http instead of https for
 docker-registry.usersys.redhat.com. To do this, add
@@ -68,7 +68,7 @@ $ sudo ./docker-compose.sh up
 ```
 
 `docker-compose.sh` will effectively mount source code from checked out
-Bayesian subprojects into the containers, so any changes made to the local
+Bayesian sub-projects into the containers, so any changes made to the local
 checkout will be reflected in the running container. Note, that some
 containers (e.g. server) will pick this up interactively, others (e.g. worker)
 will need a restart to pick the new code up.
@@ -143,10 +143,10 @@ bound to `localhost`. When running with OpenShift, TODO
 #### Logs
 
 All services log to their stdout/stderr, which makes their logs viewable
-through Docker/Kubernetes:
+through Docker:
 
 * When using docker-compose, all logs are streamed to docker-compose output
-and you can view them there in realtime. If you want to see output of a single
+and you can view them there in real-time. If you want to see output of a single
 container only, use `docker logs -f <container>`, e.g.
 `docker logs -f coreapi-server` (the `-f` is optional and it switches on
 the "follow" mode).
