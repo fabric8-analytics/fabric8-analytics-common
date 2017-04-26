@@ -28,7 +28,7 @@ For an in-depth example using the API see the [examples repo](https://github.com
 
 ## Triggering analyses from Jenkins
 
-It is possible to trigger Bayesian analyses from Jenkins. Please refer to the [documentation](sonarqube-widget/running_from_jenkins.md) for details.
+It is possible to trigger Bayesian analyses from Jenkins. Please refer to the [documentation](https://github.com/baytemp/sonarqube-plugin/blob/master/docs/running_from_jenkins.md) for details.
 
 # Developing and Running the System
 
