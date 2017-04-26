@@ -3,15 +3,14 @@
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
 The following is a set of guidelines (not rules) for contributing to Bayesian,
-which is hosted in the [Bayesian Organization](https://gitlab.cee.redhat.com/bayesian/) on GitLab.
+which is hosted in the [Bayesian Organization](https://github.com/baytemp/) on Github.
 These are just guidelines, not rules, use your best judgment and feel free to
 propose changes to this document in a pull request.
 
 ## Submitting Issues
 
-* You can create an issue on any repo under [bayesian Gitlab org](https://gitlab.cee.redhat.com/bayesian), include as many details as possible with your report
+* You can create an issue on any repo under [bayesian Github org](https://github.com/baytemp), include as many details as possible with your report
 * Include the behavior you expected and maybe other places you've seen that behavior
-* All feature requests need to go through a [backlog](https://trello.com/b/6m5tjYhy/bayesian) and be evaluated by the Product Owner and the team
 
 ## Submitting a Pull Request
 
@@ -19,7 +18,7 @@ propose changes to this document in a pull request.
 
 Core Reviewers are:
 
-* Frido Pokorny <fpokorny@redhat.com>
+* Fridolin Pokorny <fridolin@redhat.com>
 * Jiri Popelka <jpopelka@redhat.com>
 * Michal Srb <msrb@redhat.com>
 * Pavel Odvody <podvody@redhat.com>
@@ -35,7 +34,7 @@ Before you submit your pull request consider the following guidelines:
      git checkout -b bug/my-fix-branch master
      ```
 
-* Create your patch, **including appropriate test cases**
+* Create your patch, **ideally including appropriate test cases**
 * Include documentation that either describe a change to a behavior or the changed capability to an end user
 * Commit your changes using **a descriptive commit message**. If you are fixing an issue please include something like 'this closes issue #xyz'
 * Make sure your tests pass! We use Jenkins CI for our automated testing
@@ -51,7 +50,7 @@ Before you submit your pull request consider the following guidelines:
   * Make the required updates
   * Push changes to git (this will update your Pull Request):
     * You can add new commit
-    * Or rebase your branch and force push to your GitHub repository:
+    * Or rebase your branch and force push to your Github repository:
 
     ```shell
     git rebase -i master
@@ -78,9 +77,9 @@ That's it! Thank you for your contribution!
 ### API
 
 * Use hyphenation over underscore or camelCase (i.e. `/my-awesome-endpoint`)
-* Any API change requires [RAML](http://raml.org/) documentation to be created or updated (otherwise the change will not be merged), see existing [RAMLs](https://gitlab.cee.redhat.com/bayesian/Bayesian/blob/master/docs/api/raml/api.raml)
+* Any API change requires [RAML](http://raml.org/) documentation to be created or updated (otherwise the change will not be merged)
 * Provide extensive examples for input and output
-* Payload transferred over API should be in JSON format (exceptions are possible - for example while transferring files) and has to be documented with [JSON Schema](http://json-schema.org/) and [JSL](https://jsl.readthedocs.io/en/latest/tutorial.html), see existing schemas for [workers](https://gitlab.cee.redhat.com/bayesian/Bayesian/tree/master/lib/cucoslib/workers/schemas/) and [server](https://gitlab.cee.redhat.com/bayesian/Bayesian/tree/master/server/bayesian/schemas)
+* Payload transferred over API should be in JSON format (exceptions are possible - for example while transferring files) and has to be documented with [JSON Schema](http://json-schema.org/) and [JSL](https://jsl.readthedocs.io/en/latest/tutorial.html), see existing schemas for [workers](https://github.com/baytemp/worker/tree/master/cucoslib/workers/schemas/) and [server](https://github.com/baytemp/server/tree/master/bayesian/schemas)
 
 ### Language
 
