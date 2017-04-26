@@ -18,7 +18,7 @@ add new feature tests, simply edit an existing `<name>.feature` file in
 ### Currently defined features
 
 * [Component analysis](features/analysis.feature): API tests for the
-  component analysis endpoints under `/api/v1/analyses/`
+  component analysis endpoints under `/api/v1/component-analyses/`
 * [Stack analysis](features/stackanalysis.feature): API tests for the
   stack analysis endpoint `/api/v1/stack-analyses/`
 * [Known ecosystems](features/ecosystems.feature): API tests for the
@@ -26,7 +26,7 @@ add new feature tests, simply edit an existing `<name>.feature` file in
 * [Known packages](features/packages.feature): API tests for the
   per-ecosystem known packages endpoints under `/api/v1/packages/`
 * [Known versions](features/versions.feature): API tests for the
-  per-package known versions endpoints under `/api/v1/packages/`
+  per-package known versions endpoints under `/api/v1/versions/`
 
 ### Adding new feature files
 
@@ -69,7 +69,7 @@ The available methods include:
 
 * `is_running()`: indicates whether or not the core API service is running
 * `start_system()`: Start the API service in its default configuration using
-  either Docker Compose (the default) or Kubernetes (if configured)
+  Docker Compose
 * `teardown_system()`: Shut down the API service and remove all related
   container volumes
 * `restart_system()`: Tears down and restarts the API service in its default
@@ -85,9 +85,8 @@ The available attributes include:
 * `resource_manager`: a [contextlib.ExitStack](https://docs.python.org/3/library/contextlib.html#contextlib.ExitStack)
   instance for registering resources to be cleaned up at the end up of the
   current test scenario
-* `docker_compose_path`: `None` if running under Kubernetes, but a list
-  of Docker compose files defining the `default configuration` when running
-  under Docker Compose
+* `docker_compose_path`: a list of Docker compose files defining the 
+  `default configuration` when running under Docker Compose
 
 Due to the context lifecycle policies defined by `behave` any changes to these
 attributes in step definitions only remain in effect until the end of the
@@ -120,14 +119,6 @@ Arguments passed to the test runner are passed through to the underlying
 `behave` invocation, so consult the `behave` docs for the full list of
 available flags.
 
-By default, the integration tests are run via `docker-compose`. The use of
-Kubernetes instead can be requested:
-
-* -D kubernetes_dir=/some/path/to/kubernetes-dir`
-  (experimental, use at your own risk) - full path of directory with Kubernetes
-  files of the core API **Important: running this will erase all data in all
-  defined volumes. You've been warned.**
-
 Other custom configuration settings available:
 
   * `-D dump_logs=true` (optional, default is not to print container logs) -
@@ -141,12 +132,13 @@ Other custom configuration settings available:
     is specified
   * `-D coreapi_server_image=bayesian/bayesian-api`
     (optional, default is `bayesian/bayesian-api`) - name of Bayesian core API server image
-  * `-D cucos_worker_image=bayesian/cucos-worker` (optional, default is `bayesian/cucos-worker`) - name of CuCoS Worker image
+  * `-D cucos_worker_image=bayesian/cucos-worker` (optional, default is `bayesian/cucos-worker`) - name of Bayesian
+    Worker image
   * `-D coreapi_url=http://1.2.3.4:32000` (optional, default is `http://localhost:32000`)
   * `-D breath_time=10` (optional, default is `5`) - time to wait before testing
 
 **Important: running with non-default image settings will force-retag the given
-images as `bayesian/bayesian-api` and `bayesian/cucos-worker` so `docker-compose`
+images as `bayesian/bayesian-api` and `bayesian/worker` so `docker-compose`
 can find them. This may affect subsequent `docker` and `docker-compose` calls**
 
 Some of the tests may be quite slow, you can skip them by passing
