@@ -11,6 +11,7 @@ objects:
     deployment-prefix: "${DEPLOYMENT_PREFIX}"
     s3-bucket-for-analyses: "${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_ANALYSES}"
     dynamodb-prefix: "${DEPLOYMENT_PREFIX}"
+    keycloak-url: ""
 
 parameters:
 - description: Deployment prefix used for deployment-specific AWS resources
