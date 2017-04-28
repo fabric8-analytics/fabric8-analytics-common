@@ -41,7 +41,7 @@ fi
 
 for repo in $repos; do
   if ! `ls $repo &>/dev/null`; then
-    git clone "git@github.com:baytemp/${repo}.git"
+    git clone "git@github.com:fabric8-analytics/${repo}.git"
     if [[ $repo == "worker" ]]; then
       cat > worker/hack/secrets.yaml << \EOF
 pulp:

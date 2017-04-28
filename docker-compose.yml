@@ -308,7 +308,7 @@ services:
       - minio-s3
   cvedb-s3-dump:
     # this service just copies pre-built CVE DB to S3 and exits
-    # https://github.com/baytemp/cvedb-s3-dump-docker
+    # https://github.com/fabric8-analytics/cvedb-s3-dump-docker
     image: docker-registry.usersys.redhat.com/bayesian/cvedb-s3-dump
     restart: on-failure
     network_mode: bridge
