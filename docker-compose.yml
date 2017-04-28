@@ -191,17 +191,6 @@ services:
       POSTGRESQL_INITIAL_DATABASE: postgres
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
       WORKER_ADMINISTRATION_REGION: ingestion
-  downstream-data-import:
-    image: docker-registry.usersys.redhat.com/bayesian/coreapi-downstream-data-import
-    network_mode: bridge
-    links:
-     - pgbouncer
-    environment:
-      POSTGRESQL_USER: coreapi
-      POSTGRESQL_PASSWORD: coreapi
-      POSTGRESQL_DATABASE: coreapi
-      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
-    container_name: coreapi-downstream-data-import
   anitya-postgres:
     image: registry.centos.org/sclo/postgresql-94-centos7:latest
     ports:
