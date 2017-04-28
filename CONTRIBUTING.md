@@ -3,13 +3,13 @@
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
 The following is a set of guidelines (not rules) for contributing to Fabric8-Analytics,
-which is hosted in the [Fabric8-Analytics Organization](https://github.com/baytemp/) on Github.
+which is hosted in the [Fabric8-Analytics Organization](https://github.com/fabric8-analytics/) on Github.
 These are just guidelines, not rules, use your best judgment and feel free to
 propose changes to this document in a pull request.
 
 ## Submitting Issues
 
-* You can create an issue on any repo under [fabric8-analytics Github org](https://github.com/baytemp), include as many details as possible with your report
+* You can create an issue on any repo under [fabric8-analytics Github org](https://github.com/fabric8-analytics), include as many details as possible with your report
 * Include the behavior you expected and maybe other places you've seen that behavior
 
 ## Submitting a Pull Request
@@ -79,7 +79,7 @@ That's it! Thank you for your contribution!
 * Use hyphenation over underscore or camelCase (i.e. `/my-awesome-endpoint`)
 * Any API change requires [RAML](http://raml.org/) documentation to be created or updated (otherwise the change will not be merged)
 * Provide extensive examples for input and output
-* Payload transferred over API should be in JSON format (exceptions are possible - for example while transferring files) and has to be documented with [JSON Schema](http://json-schema.org/) and [JSL](https://jsl.readthedocs.io/en/latest/tutorial.html), see existing schemas for [workers](https://github.com/baytemp/worker/tree/master/cucoslib/workers/schemas/) and [server](https://github.com/baytemp/server/tree/master/bayesian/schemas)
+* Payload transferred over API should be in JSON format (exceptions are possible - for example while transferring files) and has to be documented with [JSON Schema](http://json-schema.org/) and [JSL](https://jsl.readthedocs.io/en/latest/tutorial.html), see existing schemas for [workers](https://github.com/fabric8-analytics/worker/tree/master/cucoslib/workers/schemas/) and [server](https://github.com/fabric8-analytics/server/tree/master/bayesian/schemas)
 
 ### Language
 

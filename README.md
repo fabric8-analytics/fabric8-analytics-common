@@ -12,21 +12,21 @@ At this point we offer several ways of interacting with Baysian: API, a widget i
 
 ## API
 
-To get up and running with the API please refer to the [API server README](https://github.com/baytemp/server/blob/master/README.md).
+To get up and running with the API please refer to the [API server README](https://github.com/fabric8-analytics/server/blob/master/README.md).
 
-For an in-depth example using the API see the [examples repo](https://github.com/baytemp/examples).
+For an in-depth example using the API see the [examples repo](https://github.com/fabric8-analytics/examples).
 
 ## SonarQube
 
-SonarQube is our developer facing integration point. For an in-depth example working with SonarQube see the [examples repo](https://github.com/baytemp/examples).
+SonarQube is our developer facing integration point. For an in-depth example working with SonarQube see the [examples repo](https://github.com/fabric8-analytics/examples).
 
-Note: A special plugin needs to be used for scanning Maven projects, find out [how to use it](https://github.com/baytemp/sonarqube-plugin).
+Note: A special plugin needs to be used for scanning Maven projects, find out [how to use it](https://github.com/fabric8-analytics/sonarqube-plugin).
 
 ## Triggering analyses from Jenkins
 
-We have a Fabric8-Analytics [Jenkins plugin](https://github.com/baytemp/jenkins-plugin).
+We have a Fabric8-Analytics [Jenkins plugin](https://github.com/fabric8-analytics/jenkins-plugin).
 
-It is also possible to trigger Fabric8-Analytics analyses from Jenkins. Please refer to the [documentation](https://github.com/baytemp/sonarqube-plugin/blob/master/docs/running_from_jenkins.md) for details.
+It is also possible to trigger Fabric8-Analytics analyses from Jenkins. Please refer to the [documentation](https://github.com/fabric8-analytics/sonarqube-plugin/blob/master/docs/running_from_jenkins.md) for details.
 
 # Developing and Running the System
 
