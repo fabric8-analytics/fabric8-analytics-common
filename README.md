@@ -1,35 +1,33 @@
-# Project Bayesian
+# Project Fabric8-Analytics
+
+*Note on naming: The Fabric8-Analytics project has evolved from 2 different projects called "cucos" and "bayesian". We're currently in process of renaming the modules and updating documentation. Until that is completed, please consider "cucos" and "bayesian" to be synonyms of "Fabric8-Analytics".*
 
 ## Overview
 
-Bayesian is a new strategic initiative to help developers with the consumption of application components such as packages and containers.
+Fabric8-Analytics is a new strategic initiative to help developers with the consumption of application components such as packages and containers.
 
-## Project status
+# Using Fabric8-Analytics
 
-The project is an _very_ early alpha stage. So please expect many short comings, downtimes and rough edges. But with your feedback we will strive for the better.
+At this point we offer several ways of interacting with Baysian: API, a widget in SonarQube and Jenkins plugin. Fabric8-Analytics is also built into the [openshift.io](https://openshift.io) build pipeline.
 
-# Using Bayesian
+## API
 
-At this point we offer two ways of interacting with Baysian: A widget in SonarQube and an API:
+To get up and running with the API please refer to the [API server README](https://github.com/baytemp/server/blob/master/README.md).
+
+For an in-depth example using the API see the [examples repo](https://github.com/baytemp/examples).
 
 ## SonarQube
 
 SonarQube is our developer facing integration point. For an in-depth example working with SonarQube see the [examples repo](https://github.com/baytemp/examples).
 
-Note: A special plugin needs to be used for scanning Maven projects, find out [how to use it](sonarqube-widget/scanning_maven_projects.md).
-
-## API
-
-To get up and running with the API please refer to our [getting started guide](docs/getting_started.md). And refer to the [docs/api](docs/api) for a more detailed explanation and a [API
-specification](docs/api/raml/) in
-[RAML format](https://github.com/raml-org/raml-spec/blob/master/versions/raml-08/raml-08.md).
-
-For an in-depth example using the API see the [examples repo](https://github.com/baytemp/examples).
+Note: A special plugin needs to be used for scanning Maven projects, find out [how to use it](https://github.com/baytemp/sonarqube-plugin).
 
 ## Triggering analyses from Jenkins
 
-It is possible to trigger Bayesian analyses from Jenkins. Please refer to the [documentation](https://github.com/baytemp/sonarqube-plugin/blob/master/docs/running_from_jenkins.md) for details.
+We have a Fabric8-Analytics [Jenkins plugin](https://github.com/baytemp/jenkins-plugin).
+
+It is also possible to trigger Fabric8-Analytics analyses from Jenkins. Please refer to the [documentation](https://github.com/baytemp/sonarqube-plugin/blob/master/docs/running_from_jenkins.md) for details.
 
 # Developing and Running the System
 
-We have detailed [documentation](docs/developing_running.md) that describes possibilities of running whole Bayesian, doing code changes, running tests etc.
+We have detailed [documentation](docs/developing_running.md) that describes possibilities of running whole Fabric8-Analytics, doing code changes, running tests etc.
