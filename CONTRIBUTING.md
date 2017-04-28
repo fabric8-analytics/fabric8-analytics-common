@@ -1,15 +1,15 @@
-# Contributing to Bayesian
+# Contributing to Fabric8-Analytics
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines (not rules) for contributing to Bayesian,
-which is hosted in the [Bayesian Organization](https://github.com/baytemp/) on Github.
+The following is a set of guidelines (not rules) for contributing to Fabric8-Analytics,
+which is hosted in the [Fabric8-Analytics Organization](https://github.com/baytemp/) on Github.
 These are just guidelines, not rules, use your best judgment and feel free to
 propose changes to this document in a pull request.
 
 ## Submitting Issues
 
-* You can create an issue on any repo under [bayesian Github org](https://github.com/baytemp), include as many details as possible with your report
+* You can create an issue on any repo under [fabric8-analytics Github org](https://github.com/baytemp), include as many details as possible with your report
 * Include the behavior you expected and maybe other places you've seen that behavior
 
 ## Submitting a Pull Request
@@ -89,5 +89,5 @@ That's it! Thank you for your contribution!
 
 ### Deployment
 
-* [OpenShift](https://www.openshift.com/) is our default and preferred way how to run Bayesian
+* [OpenShift](https://www.openshift.com/) is our default and preferred way how to run Fabric8-Analytics
 * In case you are adding a new service make sure you provide a [Dockerfile](https://docs.docker.com/engine/reference/builder/) and [OpenShift configs](https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/pods_and_services.html)
