@@ -40,10 +40,11 @@ if [[ -z "$repos" ]]; then
 fi
 
 for repo in $repos; do
-  if ! `ls $repo &>/dev/null`; then
-    git clone "git@github.com:fabric8-analytics/${repo}.git"
+  fullrepo=fabric8-analytics-${repo}
+  if ! `ls $fullrepo &>/dev/null`; then
+    git clone "git@github.com:fabric8-analytics/${fullrepo}.git"
     if [[ $repo == "worker" ]]; then
-      cat > worker/hack/secrets.yaml << \EOF
+      cat > ${fullrepo}/hack/secrets.yaml << \EOF
 pulp:
   # url: "https://pulp.com"
   # username: "user"
@@ -59,14 +60,12 @@ EOF
   fi
 
   if [[ -n "$remotes" ]]; then
-    pushd $repo &>/dev/null
+    pushd $fullrepo &>/dev/null
     if ! `git remote show | grep "^fork$" &>/dev/null`; then
-      git remote add fork "git@github.com:${remotes}/${repo}.git"
+      git remote add fork "git@github.com:${remotes}/${fullrepo}.git"
     fi
     popd &>/dev/null
   fi
-
-  [[ -e "${repo}/get-worker.sh" ]] && "${repo}/get-worker.sh"
 done
 
 echo "Setup done. To run the system locally, run:"
