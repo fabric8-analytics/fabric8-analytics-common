@@ -86,8 +86,8 @@ target/
 .settings/
 
 # ignore checked out repos with bayesian components
-worker/
-server/
-jobs/
-pgbouncer/
-data-model/
+fabric8-analytics-worker/
+fabric8-analytics-server/
+fabric8-analytics-jobs/
+fabric8-analytics-pgbouncer/
+fabric8-analytics-data-model/

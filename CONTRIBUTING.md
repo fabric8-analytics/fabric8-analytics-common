@@ -79,7 +79,7 @@ That's it! Thank you for your contribution!
 * Use hyphenation over underscore or camelCase (i.e. `/my-awesome-endpoint`)
 * Any API change requires [RAML](http://raml.org/) documentation to be created or updated (otherwise the change will not be merged)
 * Provide extensive examples for input and output
-* Payload transferred over API should be in JSON format (exceptions are possible - for example while transferring files) and has to be documented with [JSON Schema](http://json-schema.org/) and [JSL](https://jsl.readthedocs.io/en/latest/tutorial.html), see existing schemas for [workers](https://github.com/fabric8-analytics/worker/tree/master/cucoslib/workers/schemas/) and [server](https://github.com/fabric8-analytics/server/tree/master/bayesian/schemas)
+* Payload transferred over API should be in JSON format (exceptions are possible - for example while transferring files) and has to be documented with [JSON Schema](http://json-schema.org/) and [JSL](https://jsl.readthedocs.io/en/latest/tutorial.html), see existing schemas for [workers](https://github.com/fabric8-analytics/fabric8-analytics-worker/tree/master/cucoslib/workers/schemas/) and [server](https://github.com/fabric8-analytics/fabric8-analytics-server/tree/master/bayesian/schemas)
 
 ### Language
 
