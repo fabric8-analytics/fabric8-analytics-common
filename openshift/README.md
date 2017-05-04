@@ -27,15 +27,7 @@ oc apply -f config.yaml
 ```
 
 * Deploy all the templates
-```
-# you can create/modify secrets in cloud-deploy/secrects-template.yaml and rerun this any time
-./secrets-deploy.sh --secrets-file cloud-deploy/secrets-template.yaml
-./deploy.sh
-```
 
-If you plan to use native Amazon services like SQS or Postgres, run:
-```
-AWS_NATIVE=1 ./deploy.sh
-```
+We use cloud-deployer tool, configured in [cloud-deploy/](cloud-deploy/), see also [cloud-deploy/README.md](cloud-deploy/README.md)
 
 Then talk to application by getting the service or route endpoints using ```oc get services``` or ```oc get routes```.
