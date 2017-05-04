@@ -8,13 +8,14 @@ from behave.log_capture import capture
 import docker
 import requests
 import time
-from elasticsearch import Elasticsearch
-
 
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
+
+
 def _make_compose_name(suffix='.yml'):
     return os.path.join(_REPO_DIR, 'docker-compose' + suffix)
+
 
 def _set_default_compose_path(context):
     base_compose = _make_compose_name()
@@ -61,6 +62,7 @@ def _make_compose_command(context, *args):
     print(cmd)
     return cmd
 
+
 def _start_system(context):
     if context.docker_compose_path:
         cmd = _make_compose_command(context, 'up', '--no-build', '-d')
@@ -79,50 +81,6 @@ def _make_compose_teardown_callback(context, services):
         for cmd in cmds:
             subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     return teardown_services
-
-def _start_local_indexer(context):
-    if context.docker_compose_path:
-        es_indexer_compose = _make_compose_name('.es_indexer.yml')
-        context.docker_compose_path.append(es_indexer_compose)
-        services = ('elasticsearch', 'es_indexer')
-        cmd = _make_compose_command(context, 'up', '--no-build', '-d')
-        cleanup = _make_compose_teardown_callback(context, services)
-        context.resource_manager.callback(cleanup)
-    else:
-        msg = 'Local ElasticSearch is not currently available under Kubernetes'
-        context.scenario.skip(reason=msg)
-        # Previous line throws an exception to skip the scenario
-
-    subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-
-    es_hosts = [
-        {
-            'host': 'localhost',
-            'port': '9200',
-        },
-    ]
-    context.es_client = es_client = Elasticsearch(hosts=es_hosts,
-                                                  timeout=60,
-                                                  retry_on_timeout=True,
-                                                  max_retries=5)
-    retry_count = 3
-    retry_interval = 1
-    time.sleep(30) # Initial sleep to reduce noise in logs
-    try:
-        cluster_up = es_client.ping()
-    except Exception:
-        cluster_up = False
-    while not cluster_up:
-        # Give the cluster an opportunity to start
-        retry_count -= 1
-        time.sleep(retry_interval)
-        try:
-            cluster_up = es_client.ping()
-        except Exception:
-            cluster_up = False
-
-    if not cluster_up:
-        raise RuntimeError("Local ElasticSearch instance failed to start")
 
 
 def _run_command_in_service(context, service, command):
@@ -198,6 +156,7 @@ def _teardown_system(context):
     for cmd in cmds:
         subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
+
 def _wait_for_system(context, wait_for_server=60):
     start = datetime.datetime.now()
     wait_till = start + datetime.timedelta(seconds=wait_for_server)
@@ -233,7 +192,6 @@ def _wait_for_system(context, wait_for_server=60):
                         format(s=wait_for_server))
 
 
-
 def _restart_system(context, wait_for_server=60):
     try:
         _teardown_system(context)
@@ -253,6 +211,7 @@ def _is_running(context):
         pass
     return False
 
+
 def _read_boolean_setting(context, setting_name):
     setting = context.config.userdata.get(setting_name, '').lower()
     if setting in ('1', 'yes', 'true', 'on'):
@@ -262,15 +221,16 @@ def _read_boolean_setting(context, setting_name):
     msg = '{!r} is not a valid option for boolean setting {!r}'
     raise ValueError(msg.format(setting, setting_name))
 
+
 def _add_slash(url):
     if not url.endswith('/'):
         url += '/'
     return url
 
+
 def before_all(context):
     context.config.setup_logging()
     context.start_system = _start_system
-    context.start_local_indexer = _start_local_indexer
     context.teardown_system = _teardown_system
     context.restart_system = _restart_system
     context.run_command_in_service = _run_command_in_service
@@ -287,7 +247,6 @@ def before_all(context):
         tail_logs = 50
     context.dump_errors = dump_errors
     context.tail_logs = tail_logs
-
 
     # Configure system under test
     context.kubernetes_dir_path = context.config.userdata.get('kubernetes_dir', None)

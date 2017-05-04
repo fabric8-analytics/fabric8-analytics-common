@@ -4,4 +4,3 @@ pytest
 jsonschema
 requests
 docker-py
-elasticsearch>=2.4.0,<5.0 # Constrain client to match current server version

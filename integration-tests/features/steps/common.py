@@ -7,6 +7,7 @@ from urllib.parse import urljoin
 import jsonschema
 import requests
 
+
 def split_comma_separated_list(l):
     return [i.strip() for i in l.split(',')]
 
@@ -15,14 +16,11 @@ def split_comma_separated_list(l):
 def initial_state(context):
     context.restart_system(context)
 
+
 @given('System is running')
 def running_system(context):
     if not context.is_running(context):
         initial_state(context)
-
-@given('the analysis indexer is running locally')
-def ensure_local_indexer_is_running(context):
-    context.start_local_indexer(context)
 
 
 @when("I obtain TGT in {service} service")
@@ -53,6 +51,7 @@ def perform_kerberized_request(context, method, url):
     )
     context.kerb_request = \
         context.exec_command_in_container(context.client, context.container, command)
+
 
 @when("I wait for {ecosystem}/{package}/{version} analysis to {action}")
 def wait_for_analysis(context, ecosystem, package, version, action):
@@ -92,13 +91,16 @@ def wait_for_analysis(context, ecosystem, package, version, action):
 
     assert done, err.format(e=ecosystem, p=package, v=version, s=timeout)
 
+
 @when('I access anitya {url}')
 def anitya_url(context, url):
     context.response = requests.get(context.anitya_url + url)
 
+
 @when('I access {url}')
 def access_url(context, url):
     context.response = requests.get(context.coreapi_url + url)
+
 
 @when("I post a valid {manifest} to {url}")
 def perform_valid_manifest_post(context, manifest, url):
@@ -108,7 +110,8 @@ def perform_valid_manifest_post(context, manifest, url):
     response = requests.post(endpoint, files=files)
     response.raise_for_status()
     context.response = response.json()
-    print (response.json())
+    print(response.json())
+
 
 @then("I should get API token")
 def check_api_token(context):
@@ -160,10 +163,12 @@ def check_json(context):
 def check_status_code(context, status):
     assert context.response.status_code == status
 
+
 @when('I wait {num:d} seconds')
 @then('I wait {num:d} seconds')
 def pause_scenario_execution(context, num):
     time.sleep(num)
+
 
 @then('I should see {state} analysis result for {ecosystem}/{package}/{version}')
 def check_analysis_result(context, state, ecosystem, package, version):
@@ -207,11 +212,13 @@ def validate_analysis_result(context, ecosystem, package, version):
         schema = requests.get(struct['schema']['url']).json()
         jsonschema.validate(struct, schema)
 
+
 @then("I should get a valid request ID")
 def check_stack_analyses_request_id(context):
     resp = context.response
     assert resp['status'] == "success"
     assert len(resp['id']) > 0
+
 
 @then("stack analyses response is available via {url}")
 def check_stack_analyses_response(context, url):
