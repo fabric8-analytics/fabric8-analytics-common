@@ -1,7 +1,6 @@
 #!/usr/bin/env groovy
-@Library('github.com/msrb/cicd-pipeline-helpers')
+@Library('github.com/msrb/cicd-pipeline-helpers') _
 
-def commitId
 node('docker') {
 
     stage('Checkout') {
