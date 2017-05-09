@@ -18,7 +18,6 @@ services:
     volumes:
      - ./fabric8-analytics-worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
      - ./fabric8-analytics-server/bayesian:/usr/lib/python3.4/site-packages/bayesian:ro,z
-     - ./fabric8-analytics-server/kerberos/keytab:/mnt:ro,z
      - ./fabric8-analytics-server/coreapi-httpd.conf:/etc/httpd/conf.d/coreapi-httpd.conf:ro,z
   jobs:
     build:
