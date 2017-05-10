@@ -1,5 +1,8 @@
 # Order of the features in this file is significant, so shuffle them carefully.
-features/ecosystems.feature
-features/packages.feature
-features/versions.feature
-features/anitya.feature
+#features/ecosystems.feature
+#features/packages.feature
+#features/versions.feature
+#features/anitya.feature
+
+# This is workaround to temporary disable integration tests
+features/disabled.feature
