@@ -211,8 +211,6 @@ def check_stack_analyses_request_id(context):
 @when("I post a valid {manifest} to {url}")
 def perform_valid_manifest_post(context, manifest, url):
     files = {'manifest[]': open("data/poms/{manifest}".format(manifest=manifest.replace("\"", '')), 'r')}
-    import os
-    print(os.curdir)
     context.response = requests.post("{coreapi_url}{url}".format(
         coreapi_url=context.coreapi_url, url=url
     ),
