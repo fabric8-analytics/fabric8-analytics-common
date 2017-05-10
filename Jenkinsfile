@@ -8,19 +8,28 @@ node('docker') {
     }
 
     stage('Integration Tests') {
-        dockerCleanup()
-        docker.withRegistry('https://docker-registry.usersys.redhat.com/') {
-            docker.image('bayesian/bayesian-api').pull()
-            docker.image('bayesian/cucos-worker').pull()
-            docker.image('bayesian/coreapi-downstream-data-import').pull()
-            docker.image('bayesian/coreapi-jobs').pull()
-            docker.image('bayesian/coreapi-pgbouncer').pull()
-        }
+        // git url: 'https://gitlab.cee.redhat.com/jpopelka/cloud-deployer', branch: 'delete-resources', credentialsId: 'baytemp-ci-gh'
+        // get aws creds.* for cloud-deployer
 
-        dir('integration-tests') {
-            timeout(30) {
-                sh './runtest.sh'
-            }
-        }
+        //sh '''
+        //    suffix=$(cat /dev/urandom | tr -cd 'a-z' | head -c 8)
+        //    echo $suffix
+        //    '''
+        //export TESTS_DEPLOYMENT_PREFIX="tests-${suffix}"
+        //export CLOUD_DEPLOYER_PATH=../../../cloud-deployer/
+
+        //oc --context=tests new-project $TESTS_DEPLOYMENT_PREFIX
+
+        //openshift/cloud-deploy/deploy.sh
+
+        //while oc --context=tests get pod integration-tests -o=custom-columns=STATUS:.status.phase | grep Running;
+        //do
+        //    sleep 5
+        //done
+
+        //oc --context=tests logs integration-tests
+        //oc --context=tests delete project $TESTS_DEPLOYMENT_PREFIX
+        //cloud-deployer/delete-aws-resources.sh $TESTS_DEPLOYMENT_PREFIX
     }
 }
+

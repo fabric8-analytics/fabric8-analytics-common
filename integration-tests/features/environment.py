@@ -13,12 +13,8 @@ _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
 
 
-def _make_compose_name(suffix='.yml'):
-    return os.path.join(_REPO_DIR, 'docker-compose' + suffix)
-
-
 def _set_default_compose_path(context):
-    base_compose = _make_compose_name()
+    base_compose = os.path.join(_REPO_DIR, 'docker-compose.yml')
     # Extra containers are added as needed by integration setup commands
     context.docker_compose_path = [base_compose]
 
@@ -64,18 +60,16 @@ def _make_compose_command(context, *args):
 
 
 def _start_system(context):
-    if context.docker_compose_path:
+    if context.docker_compose:
         cmd = _make_compose_command(context, 'up', '--no-build', '-d')
-    else:
-        cmd = ['kubectl', 'create', '-f', context.kubernetes_dir_path]
-
-    subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
 
 def _make_compose_teardown_callback(context, services):
-    cmds = []
-    cmds.append(_make_compose_command(context, 'kill', *services))
-    cmds.append(_make_compose_command(context, 'rm', '-fv', *services))
+    cmds = [
+        _make_compose_command(context, 'kill', *services),
+        _make_compose_command(context, 'rm', '-fv', *services)
+    ]
 
     def teardown_services():
         for cmd in cmds:
@@ -87,7 +81,7 @@ def _run_command_in_service(context, service, command):
     """
     run command in specified service via `docker-compose run`; command is list of strs
     """
-    if context.docker_compose_path:
+    if context.docker_compose:
         cmd = _make_compose_command(context, 'run', '--rm', '-d', service)
         cmd.extend(command)
     else:
@@ -113,86 +107,50 @@ def _exec_command_in_container(client, container, command):
     return output
 
 
-def _get_k8s_volumes_to_delete():
-    # universal_newlines decodes output on Python 3.x
-    out = subprocess.check_output(['kubectl', 'get', 'pods', '-o', 'json'], universal_newlines=True)
-    j = json.loads(out)
-    volumes = []
-    for pod in j['items']:
-        pod_vols = pod['spec'].get('volumes', [])
-        for pod_vol in pod_vols:
-            if 'hostPath' in pod_vol:
-                volumes.append(pod_vol['hostPath']['path'])
-    return volumes
-
-
 def _dump_server_logs(context, tail=None):
-    if context.docker_compose_path:
+    if context.docker_compose:
         cmd = _make_compose_command(context, 'logs')
         if tail is not None:
             cmd.append('--tail={:d}'.format(tail))
         subprocess.check_call(cmd, stderr=subprocess.STDOUT)
     else:
-        pass # No current support for dumping logs under k8s
+        pass  # No current support for dumping logs under k8s
 
 
 def _teardown_system(context):
-    cmds = []
-    if context.docker_compose_path:
-        cmds.append(_make_compose_command(context, 'kill'))
-        cmds.append(_make_compose_command(context, 'rm', '-fv'))
+    if context.docker_compose:
+        cmds = [
+            _make_compose_command(context, 'kill'),
+            _make_compose_command(context, 'rm', '-fv')
+        ]
         if hasattr(context, "container"):
             cmds.append(['docker', "kill", context.container])
             cmds.append(['docker', "rm", "-fv", "--rm-all", context.container])
         _set_default_compose_path(context)
-    else:
-        cmds.append(['kubectl', 'delete', '--ignore-not-found', '-f', context.kubernetes_dir_path])
-        volumes = _get_k8s_volumes_to_delete()
-        for volume in volumes:
-            # TODO: the sudo thing is not very nice, but...
-            cmds.append(['sudo', 'rm', '-rf', volume])
-            cmds.append(['sudo', 'mkdir', volume])
 
-    for cmd in cmds:
-        subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        for cmd in cmds:
+            subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
 
-def _wait_for_system(context, wait_for_server=60):
+def _wait_for_system(context, wait_for_server=120):
     start = datetime.datetime.now()
     wait_till = start + datetime.timedelta(seconds=wait_for_server)
     # try to wait for server to start for some time
+    started_all = False
     while datetime.datetime.now() < wait_till:
         time.sleep(1)
-        started_all = False
-        if context.kubernetes_dir_path:
-            res = json.loads(subprocess.check_output(['kubectl', 'get', 'pods', '-o', 'json']))
-            for pod in res['items']:
-                status = pod.get('status', {})
-                conditions = status.get('conditions', [])
-                phase = status.get('phase', '')
-                if status == {}:
-                    continue
-                if phase != 'Running':
-                    continue
-                for condition in conditions:
-                    if condition['type'] == 'Ready' and condition['status'] != 'True':
-                        continue
-                # if we got here, then everything is running
-                started_all = True
-                break
-        else:
-            if _is_running(context):
-                started_all = True
-                break
+        if _is_running(context):
+            started_all = True
+            break
     if started_all:
         # let's give the whole system a while to breathe
-        time.sleep(float(context.config.userdata.get('breath_time', 5)))
+        time.sleep(float(context.config.userdata.get('breath_time', 10)))
     else:
         raise Exception('Server failed to start in under {s} seconds'.
                         format(s=wait_for_server))
 
 
-def _restart_system(context, wait_for_server=60):
+def _restart_system(context, wait_for_server=120):
     try:
         _teardown_system(context)
         _start_system(context)
@@ -203,13 +161,18 @@ def _restart_system(context, wait_for_server=60):
 
 
 def _is_running(context):
+    coreapi = False
+    anitya = False
     try:
-        res = requests.get(context.coreapi_url + 'api/v1/analyses/')
+        res = requests.get(context.coreapi_url + 'api/v1/readiness')
         if res.status_code == 200:
-            return True
+            coreapi = True
+        res = requests.get(context.anitya_url + 'api/version')
+        if res.status_code == 200:
+            anitya = True
     except requests.exceptions.ConnectionError:
         pass
-    return False
+    return coreapi and anitya
 
 
 def _read_boolean_setting(context, setting_name):
@@ -248,33 +211,37 @@ def before_all(context):
     context.dump_errors = dump_errors
     context.tail_logs = tail_logs
 
-    # Configure system under test
-    context.kubernetes_dir_path = context.config.userdata.get('kubernetes_dir', None)
-    if context.kubernetes_dir_path is not None:
-        context.docker_compose_path = None
-    else:
-        # If we're not running Kubernetes, use the local Docker Compose setup
-        _set_default_compose_path(context)
-    # for now, we just assume we know what compose file looks like (what services need what images)
-    context.images = {}
-    context.images['bayesian/bayesian-api'] = context.config.userdata.get(
-        'coreapi_server_image',
-        'docker-registry.usersys.redhat.com/bayesian/bayesian-api')
-    context.images['bayesian/cucos-worker'] = context.config.userdata.get(
-        'coreapi_worker_image',
-        'docker-registry.usersys.redhat.com/bayesian/cucos-worker')
-    
-    context.coreapi_url = _add_slash(context.config.userdata.get('coreapi_url',
-        'http://localhost:32000/'))
-    context.anitya_url = _add_slash(context.config.userdata.get('anitya_url',
-        'http://localhost:31005/'))
-    
-    context.client = docker.AutoVersionClient()
+    host = context.config.userdata.get('coreapi_host', 'localhost')
+    port = context.config.userdata.get('coreapi_port', '32000')
+    context.coreapi_url = "http://{host}:{port}/".format(host=host, port=port)
 
-    for desired, actual in context.images.items():
-        desired = 'docker-registry.usersys.redhat.com/' + desired
-        if desired != actual:
-            context.client.tag(actual, desired, force=True)
+    host = context.config.userdata.get('anitya_host', 'localhost')
+    port = context.config.userdata.get('anitya_port', '31005')
+    context.anitya_url = "http://{host}:{port}/".format(host=host, port=port)
+
+    # Configure system under test
+    context.docker_compose = not context.config.userdata.get('openshift', False)
+    if context.docker_compose:
+        # If we're not running OpenShift, use the local Docker Compose setup
+        _set_default_compose_path(context)
+
+        # we just assume we know what compose file looks like (what services need what images)
+        context.images = {
+            'bayesian/bayesian-api': context.config.userdata.get(
+                                        'coreapi_server_image',
+                                        'docker-registry.usersys.redhat.com/bayesian/bayesian-api'),
+            'bayesian/cucos-worker': context.config.userdata.get(
+                                        'coreapi_worker_image',
+                                        'docker-registry.usersys.redhat.com/bayesian/cucos-worker')
+        }
+
+        context.client = docker.AutoVersionClient()
+        for desired, actual in context.images.items():
+            desired = 'docker-registry.usersys.redhat.com/' + desired
+            if desired != actual:
+                context.client.tag(actual, desired, force=True)
+    else:
+        context.docker_compose_path = None
 
     # Specify the analyses checked for when looking for "complete" results
     def _get_expected_component_analyses(ecosystem):
@@ -318,6 +285,7 @@ def before_all(context):
 def before_scenario(context, scenario):
     context.resource_manager = contextlib.ExitStack()
 
+
 @capture
 def after_scenario(context, scenario):
     if context.dump_logs or context.dump_errors and scenario.status == "failed":
@@ -329,6 +297,7 @@ def after_scenario(context, scenario):
 
     # Clean up resources (which may destroy some container logs)
     context.resource_manager.close()
+
 
 @capture
 def after_all(context):

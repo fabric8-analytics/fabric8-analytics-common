@@ -135,7 +135,8 @@ Other custom configuration settings available:
   * `-D cucos_worker_image=bayesian/cucos-worker` (optional, default is `bayesian/cucos-worker`) - name of Bayesian
     Worker image
   * `-D coreapi_url=http://1.2.3.4:32000` (optional, default is `http://localhost:32000`)
-  * `-D breath_time=10` (optional, default is `5`) - time to wait before testing
+  * `-D breath_time=10` (optional, default is `10`) - time to wait before testing
+  * `-D openshift=true` (optional, default is `false`) - whether we're running on openshift (`true`) or with docker-compose (`false`)
 
 **Important: running with non-default image settings will force-retag the given
 images as `bayesian/bayesian-api` and `bayesian/worker` so `docker-compose`
