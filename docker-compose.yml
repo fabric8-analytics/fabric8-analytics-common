@@ -100,6 +100,7 @@ services:
     links:
      - broker
      - pgbouncer
+     - minio-s3
     environment:
       # Uncomment if you want to start job service in a paused state
       #JOB_SERVICE_PAUSED: 1
