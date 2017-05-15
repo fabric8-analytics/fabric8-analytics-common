@@ -1,33 +1,15 @@
-# Deploying Bayesian for dev cluster
+# Deploying fabric8-analytics services
 
-* Create a new project
+## Create a new project
 
-```
-oc new-project bayesian
-```
-
-* Generate ConfigMap
+`oc login` to your favourite OpenShift cluster and create a new project there:
 
 ```
-./generate-config.sh
+oc new-project fabric8-analytics
 ```
 
-Note you can use `PTH_ENV` environment variable to generate config for a specific deployment, for example:
+## Deploy all the services
 
-```
-PTH_ENV=STAGE ./generate-config.sh
-```
+We use cloud-deployer tool, configured in [cloud-deploy/](cloud-deploy/), see also [cloud-deploy/README.md](cloud-deploy/README.md).
 
-The command above will generate config for staging deployment.
-
-Once you have the config, you can deploy it:
-
-```
-oc apply -f config.yaml
-```
-
-* Deploy all the templates
-
-We use cloud-deployer tool, configured in [cloud-deploy/](cloud-deploy/), see also [cloud-deploy/README.md](cloud-deploy/README.md)
-
-Then talk to application by getting the service or route endpoints using ```oc get services``` or ```oc get routes```.
+The cloud-deployer tool automatically generates and deploys correct ConfigMap for the deployment, but it's possible to [generate the ConfigMap](README-ConfigMap.md) manually and customize it.

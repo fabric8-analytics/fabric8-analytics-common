@@ -1,56 +1,37 @@
 #!/usr/bin/bash -e
 
-
 function oc_process_apply() {
   echo -e "\n Processing template - $1 ($2) \n"
   oc process -f $1 $2 | oc apply -f -
 }
 
-HERE=`dirname $0`
+here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+templates_dir="${here}/templates"
+templates="jobs server data-model worker pgbouncer recommender"
+templates_extra="gremlin anitya"
 
-templates="anitya-template bayesian-core-template postgresql-extras-template gremlin-server-template data-importer-template analytics-template"
-noaws_templates="anitya-postgresql-template broker-template postgresql-template"
-( [ ! $AWS_NATIVE ] && [ ! $CLOUD_DEPLOY ] ) && templates="$templates $noaws_templates"
+# generate and apply the ConfigMap
+. ${here}/generate-config.sh
+oc apply -f ${here}/config.yaml
 
-
-if [[ $PTH_ENV ]]; then
-  DEPLOYMENT_PREFIX=$PTH_ENV
-else
-  DEPLOYMENT_PREFIX=$(oc whoami)
-fi
-S3_BUCKET_FOR_ANALYSES=${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_ANALYSES:-bayesian-core-data}
-DYNAMODB_PREFIX="${DYNAMODB_PREFIX:-${DEPLOYMENT_PREFIX}}"
-
-
+# get templates from fabric8-analytics GH organization
 for template in $templates
 do
-  template_file=${HERE}/${template}.yaml
-
-  if [[ "${template}" == "bayesian-core-template" ]]; then
-    args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX} \
--v S3_BUCKET_FOR_ANALYSES=${S3_BUCKET_FOR_ANALYSES} \
--v WORKER_ADMINISTRATION_REGION=api \
-${BAYESIAN_API_HOSTNAME:+-v BAYESIAN_API_HOSTNAME=${BAYESIAN_API_HOSTNAME}} \
-"
-    oc_process_apply "$template_file" "$args"
-    args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX} \
--v S3_BUCKET_FOR_ANALYSES=${S3_BUCKET_FOR_ANALYSES} \
--v WORKER_ADMINISTRATION_REGION=ingestion \
-${BAYESIAN_API_HOSTNAME:+-v BAYESIAN_API_HOSTNAME=${BAYESIAN_API_HOSTNAME}} \
-"
-  elif [[ "${template}" == "gremlin-server-template" ]]; then
-    # gremlin template needs to be processed twice
-    args="-v DYNAMODB_PREFIX=${DYNAMODB_PREFIX} -v MEMORY_LIMIT=2048Mi"
-    oc_process_apply "$template_file" "$args"
-    args="-v DYNAMODB_PREFIX=${DYNAMODB_PREFIX} -v CHANNELIZER=http -v REST_VALUE=1"
-  elif [[ "${template}" == "data-importer-template" ]]; then
-    args="-v AWS_BUCKET=${S3_BUCKET_FOR_ANALYSES}"
-  elif [[ "${template}" == "analytics-template" ]]; then
-    args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX}"
-  else
-    args=""
-  fi
-
-  oc_process_apply "$template_file" "$args"
+  curl -sS https://raw.githubusercontent.com/fabric8-analytics/fabric8-analytics-${template}/master/openshift/template.yaml > ${templates_dir}/${template}.yaml
 done
+
+# get gremlin template
+curl -sS  https://raw.githubusercontent.com/containscafeine/data-model/master/gremlin/openshift/template.yaml> ${templates_dir}/gremlin.yaml
+# get anitya template
+curl -sS https://raw.githubusercontent.com/bkabrda/anitya-docker/master/openshift/template.yaml > ${templates_dir}/anitya.yaml
+
+oc_process_apply ${templates_dir}/pgbouncer.yaml
+oc_process_apply ${templates_dir}/gremlin.yaml "-v CHANNELIZER=http -v REST_VALUE=1"
+oc_process_apply ${templates_dir}/anitya.yaml
+oc_process_apply ${templates_dir}/recommender.yaml
+oc_process_apply ${templates_dir}/data-model.yaml
+oc_process_apply ${templates_dir}/worker.yaml "-v WORKER_ADMINISTRATION_REGION=ingestion"
+oc_process_apply ${templates_dir}/worker.yaml "-v WORKER_ADMINISTRATION_REGION=api"
+oc_process_apply ${templates_dir}/server.yaml
+oc_process_apply ${templates_dir}/jobs.yaml
 
