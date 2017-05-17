@@ -383,7 +383,7 @@ objects:
           # this won't get used if running with SQS
           - name: RABBITMQ_SERVICE_SERVICE_HOST
             value: bayesian-broker
-          image: registry.devshift.net/bayesian/cucos-worker
+          image: registry.devshift.net/bayesian/f8a-worker
           name: bayesian-worker
           readinessProbe:
             exec:

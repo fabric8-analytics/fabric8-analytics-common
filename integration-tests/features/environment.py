@@ -260,9 +260,9 @@ def before_all(context):
     context.images['bayesian/bayesian-api'] = context.config.userdata.get(
         'coreapi_server_image',
         'docker-registry.usersys.redhat.com/bayesian/bayesian-api')
-    context.images['bayesian/cucos-worker'] = context.config.userdata.get(
+    context.images['bayesian/f8a-worker'] = context.config.userdata.get(
         'coreapi_worker_image',
-        'docker-registry.usersys.redhat.com/bayesian/cucos-worker')
+        'docker-registry.usersys.redhat.com/bayesian/f8a-worker')
     
     context.coreapi_url = _add_slash(context.config.userdata.get('coreapi_url',
         'http://localhost:32000/'))

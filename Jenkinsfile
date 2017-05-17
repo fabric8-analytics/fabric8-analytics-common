@@ -11,7 +11,7 @@ node('docker') {
         dockerCleanup()
         docker.withRegistry('https://docker-registry.usersys.redhat.com/') {
             docker.image('bayesian/bayesian-api').pull()
-            docker.image('bayesian/cucos-worker').pull()
+            docker.image('bayesian/f8a-worker').pull()
             docker.image('bayesian/coreapi-downstream-data-import').pull()
             docker.image('bayesian/coreapi-jobs').pull()
             docker.image('bayesian/coreapi-pgbouncer').pull()
