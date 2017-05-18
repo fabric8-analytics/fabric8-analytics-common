@@ -119,7 +119,7 @@ services:
       #AWS_SQS_REGION: ''
       #AWS_S3_REGION: ''
   worker-api: &worker
-    image: docker-registry.usersys.redhat.com/bayesian/f8a-worker
+    image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
     network_mode: bridge
     depends_on:
      - worker-db-migrations
@@ -178,7 +178,7 @@ services:
       <<: *worker_environment
       WORKER_ADMINISTRATION_REGION: ingestion
   worker-db-migrations:
-    image: docker-registry.usersys.redhat.com/bayesian/f8a-worker
+    image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
     restart: on-failure
     container_name: coreapi-worker-db-migrations
     network_mode: bridge
