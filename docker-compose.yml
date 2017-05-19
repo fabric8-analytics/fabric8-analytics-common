@@ -257,22 +257,6 @@ services:
     links:
       - dynamodb
 
-  gremlin-websocket:
-    image: registry.centos.org/datamodel/gremlin:concaf
-    network_mode: bridge
-    entrypoint: /bin/entrypoint-local.sh
-    environment:
-      - DEBUG_GRAPH_METRICS=0
-      - INIT_DELAY=20
-    ports:
-      - "8182:8182"
-    depends_on:
-      - dynamodb
-    mem_limit: 2G
-    container_name: bayesian-gremlin-websocket
-    links:
-      - dynamodb
-
   data-model-importer:
     image: docker-registry.usersys.redhat.com/bayesian/data-model-importer
     restart: always
@@ -288,8 +272,6 @@ services:
       GREMLIN_USE_SECURE_CONNECTION: "false"
       BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
       BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
-      BAYESIAN_GREMLIN_WS_SERVICE_HOST: "bayesian-gremlin-websocket"
-      BAYESIAN_GREMLIN_WS_SERVICE_PORT: "8182"
       AWS_S3_IS_LOCAL: 1
       AWS_S3_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
       AWS_S3_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
@@ -305,7 +287,6 @@ services:
       - "9192:9192"
     links:
       - gremlin-http
-      - gremlin-websocket
       - minio-s3
   cvedb-s3-dump:
     # this service just copies pre-built CVE DB to S3 and exits
