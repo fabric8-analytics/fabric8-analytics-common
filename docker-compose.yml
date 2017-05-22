@@ -70,7 +70,7 @@ services:
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
       BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
       BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
-      DISABLE_JWT_AUTH: 'true'
+      DISABLE_AUTHENTICATION: 1
       # you can change it and/or generate a JWT token in server/hack/auth_test_fixtures
       # BAYESIAN_FETCH_PUBLIC_KEY: 'https://sso.openshift.io/auth/realms/fabric8/'
       # BAYESIAN_JWT_AUDIENCE: 'fabric8-online-platform'
