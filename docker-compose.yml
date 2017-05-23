@@ -21,13 +21,16 @@ services:
       RABBITMQ_PASS: guest
   postgres:
     image: registry.centos.org/sclo/postgresql-94-centos7:latest
+    build:
+      context: postgres-docker/
+      dockerfile: Dockerfile
     network_mode: bridge
     ports:
      - "6432:5432"
     environment:
       POSTGRESQL_USER: coreapi
       POSTGRESQL_PASSWORD: coreapi
-      POSTGRESQL_DATABASE: coreapi
+      POSTGRESQL_DATABASE: "coreapi;anitya"
     container_name: coreapi-postgres
   pgbouncer:
     image: docker-registry.usersys.redhat.com/bayesian/coreapi-pgbouncer
@@ -193,29 +196,19 @@ services:
       POSTGRESQL_INITIAL_DATABASE: postgres
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
       WORKER_ADMINISTRATION_REGION: ingestion
-  anitya-postgres:
-    image: registry.centos.org/sclo/postgresql-94-centos7:latest
-    ports:
-      - "5432"
-    environment:
-      POSTGRESQL_USER: anitya
-      POSTGRESQL_PASSWORD: anitya
-      POSTGRESQL_DATABASE: anitya
-    network_mode: bridge
-    container_name: anitya-postgres
   anitya-server:
     image: slavek/anitya-server
     ports:
      - "31005:5000"
     links:
-     - anitya-postgres
+     - postgres
     network_mode: bridge
     container_name: anitya-server
     environment:
-      ANITYA_POSTGRES_SERVICE_HOST: anitya-postgres
+      ANITYA_POSTGRES_SERVICE_HOST: coreapi-postgres
       ANITYA_POSTGRES_SERVICE_PORT: 5432
-      POSTGRESQL_USER: anitya
-      POSTGRESQL_PASSWORD: anitya
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: anitya
       POSTGRESQL_INITIAL_DATABASE: postgres
   minio-s3:
