@@ -1,6 +1,6 @@
 # Glossary
 
-* **Bayesian Core**
+* **fabric8-analytics core**
   * Core services to provide detailed information about individual components and aggregated information about stack defined by ecosystem manifest file.
 * **Ecosystem**
   * Language specific packaging and distribution format (f.e. npm, PyPi, RubyGems, Maven...).
