@@ -1,8 +1,8 @@
-# Developing Bayesian
+# Developing fabric8-analytics
 
-This section is for those interested in contributing to the development
-of Bayesian. Please read through our [glossary](../docs/glossary.md) in case
-you are not sure about terms used in the docs.
+This section is for those interested in contributing to the development of
+fabric8-analytics. Please read through our [glossary](../docs/glossary.md) in
+case you are not sure about terms used in the docs.
 
 ## Running a Local Instance
 
@@ -23,7 +23,7 @@ In order to have a good local development experience, the code repositories
 are mounted inside containers, so that changes can be observed live or after
 container restart (without image rebuilds).
 
-In order to achieve that, all the individual Bayesian repos have to be
+In order to achieve that, all the individual fabric8-analytics repos have to be
 checked out. The helper script `setup.sh` is here to do that. Run `setup.sh -h`
 and follow the instructions (most of the time, you'll be fine with running
 `setup.sh` with no arguments).
@@ -68,7 +68,7 @@ $ sudo ./docker-compose.sh up
 ```
 
 `docker-compose.sh` will effectively mount source code from checked out
-Bayesian sub-projects into the containers, so any changes made to the local
+fabric8-analytics sub-projects into the containers, so any changes made to the local
 checkout will be reflected in the running container. Note, that some
 containers (e.g. server) will pick this up interactively, others (e.g. worker)
 will need a restart to pick the new code up.
@@ -131,8 +131,8 @@ When the whole application is started, there are several services you can
 access. When running through docker-compose, all of these services will be
 bound to `localhost`. When running with OpenShift, TODO
 
-1. Bayesian Server itself (see server-service.yaml) - port `32000`
-2. Bayesian Jobs API - port `34000`
+1. fabric8-analytics Server itself (see server-service.yaml) - port `32000`
+2. fabric8-analytics Jobs API - port `34000`
 3. Celery Flower (task queue monitor, see flower-service.yaml) - port `31000`
    Celery Flower is only run if you run with `-f docker-compose.debug.yml`
 4. PGWeb (web UI for database, see pgweb-service.yaml) - port `31003`
