@@ -1,6 +1,6 @@
 # Project Fabric8-Analytics
 
-*Note on naming: The Fabric8-Analytics project has evolved from 2 different projects called "cucos" and "bayesian". We're currently in process of renaming the modules and updating documentation. Until that is completed, please consider "cucos" and "bayesian" to be synonyms of "Fabric8-Analytics".*
+*Note on naming: The Fabric8-Analytics project has evolved from 2 different projects called "f8a" and "bayesian". We're currently in process of renaming the modules and updating documentation. Until that is completed, please consider "f8a" and "bayesian" to be synonyms of "Fabric8-Analytics".*
 
 ## Overview
 
