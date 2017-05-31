@@ -41,6 +41,8 @@ services:
     build:
       context: fabric8-analytics-worker/
       dockerfile: Dockerfile
+    volumes:
+     - ./fabric8-analytics-worker/alembic:/alembic/alembic:ro,z
   data-model-importer:
     build:
       context: fabric8-analytics-data-model/
