@@ -8,7 +8,7 @@ Fabric8-Analytics is a new strategic initiative to help developers with the cons
 
 # Using Fabric8-Analytics
 
-At this point we offer several ways of interacting with Baysian: API, a widget in SonarQube and Jenkins plugin. Fabric8-Analytics is also built into the [openshift.io](https://openshift.io) build pipeline.
+At this point we offer several ways of interacting with Fabric8-Analytics: API, a widget in SonarQube and Jenkins plugin. Fabric8-Analytics is also built into the [openshift.io](https://openshift.io) build pipeline.
 
 ## API
 
