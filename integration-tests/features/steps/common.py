@@ -67,8 +67,8 @@ def wait_for_analysis(context, ecosystem, package, version, action):
         finished = False
 
     url = urljoin(context.coreapi_url, 'api/v1/analyses/{e}/{p}/{v}'.format(e=ecosystem,
-                                                                          p=package,
-                                                                          v=version))
+                                                                            p=package,
+                                                                            v=version))
 
     start = datetime.datetime.now()
     wait_till = start + datetime.timedelta(seconds=timeout)
