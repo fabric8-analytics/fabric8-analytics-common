@@ -133,7 +133,7 @@ def _dump_server_logs(context, tail=None):
             cmd.append('--tail={:d}'.format(tail))
         subprocess.check_call(cmd, stderr=subprocess.STDOUT)
     else:
-        pass # No current support for dumping logs under k8s
+        pass  # No current support for dumping logs under k8s
 
 
 def _teardown_system(context):
@@ -264,9 +264,11 @@ def before_all(context):
         'coreapi_worker_image',
         'docker-registry.usersys.redhat.com/bayesian/cucos-worker')
     
-    context.coreapi_url = _add_slash(context.config.userdata.get('coreapi_url',
+    context.coreapi_url = _add_slash(context.config.userdata.get(
+        'coreapi_url',
         'http://localhost:32000/'))
-    context.anitya_url = _add_slash(context.config.userdata.get('anitya_url',
+    context.anitya_url = _add_slash(context.config.userdata.get(
+        'anitya_url',
         'http://localhost:31005/'))
     
     context.client = docker.AutoVersionClient()
@@ -318,6 +320,7 @@ def before_all(context):
 def before_scenario(context, scenario):
     context.resource_manager = contextlib.ExitStack()
 
+
 @capture
 def after_scenario(context, scenario):
     if context.dump_logs or context.dump_errors and scenario.status == "failed":
@@ -329,6 +332,7 @@ def after_scenario(context, scenario):
 
     # Clean up resources (which may destroy some container logs)
     context.resource_manager.close()
+
 
 @capture
 def after_all(context):
