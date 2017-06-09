@@ -20,10 +20,7 @@ services:
       RABBITMQ_USER: guest
       RABBITMQ_PASS: guest
   postgres:
-    image: registry.centos.org/sclo/postgresql-94-centos7:latest
-    build:
-      context: postgres-docker/
-      dockerfile: Dockerfile
+    image: docker-registry.usersys.redhat.com/bayesian/coreapi-postgres
     network_mode: bridge
     ports:
      - "6432:5432"
