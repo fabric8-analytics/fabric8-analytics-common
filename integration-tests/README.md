@@ -6,7 +6,9 @@ It starts and stops Bayesian multiple times, so is not currently containerised
 itself - you need to suitably configure a Python environment on the host
 system, and the user running the integration tests currently needs to be a
 member of the `docker` group (allowing execution of `docker-compose`
-without `sudo`).
+without `sudo`). For further information on how to setup and use Docker as
+a non-root user, read the detailed steps described
+[here](https://docs.docker.com/engine/installation/linux/linux-postinstall/).
 
 ## Creating new tests
 
