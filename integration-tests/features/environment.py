@@ -12,6 +12,10 @@ import time
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
 
+# The following API endpoint is used to check if the system is started
+_API_ENDPOINT = 'api/v1/'
+
+
 
 def _make_compose_name(suffix='.yml'):
     return os.path.join(_REPO_DIR, 'docker-compose' + suffix)
@@ -204,7 +208,7 @@ def _restart_system(context, wait_for_server=60):
 
 def _is_running(context):
     try:
-        res = requests.get(context.coreapi_url + 'api/v1/analyses/')
+        res = requests.get(context.coreapi_url + _API_ENDPOINT)
         if res.status_code == 200:
             return True
     except requests.exceptions.ConnectionError:
