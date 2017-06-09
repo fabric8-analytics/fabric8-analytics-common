@@ -11,6 +11,10 @@ services:
     build:
       context: fabric8-analytics-pgbouncer/
       dockerfile: Dockerfile
+  postgres:
+    build:
+      context: postgres-docker/
+      dockerfile: Dockerfile
   server:
     build:
       context: fabric8-analytics-server/
