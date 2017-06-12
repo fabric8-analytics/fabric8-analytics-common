@@ -274,7 +274,7 @@ def before_all(context):
     
     context.coreapi_url = _add_slash(context.config.userdata.get(
         'coreapi_url',
-        'http://localhost:' + str(_FABRIC8_ANALYTICS_SERVER) + '/'))
+        'http://localhost:{port}/'.format(port=_FABRIC8_ANALYTICS_SERVER)))
     context.anitya_url = _add_slash(context.config.userdata.get(
         'anitya_url',
         'http://localhost:31005/'))
