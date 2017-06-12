@@ -15,6 +15,10 @@ _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
 # The following API endpoint is used to check if the system is started
 _API_ENDPOINT = 'api/v1/'
 
+# Ports used by various services
+_FABRIC8_ANALYTICS_SERVER = 32000
+_FABRIC8_ANALYTICS_JOBS = 34000
+_FABRIC8_MINIO_S3 = 33000
 
 
 def _make_compose_name(suffix='.yml'):
@@ -270,7 +274,7 @@ def before_all(context):
     
     context.coreapi_url = _add_slash(context.config.userdata.get(
         'coreapi_url',
-        'http://localhost:32000/'))
+        'http://localhost:' + str(_FABRIC8_ANALYTICS_SERVER) + '/'))
     context.anitya_url = _add_slash(context.config.userdata.get(
         'anitya_url',
         'http://localhost:31005/'))
