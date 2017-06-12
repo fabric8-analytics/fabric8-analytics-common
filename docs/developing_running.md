@@ -60,6 +60,14 @@ $ sudo docker-compose up
 
 To get the system up.
 
+If the following error message is displayed (Fedora 25 installation):
+`got an unexpected keyword argument 'user_agent'`
+you would need to upgrade the docker-py library by the following command:
+
+```
+$ sudo pip install --upgrade 'docker-py>=1.9.0'
+```
+
 If you want a good development setup (source code mounted inside the
 containers, ability to rebuild images using docker-compose), use:
 
