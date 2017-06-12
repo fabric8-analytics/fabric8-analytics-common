@@ -13,6 +13,7 @@ node('docker') {
         dockerCleanup()
         // build postgres image (needed later by docker-compose)
         docker.build(image.id, '--pull --no-cache postgres-docker/')
+        sh "docker tag ${image.id} docker-registry.usersys.redhat.com/${image.id}"
     }
 
     stage('Integration Tests') {
