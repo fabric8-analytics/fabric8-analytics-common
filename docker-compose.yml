@@ -122,6 +122,7 @@ services:
       #AWS_S3_REGION: ''
   worker-api: &worker
     image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
+    restart: always
     network_mode: bridge
     depends_on:
      - worker-db-migrations
