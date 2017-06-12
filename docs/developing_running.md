@@ -60,6 +60,11 @@ $ sudo docker-compose up
 
 To get the system up.
 
+Please note that some error messages might be displayed during startup for the
+`data-model-importer` module.  Such errors are caused by the Gremlin-https that
+takes some time to start before serving any requests. After some time, the
+`data-model-importer` will be started properly.
+
 If you want a good development setup (source code mounted inside the
 containers, ability to rebuild images using docker-compose), use:
 
