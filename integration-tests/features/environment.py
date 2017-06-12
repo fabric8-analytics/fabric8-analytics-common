@@ -18,7 +18,6 @@ _API_ENDPOINT = 'api/v1/'
 # Ports used by various services
 _FABRIC8_ANALYTICS_SERVER = 32000
 _FABRIC8_ANALYTICS_JOBS = 34000
-_FABRIC8_MINIO_S3 = 33000
 
 
 def _make_compose_name(suffix='.yml'):
