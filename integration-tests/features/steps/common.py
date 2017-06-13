@@ -99,7 +99,7 @@ def anitya_url(context, url):
 
 @when('I access jobs API {url}')
 def jobs_api_url(context, url):
-    context.response = requests.get(context.jobs_api + url)
+    context.response = requests.get(context.jobs_api_url + url)
 
 
 @when('I access {url}')
