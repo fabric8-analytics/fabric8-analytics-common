@@ -176,7 +176,7 @@ def check_status_code(context, status):
 
 @then('I should receive JSON response containing the {key} key')
 def check_json_response(context, key):
-    assert context.response.json().get(key) is not None
+    assert key in context.response.json()
 
 
 @when('I wait {num:d} seconds')
