@@ -14,7 +14,7 @@ other_templates="gremlin-docker anitya-docker"
 . ${here}/generate-config.sh
 oc apply -f ${here}/config.yaml
 
-# get templates from fabric8-analytics GH organization
+# get templates for fabric8-analytics projects
 for template in $f8a_templates
 do
   curl -sS https://raw.githubusercontent.com/fabric8-analytics/fabric8-analytics-${template}/master/openshift/template.yaml > ${templates_dir}/${template}.yaml
@@ -31,12 +31,12 @@ curl -sS  https://raw.githubusercontent.com/containscafeine/data-model/master/gr
 curl -sS https://raw.githubusercontent.com/bkabrda/anitya-docker/master/openshift/template.yaml > ${templates_dir}/anitya.yaml
 
 oc_process_apply ${templates_dir}/pgbouncer.yaml
-oc_process_apply ${templates_dir}/gremlin-docker.yaml "-v CHANNELIZER=http -v REST_VALUE=1"
+oc_process_apply ${templates_dir}/gremlin-docker.yaml "-p CHANNELIZER=http -p REST_VALUE=1"
 oc_process_apply ${templates_dir}/anitya-docker.yaml
 oc_process_apply ${templates_dir}/recommender.yaml
 oc_process_apply ${templates_dir}/data-model.yaml
-oc_process_apply ${templates_dir}/worker.yaml "-v WORKER_ADMINISTRATION_REGION=ingestion"
-oc_process_apply ${templates_dir}/worker.yaml "-v WORKER_ADMINISTRATION_REGION=api"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=ingestion"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api"
 oc_process_apply ${templates_dir}/server.yaml
 oc_process_apply ${templates_dir}/jobs.yaml
 

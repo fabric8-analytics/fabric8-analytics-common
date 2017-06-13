@@ -8,5 +8,5 @@ else
   DEPLOYMENT_PREFIX=$(oc whoami)
 fi
 
-oc process -v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX} -f ${here}/config-template.yaml > ${here}/config.yaml
+oc process -p DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX} -f ${here}/config-template.yaml > ${here}/config.yaml
 
