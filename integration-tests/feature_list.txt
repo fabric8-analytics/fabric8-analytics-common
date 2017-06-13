@@ -1,5 +1,6 @@
 # Order of the features in this file is significant, so shuffle them carefully.
 features/smoketest.feature
+features/server_api.feature
 #features/ecosystems.feature
 #features/packages.feature
 #features/versions.feature
