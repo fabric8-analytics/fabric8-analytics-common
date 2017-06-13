@@ -159,14 +159,24 @@ def check_versions(context, num=0, versions='', ecosystem='', package=''):
         assert v['version'] in versions
 
 
+def _is_empty_json_response(context):
+    return context.response.json() == {}
+
+
+@then('I should receive empty JSON response')
 @then('I should see empty analysis')
 def check_json(context):
-    assert context.response.json() == {}
+    assert _is_empty_json_response(context)
 
 
 @then('I should get {status:d} status code')
 def check_status_code(context, status):
     assert context.response.status_code == status
+
+
+@then('I should receive JSON response containing the {key} key')
+def check_json_response(context, key):
+    assert key in context.response.json()
 
 
 @when('I wait {num:d} seconds')
