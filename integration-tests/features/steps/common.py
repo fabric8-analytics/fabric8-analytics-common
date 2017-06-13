@@ -174,6 +174,11 @@ def check_status_code(context, status):
     assert context.response.status_code == status
 
 
+@then('I should receive JSON response containing the {key} key')
+def check_json_response(context, key):
+    assert context.response.json().get(key) is not None
+
+
 @when('I wait {num:d} seconds')
 @then('I wait {num:d} seconds')
 def pause_scenario_execution(context, num):
