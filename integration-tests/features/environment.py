@@ -18,6 +18,7 @@ _API_ENDPOINT = 'api/v1/'
 # Ports used by various services
 _FABRIC8_ANALYTICS_SERVER = 32000
 _FABRIC8_ANALYTICS_JOBS = 34000
+_ANITYA_SERVICE = 31005
 
 
 def _make_compose_name(suffix='.yml'):
@@ -235,6 +236,11 @@ def _add_slash(url):
     return url
 
 
+def _get_api_url(context, attribute, port):
+    return _add_slash(context.config.userdata.get(attribute,
+                      'http://localhost:{port}/'.format(port=port)))
+
+
 def before_all(context):
     context.config.setup_logging()
     context.start_system = _start_system
@@ -270,14 +276,11 @@ def before_all(context):
     context.images['bayesian/cucos-worker'] = context.config.userdata.get(
         'coreapi_worker_image',
         'docker-registry.usersys.redhat.com/bayesian/cucos-worker')
-    
-    context.coreapi_url = _add_slash(context.config.userdata.get(
-        'coreapi_url',
-        'http://localhost:{port}/'.format(port=_FABRIC8_ANALYTICS_SERVER)))
-    context.anitya_url = _add_slash(context.config.userdata.get(
-        'anitya_url',
-        'http://localhost:31005/'))
-    
+
+    context.coreapi_url = _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
+    context.jobs_api_url = _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
+    context.anitya_url = _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
+
     context.client = docker.AutoVersionClient()
 
     for desired, actual in context.images.items():
