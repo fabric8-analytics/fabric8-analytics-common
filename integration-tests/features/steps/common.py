@@ -179,6 +179,11 @@ def check_json_response(context, key):
     assert key in context.response.json()
 
 
+@then('I should receive JSON response with the {key} key set to {value}')
+def check_json_value_under_key(context, key, value):
+    assert context.response.json().get(key) == value
+
+
 @when('I wait {num:d} seconds')
 @then('I wait {num:d} seconds')
 def pause_scenario_execution(context, num):
