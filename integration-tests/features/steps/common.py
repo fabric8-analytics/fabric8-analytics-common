@@ -118,6 +118,15 @@ def perform_valid_manifest_post(context, manifest, url):
     print(response.json())
 
 
+@when("I post a job metadata {metadata} with state {state}")
+def perform_post_job(context, metadata, state):
+    filename = "data/{metadata}".format(metadata=metadata)
+    endpoint = "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}".\
+               format(jobs_api_url=context.jobs_api_url, state=state)
+
+    context.response = context.send_json_file(endpoint, filename)
+
+
 @then("I should get API token")
 def check_api_token(context):
     try:
