@@ -31,3 +31,10 @@ Feature: Jobs API
     Then I should get 200 status code
     Then I should see 4 jobs
 
+  Scenario: Check that new job can be posted with state paused
+    Given System is running
+    When I post a job metadata job1.json with state paused
+    Then I should get 201 status code
+    When I access jobs API /api/v1/jobs
+    Then I should see 5 jobs
+
