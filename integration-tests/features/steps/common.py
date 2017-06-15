@@ -137,6 +137,15 @@ def check_ecosystems(context, num):
         assert 'ecosystem' in e
 
 
+@then('I should see {num:d} jobs')
+def check_jobs(context, num):
+    jsondata = context.response.json()
+    jobs = jsondata['jobs']
+    jobs_count = jsondata['jobs_count']
+    assert len(jobs) == num
+    assert jobs_count == num
+
+
 @then('I should see 0 packages')
 @then('I should see {num:d} packages ({packages}), all from {ecosystem} ecosystem')
 def check_packages(context, num=0, packages='', ecosystem=''):
