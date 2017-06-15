@@ -1,0 +1,21 @@
+{ 
+   "flow_arguments": [ 
+     { 
+       "ecosystem": "npm", 
+       "force": true, 
+       "force_graph_sync": false, 
+       "name": "serve-static", 
+       "recursive_limit": 0, 
+       "version": "1.7.1" 
+     }, 
+     { 
+       "ecosystem": "maven", 
+       "force": true, 
+       "force_graph_sync": false, 
+       "name": "net.iharder:base64", 
+       "recursive_limit": 1, 
+       "version": "2.3.9" 
+     } 
+   ], 
+   "flow_name": "bayesianFlow" 
+}
