@@ -241,6 +241,13 @@ def _get_api_url(context, attribute, port):
                       'http://localhost:{port}/'.format(port=port)))
 
 
+def _send_json_file(endpoint, filename):
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+    with open(filename) as json_data:
+        response = requests.post(endpoint, data=json_data, headers=headers)
+    return response
+
+
 def before_all(context):
     context.config.setup_logging()
     context.start_system = _start_system
@@ -249,6 +256,7 @@ def before_all(context):
     context.run_command_in_service = _run_command_in_service
     context.exec_command_in_container = _exec_command_in_container
     context.is_running = _is_running
+    context.send_json_file = _send_json_file
 
     # Configure container logging
     context.dump_logs = _read_boolean_setting(context, 'dump_logs')
