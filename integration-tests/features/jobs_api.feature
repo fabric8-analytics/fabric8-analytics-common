@@ -25,3 +25,9 @@ Feature: Jobs API
     Then I should receive JSON response containing the jobs key
     Then I should receive JSON response containing the jobs_count key
 
+  Scenario: Check initial number of jobs
+    Given System is running
+    When I access jobs API /api/v1/jobs
+    Then I should get 200 status code
+    Then I should see 4 jobs
+
