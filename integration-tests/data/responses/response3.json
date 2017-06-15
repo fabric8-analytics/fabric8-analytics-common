@@ -1,0 +1,106 @@
+{
+    "finished_at": "2017-04-13T06:49:12.333305",
+    "recommendation": {
+        "recommendations": {
+            "component_level": null,
+            "similar_stacks": [
+                {
+                    "analysis": {
+                        "missing_packages": [
+                            {
+                                "io.vertx:vertx-core": "3.4.1"
+                            }
+                        ],
+                        "version_mismatch": []
+                    },
+                    "similarity": 0.8571428571428571,
+                    "source": "vertx",
+                    "stack_id": "df470325d3b446e88d429c699cfa697e",
+                    "usage": 1.0
+                }
+            ]
+        }
+    },
+    "request_id": "0d8129d7f0f44f37bb6a9eab85d2933d",
+    "result": [
+        {
+            "_audit": {
+                "ended_at": "2017-04-13T06:49:12.333305",
+                "started_at": "2017-04-13T06:49:12.230696",
+                "version": "v1"
+            },
+            "_release": "None:None:None",
+            "analyzed_components": 1,
+            "components": [
+                {
+                    "code_metrics": {
+                        "average_cyclomatic_complexity": -1.0,
+                        "code_lines": 20316,
+                        "total_files": 69
+                    },
+                    "ecosystem": "maven",
+                    "github_details": {
+                        "forks_count": -1,
+                        "issues": {
+                            "month": {
+                                "closed": -1,
+                                "opened": -1
+                            },
+                            "year": {
+                                "closed": -1,
+                                "opened": -1
+                            }
+                        },
+                        "pull_requests": {
+                            "month": {
+                                "closed": -1,
+                                "opened": -1
+                            },
+                            "year": {
+                                "closed": -1,
+                                "opened": -1
+                            }
+                        },
+                        "stargazers_count": -1
+                    },
+                    "id": "maven:io.vertx:vertx-rx-java:3.4.1",
+                    "latest_version": "3.4.0",
+                    "licenses": [
+                        "ASL 2.0",
+                        "Free Art"
+                    ],
+                    "name": "io.vertx:vertx-rx-java",
+                    "redhat_usage": {
+                        "all_rhn_channels": [],
+                        "all_rhsm_content_sets": [],
+                        "all_rhsm_product_names": [],
+                        "package_names": [],
+                        "published_in": [],
+                        "registered_srpms": [],
+                        "rh_mvn_matched_versions": []
+                    },
+                    "security": {},
+                    "version": "3.4.1"
+                }
+            ],
+            "distinct_licenses": [
+                "Free Art",
+                "ASL 2.0"
+            ],
+            "ecosystem": "maven",
+            "manifest_name": "pom.xml",
+            "popularity": {
+                "average_forks": "NA",
+                "average_stars": "NA",
+                "low_popularity_components": 0
+            },
+            "total_licenses": 2
+        }
+    ],
+    "schema": {
+        "name": "stack_analyses",
+        "url": "http://recommender.api.prod-preview.openshift.io/api/v1/schemas/api/stack_analyses/2-1-4/",
+        "version": "2-1-4"
+    },
+    "started_at": "2017-04-13T06:49:12.230696"
+}

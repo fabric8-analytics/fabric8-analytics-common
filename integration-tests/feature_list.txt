@@ -6,6 +6,7 @@ features/jobs_api.feature
 #features/packages.feature
 #features/versions.feature
 #features/anitya.feature
+#features/stack-analyses.feature
 
 # This is workaround to temporary disable integration tests
 #features/disabled.feature

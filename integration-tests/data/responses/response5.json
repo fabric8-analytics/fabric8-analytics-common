@@ -1,0 +1,132 @@
+{
+    "finished_at": "2017-04-12T11:39:50.574222",
+    "recommendation": {
+        "recommendations": {
+            "component_level": null,
+            "similar_stacks": []
+        }
+    },
+    "request_id": "721c6846cf754c72acdd73e77b2bf8e0",
+    "result": [
+        {
+            "_audit": {
+                "ended_at": "2017-04-12T11:39:50.574222",
+                "started_at": "2017-04-12T11:39:47.162360",
+                "version": "v1"
+            },
+            "_release": "None:None:None",
+            "analyzed_components": 2,
+            "components": [
+                {
+                    "code_metrics": {
+                        "average_cyclomatic_complexity": -1,
+                        "code_lines": -1,
+                        "total_files": -1
+                    },
+                    "ecosystem": "maven",
+                    "github_details": {
+                        "forks_count": -1,
+                        "issues": {
+                            "month": {
+                                "closed": -1,
+                                "opened": -1
+                            },
+                            "year": {
+                                "closed": -1,
+                                "opened": -1
+                            }
+                        },
+                        "pull_requests": {
+                            "month": {
+                                "closed": -1,
+                                "opened": -1
+                            },
+                            "year": {
+                                "closed": -1,
+                                "opened": -1
+                            }
+                        },
+                        "stargazers_count": -1
+                    },
+                    "id": "maven:javax.servlet.jsp:jsp-api:2.1",
+                    "latest_version": "",
+                    "licenses": [],
+                    "name": "javax.servlet.jsp:jsp-api",
+                    "redhat_usage": {
+                        "all_rhn_channels": [],
+                        "all_rhsm_content_sets": [],
+                        "all_rhsm_product_names": [],
+                        "package_names": [],
+                        "published_in": [],
+                        "registered_srpms": [],
+                        "rh_mvn_matched_versions": []
+                    },
+                    "security": {},
+                    "version": "2.1"
+                },
+                {
+                    "code_metrics": {
+                        "average_cyclomatic_complexity": -1,
+                        "code_lines": -1,
+                        "total_files": -1
+                    },
+                    "ecosystem": "maven",
+                    "github_details": {
+                        "forks_count": -1,
+                        "issues": {
+                            "month": {
+                                "closed": -1,
+                                "opened": -1
+                            },
+                            "year": {
+                                "closed": -1,
+                                "opened": -1
+                            }
+                        },
+                        "pull_requests": {
+                            "month": {
+                                "closed": -1,
+                                "opened": -1
+                            },
+                            "year": {
+                                "closed": -1,
+                                "opened": -1
+                            }
+                        },
+                        "stargazers_count": -1
+                    },
+                    "id": "maven:org.codehaus.plexus:plexus-utils:1.5.1",
+                    "latest_version": "3.0.24",
+                    "licenses": [],
+                    "name": "org.codehaus.plexus:plexus-utils",
+                    "redhat_usage": {
+                        "all_rhn_channels": [],
+                        "all_rhsm_content_sets": [],
+                        "all_rhsm_product_names": [],
+                        "package_names": [],
+                        "published_in": [],
+                        "registered_srpms": [],
+                        "rh_mvn_matched_versions": []
+                    },
+                    "security": {},
+                    "version": "1.5.1"
+                }
+            ],
+            "distinct_licenses": [],
+            "ecosystem": "maven",
+            "manifest_name": "pom.xml",
+            "popularity": {
+                "average_forks": "NA",
+                "average_stars": "NA",
+                "low_popularity_components": 0
+            },
+            "total_licenses": 0
+        }
+    ],
+    "schema": {
+        "name": "stack_analyses",
+        "url": "http://10.70.49.144:32000/api/v1/schemas/api/stack_analyses/2-1-4/",
+        "version": "2-1-4"
+    },
+    "started_at": "2017-04-12T11:39:47.162360"
+}
