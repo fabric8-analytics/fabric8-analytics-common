@@ -38,3 +38,16 @@ Feature: Jobs API
     When I access jobs API /api/v1/jobs
     Then I should see 5 jobs
 
+  Scenario: Check that multiple jobs can be posted with state paused
+    Given System is running
+    When I access jobs API /api/v1/jobs
+    Then I should see 5 jobs
+    When I post a job metadata job1.json with state paused
+    Then I should get 201 status code
+    When I access jobs API /api/v1/jobs
+    Then I should see 6 jobs
+    When I post a job metadata job1.json with state paused
+    Then I should get 201 status code
+    When I access jobs API /api/v1/jobs
+    Then I should see 7 jobs
+
