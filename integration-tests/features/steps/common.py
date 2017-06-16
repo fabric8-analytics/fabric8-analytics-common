@@ -118,12 +118,30 @@ def perform_valid_manifest_post(context, manifest, url):
     print(response.json())
 
 
-@when("I post a job metadata {metadata} with state {state}")
-def perform_post_job(context, metadata, state):
-    filename = "data/{metadata}".format(metadata=metadata)
-    endpoint = "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}".\
+def job_metadata_filename(metadata):
+    return "data/{metadata}".format(metadata=metadata)
+
+
+def flow_sheduling_endpoint(context, state, id=None):
+    if id:
+        return "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}&job_id={id}".\
+               format(jobs_api_url=context.jobs_api_url, state=state, id=id)
+    else:
+        return "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}".\
                format(jobs_api_url=context.jobs_api_url, state=state)
 
+
+@when("I post a job metadata {metadata} with state {state}")
+def perform_post_job(context, metadata, state):
+    filename = job_metadata_filename(metadata)
+    endpoint = flow_sheduling_endpoint(context, state)
+    context.response = context.send_json_file(endpoint, filename)
+
+
+@when("I post a job metadata {metadata} with job id {id} and state {state}")
+def perform_post_job(context, metadata, id, state):
+    filename = job_metadata_filename(metadata)
+    endpoint = flow_sheduling_endpoint(context, state, id)
     context.response = context.send_json_file(endpoint, filename)
 
 
