@@ -181,6 +181,14 @@ def find_job_by_id(context, id):
     assert id in ids
 
 
+@then('I should not find job with ID {id}')
+def should_not_find_job_by_id(context, id):
+    jsondata = context.response.json()
+    jobs = jsondata['jobs']
+    ids = [job["job_id"] for job in jobs]
+    assert id not in ids
+
+
 @then('I should see 0 packages')
 @then('I should see {num:d} packages ({packages}), all from {ecosystem} ecosystem')
 def check_packages(context, num=0, packages='', ecosystem=''):
