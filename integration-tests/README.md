@@ -19,6 +19,13 @@ add new feature tests, simply edit an existing `<name>.feature` file in
 
 ### Currently defined features
 
+* [Smoke tests](features/smoketest.feature): Smoke tests for checking if main
+  API endpoints are available and work as expected
+* [Server API](features/server_api.feature): API tests for the server module
+* [Jobs API](features/jobs_api.feature): API tests for the jobs module
+
+### Older tests that have to be updated
+
 * [Component analysis](features/analysis.feature): API tests for the
   component analysis endpoints under `/api/v1/component-analyses/`
 * [Stack analysis](features/stackanalysis.feature): API tests for the
