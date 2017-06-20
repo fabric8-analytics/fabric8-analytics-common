@@ -82,3 +82,18 @@ Feature: Jobs API
     Then I should find job with id TEST_4
     Then I should not find job with id TEST_5
 
+  Scenario: Check that jobs can be deleted
+    Given System is running
+    When I access jobs API /api/v1/jobs
+    Then I should find job with id TEST_1
+    Then I should find job with id TEST_2
+    Then I should find job with id TEST_3
+    Then I should find job with id TEST_4
+    When I delete job with id TEST_1
+    Then I should get 200 status code
+    When I access jobs API /api/v1/jobs
+    Then I should not find job with id TEST_1
+    Then I should find job with id TEST_2
+    Then I should find job with id TEST_3
+    Then I should find job with id TEST_4
+
