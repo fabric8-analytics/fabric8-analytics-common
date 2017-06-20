@@ -22,6 +22,11 @@ Feature: Smoke test
 
   Scenario: Check the jobs API entry point
     Given System is running
+    When I access jobs API /api/v1
+    Then I should get 200 status code
+
+  Scenario: Check the jobs API entry point
+    Given System is running
     When I access jobs API /api/v1/readiness
     Then I should get 200 status code
 
