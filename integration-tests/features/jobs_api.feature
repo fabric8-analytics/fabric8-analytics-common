@@ -85,15 +85,13 @@ Feature: Jobs API
   Scenario: Check that jobs can be deleted
     Given System is running
     When I access jobs API /api/v1/jobs
-    Then I should find job with id TEST_1
-    Then I should find job with id TEST_2
-    Then I should find job with id TEST_3
-    Then I should find job with id TEST_4
-    When I delete job with id TEST_1
+    Then I should not find job with id TEST_TO_DELETE
+    When I post a job metadata job1.json with job id TEST_TO_DELETE and state paused
+    Then I should get 201 status code
+    When I access jobs API /api/v1/jobs
+    Then I should find job with id TEST_TO_DELETE
+    When I delete job with id TEST_TO_DELETE
     Then I should get 200 status code
     When I access jobs API /api/v1/jobs
-    Then I should not find job with id TEST_1
-    Then I should find job with id TEST_2
-    Then I should find job with id TEST_3
-    Then I should find job with id TEST_4
+    Then I should not find job with id TEST_TO_DELETE
 
