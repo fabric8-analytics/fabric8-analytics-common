@@ -46,10 +46,10 @@ features executed by the [runtest.sh](runtest.sh) script.
 ### Currently defined test steps
 
 Documentation for the module with test steps is automatically generated into
-the file [common.html]. The available test steps are not currently documented
-yet, so refer to either the existing scenario definitions for usage examples,
-or else the step definitions in
-[features/steps/common.py](features/steps/common.py) and the adjacent step
+the file [common.html](https://fabric8-analytics.github.io/common.html). The
+available test steps are not currently documented yet, so refer to either the
+existing scenario definitions for usage examples, or else the step definitions
+in [features/steps/common.py](features/steps/common.py) and the adjacent step
 files.
 
 ### Adding new test step files
