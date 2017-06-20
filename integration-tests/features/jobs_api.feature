@@ -95,3 +95,9 @@ Feature: Jobs API
     When I access jobs API /api/v1/jobs
     Then I should not find job with id TEST_TO_DELETE
 
+  Scenario: Check that nonexistent job can't be deleted
+    Given System is running
+    When I access jobs API /api/v1/jobs
+    Then I should not find job with id NONEXISTENT_JOB
+    When I delete job with id NONEXISTENT_JOB
+    Then I should get 410 status code
