@@ -131,6 +131,11 @@ def flow_sheduling_endpoint(context, state, id=None):
                format(jobs_api_url=context.jobs_api_url, state=state)
 
 
+def job_endpoint(context, id):
+    return "{jobs_api_url}api/v1/jobs/{job_id}".format(
+           jobs_api_url=context.jobs_api_url, job_id=id)
+
+
 @when("I post a job metadata {metadata} with state {state}")
 def perform_post_job(context, metadata, state):
     filename = job_metadata_filename(metadata)
@@ -143,6 +148,12 @@ def perform_post_job(context, metadata, id, state):
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state, id)
     context.response = context.send_json_file(endpoint, filename)
+
+
+@when("I delete job with id {id}")
+def delete_job(context, id):
+    endpoint = job_endpoint(context, id)
+    context.response = requests.delete(endpoint)
 
 
 @then("I should get API token")
