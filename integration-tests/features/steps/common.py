@@ -184,12 +184,22 @@ def check_jobs(context, num):
     assert jobs_count == num
 
 
+def get_job_by_id(jobs, job_id):
+    return next((job for job in jobs if job["job_id"] == job_id), None)
+
+
 @then('I should find job with ID {id}')
-def find_job_by_id(context, id):
+@then('I should find job with ID {id} and state {state}')
+def find_job(context, id, state=None):
     jsondata = context.response.json()
     jobs = jsondata['jobs']
     ids = [job["job_id"] for job in jobs]
     assert id in ids
+    if state is not None:
+        job = get_job_by_id(jobs, id)
+        assert job is not None
+        assert job["state"] is not None
+        assert job["state"] == state
 
 
 @then('I should not find job with ID {id}')
