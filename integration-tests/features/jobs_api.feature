@@ -101,3 +101,29 @@ Feature: Jobs API
     Then I should not find job with id NONEXISTENT_JOB
     When I delete job with id NONEXISTENT_JOB
     Then I should get 410 status code
+
+  Scenario: Check that job status can be changed
+    Given System is running
+    When I post a job metadata job1.json with job id PAUSED_JOB and state paused
+    Then I should get 201 status code
+    When I access jobs API /api/v1/jobs
+    Then I should find job with id PAUSED_JOB
+    Then I should find job with id PAUSED_JOB and state paused
+    When I set status for job with id PAUSED_JOB to paused
+    Then I should get 200 status code
+    When I set status for job with id PAUSED_JOB to running
+    Then I should get 200 status code
+
+  Scenario: Check wrong status behaviour
+    Given System is running
+    When I post a job metadata job1.json with job id PAUSED_JOB_2 and state paused
+    Then I should get 201 status code
+    When I access jobs API /api/v1/jobs
+    Then I should find job with id PAUSED_JOB_2 and state paused
+    When I set status for job with id PAUSED_JOB_2 to unknown_state
+    Then I should get 400 status code
+
+  Scenario: Check setting status for wrong job behaviour
+    Given System is running
+    When I set status for job with id NONEXISTENT_JOB to paused
+    Then I should get 404 status code
