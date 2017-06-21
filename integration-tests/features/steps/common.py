@@ -156,6 +156,13 @@ def delete_job(context, id):
     context.response = requests.delete(endpoint)
 
 
+@when("I change status for job with id {id} to {status}")
+def change_job_status(context, id, status):
+    endpoint = job_endpoint(context, id)
+    url = "{endpoint}?status={status}".format(endpoint=endpoin, status=status)
+    context.response = requests.put(endpoint)
+
+
 @then("I should get API token")
 def check_api_token(context):
     try:
