@@ -163,6 +163,14 @@ def set_job_status(context, id, status):
     context.response = requests.put(url)
 
 
+@when("I set status for job service to {status}")
+def set_job_status(context, status):
+    endpoint = "{jobs_api_url}api/v1/service/state".format(
+               jobs_api_url=context.jobs_api_url)
+    url = "{endpoint}?state={status}".format(endpoint=endpoint, status=status)
+    context.response = requests.put(url)
+
+
 @then("I should get API token")
 def check_api_token(context):
     try:
