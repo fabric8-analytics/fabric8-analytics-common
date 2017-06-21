@@ -156,8 +156,8 @@ def delete_job(context, id):
     context.response = requests.delete(endpoint)
 
 
-@when("I change status for job with id {id} to {status}")
-def change_job_status(context, id, status):
+@when("I set status for job with id {id} to {status}")
+def set_job_status(context, id, status):
     endpoint = job_endpoint(context, id)
     url = "{endpoint}?state={status}".format(endpoint=endpoint, status=status)
     context.response = requests.put(url)
