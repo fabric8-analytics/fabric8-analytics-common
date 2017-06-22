@@ -46,6 +46,9 @@ def get_tgt_in_service(context, service):
 
 @when("I perform kerberized {method} request to {url}")
 def perform_kerberized_request(context, method, url):
+    """
+    Calls REST API on coreapi-server
+    """
     command = "curl -s -X {method} --negotiate -u : http://coreapi-server:5000{url}".format(
         method=method, url=url
     )
@@ -55,6 +58,9 @@ def perform_kerberized_request(context, method, url):
 
 @when("I wait for {ecosystem}/{package}/{version} analysis to {action}")
 def wait_for_analysis(context, ecosystem, package, version, action):
+    """
+    wait for analysis to be started or finished
+    """
     if action == 'finish':
         # Wait for analysis to finish
         timeout = 600
@@ -94,21 +100,33 @@ def wait_for_analysis(context, ecosystem, package, version, action):
 
 @when('I access anitya {url}')
 def anitya_url(context, url):
+    """
+    access the Anitya service API using the HTTP GET method
+    """
     context.response = requests.get(context.anitya_url + url)
 
 
 @when('I access jobs API {url}')
 def jobs_api_url(context, url):
+    """
+    access the jobs service API using the HTTP GET method
+    """
     context.response = requests.get(context.jobs_api_url + url)
 
 
 @when('I access {url}')
 def access_url(context, url):
+    """
+    access the service API using the HTTP GET method
+    """
     context.response = requests.get(context.coreapi_url + url)
 
 
 @when("I post a valid {manifest} to {url}")
 def perform_valid_manifest_post(context, manifest, url):
+    """
+    post a manifest to selected core API endpont
+    """
     filename = "data/{manifest}".format(manifest=manifest)
     files = {'manifest[]': open(filename, 'rb')}
     endpoint = "{coreapi_url}{url}".format(coreapi_url=context.coreapi_url, url=url)
@@ -123,6 +141,9 @@ def job_metadata_filename(metadata):
 
 
 def flow_sheduling_endpoint(context, state, id=None):
+    """
+    return URL to flow-scheduling with the given state and job ID
+    """
     if id:
         return "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}&job_id={id}".\
                format(jobs_api_url=context.jobs_api_url, state=state, id=id)
@@ -132,12 +153,18 @@ def flow_sheduling_endpoint(context, state, id=None):
 
 
 def job_endpoint(context, id):
+    """
+    return URL for given job id that can be used to job state manipulation
+    """
     return "{jobs_api_url}api/v1/jobs/{job_id}".format(
            jobs_api_url=context.jobs_api_url, job_id=id)
 
 
 @when("I post a job metadata {metadata} with state {state}")
 def perform_post_job(context, metadata, state):
+    """
+    API call to create a new job using the provided metadata
+    """
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state)
     context.response = context.send_json_file(endpoint, filename)
@@ -145,6 +172,9 @@ def perform_post_job(context, metadata, state):
 
 @when("I post a job metadata {metadata} with job id {id} and state {state}")
 def perform_post_job(context, metadata, id, state):
+    """
+    API call to create a new job using the provided metadata and set a job to given state
+    """
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state, id)
     context.response = context.send_json_file(endpoint, filename)
@@ -152,12 +182,18 @@ def perform_post_job(context, metadata, id, state):
 
 @when("I delete job with id {id}")
 def delete_job(context, id):
+    """
+    API call to delete a job with given ID
+    """
     endpoint = job_endpoint(context, id)
     context.response = requests.delete(endpoint)
 
 
 @when("I set status for job with id {id} to {status}")
 def set_job_status(context, id, status):
+    """
+    API call to set job status
+    """
     endpoint = job_endpoint(context, id)
     url = "{endpoint}?state={status}".format(endpoint=endpoint, status=status)
     context.response = requests.put(url)
@@ -166,6 +202,9 @@ def set_job_status(context, id, status):
 @when("I reset status for the job service")
 @when("I set status for job service to {status}")
 def set_job_service_status(context, status=None):
+    """
+    API call to set or reset job service status
+    """
     url = "{jobs_api_url}api/v1/service/state".format(
             jobs_api_url=context.jobs_api_url)
     if status is not None:
@@ -194,6 +233,9 @@ def check_api_token(context):
 
 @then('I should see {num:d} ecosystems')
 def check_ecosystems(context, num):
+    """
+    check if the API call returns correct number of ecosystems
+    """
     ecosystems = context.response.json()['items']
     assert len(ecosystems) == num
     for e in ecosystems:
@@ -203,6 +245,9 @@ def check_ecosystems(context, num):
 
 @then('I should see {num:d} jobs')
 def check_jobs(context, num):
+    """
+    check the number of jobs
+    """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
     jobs_count = jsondata['jobs_count']
@@ -217,6 +262,10 @@ def get_job_by_id(jobs, job_id):
 @then('I should find job with ID {id}')
 @then('I should find job with ID {id} and state {state}')
 def find_job(context, id, state=None):
+    """
+    check if job with given ID is returned from the service and optionally if
+    the job status has expected value
+    """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
     ids = [job["job_id"] for job in jobs]
@@ -230,6 +279,9 @@ def find_job(context, id, state=None):
 
 @then('I should not find job with ID {id}')
 def should_not_find_job_by_id(context, id):
+    """
+    check if job with given ID does not exist
+    """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
     ids = [job["job_id"] for job in jobs]
@@ -270,6 +322,9 @@ def check_json(context):
 
 @then('I should get {status:d} status code')
 def check_status_code(context, status):
+    """
+    check the HTTP status code returned by the REST API
+    """
     assert context.response.status_code == status
 
 
@@ -286,6 +341,9 @@ def check_json_value_under_key(context, key, value):
 @when('I wait {num:d} seconds')
 @then('I wait {num:d} seconds')
 def pause_scenario_execution(context, num):
+    """
+    pause the test for provided number of seconds
+    """
     time.sleep(num)
 
 
