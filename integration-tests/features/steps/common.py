@@ -171,6 +171,15 @@ def set_job_status(context, status):
     context.response = requests.put(url)
 
 
+@when("I clean all failed jobs")
+def clean_all_failed_jobs(context):
+    """
+    API call to clean up all failed jobs
+    """
+    url = "{url}api/v1/jobs/clean-failed".format(url=context.jobs_api_url)
+    context.response = requests.delete(url)
+
+
 @then("I should get API token")
 def check_api_token(context):
     try:
