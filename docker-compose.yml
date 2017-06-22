@@ -196,7 +196,7 @@ services:
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
       WORKER_ADMINISTRATION_REGION: ingestion
   anitya-server:
-    image: slavek/anitya-server
+    image: registry.devshift.net/slavek/anitya-server
     ports:
      - "31005:5000"
     links:
@@ -235,7 +235,7 @@ services:
     container_name: dynamodb
 
   gremlin-http:
-    image: registry.centos.org/datamodel/gremlin:concaf
+    image: registry.devshift.net/bayesian/gremlin
     network_mode: bridge
     entrypoint: /bin/entrypoint-local.sh
     environment:
