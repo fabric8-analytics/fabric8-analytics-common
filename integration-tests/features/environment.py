@@ -280,10 +280,10 @@ def before_all(context):
     context.images = {}
     context.images['bayesian/bayesian-api'] = context.config.userdata.get(
         'coreapi_server_image',
-        'docker-registry.usersys.redhat.com/bayesian/bayesian-api')
+        'registry.devshift.net/bayesian/bayesian-api')
     context.images['bayesian/cucos-worker'] = context.config.userdata.get(
         'coreapi_worker_image',
-        'docker-registry.usersys.redhat.com/bayesian/cucos-worker')
+        'registry.devshift.net/bayesian/cucos-worker')
 
     context.coreapi_url = _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
     context.jobs_api_url = _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
@@ -292,7 +292,7 @@ def before_all(context):
     context.client = docker.AutoVersionClient()
 
     for desired, actual in context.images.items():
-        desired = 'docker-registry.usersys.redhat.com/' + desired
+        desired = 'registry.devshift.net/' + desired
         if desired != actual:
             context.client.tag(actual, desired, force=True)
 

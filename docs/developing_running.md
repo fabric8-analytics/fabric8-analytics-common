@@ -38,20 +38,6 @@ Requirements:
 Fedora 24, 25 and 26 have docker-compose > 1.6 and docker > 1.10.0. You should be
 able to run on Fedora 24/25/26 without any workarounds.
 
-You'll need to configure docker to use http instead of https for
-docker-registry.usersys.redhat.com. To do this, add
-`--insecure-registry docker-registry.usersys.redhat.com` to `OPTIONS` in
-`/etc/sysconfig/docker` and restart the Docker daemon.
-
-If you are using docker-machine with boot2docker add
-`--insecure-registry docker-registry.usersys.redhat.com` to `EXTRA_ARGS`
-in `/var/lib/boot2docker/profile` in the boot2docker image. As described
-[here](http://stackoverflow.com/questions/32808215/where-to-set-the-insecure-registry-flag-on-mac-os).
-
-You'll also need to ensure Docker is configured to use the system certificate
-store (this is the default behaviour, but it can also be configured to use a
-custom store, which means it won't recognise the Red Hat internal CA)
-
 Then run:
 
 ```
