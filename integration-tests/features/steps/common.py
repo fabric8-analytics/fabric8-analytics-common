@@ -165,14 +165,11 @@ def set_job_status(context, id, status):
 
 @when("I reset status for the job service")
 @when("I set status for job service to {status}")
-def set_job_status(context, status=None):
-    endpoint = "{jobs_api_url}api/v1/service/state".format(
-               jobs_api_url=context.jobs_api_url)
+def set_job_service_status(context, status=None):
+    url = "{jobs_api_url}api/v1/service/state".format(
+            jobs_api_url=context.jobs_api_url)
     if status is not None:
-        url = "{endpoint}?state={status}".format(endpoint=endpoint,
-                                                 status=status)
-    else:
-        url = endpoint
+        url = "{url}?state={status}".format(url=url, status=status)
     context.response = requests.put(url)
 
 
