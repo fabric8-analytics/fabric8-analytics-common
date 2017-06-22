@@ -139,3 +139,18 @@ Feature: Jobs API
     Then I should get 200 status code
     Then I should receive JSON response with the state key set to paused
 
+  Scenario: Check if improper job service state is detected properly
+    Given System is running
+    When I set status for job service to UNKNOWN
+    Then I should get 400 status code
+
+  Scenario: Check if new job service state is checked
+    Given System is running
+    When I reset status for the job service
+    Then I should get 400 status code
+
+  Scenario: Check the API call to clean all failed jobs
+    Given System is running
+    When I clean all failed jobs
+    Then I should get 200 status code
+
