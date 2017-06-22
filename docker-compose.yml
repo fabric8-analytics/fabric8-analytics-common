@@ -20,7 +20,7 @@ services:
       RABBITMQ_USER: guest
       RABBITMQ_PASS: guest
   postgres:
-    image: docker-registry.usersys.redhat.com/bayesian/coreapi-postgres
+    image: registry.devshift.net/bayesian/coreapi-postgres
     network_mode: bridge
     ports:
      - "6432:5432"
@@ -30,7 +30,7 @@ services:
       POSTGRESQL_DATABASE: "coreapi;anitya"
     container_name: coreapi-postgres
   pgbouncer:
-    image: docker-registry.usersys.redhat.com/bayesian/coreapi-pgbouncer
+    image: registry.devshift.net/bayesian/coreapi-pgbouncer
     container_name: coreapi-pgbouncer
     network_mode: bridge
     links:
@@ -43,7 +43,7 @@ services:
       POSTGRESQL_DATABASE: coreapi
       POSTGRESQL_INITIAL_DATABASE: postgres
   server:
-    image: docker-registry.usersys.redhat.com/bayesian/bayesian-api
+    image: registry.devshift.net/bayesian/bayesian-api
     network_mode: bridge
     links:
      - anitya-server
@@ -87,7 +87,7 @@ services:
     ports:
      - "32000:5000"
   jobs:
-    image: docker-registry.usersys.redhat.com/bayesian/coreapi-jobs
+    image: registry.devshift.net/bayesian/coreapi-jobs
     network_mode: bridge
     container_name: coreapi-jobs
     restart: always
@@ -121,7 +121,7 @@ services:
       #AWS_SQS_REGION: ''
       #AWS_S3_REGION: ''
   worker-api: &worker
-    image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
+    image: registry.devshift.net/bayesian/cucos-worker
     restart: always
     network_mode: bridge
     depends_on:
@@ -181,7 +181,7 @@ services:
       <<: *worker_environment
       WORKER_ADMINISTRATION_REGION: ingestion
   worker-db-migrations:
-    image: docker-registry.usersys.redhat.com/bayesian/cucos-worker
+    image: registry.devshift.net/bayesian/cucos-worker
     restart: on-failure
     container_name: coreapi-worker-db-migrations
     network_mode: bridge
@@ -251,7 +251,7 @@ services:
       - dynamodb
 
   data-model-importer:
-    image: docker-registry.usersys.redhat.com/bayesian/data-model-importer
+    image: registry.devshift.net/bayesian/data-model-importer
     restart: always
     network_mode: bridge
     entrypoint:
@@ -284,7 +284,7 @@ services:
   cvedb-s3-dump:
     # this service just copies pre-built CVE DB to S3 and exits
     # https://github.com/fabric8-analytics/cvedb-s3-dump-docker
-    image: docker-registry.usersys.redhat.com/bayesian/cvedb-s3-dump
+    image: registry.devshift.net/bayesian/cvedb-s3-dump
     restart: on-failure
     network_mode: bridge
     environment:

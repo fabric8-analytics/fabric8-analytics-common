@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.flower
-    image: docker-registry.usersys.redhat.com/bayesian/coreapi-flower
+    image: registry.devshift.net/bayesian/coreapi-flower
     container_name: coreapi-flower
     network_mode: bridge
     ports:
@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.pgweb
-    image: docker-registry.usersys.redhat.com/bayesian/coreapi-pgweb:latest
+    image: registry.devshift.net/bayesian/coreapi-pgweb:latest
     network_mode: bridge
     ports:
      - "31003:8080"

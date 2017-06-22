@@ -13,12 +13,12 @@ node('docker') {
         dockerCleanup()
         // build postgres image (needed later by docker-compose)
         docker.build(image.id, '--pull --no-cache postgres-docker/')
-        sh "docker tag ${image.id} docker-registry.usersys.redhat.com/${image.id}"
+        sh "docker tag ${image.id} registry.devshift.net/${image.id}"
     }
 
     stage('Integration Tests') {
         dockerCleanup()
-        docker.withRegistry('https://docker-registry.usersys.redhat.com/') {
+        docker.withRegistry('https://registry.devshift.net/') {
             docker.image('bayesian/bayesian-api').pull()
             docker.image('bayesian/cucos-worker').pull()
             docker.image('bayesian/coreapi-downstream-data-import').pull()
