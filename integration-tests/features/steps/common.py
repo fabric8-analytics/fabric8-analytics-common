@@ -221,6 +221,16 @@ def clean_all_failed_jobs(context):
     context.response = requests.delete(url)
 
 
+@when("I ask for analyses report for ecosystem {ecosystem}")
+def access_analyses_report(context, ecosystem):
+    """
+    API call to get analyses report for selected ecosystem
+    """
+    url = "{url}api/v1/debug/analyses-report?ecosystem={ecosystem}".format(
+           url=context.jobs_api_url, ecosystem=ecosystem)
+    context.response = requests.get(url)
+
+
 @then("I should get API token")
 def check_api_token(context):
     try:
