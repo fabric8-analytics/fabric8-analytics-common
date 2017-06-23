@@ -156,8 +156,12 @@ def job_endpoint(context, id):
     """
     return URL for given job id that can be used to job state manipulation
     """
-    return "{jobs_api_url}api/v1/jobs/{job_id}".format(
-           jobs_api_url=context.jobs_api_url, job_id=id)
+    url = "{jobs_api_url}api/v1/jobs".format(
+           jobs_api_url=context.jobs_api_url)
+    if id is not None:
+        url = "{url}/{job_id}".format(url=url, job_id=id)
+    print(url)
+    return url
 
 
 @when("I post a job metadata {metadata} with state {state}")
@@ -180,8 +184,9 @@ def perform_post_job(context, metadata, id, state):
     context.response = context.send_json_file(endpoint, filename)
 
 
+@when("I delete job without id")
 @when("I delete job with id {id}")
-def delete_job(context, id):
+def delete_job(context, id=None):
     """
     API call to delete a job with given ID
     """
