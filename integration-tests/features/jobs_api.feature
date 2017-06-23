@@ -102,6 +102,11 @@ Feature: Jobs API
     When I delete job with id NONEXISTENT_JOB
     Then I should get 410 status code
 
+  Scenario: Check that job w/o ID can't be deleted
+    Given System is running
+    When I delete job without ID
+    Then I should get 405 status code
+
   Scenario: Check that job status can be changed
     Given System is running
     When I post a job metadata job1.json with job id PAUSED_JOB and state paused
