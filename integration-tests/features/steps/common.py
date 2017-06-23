@@ -160,7 +160,6 @@ def job_endpoint(context, id):
            jobs_api_url=context.jobs_api_url)
     if id is not None:
         url = "{url}/{job_id}".format(url=url, job_id=id)
-    print(url)
     return url
 
 
