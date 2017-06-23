@@ -140,26 +140,26 @@ def job_metadata_filename(metadata):
     return "data/{metadata}".format(metadata=metadata)
 
 
-def flow_sheduling_endpoint(context, state, id=None):
+def flow_sheduling_endpoint(context, state, job_id=None):
     """
     return URL to flow-scheduling with the given state and job ID
     """
-    if id:
-        return "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}&job_id={id}".\
-               format(jobs_api_url=context.jobs_api_url, state=state, id=id)
+    if job_id:
+        return "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}&job_id={job_id}".\
+               format(jobs_api_url=context.jobs_api_url, state=state, job_id=job_id)
     else:
         return "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}".\
                format(jobs_api_url=context.jobs_api_url, state=state)
 
 
-def job_endpoint(context, id):
+def job_endpoint(context, job_id):
     """
     return URL for given job id that can be used to job state manipulation
     """
     url = "{jobs_api_url}api/v1/jobs".format(
            jobs_api_url=context.jobs_api_url)
-    if id is not None:
-        url = "{url}/{job_id}".format(url=url, job_id=id)
+    if job_id is not None:
+        url = "{url}/{job_id}".format(url=url, job_id=job_id)
     return url
 
 
@@ -173,32 +173,32 @@ def perform_post_job(context, metadata, state):
     context.response = context.send_json_file(endpoint, filename)
 
 
-@when("I post a job metadata {metadata} with job id {id} and state {state}")
-def perform_post_job(context, metadata, id, state):
+@when("I post a job metadata {metadata} with job id {job_id} and state {state}")
+def perform_post_job(context, metadata, job_id, state):
     """
     API call to create a new job using the provided metadata and set a job to given state
     """
     filename = job_metadata_filename(metadata)
-    endpoint = flow_sheduling_endpoint(context, state, id)
+    endpoint = flow_sheduling_endpoint(context, state, job_id)
     context.response = context.send_json_file(endpoint, filename)
 
 
 @when("I delete job without id")
-@when("I delete job with id {id}")
-def delete_job(context, id=None):
+@when("I delete job with id {job_id}")
+def delete_job(context, job_id=None):
     """
     API call to delete a job with given ID
     """
-    endpoint = job_endpoint(context, id)
+    endpoint = job_endpoint(context, job_id)
     context.response = requests.delete(endpoint)
 
 
-@when("I set status for job with id {id} to {status}")
-def set_job_status(context, id, status):
+@when("I set status for job with id {job_id} to {status}")
+def set_job_status(context, job_id, status):
     """
     API call to set job status
     """
-    endpoint = job_endpoint(context, id)
+    endpoint = job_endpoint(context, job_id)
     url = "{endpoint}?state={status}".format(endpoint=endpoint, status=status)
     context.response = requests.put(url)
 
@@ -273,33 +273,33 @@ def get_job_by_id(jobs, job_id):
     return next((job for job in jobs if job["job_id"] == job_id), None)
 
 
-@then('I should find job with ID {id}')
-@then('I should find job with ID {id} and state {state}')
-def find_job(context, id, state=None):
+@then('I should find job with ID {job_id}')
+@then('I should find job with ID {job_id} and state {state}')
+def find_job(context, job_id, state=None):
     """
     check if job with given ID is returned from the service and optionally if
     the job status has expected value
     """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
-    ids = [job["job_id"] for job in jobs]
-    assert id in ids
+    job_ids = [job["job_id"] for job in jobs]
+    assert job_id in job_ids
     if state is not None:
-        job = get_job_by_id(jobs, id)
+        job = get_job_by_id(jobs, job_id)
         assert job is not None
         assert job["state"] is not None
         assert job["state"] == state
 
 
-@then('I should not find job with ID {id}')
-def should_not_find_job_by_id(context, id):
+@then('I should not find job with ID {job_id}')
+def should_not_find_job_by_id(context, job_id):
     """
     check if job with given ID does not exist
     """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
-    ids = [job["job_id"] for job in jobs]
-    assert id not in ids
+    job_ids = [job["job_id"] for job in jobs]
+    assert job_id not in job_ids
 
 
 @then('I should see 0 packages')
