@@ -13,7 +13,7 @@ _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
 
 # The following API endpoint is used to check if the system is started
-_API_ENDPOINT = 'api/v1/'
+_API_ENDPOINT = 'api/v1'
 
 # Ports used by various services
 _FABRIC8_ANALYTICS_SERVER = 32000
@@ -210,14 +210,19 @@ def _restart_system(context, wait_for_server=60):
                         format(c=' '.join(e.cmd), o=e.output))
 
 
-def _is_running(context):
+def _is_api_running(url):
     try:
-        res = requests.get(context.coreapi_url + _API_ENDPOINT)
+        res = requests.get(url)
         if res.status_code == 200:
             return True
     except requests.exceptions.ConnectionError:
         pass
     return False
+
+
+def _is_running(context):
+    return _is_api_running(context.coreapi_url + _API_ENDPOINT) and \
+           _is_api_running(context.jobs_api_url + _API_ENDPOINT)
 
 
 def _read_boolean_setting(context, setting_name):
