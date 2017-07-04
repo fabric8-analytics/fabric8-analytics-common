@@ -32,4 +32,13 @@ node('docker') {
             }
         }
     }
+
+    if (env.BRANCH_NAME == 'master') {
+        stage('Push Images') {
+            docker.withRegistry('https://registry.devshift.net/') {
+                image.push('latest')
+                image.push(commitId)
+            }
+        }
+    }
 }
