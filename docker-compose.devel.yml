@@ -20,7 +20,7 @@ services:
       context: fabric8-analytics-server/
       dockerfile: Dockerfile
     volumes:
-     - ./fabric8-analytics-worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./fabric8-analytics-worker/f8a_worker:/usr/lib/python3.4/site-packages/f8a_worker:ro,z
      - ./fabric8-analytics-server/bayesian:/usr/lib/python3.4/site-packages/bayesian:ro,z
      - ./fabric8-analytics-server/coreapi-httpd.conf:/etc/httpd/conf.d/coreapi-httpd.conf:ro,z
   jobs:
@@ -28,7 +28,7 @@ services:
       context: fabric8-analytics-jobs/
       dockerfile: Dockerfile
     volumes:
-     - ./fabric8-analytics-worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./fabric8-analytics-worker/f8a_worker:/usr/lib/python3.4/site-packages/f8a_worker:ro,z
      - ./fabric8-analytics-jobs/f8a_jobs:/usr/lib/python3.4/site-packages/f8a_jobs:ro,z
      - ./fabric8-analytics-jobs/f8a-jobs.py:/usr/bin/f8a-jobs.py:ro,z
   worker-api: &worker
@@ -36,7 +36,7 @@ services:
       context: fabric8-analytics-worker/
       dockerfile: Dockerfile
     volumes:
-     - ./fabric8-analytics-worker/cucoslib:/usr/lib/python3.4/site-packages/cucoslib:ro,z
+     - ./fabric8-analytics-worker/f8a_worker:/usr/lib/python3.4/site-packages/f8a_worker:ro,z
      - ./fabric8-analytics-worker/hack/secrets.yaml:/var/lib/secrets/secrets.yaml:ro,z
      - ./fabric8-analytics-worker/hack/workers.sh:/usr/bin/workers.sh:ro,z
   worker-ingestion:

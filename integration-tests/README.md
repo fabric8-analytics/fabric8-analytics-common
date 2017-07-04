@@ -143,7 +143,7 @@ Other custom configuration settings available:
     is specified
   * `-D coreapi_server_image=bayesian/bayesian-api`
     (optional, default is `bayesian/bayesian-api`) - name of Bayesian core API server image
-  * `-D cucos_worker_image=bayesian/cucos-worker` (optional, default is `bayesian/cucos-worker`) - name of Bayesian
+  * `-D coreapi_worker_image=bayesian/cucos-worker` (optional, default is `bayesian/cucos-worker`) - name of Bayesian
     Worker image
   * `-D coreapi_url=http://1.2.3.4:32000` (optional, default is `http://localhost:32000`)
   * `-D breath_time=10` (optional, default is `5`) - time to wait before testing
