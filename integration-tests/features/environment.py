@@ -204,13 +204,10 @@ def _wait_for_system(context, wait_for_server=60):
 
 
 def _wait_for_jobs_debug_api_service(context, wait_for_service=60):
-    start = datetime.datetime.now()
-    wait_till = start + datetime.timedelta(seconds=wait_for_service)
-
-    while datetime.datetime.now() < wait_till:
-        time.sleep(1)
+    for _ in range(wait_for_service):
         if _is_jobs_debug_api_running(context):
             break
+        time.sleep(1)
     else:
         raise Exception('Timeout waiting for jobs debug API service')
 
