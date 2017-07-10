@@ -149,6 +149,29 @@ Feature: Jobs API
     Then I should get 200 status code
     Then I should receive JSON response with the state key set to running
 
+  Scenario: Check job service state set to the same value
+    Given System is running
+    When I set status for job service to paused
+    Then I should get 200 status code
+    When I access jobs API /api/v1/service/state
+    Then I should get 200 status code
+    Then I should receive JSON response with the state key set to paused
+    When I set status for job service to paused
+    Then I should get 200 status code
+    When I access jobs API /api/v1/service/state
+    Then I should get 200 status code
+    Then I should receive JSON response with the state key set to paused
+    When I set status for job service to running
+    Then I should get 200 status code
+    When I access jobs API /api/v1/service/state
+    Then I should get 200 status code
+    Then I should receive JSON response with the state key set to running
+    When I set status for job service to running
+    Then I should get 200 status code
+    When I access jobs API /api/v1/service/state
+    Then I should get 200 status code
+    Then I should receive JSON response with the state key set to running
+
   Scenario: Check if improper job service state is detected properly
     Given System is running
     When I set status for job service to UNKNOWN
