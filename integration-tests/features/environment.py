@@ -20,6 +20,9 @@ _FABRIC8_ANALYTICS_SERVER = 32000
 _FABRIC8_ANALYTICS_JOBS = 34000
 _ANITYA_SERVICE = 31005
 
+# Endpoint for jobs debug API
+_JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
+
 
 def _make_compose_name(suffix='.yml'):
     return os.path.join(_REPO_DIR, 'docker-compose' + suffix)
@@ -200,6 +203,15 @@ def _wait_for_system(context, wait_for_server=60):
                         format(s=wait_for_server))
 
 
+def _wait_for_jobs_debug_api_service(context, wait_for_service=60):
+    for _ in range(wait_for_service):
+        if _is_jobs_debug_api_running(context):
+            break
+        time.sleep(1)
+    else:
+        raise Exception('Timeout waiting for jobs debug API service')
+
+
 def _restart_system(context, wait_for_server=60):
     try:
         _teardown_system(context)
@@ -223,6 +235,11 @@ def _is_api_running(url):
 def _is_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT) and \
            _is_api_running(context.jobs_api_url + _API_ENDPOINT)
+
+
+def _is_jobs_debug_api_running(context):
+    return _is_api_running(context.jobs_api_url + _JOBS_DEBUG_API +
+                           "/analyses-report?ecosystem=maven")
 
 
 def _read_boolean_setting(context, setting_name):
@@ -261,7 +278,9 @@ def before_all(context):
     context.run_command_in_service = _run_command_in_service
     context.exec_command_in_container = _exec_command_in_container
     context.is_running = _is_running
+    context.is_jobs_debug_api_running = _is_jobs_debug_api_running
     context.send_json_file = _send_json_file
+    context.wait_for_jobs_debug_api_service = _wait_for_jobs_debug_api_service
 
     # Configure container logging
     context.dump_logs = _read_boolean_setting(context, 'dump_logs')

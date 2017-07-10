@@ -23,6 +23,12 @@ def running_system(context):
         initial_state(context)
 
 
+@given('Jobs debug API is running')
+def running_jobs_debug_api(context):
+    if not context.is_jobs_debug_api_running(context):
+        context.wait_for_jobs_debug_api_service(context, 60)
+
+
 @when("I obtain TGT in {service} service")
 def get_tgt_in_service(context, service):
     """
