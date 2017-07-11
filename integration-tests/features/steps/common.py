@@ -72,15 +72,20 @@ def wait_for_analysis(context, ecosystem, package, version, action):
         timeout = 600
         err = "The analysis of {e}/{p}/{v} takes too long, more than {s} seconds."
         finished = True
-    else:
+    elif action == 'start':
         # Wait for analysis to start
         timeout = 60
         err = "The analysis of {e}/{p}/{v} has not started in {s} seconds."
         finished = False
+    else:
+        # Unknown action
+        raise Exception('Unknown action {action}, allowed values are '
+                        '"start" and "finish"'.format(action=action))
 
-    url = urljoin(context.coreapi_url, 'api/v1/analyses/{e}/{p}/{v}'.format(e=ecosystem,
-                                                                            p=package,
-                                                                            v=version))
+    url = urljoin(context.coreapi_url,
+                  'api/v1/component-analyses/{e}/{p}/{v}'.format(e=ecosystem,
+                                                                 p=package,
+                                                                 v=version))
 
     start = datetime.datetime.now()
     wait_till = start + datetime.timedelta(seconds=timeout)
