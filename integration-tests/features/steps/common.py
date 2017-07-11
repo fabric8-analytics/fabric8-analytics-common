@@ -68,6 +68,13 @@ def perform_kerberized_request(context, method, url):
         context.exec_command_in_container(context.client, context.container, command)
 
 
+@when("I search for component {component}")
+def search_for_component(context, component):
+    url = "http://localhost:32000/api/v1/component-search/{component}" .format(
+        component=component)
+    context.response = requests.get(url)
+
+
 @when("I wait for {ecosystem}/{package}/{version} analysis to {action}")
 def wait_for_analysis(context, ecosystem, package, version, action):
     """
