@@ -203,13 +203,21 @@ def _wait_for_system(context, wait_for_server=60):
                         format(s=wait_for_server))
 
 
-def _wait_for_jobs_debug_api_service(context, wait_for_service=60):
+def _wait_for_api(context, wait_for_service, check_function):
     for _ in range(wait_for_service):
-        if _is_jobs_debug_api_running(context):
+        if check_function(context):
             break
         time.sleep(1)
     else:
-        raise Exception('Timeout waiting for jobs debug API service')
+        raise Exception('Timeout waiting for the API service')
+
+
+def _wait_for_jobs_debug_api_service(context, wait_for_service=60):
+    _wait_for_api(context, wait_for_service, _is_jobs_debug_api_running)
+
+
+def _wait_for_component_search_service(context, wait_for_service=60):
+    _wait_for_api(context, wait_for_service, _is_component_search_service_running)
 
 
 def _restart_system(context, wait_for_server=60):
@@ -240,6 +248,11 @@ def _is_running(context):
 def _is_jobs_debug_api_running(context):
     return _is_api_running(context.jobs_api_url + _JOBS_DEBUG_API +
                            "/analyses-report?ecosystem=maven")
+
+
+def _is_component_search_service_running(context):
+    return _is_api_running(context.coreapi_url + _API_ENDPOINT +
+                           "/component-search/any-component")
 
 
 def _read_boolean_setting(context, setting_name):
@@ -279,8 +292,10 @@ def before_all(context):
     context.exec_command_in_container = _exec_command_in_container
     context.is_running = _is_running
     context.is_jobs_debug_api_running = _is_jobs_debug_api_running
+    context.is_component_search_service_running = _is_component_search_service_running
     context.send_json_file = _send_json_file
     context.wait_for_jobs_debug_api_service = _wait_for_jobs_debug_api_service
+    context.wait_for_component_search_service = _wait_for_component_search_service
 
     # Configure container logging
     context.dump_logs = _read_boolean_setting(context, 'dump_logs')
