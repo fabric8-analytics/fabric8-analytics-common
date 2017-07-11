@@ -324,8 +324,7 @@ def should_not_find_job_by_id(context, job_id):
 def check_components(context, num=0, components='', ecosystem=''):
     components = split_comma_separated_list(components)
 
-    # this is workaround for server issue #64
-    json_data = json.loads(context.response.json())
+    json_data = context.response.json()
 
     search_results = json_data['result']
     assert len(search_results) == num
