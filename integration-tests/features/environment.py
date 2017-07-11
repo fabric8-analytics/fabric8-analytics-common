@@ -203,13 +203,17 @@ def _wait_for_system(context, wait_for_server=60):
                         format(s=wait_for_server))
 
 
-def _wait_for_jobs_debug_api_service(context, wait_for_service=60):
+def _wait_for_api(context, wait_for_service, check_function):
     for _ in range(wait_for_service):
-        if _is_jobs_debug_api_running(context):
+        if check_function(context):
             break
         time.sleep(1)
     else:
-        raise Exception('Timeout waiting for jobs debug API service')
+        raise Exception('Timeout waiting for the API service')
+
+
+def _wait_for_jobs_debug_api_service(context, wait_for_service=60):
+    _wait_for_api(context, wait_for_service, _is_jobs_debug_api_running)
 
 
 def _restart_system(context, wait_for_server=60):
