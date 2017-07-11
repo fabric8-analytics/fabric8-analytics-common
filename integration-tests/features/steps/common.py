@@ -326,15 +326,18 @@ def should_not_find_job_by_id(context, job_id):
     assert job_id not in job_ids
 
 
-@then('I should see 0 packages')
-@then('I should see {num:d} packages ({packages}), all from {ecosystem} ecosystem')
-def check_packages(context, num=0, packages='', ecosystem=''):
-    packages = split_comma_separated_list(packages)
-    pkgs = context.response.json()['items']
-    assert len(pkgs) == num
-    for p in pkgs:
-        assert p['ecosystem'] == ecosystem
-        assert p['package'] in packages
+@then('I should see 0 components')
+@then('I should see {num:d} components ({components}), all from {ecosystem} ecosystem')
+def check_components(context, num=0, components='', ecosystem=''):
+    components = split_comma_separated_list(components)
+
+    json_data = context.response.json()
+
+    search_results = json_data['result']
+    assert len(search_results) == num
+    for search_result in search_results:
+        assert search_result['ecosystem'] == ecosystem
+        assert search_result['name'] in components
 
 
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
