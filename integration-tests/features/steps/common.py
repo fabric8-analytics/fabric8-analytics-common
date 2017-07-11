@@ -29,6 +29,12 @@ def running_jobs_debug_api(context):
         context.wait_for_jobs_debug_api_service(context, 60)
 
 
+@given('Component search service is running')
+def running_component_search_api(context):
+    if not context.is_component_search_service_running(context):
+        context.wait_for_component_search_service(context, 60)
+
+
 @when("I obtain TGT in {service} service")
 def get_tgt_in_service(context, service):
     """
