@@ -29,3 +29,13 @@ Feature: Components API V1
     When I search for component foobar
     Then I should see 0 components
 
+  Scenario: Check that component analyses endpoint checks if all resources are specified
+    Given System is running
+    Given Component search service is running
+    When I access /api/v1/component-analyses
+    Then I should get 404 status code
+    When I access /api/v1/component-analyses/npm
+    Then I should get 404 status code
+    When I access /api/v1/component-analyses/component
+    Then I should get 404 status code
+
