@@ -108,8 +108,6 @@ This will run additional 2 workers, giving you a total of 4 workers running.
 You can use this command repeatedly with different numbers to scale up and
 down as necessary.
 
-For more information see [Scaling Celery workers using docker-compose](worker_scaling.md)
-
 ### Running in OpenShift
 
 TBD :)
@@ -145,3 +143,76 @@ the "follow" mode).
 ## Integration tests
 
 Refer to the [integration testing README](../integration-tests/README.md)
+
+## Worker types
+
+Worker, by its design, is a monolith that takes care of all tasks available
+in the system. However there is a possibility to let a worker serve only some
+particular tasks. This can be accomplished by supplying the following
+environment variables (disjoint):
+
+* `WORKER_EXCLUDE_QUEUES` - a comma separated list of regexps describing name
+                            of queues that should be *excluded* from worker
+                            serving, all others are included
+* `WORKER_INCLUDE_QUEUES` - a comma separated list of regexps describing name
+                            of queues that should be *included* from worker
+                            serving, all others are excluded
+
+This can be especially useful when performing [prioritization or throttling of some particular tasks](http://selinon.readthedocs.io/en/latest/optimization.html#prioritization-of-tasks-and-flows).
+
+## Local deployment
+
+Even though the whole fabric8-analytics is run in Amazon AWS, there are basically
+no strict limitations in local deployment.
+
+The following AWS resources are used in the cloud deployment.
+
+* Amazon SQS
+* Amazon DynamoDB
+* Amazon S3
+* Amazon RDS
+
+However, there are used alternatives in the local setup:
+
+* RabbitMQ - an alternative to Amazon SQS
+* Local DynamoDB
+* Minio S3 - an alternative to Amazon S3
+* PostgreSQL - an alternative to Amazon RDS
+
+### Using RabbitMQ instead of Amazon SQS
+
+You can use directly RabbitMQ instead of Amazon SQS. To do so, do **not** provide
+`AWS_SQS_ACCESS_KEY_ID` and `AWS_SQS_SECRET_ACCESS_KEY` environment variables.
+The RabbitMQ broker should be then running on a host described by
+`RABBITMQ_SERVICE_SERVICE_HOST` environment variable (defaults to `coreapi-broker`).
+
+As RabbitMQ scales pretty flawlessly, there shouldn't be any strict downside of
+using RabbitMQ instead of Amazon's SQS.
+
+### Using local DynamoDB instead of the hosted one
+
+The local setup is already prepared to work with local DynamoDB. This is handled
+in [data-model](https://github.com/fabric8-analytics/fabric8-analytics-data-model)
+repository.
+
+### Using Minio S3 instead of Amazon S3
+
+To substitute Amazon S3 in local deployment and development setup, there
+was chosen [Minio S3](https://github.com/minio/minio) as an alternative. However
+Minio S3 is not fully compatible alternative (e.g. it does not support versioning
+nor encryption), but it does not restrict basic functionality whatsoever.
+
+You can find credentials to the Minio S3 web console in `docker-compose` file
+(search for `MINIO_ACCESS_KEY` and `MINIO_SECRET_KEY`).
+
+### Using PostgreSQL instead of Amazon RDS
+
+The only difference in using PostgreSQL instead of Amazon's RDS is in
+supplying connection string to PostgreSQL/Amazon RDS instance. This connection
+string is constructed from the following environment variables:
+
+* `POSTGRESQL_USER` - defaults to `coreapi` in the local setup
+* `POSTGRESQL_PASSWORD` - defaults to `coreapi` in the local setup
+* `POSTGRESQL_DATABASE` - defaults to `coreapi` in the local
+* `PGBOUNCER_SERVICE_HOST` - defaults to `coreapi-pgbouncer` (note that PosgreSQL/Amazon RDS is accessed through PGBouncer, thus naming)
+
