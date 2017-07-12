@@ -4,7 +4,7 @@ features/server_api.feature
 features/jobs_api.feature
 features/jobs_debug_api.feature
 #features/ecosystems.feature
-#features/packages.feature
+features/components.feature
 #features/versions.feature
 #features/anitya.feature
 
