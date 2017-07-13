@@ -488,3 +488,31 @@ def check_stack_analyses_response(context, url):
     # ensure that the response is in accordance to the Stack Analyses schema
     schema = requests.get(resp_json["schema"]["url"]).json()
     jsonschema.validate(resp_json, schema)
+
+
+def get_value_using_path(obj, path):
+    """
+    Return any attribute stored in the nested object and list hierarchy using
+    the 'path' where path consists of:
+        keys (selectors)
+        indexes (in case of arrays)
+    separated by slash, ie. "key1/0/key_x".
+
+    Usage:
+    get_value_using_path({"x" : {"y" : "z"}}, "x"))   -> {"y" : "z"}
+    get_value_using_path({"x" : {"y" : "z"}}, "x/y")) -> "z"
+    get_value_using_path(["x", "y", "z"], "0"))       -> "x"
+    get_value_using_path(["x", "y", "z"], "1"))       -> "y"
+    get_value_using_path({"key1" : ["x", "y", "z"],
+                          "key2" : ["a", "b", "c", "d"]}, "key1/1")) -> "y"
+    get_value_using_path({"key1" : ["x", "y", "z"],
+                          "key2" : ["a", "b", "c", "d"]}, "key2/1")) -> "b"
+    """
+
+    keys = path.split("/")
+    for key in keys:
+        if key.isdigit():
+            obj = obj[int(key)]
+        else:
+            obj = obj[key]
+    return obj
