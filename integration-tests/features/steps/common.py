@@ -176,6 +176,16 @@ def perform_valid_manifest_post(context, manifest, url):
     print(response.json())
 
 
+@when("I send NPM package manifest {manifest} to stack analysis")
+def npm_manifest_stack_analysis(context, manifest):
+    filename = 'data/{manifest}'.format(manifest=manifest)
+    files = {'manifest[]': ('package.json', open(filename, 'rb'))}
+    endpoint = urljoin(context.coreapi_url, 'api/v1/stack-analyses')
+    response = requests.post(endpoint, files=files)
+    response.raise_for_status()
+    context.response = response
+
+
 def job_metadata_filename(metadata):
     return "data/{metadata}".format(metadata=metadata)
 
