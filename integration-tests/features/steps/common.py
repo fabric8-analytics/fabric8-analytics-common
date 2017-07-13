@@ -103,6 +103,29 @@ def start_analysis_for_component(context, ecosystem, component, version):
         raise Exception('Improper response')
 
 
+@when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
+def finish_analysis_for_component(context, ecosystem, component, version):
+    """
+    Try to wait for the analysis to be finished.
+    Current API implementation returns just two HTTP codes:
+    200 OK : analysis is already finished
+    404 NOT FOUND: analysis is started or is in progress
+    """
+
+    timeout = 600      # in seconds
+    sleep_amount = 10  # we don't have to overload the API with too many calls
+
+    url = component_analysis_url(context, ecosystem, component, version)
+
+    for _ in range(timeout//sleep_amount):
+        status_code = requests.get(url).status_code
+        if status_code == 200:
+            break
+        elif status_code != 404:
+            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
+        time.sleep(sleep_amount)
+    else:
+        raise Exception('Timeout waiting for the component analysis results')
 
 
 @when('I access anitya {url}')
