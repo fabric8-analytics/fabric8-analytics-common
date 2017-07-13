@@ -75,6 +75,15 @@ def search_for_component(context, component):
     context.response = requests.get(url)
 
 
+@when("I read {ecosystem}/{component}/{version} component analysis")
+def read_analysis_for_component(context, ecosystem, component, version):
+    """
+    Read component analysis (or an error message) for the selected ecosystem
+    """
+    url = component_analysis_url(context, ecosystem, component, version)
+    context.response = requests.get(url)
+
+
 def component_analysis_url(context, ecosystem, component, version):
     return urljoin(context.coreapi_url,
                    'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
