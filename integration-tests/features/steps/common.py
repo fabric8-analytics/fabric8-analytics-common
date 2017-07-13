@@ -75,6 +75,13 @@ def search_for_component(context, component):
     context.response = requests.get(url)
 
 
+def component_analysis_url(context, ecosystem, component, version):
+    return urljoin(context.coreapi_url,
+                   'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
+                                                                  c=component,
+                                                                  v=version))
+
+
 @when("I wait for {ecosystem}/{package}/{version} analysis to {action}")
 def wait_for_analysis(context, ecosystem, package, version, action):
     """
