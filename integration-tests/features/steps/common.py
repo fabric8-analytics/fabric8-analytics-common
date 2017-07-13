@@ -75,51 +75,58 @@ def search_for_component(context, component):
     context.response = requests.get(url)
 
 
-@when("I wait for {ecosystem}/{package}/{version} analysis to {action}")
-def wait_for_analysis(context, ecosystem, package, version, action):
+def component_analysis_url(context, ecosystem, component, version):
+    return urljoin(context.coreapi_url,
+                   'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
+                                                                  c=component,
+                                                                  v=version))
+
+
+@when("I start analysis for component {ecosystem}/{component}/{version}")
+def start_analysis_for_component(context, ecosystem, component, version):
     """
-    wait for analysis to be started or finished
+    Start the analysis for given component and version in selected ecosystem.
+    Current API implementation returns just two HTTP codes:
+    200 OK : analysis is already finished
+    404 NOT FOUND: analysis is started or is in progress
+    It means that this test step should check if 200 OK is NOT returned
     """
-    if action == 'finish':
-        # Wait for analysis to finish
-        timeout = 600
-        err = "The analysis of {e}/{p}/{v} takes too long, more than {s} seconds."
-        finished = True
-    elif action == 'start':
-        # Wait for analysis to start
-        timeout = 60
-        err = "The analysis of {e}/{p}/{v} has not started in {s} seconds."
-        finished = False
+
+    url = component_analysis_url(context, ecosystem, component, version)
+
+    # first check that the analysis is really new
+    response = requests.get(url)
+    if response.status_code == 200:
+        raise Exception('Bad state: the analysis for component has been '
+                        'finished already')
+    elif response.status_code != 404:
+        raise Exception('Improper response: expected HTTP status code 404, '
+                        'received {c}'.format(c=status_code))
+
+
+@when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
+def finish_analysis_for_component(context, ecosystem, component, version):
+    """
+    Try to wait for the analysis to be finished.
+    Current API implementation returns just two HTTP codes:
+    200 OK : analysis is already finished
+    404 NOT FOUND: analysis is started or is in progress
+    """
+
+    timeout = 600      # in seconds
+    sleep_amount = 10  # we don't have to overload the API with too many calls
+
+    url = component_analysis_url(context, ecosystem, component, version)
+
+    for _ in range(timeout//sleep_amount):
+        status_code = requests.get(url).status_code
+        if status_code == 200:
+            break
+        elif status_code != 404:
+            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
+        time.sleep(sleep_amount)
     else:
-        # Unknown action
-        raise Exception('Unknown action {action}, allowed values are '
-                        '"start" and "finish"'.format(action=action))
-
-    url = urljoin(context.coreapi_url,
-                  'api/v1/component-analyses/{e}/{p}/{v}'.format(e=ecosystem,
-                                                                 p=package,
-                                                                 v=version))
-
-    start = datetime.datetime.now()
-    wait_till = start + datetime.timedelta(seconds=timeout)
-    done = False
-    while datetime.datetime.now() < wait_till:
-        time.sleep(1)
-        response = requests.get(url)
-        if response.status_code != 200:
-            continue
-        if not response.json():
-            continue
-        if finished:
-            if not response.json().get('finished_at', None):
-                continue
-        else:
-            if not response.json().get('started_at', None):
-                continue
-        done = True
-        break
-
-    assert done, err.format(e=ecosystem, p=package, v=version, s=timeout)
+        raise Exception('Timeout waiting for the component analysis results')
 
 
 @when('I access anitya {url}')
