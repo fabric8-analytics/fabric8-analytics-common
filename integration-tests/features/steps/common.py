@@ -82,51 +82,6 @@ def component_analysis_url(context, ecosystem, component, version):
                                                                   v=version))
 
 
-@when("I wait for {ecosystem}/{package}/{version} analysis to {action}")
-def wait_for_analysis(context, ecosystem, package, version, action):
-    """
-    wait for analysis to be started or finished
-    """
-    if action == 'finish':
-        # Wait for analysis to finish
-        timeout = 600
-        err = "The analysis of {e}/{p}/{v} takes too long, more than {s} seconds."
-        finished = True
-    elif action == 'start':
-        # Wait for analysis to start
-        timeout = 60
-        err = "The analysis of {e}/{p}/{v} has not started in {s} seconds."
-        finished = False
-    else:
-        # Unknown action
-        raise Exception('Unknown action {action}, allowed values are '
-                        '"start" and "finish"'.format(action=action))
-
-    url = urljoin(context.coreapi_url,
-                  'api/v1/component-analyses/{e}/{p}/{v}'.format(e=ecosystem,
-                                                                 p=package,
-                                                                 v=version))
-
-    start = datetime.datetime.now()
-    wait_till = start + datetime.timedelta(seconds=timeout)
-    done = False
-    while datetime.datetime.now() < wait_till:
-        time.sleep(1)
-        response = requests.get(url)
-        if response.status_code != 200:
-            continue
-        if not response.json():
-            continue
-        if finished:
-            if not response.json().get('finished_at', None):
-                continue
-        else:
-            if not response.json().get('started_at', None):
-                continue
-        done = True
-        break
-
-    assert done, err.format(e=ecosystem, p=package, v=version, s=timeout)
 
 
 @when('I access anitya {url}')
