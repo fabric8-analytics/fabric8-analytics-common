@@ -481,7 +481,7 @@ def check_stack_analyses_response(context, url):
     jsonschema.validate(resp_json, schema)
 
 
-def get_value_using_path(object, path):
+def get_value_using_path(obj, path):
     """
     Return any attribute stored in the nested object and list hierarchy using
     the 'path' where path consists of:
@@ -503,7 +503,7 @@ def get_value_using_path(object, path):
     keys = path.split("/")
     for key in keys:
         if key.isdigit():
-            object = object[int(key)]
+            obj = obj[int(key)]
         else:
-            object = object[key]
-    return object
+            obj = obj[key]
+    return obj
