@@ -1,3 +1,4 @@
+import string
 import datetime
 import json
 import time
@@ -436,6 +437,16 @@ def check_id_in_json_response(context):
     assert id is not None
     assert isinstance(id, str) and len(id) == 32
     assert all(char in string.hexdigits for char in id)
+
+
+@then('I should receive JSON response with the correct timestamp in attribute {attribute}')
+def check_timestamp_in_json_response(context, attribute):
+    timestamp = context.response.json().get(attribute)
+    assert timestamp is not None
+    assert isinstance(timestamp, str)
+    # just try to parse the string to check whether
+    # the ValueError exception is raised or not
+    datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
 
 
 @when('I wait {num:d} seconds')
