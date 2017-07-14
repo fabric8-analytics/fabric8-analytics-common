@@ -20,4 +20,5 @@ Feature: Stack analysis v2 API
     Then I should receive JSON response containing the submitted_at key
     Then I should receive JSON response with the status key set to success
     Then I should receive JSON response with the correct id
+    Then I should receive JSON response with the correct timestamp in attribute submitted_at
 
