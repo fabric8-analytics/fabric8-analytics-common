@@ -426,6 +426,18 @@ def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
 
 
+@then('I should receive JSON response with the correct id')
+def check_id_in_json_response(context):
+    """
+    check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    id = context.response.json().get("id")
+    assert id is not None
+    assert isinstance(id, str) and len(id) == 32
+    assert all(char in string.hexdigits for char in id)
+
+
 @when('I wait {num:d} seconds')
 @then('I wait {num:d} seconds')
 def pause_scenario_execution(context, num):
