@@ -176,14 +176,35 @@ def perform_valid_manifest_post(context, manifest, url):
     print(response.json())
 
 
-@when("I send NPM package manifest {manifest} to stack analysis")
-def npm_manifest_stack_analysis(context, manifest):
+def send_manifest_to_stack_analysis(context, manifest, name, endpoint):
     filename = 'data/{manifest}'.format(manifest=manifest)
-    files = {'manifest[]': ('package.json', open(filename, 'rb'))}
-    endpoint = urljoin(context.coreapi_url, 'api/v1/stack-analyses')
+    files = {'manifest[]': (name, open(filename, 'rb'))}
     response = requests.post(endpoint, files=files)
     response.raise_for_status()
     context.response = response
+
+
+def stack_analysis_endpoint(context, version):
+    endpoint = {"1": "/api/v1/stack-analyses",
+                "2": "/api/v1/stack-analyses-v2"}.get(version)
+    if endpoint is None:
+        raise Exception("Wrong version specified: {v}".format(v=version))
+    return urljoin(context.coreapi_url, endpoint)
+
+
+@when("I send NPM package manifest {manifest} to stack analysis")
+@when("I send NPM package manifest {manifest} to stack analysis version {version}")
+def npm_manifest_stack_analysis(context, manifest, version="1"):
+    endpoint = stack_analysis_endpoint(context, version)
+    send_manifest_to_stack_analysis(context, manifest, 'package.json', endpoint)
+
+
+@when("I send Python package manifest {manifest} to stack analysis")
+@when("I send Python package manifest {manifest} to stack analysis version {version}")
+def python_manifest_stack_analysis(context, manifest, version="1"):
+    endpoint = stack_analysis_endpoint(context, version)
+    send_manifest_to_stack_analysis(context, manifest, 'requirements.txt',
+                                    endpoint)
 
 
 def job_metadata_filename(metadata):
