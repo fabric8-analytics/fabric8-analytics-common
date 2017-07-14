@@ -22,3 +22,10 @@ Feature: Stack analysis v2 API
     Then I should receive JSON response with the correct id
     Then I should receive JSON response with the correct timestamp in attribute submitted_at
 
+  Scenario: Check if the stack analysis is finished
+    Given System is running
+    When I send Python package manifest requirements.txt to stack analysis version 2
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish
+    Then I should get 200 status code
+
