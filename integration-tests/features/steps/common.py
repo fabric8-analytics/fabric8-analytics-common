@@ -139,6 +139,37 @@ def finish_analysis_for_component(context, ecosystem, component, version):
         raise Exception('Timeout waiting for the component analysis results')
 
 
+@when("I wait for stack analysis to finish")
+@when("I wait for stack analysis version {version} to finish")
+def wait_for_stack_analysis_completion(context, version=1):
+    """
+    Try to wait for the stack analysis to be finished.
+
+    This step assumes that stack analysis has been started previously and
+    thus that the job ID is known
+
+    Current API implementation returns just two HTTP codes:
+    200 OK : analysis is already finished
+    202 Accepted: analysis is started or is in progress (or other state!)
+    """
+
+    timeout = 600      # in seconds
+    sleep_amount = 10  # we don't have to overload the API with too many calls
+
+    id = context.response.json().get("id")
+    url = urljoin(stack_analysis_endpoint(context, version), id)
+
+    for _ in range(timeout//sleep_amount):
+        status_code = requests.get(url).status_code
+        if status_code == 200:
+            break
+        elif status_code != 202:
+            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
+        time.sleep(sleep_amount)
+    else:
+        raise Exception('Timeout waiting for the stack analysis results')
+
+
 @when('I access anitya {url}')
 def anitya_url(context, url):
     """
@@ -186,8 +217,8 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint):
 
 
 def stack_analysis_endpoint(context, version):
-    endpoint = {"1": "/api/v1/stack-analyses",
-                "2": "/api/v1/stack-analyses-v2"}.get(version)
+    endpoint = {"1": "/api/v1/stack-analyses/",
+                "2": "/api/v1/stack-analyses-v2/"}.get(version)
     if endpoint is None:
         raise Exception("Wrong version specified: {v}".format(v=version))
     return urljoin(context.coreapi_url, endpoint)
