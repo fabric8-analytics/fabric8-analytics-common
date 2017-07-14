@@ -1,0 +1,7 @@
+click==6.7
+httpie==0.9.9
+parsimonious==0.7.0
+pygments==2.2.0
+six==1.10.0
+wheel==0.30.0a0
+setuptools==36.0.1
