@@ -179,7 +179,6 @@ def perform_valid_manifest_post(context, manifest, url):
 def send_manifest_to_stack_analysis(context, manifest, name, endpoint):
     filename = 'data/{manifest}'.format(manifest=manifest)
     files = {'manifest[]': (name, open(filename, 'rb'))}
-    endpoint = urljoin(context.coreapi_url, endpoint)
     response = requests.post(endpoint, files=files)
     response.raise_for_status()
     context.response = response
