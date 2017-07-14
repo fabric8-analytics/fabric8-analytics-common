@@ -1,3 +1,4 @@
+import string
 import datetime
 import json
 import time
@@ -424,6 +425,28 @@ def check_json_response(context, key):
 @then('I should receive JSON response with the {key} key set to {value}')
 def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
+
+
+@then('I should receive JSON response with the correct id')
+def check_id_in_json_response(context):
+    """
+    check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    id = context.response.json().get("id")
+    assert id is not None
+    assert isinstance(id, str) and len(id) == 32
+    assert all(char in string.hexdigits for char in id)
+
+
+@then('I should receive JSON response with the correct timestamp in attribute {attribute}')
+def check_timestamp_in_json_response(context, attribute):
+    timestamp = context.response.json().get(attribute)
+    assert timestamp is not None
+    assert isinstance(timestamp, str)
+    # just try to parse the string to check whether
+    # the ValueError exception is raised or not
+    datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
 
 
 @when('I wait {num:d} seconds')
