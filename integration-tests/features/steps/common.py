@@ -141,7 +141,7 @@ def finish_analysis_for_component(context, ecosystem, component, version):
 
 @when("I wait for stack analysis to finish")
 @when("I wait for stack analysis version {version} to finish")
-def wait_for_stack_analysis_completion(context, version=1):
+def wait_for_stack_analysis_completion(context, version="1"):
     """
     Try to wait for the stack analysis to be finished.
 
