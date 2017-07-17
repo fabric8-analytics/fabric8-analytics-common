@@ -570,3 +570,15 @@ def get_value_using_path(obj, path):
         else:
             obj = obj[key]
     return obj
+
+
+@then('I should find the value {value} under the path {path} in the JSON response')
+def find_value_under_the_path(context, value, path):
+    '''
+    Check if the value (attribute) can be found in the JSON output
+    '''
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v is not None
+    assert v == value
