@@ -174,6 +174,17 @@ services:
       BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
       BAYESIAN_DATA_IMPORTER_SERVICE_HOST: "data-model-importer"
       BAYESIAN_DATA_IMPORTER_SERVICE_PORT: "9192"
+      # Provide credentials from Google's key.json here:
+      GCP_TYPE: ""
+      GCP_PROJECT_ID: ""
+      GCP_PRIVATE_KEY_ID: ""
+      GCP_PRIVATE_KEY: ""
+      GCP_CLIENT_EMAIL: ""
+      GCP_CLIENT_ID: ""
+      GCP_AUTH_URI: ""
+      GCP_TOKEN_URI: ""
+      GCP_AUTH_PROVIDER_X509_CERT_URL: ""
+      GCP_CLIENT_X509_CERT_URL: ""
     tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
   worker-ingestion:
     <<: *worker
