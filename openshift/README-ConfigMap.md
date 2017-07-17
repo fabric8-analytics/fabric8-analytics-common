@@ -1,5 +1,7 @@
 ## Generate ConfigMap
 
+Simply run:
+
 ```
 ./generate-config.sh
 ```
@@ -20,4 +22,3 @@ Once you have the config, you can deploy it:
 ```
 oc apply -f config.yaml
 ```
-
