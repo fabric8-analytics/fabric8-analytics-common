@@ -620,3 +620,10 @@ def find_value_under_the_path(context, value, path):
     else:
         assert v == value
 
+@then('I should find the attribute request_id equals to id returned by stack analysis request')
+def check_stack_analysis_id(context):
+    previous_id = context.stack_analysis_id
+    request_id = context.response.json().get("request_id")
+    assert previous_id is not None
+    assert request_id is not None
+    assert previous_id == request_id
