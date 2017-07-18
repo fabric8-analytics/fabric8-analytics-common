@@ -273,6 +273,7 @@ services:
     environment:
       DATA_IMPORTER_SERVICE_PORT: "9192"
       DATA_IMPORTER_SERVICE_TIMEOUT: "3600"
+      NUMBER_WORKER_PROCESS: "1"
       # controls whether to use http/ws or https/wss
       GREMLIN_USE_SECURE_CONNECTION: "false"
       BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
