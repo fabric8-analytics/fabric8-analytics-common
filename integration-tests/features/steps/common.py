@@ -157,10 +157,12 @@ def wait_for_stack_analysis_completion(context, version="1"):
     sleep_amount = 10  # we don't have to overload the API with too many calls
 
     id = context.response.json().get("id")
+    context.stack_analysis_id = id
     url = urljoin(stack_analysis_endpoint(context, version), id)
 
     for _ in range(timeout//sleep_amount):
-        status_code = requests.get(url).status_code
+        context.response = requests.get(url)
+        status_code = context.response.status_code
         if status_code == 200:
             break
         elif status_code != 202:
