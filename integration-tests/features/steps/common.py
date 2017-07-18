@@ -614,4 +614,9 @@ def find_value_under_the_path(context, value, path):
     assert jsondata is not None
     v = get_value_using_path(jsondata, path)
     assert v is not None
-    assert v == value
+    # fallback for int value in the JSON file
+    if type(v) is int:
+        assert v == int(value)
+    else:
+        assert v == value
+
