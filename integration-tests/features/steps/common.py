@@ -157,6 +157,7 @@ def wait_for_stack_analysis_completion(context, version="1"):
     sleep_amount = 10  # we don't have to overload the API with too many calls
 
     id = context.response.json().get("id")
+    context.stack_analysis_id = id
     url = urljoin(stack_analysis_endpoint(context, version), id)
 
     for _ in range(timeout//sleep_amount):
@@ -618,3 +619,12 @@ def find_value_under_the_path(context, value, path):
         assert v == int(value)
     else:
         assert v == value
+
+        
+@then('I should find the attribute request_id equals to id returned by stack analysis request')
+def check_stack_analysis_id(context):
+    previous_id = context.stack_analysis_id
+    request_id = context.response.json().get("request_id")
+    assert previous_id is not None
+    assert request_id is not None
+    assert previous_id == request_id
