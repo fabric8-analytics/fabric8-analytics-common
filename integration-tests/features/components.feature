@@ -23,6 +23,12 @@ Feature: Components API V1
     When I access /api/v1/component-search/
     Then I should get 404 status code
 
+  Scenario: Check that the component analyses API entry point make sure resources are specified
+    Given System is running
+    Given Component search service is running
+    When I access /api/v1/component-analyses/
+    Then I should get 404 status code
+
   Scenario: Check if search for packages handle empty results
     Given System is running
     Given Component search service is running
