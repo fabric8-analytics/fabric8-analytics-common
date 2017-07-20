@@ -472,9 +472,7 @@ def check_id_in_json_response(context):
     assert all(char in string.hexdigits for char in id)
 
 
-@then('I should receive JSON response with the correct timestamp in attribute {attribute}')
-def check_timestamp_in_json_response(context, attribute):
-    timestamp = context.response.json().get(attribute)
+def check_timestamp(timestamp):
     assert timestamp is not None
     assert isinstance(timestamp, str)
     assert len(timestamp) >= len("YYYY-mm-dd HH:MM:SS.")
@@ -494,6 +492,28 @@ def check_timestamp_in_json_response(context, attribute):
     # just try to parse the string to check whether
     # the ValueError exception is raised or not
     datetime.datetime.strptime(timestamp, timeformat)
+
+
+@then('I should receive JSON response with the correct timestamp in attribute {attribute}')
+def check_timestamp_in_json_response(context, attribute):
+    '''
+    Check if the attribute in the JSON response object contains
+    proper timestamp value
+    '''
+    timestamp = context.response.json().get(attribute)
+    check_timestamp(timestamp)
+
+
+@then('I should find proper timestamp under the path {path}')
+def check_timestamp_under_path(context, path):
+    '''
+    Check if timestamp value can be found in the JSON response object
+    under the given path.
+    '''
+    jsondata = context.response.json()
+    assert jsondata is not None
+    timestamp = get_value_using_path(jsondata, path)
+    check_timestamp(timestamp)
 
 
 @when('I wait {num:d} seconds')
