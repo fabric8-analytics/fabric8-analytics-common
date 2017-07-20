@@ -477,9 +477,23 @@ def check_timestamp_in_json_response(context, attribute):
     timestamp = context.response.json().get(attribute)
     assert timestamp is not None
     assert isinstance(timestamp, str)
+    assert len(timestamp) >= len("YYYY-mm-dd HH:MM:SS.")
+
+    # we have to support the following formats:
+    #    2017-07-19 13:05:25.041688
+    #    2017-07-17T09:05:29.101780
+    # -> it is needed to distinguish the 'T' separator
+    #
+    # (please see https://www.tutorialspoint.com/python/time_strptime.htm for
+    #  an explanation how timeformat should look like)
+
+    timeformat = "%Y-%m-%d %H:%M:%S.%f"
+    if timestamp[10] == "T":
+        timeformat = "%Y-%m-%dT%H:%M:%S.%f"
+
     # just try to parse the string to check whether
     # the ValueError exception is raised or not
-    datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S.%f")
+    datetime.datetime.strptime(timestamp, timeformat)
 
 
 @when('I wait {num:d} seconds')
@@ -620,7 +634,7 @@ def find_value_under_the_path(context, value, path):
     else:
         assert v == value
 
-        
+
 @then('I should find the attribute request_id equals to id returned by stack analysis request')
 def check_stack_analysis_id(context):
     previous_id = context.stack_analysis_id
