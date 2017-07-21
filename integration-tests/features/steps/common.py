@@ -111,7 +111,7 @@ def start_analysis_for_component(context, ecosystem, component, version):
                         'finished already')
     elif response.status_code != 404:
         raise Exception('Improper response: expected HTTP status code 404, '
-                        'received {c}'.format(c=status_code))
+                        'received {c}'.format(c=response.status_code))
 
 
 @when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
