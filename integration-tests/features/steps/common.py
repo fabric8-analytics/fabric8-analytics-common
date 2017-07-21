@@ -98,7 +98,8 @@ def start_analysis_for_component(context, ecosystem, component, version):
     Start the analysis for given component and version in selected ecosystem.
     Current API implementation returns just two HTTP codes:
     200 OK : analysis is already finished
-    404 NOT FOUND: analysis is started or is in progress
+    401 UNAUTHORIZED : missing or inproper authorization token
+    404 NOT FOUND : analysis is started or is in progress
     It means that this test step should check if 200 OK is NOT returned
     """
 
@@ -109,8 +110,8 @@ def start_analysis_for_component(context, ecosystem, component, version):
     if response.status_code == 200:
         raise Exception('Bad state: the analysis for component has been '
                         'finished already')
-    elif response.status_code != 404:
-        raise Exception('Improper response: expected HTTP status code 404, '
+    elif response.status_code != 401 and response.status_code != 404:
+        raise Exception('Improper response: expected HTTP status code 401 or 404, '
                         'received {c}'.format(c=response.status_code))
 
 
