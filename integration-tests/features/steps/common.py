@@ -1,3 +1,4 @@
+import string
 import datetime
 import json
 import time
@@ -21,6 +22,18 @@ def initial_state(context):
 def running_system(context):
     if not context.is_running(context):
         initial_state(context)
+
+
+@given('Jobs debug API is running')
+def running_jobs_debug_api(context):
+    if not context.is_jobs_debug_api_running(context):
+        context.wait_for_jobs_debug_api_service(context, 60)
+
+
+@given('Component search service is running')
+def running_component_search_api(context):
+    if not context.is_component_search_service_running(context):
+        context.wait_for_component_search_service(context, 60)
 
 
 @when("I obtain TGT in {service} service")
@@ -56,46 +69,107 @@ def perform_kerberized_request(context, method, url):
         context.exec_command_in_container(context.client, context.container, command)
 
 
-@when("I wait for {ecosystem}/{package}/{version} analysis to {action}")
-def wait_for_analysis(context, ecosystem, package, version, action):
+@when("I search for component {component}")
+def search_for_component(context, component):
+    url = "http://localhost:32000/api/v1/component-search/{component}" .format(
+        component=component)
+    context.response = requests.get(url)
+
+
+@when("I read {ecosystem}/{component}/{version} component analysis")
+def read_analysis_for_component(context, ecosystem, component, version):
     """
-    wait for analysis to be started or finished
+    Read component analysis (or an error message) for the selected ecosystem
     """
-    if action == 'finish':
-        # Wait for analysis to finish
-        timeout = 600
-        err = "The analysis of {e}/{p}/{v} takes too long, more than {s} seconds."
-        finished = True
+    url = component_analysis_url(context, ecosystem, component, version)
+    context.response = requests.get(url)
+
+
+def component_analysis_url(context, ecosystem, component, version):
+    return urljoin(context.coreapi_url,
+                   'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
+                                                                  c=component,
+                                                                  v=version))
+
+
+@when("I start analysis for component {ecosystem}/{component}/{version}")
+def start_analysis_for_component(context, ecosystem, component, version):
+    """
+    Start the analysis for given component and version in selected ecosystem.
+    Current API implementation returns just two HTTP codes:
+    200 OK : analysis is already finished
+    404 NOT FOUND: analysis is started or is in progress
+    It means that this test step should check if 200 OK is NOT returned
+    """
+
+    url = component_analysis_url(context, ecosystem, component, version)
+
+    # first check that the analysis is really new
+    response = requests.get(url)
+    if response.status_code == 200:
+        raise Exception('Bad state: the analysis for component has been '
+                        'finished already')
+    elif response.status_code != 404:
+        raise Exception('Improper response: expected HTTP status code 404, '
+                        'received {c}'.format(c=status_code))
+
+
+@when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
+def finish_analysis_for_component(context, ecosystem, component, version):
+    """
+    Try to wait for the analysis to be finished.
+    Current API implementation returns just two HTTP codes:
+    200 OK : analysis is already finished
+    404 NOT FOUND: analysis is started or is in progress
+    """
+
+    timeout = 600      # in seconds
+    sleep_amount = 10  # we don't have to overload the API with too many calls
+
+    url = component_analysis_url(context, ecosystem, component, version)
+
+    for _ in range(timeout//sleep_amount):
+        status_code = requests.get(url).status_code
+        if status_code == 200:
+            break
+        elif status_code != 404:
+            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
+        time.sleep(sleep_amount)
     else:
-        # Wait for analysis to start
-        timeout = 60
-        err = "The analysis of {e}/{p}/{v} has not started in {s} seconds."
-        finished = False
+        raise Exception('Timeout waiting for the component analysis results')
 
-    url = urljoin(context.coreapi_url, 'api/v1/analyses/{e}/{p}/{v}'.format(e=ecosystem,
-                                                                            p=package,
-                                                                            v=version))
 
-    start = datetime.datetime.now()
-    wait_till = start + datetime.timedelta(seconds=timeout)
-    done = False
-    while datetime.datetime.now() < wait_till:
-        time.sleep(1)
-        response = requests.get(url)
-        if response.status_code != 200:
-            continue
-        if not response.json():
-            continue
-        if finished:
-            if not response.json().get('finished_at', None):
-                continue
-        else:
-            if not response.json().get('started_at', None):
-                continue
-        done = True
-        break
+@when("I wait for stack analysis to finish")
+@when("I wait for stack analysis version {version} to finish")
+def wait_for_stack_analysis_completion(context, version="1"):
+    """
+    Try to wait for the stack analysis to be finished.
 
-    assert done, err.format(e=ecosystem, p=package, v=version, s=timeout)
+    This step assumes that stack analysis has been started previously and
+    thus that the job ID is known
+
+    Current API implementation returns just two HTTP codes:
+    200 OK : analysis is already finished
+    202 Accepted: analysis is started or is in progress (or other state!)
+    """
+
+    timeout = 600      # in seconds
+    sleep_amount = 10  # we don't have to overload the API with too many calls
+
+    id = context.response.json().get("id")
+    context.stack_analysis_id = id
+    url = urljoin(stack_analysis_endpoint(context, version), id)
+
+    for _ in range(timeout//sleep_amount):
+        context.response = requests.get(url)
+        status_code = context.response.status_code
+        if status_code == 200:
+            break
+        elif status_code != 202:
+            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
+        time.sleep(sleep_amount)
+    else:
+        raise Exception('Timeout waiting for the stack analysis results')
 
 
 @when('I access anitya {url}')
@@ -134,6 +208,37 @@ def perform_valid_manifest_post(context, manifest, url):
     response.raise_for_status()
     context.response = response.json()
     print(response.json())
+
+
+def send_manifest_to_stack_analysis(context, manifest, name, endpoint):
+    filename = 'data/{manifest}'.format(manifest=manifest)
+    files = {'manifest[]': (name, open(filename, 'rb'))}
+    response = requests.post(endpoint, files=files)
+    response.raise_for_status()
+    context.response = response
+
+
+def stack_analysis_endpoint(context, version):
+    endpoint = {"1": "/api/v1/stack-analyses/",
+                "2": "/api/v1/stack-analyses-v2/"}.get(version)
+    if endpoint is None:
+        raise Exception("Wrong version specified: {v}".format(v=version))
+    return urljoin(context.coreapi_url, endpoint)
+
+
+@when("I send NPM package manifest {manifest} to stack analysis")
+@when("I send NPM package manifest {manifest} to stack analysis version {version}")
+def npm_manifest_stack_analysis(context, manifest, version="1"):
+    endpoint = stack_analysis_endpoint(context, version)
+    send_manifest_to_stack_analysis(context, manifest, 'package.json', endpoint)
+
+
+@when("I send Python package manifest {manifest} to stack analysis")
+@when("I send Python package manifest {manifest} to stack analysis version {version}")
+def python_manifest_stack_analysis(context, manifest, version="1"):
+    endpoint = stack_analysis_endpoint(context, version)
+    send_manifest_to_stack_analysis(context, manifest, 'requirements.txt',
+                                    endpoint)
 
 
 def job_metadata_filename(metadata):
@@ -302,15 +407,18 @@ def should_not_find_job_by_id(context, job_id):
     assert job_id not in job_ids
 
 
-@then('I should see 0 packages')
-@then('I should see {num:d} packages ({packages}), all from {ecosystem} ecosystem')
-def check_packages(context, num=0, packages='', ecosystem=''):
-    packages = split_comma_separated_list(packages)
-    pkgs = context.response.json()['items']
-    assert len(pkgs) == num
-    for p in pkgs:
-        assert p['ecosystem'] == ecosystem
-        assert p['package'] in packages
+@then('I should see 0 components')
+@then('I should see {num:d} components ({components}), all from {ecosystem} ecosystem')
+def check_components(context, num=0, components='', ecosystem=''):
+    components = split_comma_separated_list(components)
+
+    json_data = context.response.json()
+
+    search_results = json_data['result']
+    assert len(search_results) == num
+    for search_result in search_results:
+        assert search_result['ecosystem'] == ecosystem
+        assert search_result['name'] in components
 
 
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
@@ -350,6 +458,62 @@ def check_json_response(context, key):
 @then('I should receive JSON response with the {key} key set to {value}')
 def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
+
+
+@then('I should receive JSON response with the correct id')
+def check_id_in_json_response(context):
+    """
+    check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    id = context.response.json().get("id")
+    assert id is not None
+    assert isinstance(id, str) and len(id) == 32
+    assert all(char in string.hexdigits for char in id)
+
+
+def check_timestamp(timestamp):
+    assert timestamp is not None
+    assert isinstance(timestamp, str)
+    assert len(timestamp) >= len("YYYY-mm-dd HH:MM:SS.")
+
+    # we have to support the following formats:
+    #    2017-07-19 13:05:25.041688
+    #    2017-07-17T09:05:29.101780
+    # -> it is needed to distinguish the 'T' separator
+    #
+    # (please see https://www.tutorialspoint.com/python/time_strptime.htm for
+    #  an explanation how timeformat should look like)
+
+    timeformat = "%Y-%m-%d %H:%M:%S.%f"
+    if timestamp[10] == "T":
+        timeformat = "%Y-%m-%dT%H:%M:%S.%f"
+
+    # just try to parse the string to check whether
+    # the ValueError exception is raised or not
+    datetime.datetime.strptime(timestamp, timeformat)
+
+
+@then('I should receive JSON response with the correct timestamp in attribute {attribute}')
+def check_timestamp_in_json_response(context, attribute):
+    '''
+    Check if the attribute in the JSON response object contains
+    proper timestamp value
+    '''
+    timestamp = context.response.json().get(attribute)
+    check_timestamp(timestamp)
+
+
+@then('I should find proper timestamp under the path {path}')
+def check_timestamp_under_path(context, path):
+    '''
+    Check if timestamp value can be found in the JSON response object
+    under the given path.
+    '''
+    jsondata = context.response.json()
+    assert jsondata is not None
+    timestamp = get_value_using_path(jsondata, path)
+    check_timestamp(timestamp)
 
 
 @when('I wait {num:d} seconds')
@@ -445,3 +609,72 @@ def check_stack_analyses_response(context, url):
     # ensure that the response is in accordance to the Stack Analyses schema
     schema = requests.get(resp_json["schema"]["url"]).json()
     jsonschema.validate(resp_json, schema)
+
+
+def get_value_using_path(obj, path):
+    """
+    Return any attribute stored in the nested object and list hierarchy using
+    the 'path' where path consists of:
+        keys (selectors)
+        indexes (in case of arrays)
+    separated by slash, ie. "key1/0/key_x".
+
+    Usage:
+    get_value_using_path({"x" : {"y" : "z"}}, "x"))   -> {"y" : "z"}
+    get_value_using_path({"x" : {"y" : "z"}}, "x/y")) -> "z"
+    get_value_using_path(["x", "y", "z"], "0"))       -> "x"
+    get_value_using_path(["x", "y", "z"], "1"))       -> "y"
+    get_value_using_path({"key1" : ["x", "y", "z"],
+                          "key2" : ["a", "b", "c", "d"]}, "key1/1")) -> "y"
+    get_value_using_path({"key1" : ["x", "y", "z"],
+                          "key2" : ["a", "b", "c", "d"]}, "key2/1")) -> "b"
+    """
+
+    keys = path.split("/")
+    for key in keys:
+        if key.isdigit():
+            obj = obj[int(key)]
+        else:
+            obj = obj[key]
+    return obj
+
+
+@then('I should find the value {value} under the path {path} in the JSON response')
+def find_value_under_the_path(context, value, path):
+    '''
+    Check if the value (attribute) can be found in the JSON output
+    '''
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v is not None
+    # fallback for int value in the JSON file
+    if type(v) is int:
+        assert v == int(value)
+    else:
+        assert v == value
+
+
+@then('I should find the attribute request_id equals to id returned by stack analysis request')
+def check_stack_analysis_id(context):
+    previous_id = context.stack_analysis_id
+    request_id = context.response.json().get("request_id")
+    assert previous_id is not None
+    assert request_id is not None
+    assert previous_id == request_id
+
+
+@then('I should find analyzed dependency named {package} with version {version} in the stack analysis')
+def check_analyzed_dependency(context, package, version):
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    analyzed_dependencies = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies is not None
+    for analyzed_dependency in analyzed_dependencies:
+        if analyzed_dependency["package"] == package \
+           and analyzed_dependency["version"] == version:
+            break
+    else:
+        raise Exception('Package {package} with version {version} not found'.
+                        format(package=package, version=version))
