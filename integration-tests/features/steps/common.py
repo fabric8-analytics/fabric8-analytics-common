@@ -13,6 +13,9 @@ import base64
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
 
+jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
+
+
 def split_comma_separated_list(l):
     return [i.strip() for i in l.split(',')]
 
@@ -686,7 +689,6 @@ def check_analyzed_dependency(context, package, version):
 
 @when('I generate authorization token from the private key {private_key}')
 def generate_authorization_token(context, private_key):
-    jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
     expiry = datetime.datetime.utcnow() + datetime.timedelta(days=90)
     userid = "testuser"
 
