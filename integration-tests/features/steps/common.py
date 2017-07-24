@@ -699,18 +699,15 @@ def generate_authorization_token(context, private_key):
     with open(path_to_private_key) as fin:
         private_key = fin.read()
 
-        try:
-            payload = {
-                'exp': expiry,
-                'iat': datetime.datetime.utcnow(),
-                'sub': userid
-            }
-            token = jwt.encode(payload, key=private_key, algorithm='RS256')
-            decoded = token.decode('utf-8')
-            # print(decoded)
-            context.token = decoded
-        except Exception as e:
-            print("Error occured: " + e)
+        payload = {
+            'exp': expiry,
+            'iat': datetime.datetime.utcnow(),
+            'sub': userid
+        }
+        token = jwt.encode(payload, key=private_key, algorithm='RS256')
+        decoded = token.decode('utf-8')
+        # print(decoded)
+        context.token = decoded
 
 
 @then('I should get the proper authorization token')
