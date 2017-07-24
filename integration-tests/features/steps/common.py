@@ -110,7 +110,7 @@ def start_analysis_for_component(context, ecosystem, component, version):
     if response.status_code == 200:
         raise Exception('Bad state: the analysis for component has been '
                         'finished already')
-    elif response.status_code != 401 and response.status_code != 404:
+    elif response.status_code not in (401, 404):
         raise Exception('Improper response: expected HTTP status code 401 or 404, '
                         'received {c}'.format(c=response.status_code))
 
