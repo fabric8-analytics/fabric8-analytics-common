@@ -68,12 +68,29 @@ def perform_kerberized_request(context, method, url):
     context.kerb_request = \
         context.exec_command_in_container(context.client, context.container, command)
 
+def authorization(context):
+    return {'Authorization': 'Bearer {token}'.format(token=context.token)}
 
-@when("I search for component {component}")
-def search_for_component(context, component):
+
+def perform_component_search(context, component, use_token):
     url = "http://localhost:32000/api/v1/component-search/{component}" .format(
         component=component)
-    context.response = requests.get(url)
+    if use_token:
+        context.response = requests.get(url, headers = authorization(context))
+    else:
+        context.response = requests.get(url)
+
+
+@when("I search for component {component} without authorization token")
+def search_for_component_without_token(context, component):
+    """Search for given component via the component search REST API call."""
+    perform_component_search(context, component, False)
+
+
+@when("I search for component {component} with authorization token")
+def search_for_component_with_token(context, component):
+    """Search for given component via the component search REST API call."""
+    perform_component_search(context, component, True)
 
 
 @when("I read {ecosystem}/{component}/{version} component analysis")
