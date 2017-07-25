@@ -8,6 +8,13 @@ from urllib.parse import urljoin
 import jsonschema
 import requests
 
+import jwt
+import base64
+from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
+
+
+jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
+
 
 def split_comma_separated_list(l):
     return [i.strip() for i in l.split(',')]
@@ -679,3 +686,31 @@ def check_analyzed_dependency(context, package, version):
     else:
         raise Exception('Package {package} with version {version} not found'.
                         format(package=package, version=version))
+
+
+@when('I generate authorization token from the private key {private_key}')
+def generate_authorization_token(context, private_key):
+    expiry = datetime.datetime.utcnow() + datetime.timedelta(days=90)
+    userid = "testuser"
+
+    path_to_private_key = 'data/{private_key}'.format(private_key=private_key)
+    # initial value
+    context.token = None
+
+    with open(path_to_private_key) as fin:
+        private_key = fin.read()
+
+        payload = {
+            'exp': expiry,
+            'iat': datetime.datetime.utcnow(),
+            'sub': userid
+        }
+        token = jwt.encode(payload, key=private_key, algorithm='RS256')
+        decoded = token.decode('utf-8')
+        # print(decoded)
+        context.token = decoded
+
+
+@then('I should get the proper authorization token')
+def is_proper_authorization_token(context):
+    assert context.token is not None

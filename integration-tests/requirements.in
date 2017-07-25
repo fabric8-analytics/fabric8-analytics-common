@@ -4,3 +4,5 @@ pytest
 jsonschema
 requests
 docker-py
+pyjwt
+pycrypto
