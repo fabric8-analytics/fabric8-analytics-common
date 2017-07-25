@@ -170,6 +170,14 @@ services:
       #BLACKDUCK_PATH: ""
       JACCARD_THRESHOLD: 0.4
       SIMILARITY_SCORE_THRESHOLD: 0.4
+      MAX_COMPANION_PACKAGES: 5
+      MAX_ALTERNATE_PACKAGES: 2
+      OUTLIER_THRESHOLD: 0.6
+      UNKNOWN_PACKAGES_THRESHOLD: 0.3
+      PGM_SERVICE_HOST: "kronos-stack-analysis.dev.rdu2c.fabric8.io"
+      PGM_SERVICE_PORT: "80"
+      LICENSE_SERVICE_HOST: "stack-license-stack-license.dev.rdu2c.fabric8.io"
+      LICENSE_SERVICE_PORT: "80"
       BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
       BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
       BAYESIAN_DATA_IMPORTER_SERVICE_HOST: "data-model-importer"
