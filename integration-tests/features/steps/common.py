@@ -22,58 +22,63 @@ def split_comma_separated_list(l):
 
 @given('System is in initial state')
 def initial_state(context):
+    """Restart the system to the known initial state."""
     context.restart_system(context)
 
 
 @given('System is running')
 def running_system(context):
+    """Ensure that the system is running, (re)start it if necesarry."""
     if not context.is_running(context):
         initial_state(context)
 
 
 @given('Jobs debug API is running')
 def running_jobs_debug_api(context):
+    """Wait for the job debug REST API to be available."""
     if not context.is_jobs_debug_api_running(context):
         context.wait_for_jobs_debug_api_service(context, 60)
 
 
 @given('Component search service is running')
 def running_component_search_api(context):
+    """Wait for the component search REST API to be available."""
     if not context.is_component_search_service_running(context):
         context.wait_for_component_search_service(context, 60)
 
 
 @when("I obtain TGT in {service} service")
 def get_tgt_in_service(context, service):
-    """
-    obtains TGT in specified container via `docker exec` and returns output of klist
-    """
-    context.container = context.run_command_in_service(context, service, ["sleep", "10"])
+    """Obtain TGT in specified container via `docker exec` and returns
+    output of klist."""
+    context.container = context.run_command_in_service(context, service,
+                                                       ["sleep", "10"])
     assert context.container
     # just in case
     context.exec_command_in_container(context.client, context.container,
                                       'kdestroy')
 
-    # this may take ages if you are not on network: I'm currently writing this in train and I had
-    # no wifi nor ethernet and the command would never finish; when I connected to train's wifi
-    # it started to work just fine; can you imagine?
+    # this may take ages if you are not on network: I'm currently writing this
+    # in train and I had no wifi nor ethernet and the command would never
+    # finish; when I connected to train's wifi it started to work just fine;
+    # can you imagine?
+    kinit_command = 'bash -c "echo user | kinit user@EXAMPLE.COM"'
     context.exec_command_in_container(context.client, context.container,
-                                      'bash -c "echo user | kinit user@EXAMPLE.COM"')
-    klist_out = context.exec_command_in_container(context.client, context.container,
-                                                  'klist')
+                                      kinit_command)
+    klist_out = context.exec_command_in_container(context.client,
+                                                  context.container, 'klist')
     assert "Valid starting" in klist_out
 
 
 @when("I perform kerberized {method} request to {url}")
 def perform_kerberized_request(context, method, url):
-    """
-    Calls REST API on coreapi-server
-    """
-    command = "curl -s -X {method} --negotiate -u : http://coreapi-server:5000{url}".format(
-        method=method, url=url
-    )
+    """Call REST API on coreapi-server."""
+    command = "curl -s -X {method} --negotiate -u : " + \
+              "http://coreapi-server:5000{url}".format(method=method, url=url)
     context.kerb_request = \
-        context.exec_command_in_container(context.client, context.container, command)
+        context.exec_command_in_container(context.client, context.container,
+                                          command)
+
 
 def authorization(context):
     return {'Authorization': 'Bearer {token}'.format(token=context.token)}
@@ -102,14 +107,14 @@ def search_for_component_with_token(context, component):
 
 @when("I read {ecosystem}/{component}/{version} component analysis")
 def read_analysis_for_component(context, ecosystem, component, version):
-    """
-    Read component analysis (or an error message) for the selected ecosystem
-    """
+    """Read component analysis (or an error message) for the selected
+    ecosystem."""
     url = component_analysis_url(context, ecosystem, component, version)
     context.response = requests.get(url)
 
 
 def component_analysis_url(context, ecosystem, component, version):
+    """Construct URL for the component analyses REST API call."""
     return urljoin(context.coreapi_url,
                    'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
                                                                   c=component,
@@ -118,7 +123,7 @@ def component_analysis_url(context, ecosystem, component, version):
 
 @when("I start analysis for component {ecosystem}/{component}/{version}")
 def start_analysis_for_component(context, ecosystem, component, version):
-    """
+    """Start the component analysis.
     Start the analysis for given component and version in selected ecosystem.
     Current API implementation returns just two HTTP codes:
     200 OK : analysis is already finished
@@ -141,8 +146,8 @@ def start_analysis_for_component(context, ecosystem, component, version):
 
 @when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
 def finish_analysis_for_component(context, ecosystem, component, version):
-    """
-    Try to wait for the analysis to be finished.
+    """Try to wait for the component analysis to be finished.
+
     Current API implementation returns just two HTTP codes:
     200 OK : analysis is already finished
     404 NOT FOUND: analysis is started or is in progress
@@ -167,8 +172,7 @@ def finish_analysis_for_component(context, ecosystem, component, version):
 @when("I wait for stack analysis to finish")
 @when("I wait for stack analysis version {version} to finish")
 def wait_for_stack_analysis_completion(context, version="1"):
-    """
-    Try to wait for the stack analysis to be finished.
+    """Try to wait for the stack analysis to be finished.
 
     This step assumes that stack analysis has been started previously and
     thus that the job ID is known
@@ -199,33 +203,25 @@ def wait_for_stack_analysis_completion(context, version="1"):
 
 @when('I access anitya {url}')
 def anitya_url(context, url):
-    """
-    access the Anitya service API using the HTTP GET method
-    """
+    """Access the Anitya service API using the HTTP GET method."""
     context.response = requests.get(context.anitya_url + url)
 
 
 @when('I access jobs API {url}')
 def jobs_api_url(context, url):
-    """
-    access the jobs service API using the HTTP GET method
-    """
+    """Access the jobs service API using the HTTP GET method."""
     context.response = requests.get(context.jobs_api_url + url)
 
 
 @when('I access {url}')
 def access_url(context, url):
-    """
-    access the service API using the HTTP GET method
-    """
+    """Access the service API using the HTTP GET method."""
     context.response = requests.get(context.coreapi_url + url)
 
 
 @when("I post a valid {manifest} to {url}")
 def perform_valid_manifest_post(context, manifest, url):
-    """
-    post a manifest to selected core API endpont
-    """
+    """Post a manifest to selected core API endpont."""
     filename = "data/{manifest}".format(manifest=manifest)
     files = {'manifest[]': open(filename, 'rb')}
     endpoint = "{coreapi_url}{url}".format(coreapi_url=context.coreapi_url, url=url)
@@ -236,6 +232,7 @@ def perform_valid_manifest_post(context, manifest, url):
 
 
 def send_manifest_to_stack_analysis(context, manifest, name, endpoint):
+    """Send the selected manifest file to stack analysis."""
     filename = 'data/{manifest}'.format(manifest=manifest)
     files = {'manifest[]': (name, open(filename, 'rb'))}
     response = requests.post(endpoint, files=files)
@@ -271,9 +268,7 @@ def job_metadata_filename(metadata):
 
 
 def flow_sheduling_endpoint(context, state, job_id=None):
-    """
-    return URL to flow-scheduling with the given state and job ID
-    """
+    """Return URL to flow-scheduling with the given state and job ID."""
     if job_id:
         return "{jobs_api_url}api/v1/jobs/flow-scheduling?state={state}&job_id={job_id}".\
                format(jobs_api_url=context.jobs_api_url, state=state, job_id=job_id)
@@ -283,9 +278,7 @@ def flow_sheduling_endpoint(context, state, job_id=None):
 
 
 def job_endpoint(context, job_id):
-    """
-    return URL for given job id that can be used to job state manipulation
-    """
+    """Return URL for given job id that can be used to job state manipulation."""
     url = "{jobs_api_url}api/v1/jobs".format(
            jobs_api_url=context.jobs_api_url)
     if job_id is not None:
@@ -295,9 +288,7 @@ def job_endpoint(context, job_id):
 
 @when("I post a job metadata {metadata} with state {state}")
 def perform_post_job(context, metadata, state):
-    """
-    API call to create a new job using the provided metadata
-    """
+    """API call to create a new job using the provided metadata."""
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state)
     context.response = context.send_json_file(endpoint, filename)
@@ -305,9 +296,7 @@ def perform_post_job(context, metadata, state):
 
 @when("I post a job metadata {metadata} with job id {job_id} and state {state}")
 def perform_post_job(context, metadata, job_id, state):
-    """
-    API call to create a new job using the provided metadata and set a job to given state
-    """
+    """API call to create a new job using the provided metadata and set a job to given state."""
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state, job_id)
     context.response = context.send_json_file(endpoint, filename)
@@ -316,18 +305,14 @@ def perform_post_job(context, metadata, job_id, state):
 @when("I delete job without id")
 @when("I delete job with id {job_id}")
 def delete_job(context, job_id=None):
-    """
-    API call to delete a job with given ID
-    """
+    """API call to delete a job with given ID."""
     endpoint = job_endpoint(context, job_id)
     context.response = requests.delete(endpoint)
 
 
 @when("I set status for job with id {job_id} to {status}")
 def set_job_status(context, job_id, status):
-    """
-    API call to set job status
-    """
+    """API call to set job status."""
     endpoint = job_endpoint(context, job_id)
     url = "{endpoint}?state={status}".format(endpoint=endpoint, status=status)
     context.response = requests.put(url)
@@ -336,9 +321,7 @@ def set_job_status(context, job_id, status):
 @when("I reset status for the job service")
 @when("I set status for job service to {status}")
 def set_job_service_status(context, status=None):
-    """
-    API call to set or reset job service status
-    """
+    """API call to set or reset job service status."""
     url = "{jobs_api_url}api/v1/service/state".format(
             jobs_api_url=context.jobs_api_url)
     if status is not None:
@@ -348,18 +331,14 @@ def set_job_service_status(context, status=None):
 
 @when("I clean all failed jobs")
 def clean_all_failed_jobs(context):
-    """
-    API call to clean up all failed jobs
-    """
+    """API call to clean up all failed jobs."""
     url = "{url}api/v1/jobs/clean-failed".format(url=context.jobs_api_url)
     context.response = requests.delete(url)
 
 
 @when("I ask for analyses report for ecosystem {ecosystem}")
 def access_analyses_report(context, ecosystem):
-    """
-    API call to get analyses report for selected ecosystem
-    """
+    """API call to get analyses report for selected ecosystem."""
     url = "{url}api/v1/debug/analyses-report?ecosystem={ecosystem}".format(
            url=context.jobs_api_url, ecosystem=ecosystem)
     context.response = requests.get(url)
@@ -469,9 +448,7 @@ def check_json(context):
 
 @then('I should get {status:d} status code')
 def check_status_code(context, status):
-    """
-    check the HTTP status code returned by the REST API
-    """
+    """Check the HTTP status code returned by the REST API."""
     assert context.response.status_code == status
 
 
@@ -487,8 +464,9 @@ def check_json_value_under_key(context, key, value):
 
 @then('I should receive JSON response with the correct id')
 def check_id_in_json_response(context):
-    """
-    check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    """Check the ID attribute in the JSON response.
+
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
     id = context.response.json().get("id")
@@ -498,6 +476,7 @@ def check_id_in_json_response(context):
 
 
 def check_timestamp(timestamp):
+    """Check if the string contains proper timestamp value."""
     assert timestamp is not None
     assert isinstance(timestamp, str)
     assert len(timestamp) >= len("YYYY-mm-dd HH:MM:SS.")
@@ -521,20 +500,22 @@ def check_timestamp(timestamp):
 
 @then('I should receive JSON response with the correct timestamp in attribute {attribute}')
 def check_timestamp_in_json_response(context, attribute):
-    '''
+    """Check the timestamp stored in the JSON response.
+
     Check if the attribute in the JSON response object contains
     proper timestamp value
-    '''
+    """
     timestamp = context.response.json().get(attribute)
     check_timestamp(timestamp)
 
 
 @then('I should find proper timestamp under the path {path}')
 def check_timestamp_under_path(context, path):
-    '''
+    """Check the timestamp stored in selected attribute
+
     Check if timestamp value can be found in the JSON response object
     under the given path.
-    '''
+    """
     jsondata = context.response.json()
     assert jsondata is not None
     timestamp = get_value_using_path(jsondata, path)
@@ -544,9 +525,7 @@ def check_timestamp_under_path(context, path):
 @when('I wait {num:d} seconds')
 @then('I wait {num:d} seconds')
 def pause_scenario_execution(context, num):
-    """
-    pause the test for provided number of seconds
-    """
+    """Pause the test for provided number of seconds."""
     time.sleep(num)
 
 
@@ -602,6 +581,7 @@ def check_stack_analyses_request_id(context):
 
 @then("stack analyses response is available via {url}")
 def check_stack_analyses_response(context, url):
+    """Check the stack analyses response available on the given URL."""
     response = context.response
     resp = response.json()
 
@@ -637,7 +617,7 @@ def check_stack_analyses_response(context, url):
 
 
 def get_value_using_path(obj, path):
-    """
+    """Get the attribute value using the XMLpath-like path specification.
     Return any attribute stored in the nested object and list hierarchy using
     the 'path' where path consists of:
         keys (selectors)
@@ -666,9 +646,7 @@ def get_value_using_path(obj, path):
 
 @then('I should find the value {value} under the path {path} in the JSON response')
 def find_value_under_the_path(context, value, path):
-    '''
-    Check if the value (attribute) can be found in the JSON output
-    '''
+    """Check if the value (attribute) can be found in the JSON output."""
     jsondata = context.response.json()
     assert jsondata is not None
     v = get_value_using_path(jsondata, path)
