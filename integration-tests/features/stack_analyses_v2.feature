@@ -19,7 +19,7 @@ Feature: Stack analysis v2 API
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
 
-  Scenario: Check that the stack analysis response
+  Scenario: Check the stack analysis v2 response when called with proper authorization token
     Given System is running
     When I generate authorization token from the private key private_key.pem
     Then I should get the proper authorization token
