@@ -174,29 +174,35 @@ def finish_analysis_for_component(context, ecosystem, component, version):
 
 
 @when("I wait for stack analysis to finish")
-@when("I wait for stack analysis version {version} to finish")
-def wait_for_stack_analysis_completion(context, version="1"):
+@when("I wait for stack analysis version {version} to finish {token} authorization token")
+def wait_for_stack_analysis_completion(context, version="1", token="without"):
     """Try to wait for the stack analysis to be finished.
 
     This step assumes that stack analysis has been started previously and
     thus that the job ID is known
 
-    Current API implementation returns just two HTTP codes:
+    Current API implementation returns just three HTTP codes:
     200 OK : analysis is already finished
     202 Accepted: analysis is started or is in progress (or other state!)
+    401 UNAUTHORIZED : missing or inproper authorization token
     """
 
     timeout = 600      # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
+    use_token = parse_token_clause(token)
 
     id = context.response.json().get("id")
     context.stack_analysis_id = id
     url = urljoin(stack_analysis_endpoint(context, version), id)
 
     for _ in range(timeout//sleep_amount):
-        context.response = requests.get(url)
+        if use_token:
+            context.response = requests.get(url, headers = authorization(context))
+        else:
+            context.response = requests.get(url)
         status_code = context.response.status_code
-        if status_code == 200:
+        # 401 code should be checked later
+        if status_code in (200, 401):
             break
         elif status_code != 202:
             raise Exception('Bad HTTP status code {c}'.format(c=status_code))
