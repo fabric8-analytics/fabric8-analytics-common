@@ -282,7 +282,8 @@ services:
       AWS_S3_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
       AWS_S3_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
       DEPLOYMENT_PREFIX: "${USER}"
-      AWS_BUCKET: "${USER}-bayesian-core-data"
+      AWS_EPV_BUCKET: "${USER}-bayesian-core-data"
+      AWS_PKG_BUCKET: "${USER}-bayesian-core-package-data"
       POSTGRESQL_USER: coreapi
       POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
