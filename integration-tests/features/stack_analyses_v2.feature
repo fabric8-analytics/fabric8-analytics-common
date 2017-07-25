@@ -39,3 +39,24 @@ Feature: Stack analysis v2 API
     Then I should receive JSON response with the correct timestamp in attribute finished_at
     Then I should find proper timestamp under the path result/0/_audit/started_at
     Then I should find proper timestamp under the path result/0/_audit/ended_at
+
+  Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
+    When I send Python package manifest requirements_click_normalize_integer_minor.txt to stack analysis version 2
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    When I send Python package manifest requirements_click_normalize_integer_major.txt to stack analysis version 2
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    When I send Python package manifest requirements_click_normalize_integer_major_minor.txt to stack analysis version 2
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+
