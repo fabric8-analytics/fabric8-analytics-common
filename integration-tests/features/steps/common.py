@@ -2,6 +2,7 @@ import string
 import datetime
 import json
 import time
+import os
 
 from behave import given, then, when
 from urllib.parse import urljoin
@@ -244,7 +245,10 @@ def perform_valid_manifest_post(context, manifest, url):
 def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token):
     """Send the selected manifest file to stack analysis."""
     filename = 'data/{manifest}'.format(manifest=manifest)
-    files = {'manifest[]': (name, open(filename, 'rb'))}
+    manifest_file_dir = os.path.dirname(filename)
+    path_to_manifest_file = os.path.abspath(manifest_file_dir)
+    files = {'manifest[]': (name, open(filename, 'rb')),
+             'filePath[]': path_to_manifest_file}
     if use_token:
         response = requests.post(endpoint, files=files,
                                  headers=authorization(context))
