@@ -21,9 +21,12 @@ node('docker') {
         docker.withRegistry('https://registry.devshift.net/') {
             docker.image('bayesian/bayesian-api').pull()
             docker.image('bayesian/cucos-worker').pull()
-            docker.image('bayesian/coreapi-downstream-data-import').pull()
             docker.image('bayesian/coreapi-jobs').pull()
             docker.image('bayesian/coreapi-pgbouncer').pull()
+            docker.image('bayesian/data-model-importer').pull()
+            docker.image('bayesian/cvedb-s3-dump').pull()
+            docker.image('slavek/anitya-server').pull()
+            docker.image('bayesian/gremlin').pull()
         }
 
         dir('integration-tests') {

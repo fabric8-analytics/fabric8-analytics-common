@@ -12,14 +12,14 @@ objects:
     s3-bucket-for-analyses: "${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_ANALYSES}"
     s3-bucket-for-package-analyses: "${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_PACKAGE_ANALYSES}"
     dynamodb-prefix: "${DEPLOYMENT_PREFIX}"
-    keycloak-url: ""
+    keycloak-url: "${KEYCLOAK_URL}"
 
 parameters:
 - description: Deployment prefix used for deployment-specific AWS resources
   displayName: Deployment prefix
   required: true
   name: DEPLOYMENT_PREFIX
-  value: "DEV"
+  value: "dev"
 
 - description: Name of the S3 bucket where to store analyses
   displayName: S3 bucket for analyses
@@ -32,3 +32,10 @@ parameters:
   required: true
   name: S3_BUCKET_FOR_PACKAGE_ANALYSES
   value: "bayesian-core-package-data"
+
+- description: Keycloak URL
+  displayName: Keycloak URL
+  required: false
+  name: KEYCLOAK_URL
+  value: ""
+
