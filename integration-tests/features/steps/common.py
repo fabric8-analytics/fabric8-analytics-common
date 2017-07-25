@@ -136,6 +136,10 @@ def start_analysis_for_component(context, ecosystem, component, version):
 
     # first check that the analysis is really new
     response = requests.get(url)
+
+    # remember the response for further test steps
+    context.response = response
+
     if response.status_code == 200:
         raise Exception('Bad state: the analysis for component has been '
                         'finished already')
