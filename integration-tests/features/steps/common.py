@@ -235,12 +235,15 @@ def perform_valid_manifest_post(context, manifest, url):
     print(response.json())
 
 
-def send_manifest_to_stack_analysis(context, manifest, name, endpoint):
+def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token):
     """Send the selected manifest file to stack analysis."""
     filename = 'data/{manifest}'.format(manifest=manifest)
     files = {'manifest[]': (name, open(filename, 'rb'))}
-    response = requests.post(endpoint, files=files)
-    response.raise_for_status()
+    if use_token:
+        response = requests.post(endpoint, files=files,
+                                 headers=authorization(context))
+    else:
+        response = requests.post(endpoint, files=files)
     context.response = response
 
 
@@ -252,19 +255,30 @@ def stack_analysis_endpoint(context, version):
     return urljoin(context.coreapi_url, endpoint)
 
 
+def parse_token_clause(token_clause):
+    use_token = {"with": True,
+                 "without": False}.get(token_clause)
+    if use_token is None:
+        raise Exception("Wrong clause specified: {t}".format(t=token_clause))
+    return use_token
+
+
 @when("I send NPM package manifest {manifest} to stack analysis")
-@when("I send NPM package manifest {manifest} to stack analysis version {version}")
-def npm_manifest_stack_analysis(context, manifest, version="1"):
+@when("I send NPM package manifest {manifest} to stack analysis version {version} {token} authorization token")
+def npm_manifest_stack_analysis(context, manifest, version="1", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
-    send_manifest_to_stack_analysis(context, manifest, 'package.json', endpoint)
+    use_token = parse_token_clause(token)
+    send_manifest_to_stack_analysis(context, manifest, 'package.json',
+                                    endpoint, use_token)
 
 
 @when("I send Python package manifest {manifest} to stack analysis")
-@when("I send Python package manifest {manifest} to stack analysis version {version}")
-def python_manifest_stack_analysis(context, manifest, version="1"):
+@when("I send Python package manifest {manifest} to stack analysis version {version} {token} authorization token")
+def python_manifest_stack_analysis(context, manifest, version="1", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
+    use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'requirements.txt',
-                                    endpoint)
+                                    endpoint, use_token)
 
 
 def job_metadata_filename(metadata):
