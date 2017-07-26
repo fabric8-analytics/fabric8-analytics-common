@@ -769,7 +769,7 @@ def parse_float_value_from_text_stream(text, key):
     regexp = key + "\s*=\s*(\d.\d*)"
     for line in text.split("\n"):
         if line.startswith(key):
-            match = re.match(regexp, line)
+            match = re.fullmatch(regexp, line)
             assert match is not None
             assert match.lastindex == 1
             return float(match.group(1))
