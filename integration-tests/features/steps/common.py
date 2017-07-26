@@ -755,6 +755,7 @@ def is_proper_authorization_token(context):
     assert context.token is not None
 
 
+<<<<<<< c5c604e1d16242a9423579148e953c8774a3255f
 def download_file_from_url(url):
     """Download file from the given URL and do basic check of response."""
     response = requests.get(url)
@@ -790,3 +791,25 @@ def check_outlier_probability_threshold_value(context, min, max):
     assert v is not None
     assert v >= min
     assert v <= max
+
+
+def check_outlier_probability(usage_outliers, package_name, threshold_value):
+    """Try to find outlier probability for given package is found and that
+    its probability is within permitted range."""
+    for usage_outlier in usage_outliers:
+        if usage_outlier["package_name"] == package_name:
+            probability = usage_outlier["outlier_prbability"]
+            assert probability is not None
+            v = float(probability)
+            assert v >= threshold_value and v <= 1.0
+            return
+    raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
+
+
+@then('I should find the proper outlier record for the {component} component')
+def stack_analysis_check_outliers(context, component):
+    json_data = context.response.json()
+    threshold = context.outlier_probability_threshold
+    path = "result/0/recommendations/usage_outliers"
+    usage_outliers = get_value_using_path(json_data, path)
+    check_outlier_probability(usage_outliers, component, threshold)
