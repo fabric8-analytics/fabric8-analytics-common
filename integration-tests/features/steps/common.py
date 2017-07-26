@@ -3,6 +3,7 @@ import datetime
 import json
 import time
 import os
+import re
 
 from behave import given, then, when
 from urllib.parse import urljoin
@@ -12,6 +13,14 @@ import requests
 import jwt
 import base64
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
+
+
+STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
+"fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
+"analytics_platform/kronos/pgm/src/pgm_constants.py"
+
+STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
+    "KRONOS_OUTLIER_PROBABILITY_THRESHOLD_VALUE"
 
 
 jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
