@@ -2,8 +2,8 @@ Feature: Stack analysis v2 API
 
   Scenario: Check that the API entry point
     Given System is running
-    When I access /api/stack-analyses-v2
-    Then I should get 404 status code
+    When I access /api/v1/stack-analyses-v2
+    Then I should get 401 status code
 
   Scenario: Check that the API entry point requires authorization token
     Given System is running
