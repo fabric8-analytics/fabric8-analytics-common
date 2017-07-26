@@ -224,10 +224,17 @@ def jobs_api_url(context, url):
     context.response = requests.get(context.jobs_api_url + url)
 
 
-@when('I access {url}')
+@when('I access {url:S}')
 def access_url(context, url):
     """Access the service API using the HTTP GET method."""
     context.response = requests.get(context.coreapi_url + url)
+
+
+@when('I access {url:S} with authorization token')
+def access_url_with_authorization_token(context, url):
+    """Access the service API using the HTTP GET method."""
+    context.response = requests.get(context.coreapi_url + url,
+                                    headers=authorization(context))
 
 
 @when("I post a valid {manifest} to {url}")
