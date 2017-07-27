@@ -2,7 +2,7 @@
 
 ## Create a new project
 
-`oc login` to your favourite OpenShift cluster and create a new project there:
+`oc login` to your favorite OpenShift cluster and create a new project there:
 
 ```
 oc new-project fabric8-analytics
@@ -10,6 +10,24 @@ oc new-project fabric8-analytics
 
 ## Deploy fabric8-analytics services
 
-We use cloud-deployer tool, configured in [cloud-deploy/](cloud-deploy/), see also [cloud-deploy/README.md](cloud-deploy/README.md).
+Generate and deploy [config map](./README-ConfigMap.md) first:
 
-The cloud-deployer tool automatically generates and deploys correct ConfigMap for the deployment, but it's possible to [generate a ConfigMap](README-ConfigMap.md) manually and customize it.
+```
+./generate-config.sh  # will create config.yaml file
+oc apply -f config.yaml
+```
+
+Deploy secrets:
+
+```
+oc process -f secrets-template.yaml -v AWS_ACCESS_KEY_ID='..' -v AWS_SECRET_ACCESS_KEY='...' -v GITHUB_API_TOKENS='...' -v GITHUB_OAUTH_CONSUMER_KEY='...' -v GITHUB_OAUTH_CONSUMER_SECRET='...' -v FLASK_APP_SECRET_KEY='...' RDS_ENDPOINT='...' RDS_PASSWORD='...' | oc apply -f -
+```
+
+Note all secrets need to be base64 encoded:
+
+```
+echo -n 'my-secret-key' | base64 -w 0
+```
+
+See also:
+* [how to allocate AWS resources](aws/README.md)
