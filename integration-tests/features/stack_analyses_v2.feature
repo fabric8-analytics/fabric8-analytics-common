@@ -1,5 +1,9 @@
 Feature: Stack analysis v2 API
 
+  Scenario: Read outlier probability threshold value
+    When I download and parse outlier probability threshold value
+    Then I should have outlier probability threshold value between 0.0 and 1.0
+
   Scenario: Check that the API entry point
     Given System is running
     When I access /api/v1/stack-analyses-v2

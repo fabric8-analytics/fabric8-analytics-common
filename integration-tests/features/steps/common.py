@@ -3,6 +3,7 @@ import datetime
 import json
 import time
 import os
+import re
 
 from behave import given, then, when
 from urllib.parse import urljoin
@@ -12,6 +13,14 @@ import requests
 import jwt
 import base64
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
+
+
+STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
+"fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
+"analytics_platform/kronos/pgm/src/pgm_constants.py"
+
+STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
+    "KRONOS_OUTLIER_PROBABILITY_THRESHOLD_VALUE"
 
 
 jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
@@ -744,3 +753,40 @@ def generate_authorization_token(context, private_key):
 @then('I should get the proper authorization token')
 def is_proper_authorization_token(context):
     assert context.token is not None
+
+
+def download_file_from_url(url):
+    """Download file from the given URL and do basic check of response."""
+    response = requests.get(url)
+    assert response.status_code == 200
+    assert response.text is not None
+    return response.text
+
+
+def parse_float_value_from_text_stream(text, key):
+    """Go through all lines of the text file, find the line with given key
+    and parse float value specified here"""
+    regexp = key + "\s*=\s*(\d.\d*)"
+    for line in text.split("\n"):
+        if line.startswith(key):
+            match = re.fullmatch(regexp, line)
+            assert match is not None
+            assert match.lastindex == 1
+            return float(match.group(1))
+
+
+@when('I download and parse outlier probability threshold value')
+def download_and_parse_outlier_probability_threshold_value(context):
+    """Special step that is needed to get the stack analysis outlier
+    probability threshold."""
+    content = download_file_from_url(STACK_ANALYSIS_CONSTANT_FILE_URL)
+    context.outlier_probability_threshold = parse_float_value_from_text_stream(
+        content, STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME)
+
+
+@then('I should have outlier probability threshold value between {min:f} and {max:f}')
+def check_outlier_probability_threshold_value(context, min, max):
+    v = context.outlier_probability_threshold
+    assert v is not None
+    assert v >= min
+    assert v <= max
