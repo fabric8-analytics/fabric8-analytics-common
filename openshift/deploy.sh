@@ -22,8 +22,10 @@ oc_process_apply ${templates_dir}/gremlin-docker.yaml "-p CHANNELIZER=http -p RE
 oc_process_apply ${templates_dir}/anitya-docker.yaml
 oc_process_apply ${templates_dir}/recommender.yaml
 oc_process_apply ${templates_dir}/data-model.yaml
-oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=ingestion"
-oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=ingestion -p WORKER_EXCLUDE_QUEUES=GraphImporterTask"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=ingestion -p WORKER_INCLUDE_QUEUES=GraphImporterTask -p WORKER_NAME_SUFFIX=-graph-import"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api -p WORKER_RUN_DB_MIGRATIONS=1 -p WORKER_EXCLUDE_QUEUES=GraphImporterTask"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api -p WORKER_INCLUDE_QUEUES=GraphImporterTask -p WORKER_NAME_SUFFIX=-graph-import"
 oc_process_apply ${templates_dir}/server.yaml
 oc_process_apply ${templates_dir}/jobs.yaml
 
