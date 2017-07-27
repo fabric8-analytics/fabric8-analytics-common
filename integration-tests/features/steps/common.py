@@ -755,7 +755,6 @@ def is_proper_authorization_token(context):
     assert context.token is not None
 
 
-<<<<<<< c5c604e1d16242a9423579148e953c8774a3255f
 def download_file_from_url(url):
     """Download file from the given URL and do basic check of response."""
     response = requests.get(url)
