@@ -216,7 +216,7 @@ services:
       WORKER_ADMINISTRATION_REGION: ingestion
       WORKER_RUN_DB_MIGRATIONS: "1"
   anitya-server:
-    image: registry.devshift.net/slavek/anitya-server
+    image: registry.devshift.net/bayesian/anitya-server
     ports:
      - "31005:5000"
     links:
