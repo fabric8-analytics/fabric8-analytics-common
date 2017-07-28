@@ -16,8 +16,8 @@ from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
-"fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
-"analytics_platform/kronos/pgm/src/pgm_constants.py"
+    "fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
+    "analytics_platform/kronos/pgm/src/pgm_constants.py"
 
 STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
     "KRONOS_OUTLIER_PROBABILITY_THRESHOLD_VALUE"
