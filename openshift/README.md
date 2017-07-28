@@ -1,33 +1,33 @@
-# Deploying Bayesian for dev cluster
+# Deploying fabric8-analytics services
 
-* Create a new project
+## Create a new project
 
-```
-oc new-project bayesian
-```
-
-* Generate ConfigMap
+`oc login` to your favorite OpenShift cluster and create a new project there:
 
 ```
-./generate-config.sh
+oc new-project fabric8-analytics
 ```
 
-Note you can use `PTH_ENV` environment variable to generate config for a specific deployment, for example:
+## Deploy fabric8-analytics services
+
+Generate and deploy [config map](./README-ConfigMap.md) first:
 
 ```
-PTH_ENV=STAGE ./generate-config.sh
-```
-
-The command above will generate config for staging deployment.
-
-Once you have the config, you can deploy it:
-
-```
+./generate-config.sh  # will create config.yaml file
 oc apply -f config.yaml
 ```
 
-* Deploy all the templates
+Deploy secrets:
 
-We use cloud-deployer tool, configured in [cloud-deploy/](cloud-deploy/), see also [cloud-deploy/README.md](cloud-deploy/README.md)
+```
+oc process -f secrets-template.yaml -v AWS_ACCESS_KEY_ID='..' -v AWS_SECRET_ACCESS_KEY='...' -v GITHUB_API_TOKENS='...' -v GITHUB_OAUTH_CONSUMER_KEY='...' -v GITHUB_OAUTH_CONSUMER_SECRET='...' -v FLASK_APP_SECRET_KEY='...' RDS_ENDPOINT='...' RDS_PASSWORD='...' | oc apply -f -
+```
 
-Then talk to application by getting the service or route endpoints using ```oc get services``` or ```oc get routes```.
+Note all secrets need to be base64 encoded:
+
+```
+echo -n 'my-secret-key' | base64 -w 0
+```
+
+See also:
+* [how to allocate AWS resources](aws/README.md)

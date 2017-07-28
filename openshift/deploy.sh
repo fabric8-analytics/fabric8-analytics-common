@@ -1,56 +1,31 @@
 #!/usr/bin/bash -e
 
+# Note this script assumes that config maps and secrets are already deployed
 
 function oc_process_apply() {
   echo -e "\n Processing template - $1 ($2) \n"
   oc process -f $1 $2 | oc apply -f -
 }
 
-HERE=`dirname $0`
+here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+templates_dir="${here}/templates"
+templates="fabric8-analytics-jobs fabric8-analytics-server fabric8-analytics-data-model fabric8-analytics-worker fabric8-analytics-pgbouncer fabric8-analytics-recommender gremlin-docker anitya-docker"
 
-templates="anitya-template bayesian-core-template postgresql-extras-template gremlin-server-template data-importer-template analytics-template"
-noaws_templates="anitya-postgresql-template broker-template postgresql-template"
-( [ ! $AWS_NATIVE ] && [ ! $CLOUD_DEPLOY ] ) && templates="$templates $noaws_templates"
-
-
-if [[ $PTH_ENV ]]; then
-  DEPLOYMENT_PREFIX=$PTH_ENV
-else
-  DEPLOYMENT_PREFIX=$(oc whoami)
-fi
-S3_BUCKET_FOR_ANALYSES=${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_ANALYSES:-bayesian-core-data}
-DYNAMODB_PREFIX="${DYNAMODB_PREFIX:-${DEPLOYMENT_PREFIX}}"
-
-
-for template in $templates
+# Get templates for fabric8-analytics projects
+for template in ${templates}
 do
-  template_file=${HERE}/${template}.yaml
-
-  if [[ "${template}" == "bayesian-core-template" ]]; then
-    args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX} \
--v S3_BUCKET_FOR_ANALYSES=${S3_BUCKET_FOR_ANALYSES} \
--v WORKER_ADMINISTRATION_REGION=api \
-${BAYESIAN_API_HOSTNAME:+-v BAYESIAN_API_HOSTNAME=${BAYESIAN_API_HOSTNAME}} \
-"
-    oc_process_apply "$template_file" "$args"
-    args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX} \
--v S3_BUCKET_FOR_ANALYSES=${S3_BUCKET_FOR_ANALYSES} \
--v WORKER_ADMINISTRATION_REGION=ingestion \
-${BAYESIAN_API_HOSTNAME:+-v BAYESIAN_API_HOSTNAME=${BAYESIAN_API_HOSTNAME}} \
-"
-  elif [[ "${template}" == "gremlin-server-template" ]]; then
-    # gremlin template needs to be processed twice
-    args="-v DYNAMODB_PREFIX=${DYNAMODB_PREFIX} -v MEMORY_LIMIT=2048Mi"
-    oc_process_apply "$template_file" "$args"
-    args="-v DYNAMODB_PREFIX=${DYNAMODB_PREFIX} -v CHANNELIZER=http -v REST_VALUE=1"
-  elif [[ "${template}" == "data-importer-template" ]]; then
-    args="-v AWS_BUCKET=${S3_BUCKET_FOR_ANALYSES}"
-  elif [[ "${template}" == "analytics-template" ]]; then
-    args="-v DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX}"
-  else
-    args=""
-  fi
-
-  oc_process_apply "$template_file" "$args"
+  curl -sS https://raw.githubusercontent.com/fabric8-analytics/${template}/master/openshift/template.yaml > ${templates_dir}/${template#fabric8-analytics-}.yaml
 done
+
+oc_process_apply ${templates_dir}/pgbouncer.yaml
+oc_process_apply ${templates_dir}/gremlin-docker.yaml "-p CHANNELIZER=http -p REST_VALUE=1 -p IMAGE_TAG=latest"
+oc_process_apply ${templates_dir}/anitya-docker.yaml
+oc_process_apply ${templates_dir}/recommender.yaml
+oc_process_apply ${templates_dir}/data-model.yaml
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=ingestion -p WORKER_EXCLUDE_QUEUES=GraphImporterTask"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=ingestion -p WORKER_INCLUDE_QUEUES=GraphImporterTask -p WORKER_NAME_SUFFIX=-graph-import"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api -p WORKER_RUN_DB_MIGRATIONS=1 -p WORKER_EXCLUDE_QUEUES=GraphImporterTask"
+oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api -p WORKER_INCLUDE_QUEUES=GraphImporterTask -p WORKER_NAME_SUFFIX=-graph-import"
+oc_process_apply ${templates_dir}/server.yaml
+oc_process_apply ${templates_dir}/jobs.yaml
 
