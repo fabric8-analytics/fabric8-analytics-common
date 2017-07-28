@@ -16,8 +16,8 @@ from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
-"fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
-"analytics_platform/kronos/pgm/src/pgm_constants.py"
+    "fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
+    "analytics_platform/kronos/pgm/src/pgm_constants.py"
 
 STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
     "KRONOS_OUTLIER_PROBABILITY_THRESHOLD_VALUE"
@@ -98,7 +98,7 @@ def perform_component_search(context, component, use_token):
     url = "http://localhost:32000/api/v1/component-search/{component}" .format(
         component=component)
     if use_token:
-        context.response = requests.get(url, headers = authorization(context))
+        context.response = requests.get(url, headers=authorization(context))
     else:
         context.response = requests.get(url)
 
@@ -207,7 +207,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
 
     for _ in range(timeout//sleep_amount):
         if use_token:
-            context.response = requests.get(url, headers = authorization(context))
+            context.response = requests.get(url, headers=authorization(context))
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
@@ -304,6 +304,15 @@ def python_manifest_stack_analysis(context, manifest, version="1", token="withou
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'requirements.txt',
+                                    endpoint, use_token)
+
+
+@when("I send Maven package manifest {manifest} to stack analysis")
+@when("I send Maven package manifest {manifest} to stack analysis version {version} {token} authorization token")
+def maven_manifest_stack_analysis(context, manifest, version="1", token="without"):
+    endpoint = stack_analysis_endpoint(context, version)
+    use_token = parse_token_clause(token)
+    send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
                                     endpoint, use_token)
 
 
