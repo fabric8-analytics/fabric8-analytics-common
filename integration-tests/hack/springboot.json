@@ -1,0 +1,22 @@
+[
+   {
+        "version": "4.3.7.RELEASE", 
+        "name": "org.springframework:spring-messaging", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "4.3.7.RELEASE", 
+        "name": "org.springframework:spring-websocket", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "1.5.2.RELEASE", 
+        "name": "org.springframework.boot:spring-boot-starter-web",
+        "ecosystem": "maven"
+    },
+    {
+        "version": "1.5.2.RELEASE", 
+        "name": "org.springframework.boot:spring-boot-starter",
+        "ecosystem": "maven"
+    }
+]

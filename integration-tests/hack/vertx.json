@@ -1,0 +1,37 @@
+[
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-core", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-jdbc-client", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-rx-java", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-web-client", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-web-templ-freemarker", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-web-templ-handlebars", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-web", 
+        "ecosystem": "maven"
+    }
+]
