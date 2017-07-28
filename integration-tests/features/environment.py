@@ -267,7 +267,7 @@ def _read_boolean_setting(context, setting_name):
 
 
 def _add_slash(url):
-    if not url.endswith('/'):
+    if url and not url.endswith('/'):
         url += '/'
     return url
 
@@ -325,16 +325,25 @@ def before_all(context):
         'coreapi_worker_image',
         'registry.devshift.net/bayesian/cucos-worker')
 
-    context.coreapi_url = _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
-    context.jobs_api_url = _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
-    context.anitya_url = _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
+    coreapi_url = _add_slash(os.environ.get('F8A_API_URL', None))
+    jobs_api_url = _add_slash(os.environ.get('F8A_JOB_API_URL', None))
+    anitya_url = _add_slash(os.environ.get('F8A_ANITYA_API_URL', None))
 
-    context.client = docker.AutoVersionClient()
+    context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
 
-    for desired, actual in context.images.items():
-        desired = 'registry.devshift.net/' + desired
-        if desired != actual:
-            context.client.tag(actual, desired, force=True)
+    context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
+    context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
+    context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
+
+    context.client = None
+
+    if context.running_locally:
+        context.client = docker.AutoVersionClient()
+
+        for desired, actual in context.images.items():
+            desired = 'registry.devshift.net/' + desired
+            if desired != actual:
+                context.client.tag(actual, desired, force=True)
 
     # Specify the analyses checked for when looking for "complete" results
     def _get_expected_component_analyses(ecosystem):
@@ -381,21 +390,23 @@ def before_scenario(context, scenario):
 
 @capture
 def after_scenario(context, scenario):
-    if context.dump_logs or context.dump_errors and scenario.status == "failed":
-        try:
-            _dump_server_logs(context, int(context.tail_logs))
-        except subprocess.CalledProcessError as e:
-            raise Exception('Failed to dump server logs. Command "{c}" failed:\n{o}'.
-                            format(c=' '.join(e.cmd), o=e.output))
+    if context.running_locally:
+        if context.dump_logs or context.dump_errors and scenario.status == "failed":
+            try:
+                _dump_server_logs(context, int(context.tail_logs))
+            except subprocess.CalledProcessError as e:
+                raise Exception('Failed to dump server logs. Command "{c}" failed:\n{o}'.
+                                format(c=' '.join(e.cmd), o=e.output))
 
-    # Clean up resources (which may destroy some container logs)
-    context.resource_manager.close()
+        # Clean up resources (which may destroy some container logs)
+        context.resource_manager.close()
 
 
 @capture
 def after_all(context):
-    try:
-        _teardown_system(context)
-    except subprocess.CalledProcessError as e:
-        raise Exception('Failed to teardown system. Command "{c}" failed:\n{o}'.
-                        format(c=' '.join(e.cmd), o=e.output))
+    if context.running_locally:
+        try:
+            _teardown_system(context)
+        except subprocess.CalledProcessError as e:
+            raise Exception('Failed to teardown system. Command "{c}" failed:\n{o}'.
+                            format(c=' '.join(e.cmd), o=e.output))

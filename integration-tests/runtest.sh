@@ -3,7 +3,6 @@
 if [ ! -f /var/run/docker.pid ]
 then
     echo "!!! Docker service is probably not running !!!"
-    exit 1
 fi
 
 function prepare_venv() {
