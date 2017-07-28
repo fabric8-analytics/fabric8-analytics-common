@@ -35,6 +35,7 @@ Feature: Smoke test
     When I access jobs API /api/v1/liveness
     Then I should get 200 status code
 
+  @jobs.requires_auth
   Scenario: Check the jobs API entry point
     Given System is running
     When I access jobs API /api/v1/service/state
