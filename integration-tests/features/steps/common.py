@@ -98,7 +98,7 @@ def perform_component_search(context, component, use_token):
     url = "http://localhost:32000/api/v1/component-search/{component}" .format(
         component=component)
     if use_token:
-        context.response = requests.get(url, headers = authorization(context))
+        context.response = requests.get(url, headers=authorization(context))
     else:
         context.response = requests.get(url)
 
@@ -207,7 +207,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
 
     for _ in range(timeout//sleep_amount):
         if use_token:
-            context.response = requests.get(url, headers = authorization(context))
+            context.response = requests.get(url, headers=authorization(context))
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
