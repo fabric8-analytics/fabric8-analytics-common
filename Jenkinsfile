@@ -40,8 +40,8 @@ node('docker') {
         stage('Push Images') {
             docker.withRegistry('https://registry.devshift.net/') {
                 image.push('latest')
-                image.push(commitId)
             }
         }
     }
 }
+
