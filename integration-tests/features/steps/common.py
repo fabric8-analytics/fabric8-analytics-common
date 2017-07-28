@@ -307,6 +307,15 @@ def python_manifest_stack_analysis(context, manifest, version="1", token="withou
                                     endpoint, use_token)
 
 
+@when("I send Maven package manifest {manifest} to stack analysis")
+@when("I send Maven package manifest {manifest} to stack analysis version {version} {token} authorization token")
+def maven_manifest_stack_analysis(context, manifest, version="1", token="without"):
+    endpoint = stack_analysis_endpoint(context, version)
+    use_token = parse_token_clause(token)
+    send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
+                                    endpoint, use_token)
+
+
 def job_metadata_filename(metadata):
     return "data/{metadata}".format(metadata=metadata)
 
