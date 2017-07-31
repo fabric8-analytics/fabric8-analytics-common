@@ -821,3 +821,77 @@ def stack_analysis_check_outliers(context, component):
     path = "result/0/recommendations/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     check_outlier_probability(usage_outliers, component, threshold)
+
+
+def check_sentiment(analyzed_packages):
+    for package in analyzed_packages:
+
+        assert "sentiment" in package
+        sentiment = package["sentiment"]
+
+        if sentiment:
+            assert "latest_comment" in sentiment, \
+                "'latest_comment' attribute is expected in the node 'sentiment', " \
+                "found: %s attributes" % ", ".join(sentiment.keys())
+
+            assert "overall_score" in sentiment, \
+                "'overall_score' attribute is expected in the node 'sentiment', " \
+                "found: %s attributes" % ", ".join(sentiment.keys())
+
+            overall_score = float(sentiment["overall_score"])
+
+            assert overall_score >= -1.0 and overall_score <= 1.0, \
+                "overall_score should fall within -1..1 range, " \
+                "found %f value instead" % overall_score
+
+            if overall_score == 0.0:
+                if "magnitude" in sentiment:
+                    magnitude = float(sentiment["magnitude"])
+                    assert magnitude == 0, \
+                        "magnitude value should be zero, " \
+                        "found %f value instead" % magnitude
+
+            else:  # if magnitude  > 0 then  overall_score   =  -1 to + 1
+                assert "magnitude" in sentiment, \
+                    "'overall_score is set to nonzero value, " \
+                    "but no magnitude was found'"
+                magnitude = float(sentiment["magnitude"])
+                assert magnitude > 0, \
+                    "magnitude value should be greater than zero, " \
+                    "found %f value instead" % magnitude
+
+
+@then('I should find the proper sentiment values in the stack analysis response')
+def stack_analysis_check_sentiment(json_data):
+    """The structure of sentiment details is:
+                        "sentiment": {
+                            "latest_comment": "",
+                            "magnitude": 0,
+                            "overall_score": 0
+                        },
+
+    Expected values for these attributes:
+    magnitude:  :   >= 0
+    overall_score :  -1,  to +1
+
+    usecase:
+
+    if magnitude == 0  then  overall_score   =  0
+    if magnitude  > 0 then  overall_score   =  -1 to + 1
+
+    It is applicable for all three blocks of stack analysis response, namely:
+        alternate, companion and dependencies.
+    """
+    json_data = context.response.json()
+    recommendations_node = get_value_using_path(json_data,
+                                                "result/0/recommendations")
+    user_stack_info_node = get_value_using_path(json_data,
+                                                "result/0/user_stack_info")
+
+    alternate_node = recommendations_node["alternate"]
+    companion_node = recommendations_node["companion"]
+    dependencies_node = user_stack_info_node["dependencies"]
+
+    check_sentiment(alternate_node)
+    check_sentiment(companion_node)
+    check_sentiment(dependencies_node)
