@@ -11,7 +11,6 @@ import jsonschema
 import requests
 
 import jwt
-import base64
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
 
@@ -96,8 +95,7 @@ def authorization(context):
 
 
 def perform_component_search(context, component, use_token):
-    url = "http://localhost:32000/api/v1/component-search/{component}" .format(
-        component=component)
+    url = urljoin(context.coreapi_url, "api/v1/component-search/{component}".format(component=component))
     if use_token:
         context.response = requests.get(url, headers=authorization(context))
     else:
