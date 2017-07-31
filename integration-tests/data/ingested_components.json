@@ -1,0 +1,92 @@
+[
+    {
+        "version": "6.7", 
+        "name": "click", 
+        "ecosystem": "pypi"
+    },
+    {
+        "version": "0.9.9", 
+        "name": "httpie", 
+        "ecosystem": "pypi"
+    },
+    {
+        "version": "0.7.0", 
+        "name": "parsimonious", 
+        "ecosystem": "pypi"
+    },
+    {
+        "version": "2.2.0", 
+        "name": "pygments", 
+        "ecosystem": "pypi"
+    },
+    {
+        "version": "1.10.0", 
+        "name": "six", 
+        "ecosystem": "pypi"
+    },
+    {
+        "version": "0.30.0a0", 
+        "name": "wheel", 
+        "ecosystem": "pypi"
+    },
+    {
+        "version": "36.0.1", 
+        "name": "setuptools", 
+        "ecosystem": "pypi"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-core", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-jdbc-client", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-rx-java", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-web-client", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-web-templ-freemarker", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-web-templ-handlebars", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "3.4.1", 
+        "name": "io.vertx:vertx-web", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "4.3.7.RELEASE", 
+        "name": "org.springframework:spring-messaging", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "4.3.7.RELEASE", 
+        "name": "org.springframework:spring-websocket", 
+        "ecosystem": "maven"
+    },
+    {
+        "version": "1.5.2.RELEASE", 
+        "name": "org.springframework.boot:spring-boot-starter-web",
+        "ecosystem": "maven"
+    },
+    {
+        "version": "1.5.2.RELEASE", 
+        "name": "org.springframework.boot:spring-boot-starter",
+        "ecosystem": "maven"
+    }
+]
