@@ -17,7 +17,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check that the API entry point requires authorization token
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I wait 20 seconds
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
@@ -25,7 +25,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check the stack analysis v2 response when called with proper authorization token
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -38,7 +38,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check if the stack analysis requires authorization
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -47,7 +47,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check if the stack analysis is finished
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -56,7 +56,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check the stack analysis output
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -72,7 +72,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check the stack analysis timestamp attributes
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -86,7 +86,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check the analyzed dependencies for newer version of click package
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements_click_newest_6_7.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -97,7 +97,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check the analyzed dependencies for older version of click package
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements_click_version_eq_5_0.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -108,7 +108,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check the analyzed dependencies for older version of click package with click>=5.0 in requirements
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements_click_version_ge_5_0.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -119,7 +119,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check the analyzed dependencies for older version of click package with click>5.0 in requirements
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements_click_version_gt_5_0.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
@@ -130,7 +130,7 @@ Feature: Stack analysis v2 API
 
   Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
     Given System is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I send Python package manifest requirements_click_normalize_integer_minor.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
