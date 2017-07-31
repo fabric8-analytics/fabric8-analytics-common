@@ -234,7 +234,7 @@ def _restart_system(context, wait_for_server=60):
 def _is_api_running(url):
     try:
         res = requests.get(url)
-        if res.status_code == 200:
+        if res.status_code in {200, 401}:
             return True
     except requests.exceptions.ConnectionError:
         pass
