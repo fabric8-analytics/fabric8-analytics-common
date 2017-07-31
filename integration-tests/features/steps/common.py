@@ -22,6 +22,7 @@ STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
 STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
     "KRONOS_OUTLIER_PROBABILITY_THRESHOLD_VALUE"
 
+DEFAULT_AUTHORIZATION_TOKEN_FILENAME = "private_key.pem"
 
 jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
 
@@ -762,6 +763,15 @@ def generate_authorization_token(context, private_key):
 @then('I should get the proper authorization token')
 def is_proper_authorization_token(context):
     assert context.token is not None
+
+
+@when('I acquire the authorization token')
+def acquire_authorization_token(context):
+    recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
+    if recommender_token is not None:
+        context.token = recommender_token
+    else:
+        generate_authorization_token(context, DEFAULT_AUTHORIZATION_TOKEN_FILENAME)
 
 
 def download_file_from_url(url):
