@@ -18,6 +18,7 @@ node('docker') {
             dir('integration-tests') {
                 timeout(10) {
                     withEnv(["F8A_API_URL=${apiUrl}", "F8A_JOB_API_URL=${jobsApiUrl}", "F8A_ANITYA_API_URL=${anityaApiUrl}"]) {
+                        echo "Testing on OpenShift (${apiUrl})..."
                         sh './runtest.sh --tags=-jobs.requires_auth'
                     }
                 }
