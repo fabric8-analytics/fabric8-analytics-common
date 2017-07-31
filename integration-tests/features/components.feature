@@ -8,7 +8,7 @@ Feature: Components API V1
   Scenario: Check if component analysis requires authorization
     Given System is running
     Given Component search service is running
-    When I wait 60 seconds
+    When I wait 120 seconds
     When I search for component sequence without authorization token
     Then I should get 401 status code
 
