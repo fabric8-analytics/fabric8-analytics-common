@@ -15,7 +15,7 @@ Feature: Components API V1
   Scenario: Check the component search API entry point
     Given System is running
     Given Component search service is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I search for component foobar with authorization token
     Then I should get 200 status code
@@ -41,7 +41,7 @@ Feature: Components API V1
   Scenario: Check if search for packages handle empty results
     Given System is running
     Given Component search service is running
-    When I generate authorization token from the private key private_key.pem
+    When I acquire the authorization token
     Then I should get the proper authorization token
     When I search for component foobar with authorization token
     Then I should get 200 status code
