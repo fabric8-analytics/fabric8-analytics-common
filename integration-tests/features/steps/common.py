@@ -812,12 +812,23 @@ def check_outlier_probability_threshold_value(context, min, max):
 def check_outlier_probability(usage_outliers, package_name, threshold_value):
     """Try to find outlier probability for given package is found and that
     its probability is within permitted range."""
+
+    # NOTE: there's a typo in the attribute name (issue #73)
+    # the following line should be updated after the issue ^^^ will be fixed
+    outlier_probability_attribute = "outlier_prbability"
+
     for usage_outlier in usage_outliers:
         if usage_outlier["package_name"] == package_name:
-            probability = usage_outlier["outlier_prbability"]
+            assert outlier_probability_attribute in usage_outlier, \
+                "'%s' attribute is expected in the node, " \
+                "found: %s attributes " % (outlier_probability_attribute, 
+                                          ", ".join(usage_outlier.keys()))
+            probability = usage_outlier[outlier_probability_attribute]
             assert probability is not None
             v = float(probability)
-            assert v >= threshold_value and v <= 1.0
+            assert v >= threshold_value and v <= 1.0, \
+                "outlier_prbability value should fall within %f..1.0 range, "\
+                "found %f value instead" % (threshold_value, v)
             return
     raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
 
