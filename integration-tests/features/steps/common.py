@@ -853,31 +853,26 @@ def check_sentiment(analyzed_packages):
                 "'latest_comment' attribute is expected in the node 'sentiment', " \
                 "found: %s attributes" % ", ".join(sentiment.keys())
 
-            assert "overall_score" in sentiment, \
-                "'overall_score' attribute is expected in the node 'sentiment', " \
-                "found: %s attributes" % ", ".join(sentiment.keys())
-
-            overall_score = float(sentiment["overall_score"])
-
-            assert overall_score >= -1.0 and overall_score <= 1.0, \
-                "overall_score should fall within -1..1 range, " \
-                "found %f value instead" % overall_score
-
-            if overall_score == 0.0:
-                if "magnitude" in sentiment:
-                    magnitude = float(sentiment["magnitude"])
-                    assert magnitude == 0, \
-                        "magnitude value should be zero, " \
-                        "found %f value instead" % magnitude
-
-            else:  # if magnitude  > 0 then  overall_score   =  -1 to + 1
-                assert "magnitude" in sentiment, \
-                    "'overall_score is set to nonzero value, " \
-                    "but no magnitude was found'"
+            if "magnitude" in sentiment:
                 magnitude = float(sentiment["magnitude"])
-                assert magnitude > 0, \
-                    "magnitude value should be greater than zero, " \
-                    "found %f value instead" % magnitude
+
+                assert magnitude >= 0.0, \
+                    "'magnitude' attribute should be >= 0.0, " \
+                    "found: %f value instead" % magnitude
+
+                assert "overall_score" in sentiment, \
+                    "'overall_score' attribute is expected in the node 'sentiment', " \
+                    "found: %s attributes" % ", ".join(sentiment.keys())
+
+                overall_score = float(sentiment["overall_score"])
+                if magnitude == 0.0:
+                    assert overall_score == 0.0, \
+                        "overall_score should be set to zero, " \
+                        "found %f value instead" % overall_score
+                else:  # if magnitude  > 0 then  overall_score   =  -1 to + 1
+                    assert overall_score >= -1.0 and overall_score <= 1.0, \
+                        "overall_score should fall within -1..1 range, " \
+                        "found %f value instead" % overall_score
 
 
 @then('I should find the proper sentiment values in the stack analysis response')
