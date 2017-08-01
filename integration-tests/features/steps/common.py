@@ -914,3 +914,36 @@ def stack_analysis_check_sentiment(json_data):
     check_sentiment(alternate_node)
     check_sentiment(companion_node)
     check_sentiment(dependencies_node)
+
+
+def get_attribute_values(list, attribute_name):
+    return [item[attribute_name] for item in list]
+
+
+def get_analyzed_packages(json_data):
+    """Get names of all analyzed packages."""
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    analyzed_packages = get_value_using_path(json_data, path)
+    return get_attribute_values(analyzed_packages, "package")
+
+
+def get_companion_packages(json_data):
+    """Get names of all packages in companion list."""
+    path = "result/0/recommendations/companion"
+    companion = get_value_using_path(json_data, path)
+    return get_attribute_values(companion, "name")
+
+
+@then('I should find that none analyzed package can be found in companion packages as well')
+def stack_analysis_check_companion_packages(json_data):
+
+    json_data = context.response.json()
+
+    # those two lists should have no element in common
+    analyzed_packages = get_analyzed_packages(json_data)
+    companion_packages = get_companion_packages(json_data)
+
+    for companion_package in companion_packages:
+        assert companion_package not in analyzed_packages, \
+            "The analyzed package '%s' is found in companion packages as well" \
+            % companion_package
