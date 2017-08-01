@@ -959,7 +959,6 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
     path = "result/0/recommendations/alternate"
     alternates = get_value_using_path(json_data, path)
     replacements = find_replacements(alternates, component, version)
-    replacements_count = len(replacements)
 
     for replacement in replacements:
         if replacement["name"] == replaced_by and \
