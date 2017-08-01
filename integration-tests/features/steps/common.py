@@ -943,3 +943,11 @@ def stack_analysis_check_companion_packages(json_data):
         assert companion_package not in analyzed_packages, \
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
+
+
+def find_replacements(alternates, component, version):
+    return [replacement
+            for replacement in alternates
+            if replaces_component(replacement, component, version)]
+
+
