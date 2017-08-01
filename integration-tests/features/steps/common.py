@@ -945,6 +945,17 @@ def stack_analysis_check_companion_packages(json_data):
             % companion_package
 
 
+def replaces_component(replacement, component, version):
+    assert "replaces" in replacement
+    replaces = replacement["replaces"]
+    for replace in replaces:
+        assert "name" in replace
+        assert "version" in replace
+        if replace["name"] == component and replace["version"] == version:
+            return True
+    return False
+
+
 def find_replacements(alternates, component, version):
     return [replacement
             for replacement in alternates
