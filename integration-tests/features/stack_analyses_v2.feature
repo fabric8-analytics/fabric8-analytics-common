@@ -95,6 +95,17 @@ Feature: Stack analysis v2 API
     Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
     Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
 
+  Scenario: Check the analyzed dependencies for the exact version (arbitrary equality)
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Python package manifest requirements_click_arbitrary_equality.txt to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+
   Scenario: Check the analyzed dependencies for older version of click package
     Given System is running
     When I acquire the authorization token
@@ -127,6 +138,61 @@ Feature: Stack analysis v2 API
     Then I should get 200 status code
     Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
     Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+
+  Scenario: Check the analyzed dependencies for older version of click package with click>=5.0, <=6.0 in requirements
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Python package manifest requirements_click_version_ge_5_0_le_6_0.txt to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 6.0 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+
+  Scenario: Check the analyzed dependencies for older version of click package with click>=5.0, <6.0 in requirements
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Python package manifest requirements_click_version_ge_5_0_lt_6_0.txt to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 5.1 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+
+  Scenario: Check the analyzed dependencies for older version of click package with click>5.0, <6.0 in requirements
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Python package manifest requirements_click_version_gt_5_0_lt_6_0.txt to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 5.1 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+
+  Scenario: Check the analyzed dependencies for older version of click package with click>5.0, <=6.0 in requirements
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Python package manifest requirements_click_version_gt_5_0_le_6_0.txt to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 6.0 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+
+  Scenario: Check the analyzed dependencies for click 6.7.*
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Python package manifest requirements_click_6_7_star.txt to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
+    Then I should find the value 6.7.dev0 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
 
   Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
     Given System is running
