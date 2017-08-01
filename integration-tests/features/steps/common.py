@@ -971,3 +971,16 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
                                                         version=version))
 
 
+@then('I should find that the component {component} version {version} has only one replacement')
+def stack_analysis_check_replaces_count(json_data, component, version):
+    """Check that the component is replaced only once in the alternate
+       analysis."""
+    json_data = context.response.json()
+    path = "result/0/recommendations/alternate"
+    alternates = get_value_using_path(json_data, path)
+    replacements = find_replacements(alternates, component, version)
+    replacements_count = len(replacements)
+
+    assert replacements_count == 1, \
+        "there must be just one replacement, " \
+        "but %d replacements have been found" % replacements_count
