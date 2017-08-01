@@ -951,3 +951,23 @@ def find_replacements(alternates, component, version):
             if replaces_component(replacement, component, version)]
 
 
+@then('I should find that the component {component} version {version} can be replaced by component {replaced_by} version {replacement_version}')
+def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
+    """Check that the component is replaced by the given package
+       and version."""
+    json_data = context.response.json()
+    path = "result/0/recommendations/alternate"
+    alternates = get_value_using_path(json_data, path)
+    replacements = find_replacements(alternates, component, version)
+    replacements_count = len(replacements)
+
+    for replacement in replacements:
+        if replacement["name"] == replaced_by and \
+           replacement["version"] == replacement_version:
+            break
+    else:
+        raise Exception("Can not found expected replacement for the component"
+                        " {component} {version}".format(component=component,
+                                                        version=version))
+
+
