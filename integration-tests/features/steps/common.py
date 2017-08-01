@@ -849,9 +849,10 @@ def check_sentiment(analyzed_packages):
         sentiment = package["sentiment"]
 
         if sentiment:
-            assert "latest_comment" in sentiment, \
-                "'latest_comment' attribute is expected in the node 'sentiment', " \
-                "found: %s attributes" % ", ".join(sentiment.keys())
+            # not needed ATM as we are not showing latest comment to end-developer
+            # assert "latest_comment" in sentiment, \
+            #     "'latest_comment' attribute is expected in the node 'sentiment', " \
+            #     "found: %s attributes" % ", ".join(sentiment.keys())
 
             if "magnitude" in sentiment:
                 magnitude = float(sentiment["magnitude"])
