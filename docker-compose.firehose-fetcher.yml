@@ -9,7 +9,7 @@ services:
      - broker
     environment:
       DEPLOYMENT_PREFIX: "${USER}"
-      FIREHOSE_STREAM_URL: "http://firehose.kklibraries.io/events"
+      # FIREHOSE_STREAM_URL: "http://firehose.libraries.io/events"
       # We use ingestion in deployment, but force to api here as we have only one worker that is serving api requests by default
       WORKER_ADMINISTRATION_REGION: api
       RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
