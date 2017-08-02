@@ -821,8 +821,8 @@ def check_outlier_probability(usage_outliers, package_name, threshold_value):
         if usage_outlier["package_name"] == package_name:
             assert outlier_probability_attribute in usage_outlier, \
                 "'%s' attribute is expected in the node, " \
-                "found: %s attributes " % (outlier_probability_attribute, 
-                                          ", ".join(usage_outlier.keys()))
+                "found: %s attributes " % (outlier_probability_attribute,
+                                           ", ".join(usage_outlier.keys()))
             probability = usage_outlier[outlier_probability_attribute]
             assert probability is not None
             v = float(probability)
@@ -982,7 +982,8 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
 
 
 @then('I should find that the component {component} version {version} has only one replacement')
-def stack_analysis_check_replaces_count(json_data, component, version):
+@then('I should find that the component {component} version {version} has {expected_replacements:d} replacements')
+def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
     """Check that the component is replaced only once in the alternate
        analysis."""
     json_data = context.response.json()
@@ -991,6 +992,6 @@ def stack_analysis_check_replaces_count(json_data, component, version):
     replacements = find_replacements(alternates, component, version)
     replacements_count = len(replacements)
 
-    assert replacements_count == 1, \
-        "there must be just one replacement, " \
-        "but %d replacements have been found" % replacements_count
+    assert replacements_count == expected_replacements, \
+        "there must be just %d replacement(s), " \
+        "but %d replacements have been found" % expected_replacements, replacements_count
