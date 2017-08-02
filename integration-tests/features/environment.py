@@ -23,6 +23,10 @@ _ANITYA_SERVICE = 31005
 # Endpoint for jobs debug API
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
 
+# Default timeout values for the stack analysis and component analysis endpoints
+_DEFAULT_STACK_ANALYSIS_TIMEOUT = 600
+_DEFAULT_COMPONENT_ANALYSIS_TIMEOUT = 600
+
 
 def _make_compose_name(suffix='.yml'):
     return os.path.join(_REPO_DIR, 'docker-compose' + suffix)
