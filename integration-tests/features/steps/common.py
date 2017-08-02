@@ -735,6 +735,20 @@ def check_analyzed_dependency(context, package, version):
                         format(package=package, version=version))
 
 
+@then('I should find the following analyzed dependencies ({packages}) in the stack analysis')
+def check_all_analyzed_dependency(context, packages):
+    packages = split_comma_separated_list(packages)
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    analyzed_dependencies = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies is not None
+    dependencies = get_attribute_values(analyzed_dependencies, "package")
+    for package in packages:
+        if package not in dependencies:
+            raise Exception('Package {package}not found'.format(package=package))
+
+
 @when('I generate authorization token from the private key {private_key}')
 def generate_authorization_token(context, private_key):
     expiry = datetime.datetime.utcnow() + datetime.timedelta(days=90)
