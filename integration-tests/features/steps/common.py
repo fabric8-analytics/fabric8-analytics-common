@@ -994,4 +994,4 @@ def stack_analysis_check_replaces_count(json_data, component, version, expected_
 
     assert replacements_count == expected_replacements, \
         "there must be just %d replacement(s), " \
-        "but %d replacements have been found" % expected_replacements, replacements_count
+        "but %d replacements have been found" % (expected_replacements, replacements_count)
