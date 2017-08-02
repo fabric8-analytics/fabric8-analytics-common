@@ -1,7 +1,7 @@
 version: "2"
 services:
   firehose-fetcher:
-    image: registry.devshift.net/bayesian/firehose-fetcher
+    image: registry.devshift.net/fabric8-analytics/firehose-fetcher
     network_mode: bridge
     container_name: firehose-fetcher
     restart: always
