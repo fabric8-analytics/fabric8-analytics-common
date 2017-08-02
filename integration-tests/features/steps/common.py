@@ -746,7 +746,7 @@ def check_all_analyzed_dependency(context, packages):
     dependencies = get_attribute_values(analyzed_dependencies, "package")
     for package in packages:
         if package not in dependencies:
-            raise Exception('Package {package}not found'.format(package=package))
+            raise Exception('Package {package} not found'.format(package=package))
 
 
 @when('I generate authorization token from the private key {private_key}')
