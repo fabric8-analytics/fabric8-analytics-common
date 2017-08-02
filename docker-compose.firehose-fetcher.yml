@@ -1,0 +1,25 @@
+version: "2"
+services:
+  firehose-fetcher:
+    image: registry.devshift.net/bayesian/firehose-fetcher
+    network_mode: bridge
+    container_name: firehose-fetcher
+    restart: always
+    depends_on:
+     - worker-api
+     - worker-ingestion
+    links:
+     - broker
+     - pgbouncer
+     - minio-s3
+    environment:
+      DEPLOYMENT_PREFIX: "${USER}"
+      FIREHOSE_STREAM_URL: "http://firehose.kklibraries.io/events"
+      # We use ingestion in deployment, but force to api here as we have only one worker that is serving api requests by default
+      WORKER_ADMINISTRATION_REGION: api
+      RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+
