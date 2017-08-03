@@ -217,3 +217,12 @@ Feature: Stack analysis v2 API
     Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
     Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
 
+  Scenario: Check the analyzed dependencies part
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Python package manifest requirements_click_newest_6_7.txt to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should find the following analyzed dependencies (click) in the stack analysis
+
