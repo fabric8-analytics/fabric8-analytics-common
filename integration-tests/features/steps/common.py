@@ -856,6 +856,25 @@ def stack_analysis_check_outliers(context, component):
     check_outlier_probability(usage_outliers, component, threshold)
 
 
+def check_licenses(node, expected_licenses):
+    for item in node:
+        licenses = item["licenses"]
+        assert licenses is not None
+        for license in licenses:
+            if license not in expected_licenses:
+                raise Exception("Unexpected license found: {license}".format(
+                                license=license))
+
+
+@then('I should find the following licenses ({licenses}) under the path {path}')
+def stack_analysis_check_licenses(json_data):
+    licenses = split_comma_separated_list(licenses)
+    json_data = context.response.json()
+    node = get_value_using_path(json_data, path)
+    assert node is not None
+    check_licenses(node, licenses)
+
+
 def check_sentiment(analyzed_packages):
     for package in analyzed_packages:
 
