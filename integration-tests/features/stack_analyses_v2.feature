@@ -272,3 +272,20 @@ Feature: Stack analysis v2 API
     Then I should find proper timestamp under the path result/0/_audit/started_at
     Then I should find proper timestamp under the path result/0/_audit/ended_at
 
+  @requires_authorization_token
+  Scenario: Check that the stack analysis response for the vertx.xml
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Maven package manifest vertx.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find analyzed dependency named io.vertx:vertx-core with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-web-templ-freemarker with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-jdbc-client with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-web with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-web-templ-handlebars with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-rx-java with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-web-client with version 3.4.1 in the stack analysis
+
