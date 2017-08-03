@@ -12,6 +12,7 @@ Feature: Components API V1
     When I search for component sequence without authorization token
     Then I should get 401 status code
 
+  @requires_authorization_token
   Scenario: Check the component search API entry point
     Given System is running
     Given Component search service is running
@@ -38,6 +39,7 @@ Feature: Components API V1
     When I access /api/v1/component-analyses/
     Then I should get 404 status code
 
+  @requires_authorization_token
   Scenario: Check if search for packages handle empty results
     Given System is running
     Given Component search service is running

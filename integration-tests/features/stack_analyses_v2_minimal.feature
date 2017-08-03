@@ -15,6 +15,7 @@ Feature: Stack analysis v2 API Minimal
     When I send Python package manifest requirements.txt to stack analysis version 2 without authorization token
     Then I should get 401 status code
 
+  @requires_authorization_token
   Scenario: Check that the API entry point requires authorization token
     Given System is running
     When I acquire the authorization token
@@ -23,6 +24,7 @@ Feature: Stack analysis v2 API Minimal
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
 
+  @requires_authorization_token
   Scenario: Check if the stack analysis requires authorization
     Given System is running
     When I acquire the authorization token
@@ -32,6 +34,7 @@ Feature: Stack analysis v2 API Minimal
     When I wait for stack analysis version 2 to finish without authorization token
     Then I should get 401 status code
 
+  @requires_authorization_token
   Scenario: Check if the stack analysis is finished
     Given System is running
     When I acquire the authorization token
@@ -41,6 +44,7 @@ Feature: Stack analysis v2 API Minimal
     When I wait for stack analysis version 2 to finish with authorization token
     Then I should get 200 status code
 
+  @requires_authorization_token
   Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
     Given System is running
     When I acquire the authorization token
