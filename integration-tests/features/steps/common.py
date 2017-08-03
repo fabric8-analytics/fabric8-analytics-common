@@ -910,7 +910,7 @@ def check_sentiment(analyzed_packages):
 
 
 @then('I should find the proper sentiment values in the stack analysis response')
-def stack_analysis_check_sentiment(json_data):
+def stack_analysis_check_sentiment(context):
     """The structure of sentiment details is:
                         "sentiment": {
                             "latest_comment": "",
