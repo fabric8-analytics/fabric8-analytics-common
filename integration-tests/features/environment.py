@@ -288,6 +288,21 @@ def _send_json_file(endpoint, filename):
     return response
 
 
+def _check_env_for_remote_tests(env_var_name):
+    if os.environ.get(env_var_name):
+        print("Note: {e} environment variable is specified, but tests are " \
+              "still run locally\n" \
+              "Check other values required to run tests against existing " \
+              "deployent".format(e=env_var_name))
+
+
+def _check_api_token_presence():
+    if not os.environ.get("RECOMMENDER_API_TOKEN"):
+        print("Warning: the RECOMMENDER_API_TOKEN environment variable is not" \
+              " set.\n"
+              "         Most tests that require authorization will probably fail")
+
+
 def _parse_int_env_var(env_var_name):
     val = os.environ.get(env_var_name)
     try:
@@ -342,6 +357,16 @@ def before_all(context):
     anitya_url = _add_slash(os.environ.get('F8A_ANITYA_API_URL', None))
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
+
+    if context.running_locally:
+        print("Note: integration tests are running localy via docker-compose")
+        if coreapi_url:
+            _check_env_for_remote_tests("F8A_API_URL")
+            _check_env_for_remote_tests("F8A_JOB_API_URL")
+            _check_env_for_remote_tests("F8A_ANITYA_API_URL")
+    else:
+        print("Note: integration tests are running against existing deploment")
+        _check_api_token_presence()
 
     context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
     context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
