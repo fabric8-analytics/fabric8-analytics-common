@@ -244,3 +244,18 @@ Feature: Stack analysis v2 API
     When I wait for stack analysis version 2 to finish with authorization token
     Then I should find the following analyzed dependencies (click) in the stack analysis
 
+  @requires_authorization_token
+  Scenario: Check the sentiment analysis and outlier records
+    Given System is running
+    When I download and parse outlier probability threshold value
+    Then I should have outlier probability threshold value between 0.0 and 1.0
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I read stack_analysis_springboot.json file
+    Then I should receive JSON response with the correct timestamp in attribute started_at
+    Then I should receive JSON response with the correct timestamp in attribute finished_at
+    Then I should find the proper sentiment values in the stack analysis response
+    Then I should find the proper outlier record for the org.springframework:spring-messaging component
+    Then I should find the proper outlier record for the org.springframework.boot:spring-boot-starter component
+    Then I should find the proper outlier record for the org.springframework.boot:spring-boot-starter-web component
+
