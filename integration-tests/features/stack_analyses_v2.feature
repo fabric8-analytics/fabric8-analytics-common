@@ -244,3 +244,16 @@ Feature: Stack analysis v2 API
     When I wait for stack analysis version 2 to finish with authorization token
     Then I should find the following analyzed dependencies (click) in the stack analysis
 
+  Scenario: Check that the API entry point requires authorization token
+    Given System is running
+    When I send Maven package manifest pom.xml to stack analysis version 2 without authorization token
+    Then I should get 401 status code
+
+  @requires_authorization_token
+  Scenario: Check that the API entry point requires authorization token
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Maven package manifest pom.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+
