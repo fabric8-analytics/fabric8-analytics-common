@@ -8,10 +8,15 @@ import re
 from behave import given, then, when
 from urllib.parse import urljoin
 import jsonschema
-import requests
+import requests 
 
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
+
+# Do not remove - kept for debugging
+# import logging
+# logging.basicConfig(level=logging.INFO)
+# log = logging.getLogger(__name__)
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -197,12 +202,14 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
     """
 
     timeout = context.stack_analysis_timeout  # in seconds
-    sleep_amount = 10  # we don't have to overload the API with too many calls
+    sleep_amount = 30  # we don't have to overload the API with too many calls
     use_token = parse_token_clause(token)
 
     id = context.response.json().get("id")
     context.stack_analysis_id = id
+    #log.info("REQUEST ID: {}\n\n".format(context.stack_analysis_id))
     url = urljoin(stack_analysis_endpoint(context, version), id)
+    #log.info("RECOMMENDER API URL: {}\n\n".format(url))
 
     for _ in range(timeout//sleep_amount):
         if use_token:
@@ -210,6 +217,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
+        #log.info("RESPONSE STATUS: {}\n\n".format(status_code))
         # 401 code should be checked later
         if status_code in (200, 401):
             break
@@ -780,6 +788,7 @@ def is_proper_authorization_token(context):
 @when('I acquire the authorization token')
 def acquire_authorization_token(context):
     recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
+    #log.info ("TOKEN: {}\n\n".format(recommender_token))
     if recommender_token is not None:
         context.token = recommender_token
     else:
@@ -856,6 +865,16 @@ def stack_analysis_check_outliers(context, component):
     check_outlier_probability(usage_outliers, component, threshold)
 
 
+@then('I should find that valid outliers are reported')
+def check_outlier_validity(context):
+    json_data = context.response.json()
+    threshold = context.outlier_probability_threshold
+    path = "result/0/recommendations/usage_outliers"
+    usage_outliers = get_value_using_path(json_data, path)
+    for usage_outlier in usage_outliers:
+        #log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
+        check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
+
 def check_licenses(node, expected_licenses):
     for item in node:
         licenses = item["licenses"]
@@ -867,7 +886,7 @@ def check_licenses(node, expected_licenses):
 
 
 @then('I should find the following licenses ({licenses}) under the path {path}')
-def stack_analysis_check_licenses(json_data):
+def stack_analysis_check_licenses(context, json_data):
     licenses = split_comma_separated_list(licenses)
     json_data = context.response.json()
     node = get_value_using_path(json_data, path)
@@ -891,8 +910,8 @@ def check_sentiment(analyzed_packages):
                 magnitude = float(sentiment["magnitude"])
 
                 assert magnitude >= 0.0, \
-                    "'magnitude' attribute should be >= 0.0, " \
-                    "found: %f value instead" % magnitude
+                    "'magnitude' attribute for %s should be >= 0.0, " \
+                    "found: %f value instead" %(package, magnitude)
 
                 assert "overall_score" in sentiment, \
                     "'overall_score' attribute is expected in the node 'sentiment', " \
@@ -910,7 +929,7 @@ def check_sentiment(analyzed_packages):
 
 
 @then('I should find the proper sentiment values in the stack analysis response')
-def stack_analysis_check_sentiment(json_data):
+def stack_analysis_check_sentiment(context):
     """The structure of sentiment details is:
                         "sentiment": {
                             "latest_comment": "",
@@ -964,7 +983,7 @@ def get_companion_packages(json_data):
 
 
 @then('I should find that none analyzed package can be found in companion packages as well')
-def stack_analysis_check_companion_packages(json_data):
+def stack_analysis_check_companion_packages(context, json_data):
 
     json_data = context.response.json()
 
@@ -976,3 +995,4 @@ def stack_analysis_check_companion_packages(json_data):
         assert companion_package not in analyzed_packages, \
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
+
