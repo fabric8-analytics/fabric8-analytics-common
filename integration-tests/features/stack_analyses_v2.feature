@@ -15,6 +15,7 @@ Feature: Stack analysis v2 API
     When I send Python package manifest requirements.txt to stack analysis version 2 without authorization token
     Then I should get 401 status code
 
+  @requires_authorization_token
   Scenario: Check that the API entry point requires authorization token
     Given System is running
     When I acquire the authorization token
