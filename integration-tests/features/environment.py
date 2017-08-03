@@ -23,6 +23,10 @@ _ANITYA_SERVICE = 31005
 # Endpoint for jobs debug API
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
 
+# Default timeout values for the stack analysis and component analysis endpoints
+_DEFAULT_STACK_ANALYSIS_TIMEOUT = 600
+_DEFAULT_COMPONENT_ANALYSIS_TIMEOUT = 600
+
 
 def _make_compose_name(suffix='.yml'):
     return os.path.join(_REPO_DIR, 'docker-compose' + suffix)
@@ -284,6 +288,14 @@ def _send_json_file(endpoint, filename):
     return response
 
 
+def _parse_int_env_var(env_var_name):
+    val = os.environ.get(env_var_name)
+    try:
+        return int(val)
+    except (TypeError, ValueError):
+        return None
+
+
 def before_all(context):
     context.config.setup_logging()
     context.start_system = _start_system
@@ -336,6 +348,13 @@ def before_all(context):
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
     context.client = None
+
+    # timeout values can be overwritten by environment variables
+    stack_analysis_timeout = _parse_int_env_var('F8A_STACK_ANALYSIS_TIMEOUT')
+    component_analysis_timeout = _parse_int_env_var('F8A_COMPONENT_ANALYSIS_TIMEOUT')
+
+    context.stack_analysis_timeout = stack_analysis_timeout or _DEFAULT_STACK_ANALYSIS_TIMEOUT
+    context.component_analysis_timeout = component_analysis_timeout or _DEFAULT_COMPONENT_ANALYSIS_TIMEOUT
 
     if context.running_locally:
         context.client = docker.AutoVersionClient()

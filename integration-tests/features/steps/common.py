@@ -166,7 +166,7 @@ def finish_analysis_for_component(context, ecosystem, component, version):
     404 NOT FOUND: analysis is started or is in progress
     """
 
-    timeout = 600      # in seconds
+    timeout = context.component_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
 
     url = component_analysis_url(context, ecosystem, component, version)
@@ -196,7 +196,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
     401 UNAUTHORIZED : missing or inproper authorization token
     """
 
-    timeout = 600      # in seconds
+    timeout = context.stack_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
     use_token = parse_token_clause(token)
 
