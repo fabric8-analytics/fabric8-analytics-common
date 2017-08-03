@@ -289,3 +289,17 @@ Feature: Stack analysis v2 API
     Then I should find analyzed dependency named io.vertx:vertx-rx-java with version 3.4.1 in the stack analysis
     Then I should find analyzed dependency named io.vertx:vertx-web-client with version 3.4.1 in the stack analysis
 
+  @requires_authorization_token
+  Scenario: Check that the stack analysis response for the springboot.xml
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Maven package manifest springboot.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find analyzed dependency named org.springframework:spring-messaging with version 4.3.7.RELEASE in the stack analysis
+    Then I should find analyzed dependency named org.springframework.boot:spring-boot-starter-web with version 1.5.2.RELEASE in the stack analysis
+    Then I should find analyzed dependency named org.springframework:spring-websocket with version 4.3.7.RELEASE in the stack analysis
+    Then I should find analyzed dependency named org.springframework.boot:spring-boot-starter with version 1.5.2.RELEASE in the stack analysis
+
