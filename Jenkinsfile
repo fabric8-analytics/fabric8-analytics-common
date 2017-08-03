@@ -16,7 +16,7 @@ node('docker') {
     stage('Integration Tests') {
         if (params.runOnOpenShift) {
             dir('integration-tests') {
-                timeout(20) {
+                timeout(600) {
                     withCredentials([string(credentialsId: 'f8a-api-token', variable: 'RECOMMENDER_API_TOKEN')]) {
                         withEnv(["F8A_API_URL=${apiUrl}", "F8A_JOB_API_URL=${jobsApiUrl}", "F8A_ANITYA_API_URL=${anityaApiUrl}"]) {
                             echo "Testing on OpenShift (${apiUrl})..."
