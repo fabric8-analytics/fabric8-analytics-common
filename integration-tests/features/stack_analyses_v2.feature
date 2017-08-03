@@ -257,3 +257,18 @@ Feature: Stack analysis v2 API
     When I send Maven package manifest pom.xml to stack analysis version 2 with authorization token
     Then I should get 200 status code
 
+  @requires_authorization_token
+  Scenario: Check that the stack analysis response for the pom.xml that contains only one component
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Maven package manifest pom.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find analyzed dependency named junit:junit with version 3.8.1 in the stack analysis
+    Then I should receive JSON response with the correct timestamp in attribute started_at
+    Then I should receive JSON response with the correct timestamp in attribute finished_at
+    Then I should find proper timestamp under the path result/0/_audit/started_at
+    Then I should find proper timestamp under the path result/0/_audit/ended_at
+
