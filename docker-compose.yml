@@ -193,6 +193,7 @@ services:
       GCP_TOKEN_URI: ""
       GCP_AUTH_PROVIDER_X509_CERT_URL: ""
       GCP_CLIENT_X509_CERT_URL: ""
+      SCANCODE_PROCESSES: "4"
     tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
   worker-ingestion:
     <<: *worker
