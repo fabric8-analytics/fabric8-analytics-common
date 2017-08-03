@@ -251,7 +251,10 @@ Feature: Stack analysis v2 API
     Then I should have outlier probability threshold value between 0.0 and 1.0
     When I acquire the authorization token
     Then I should get the proper authorization token
-    When I read stack_analysis_springboot.json file
+    When I send Maven package manifest springboot.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
     Then I should receive JSON response with the correct timestamp in attribute started_at
     Then I should receive JSON response with the correct timestamp in attribute finished_at
     Then I should find the proper sentiment values in the stack analysis response
