@@ -5,11 +5,13 @@ Feature: Check the implementation of test steps
     Given System is running
     When I mock API response by data/mock_stack_analysis_v2_junit.json file
     Then I should find analyzed dependency named junit:junit with version 3.8.1 in the stack analysis
+    Then I should find that none analyzed package can be found in companion packages as well
     Then I should receive JSON response with the correct timestamp in attribute started_at
     Then I should receive JSON response with the correct timestamp in attribute finished_at
     Then I should find proper timestamp under the path result/0/_audit/started_at
     Then I should find proper timestamp under the path result/0/_audit/ended_at
     Then I should find the proper sentiment values in the stack analysis response
+    Then I should find the following licenses (Apache 2.0, EPL 1.0, MIT License, ASL 2.0, Free Art, MITNFA, Forbidden Phrase) under the path result/0/recommendations/companion
 
   @selfcheck
   Scenario: Check that the stack analysis response for the springboot.xml
@@ -22,6 +24,7 @@ Feature: Check the implementation of test steps
     Then I should find proper timestamp under the path result/0/_audit/started_at
     Then I should find proper timestamp under the path result/0/_audit/ended_at
     Then I should find the proper sentiment values in the stack analysis response
+    Then I should find that none analyzed package can be found in companion packages as well
     Then I should find analyzed dependency named org.springframework:spring-messaging with version 4.3.7.RELEASE in the stack analysis
     Then I should find analyzed dependency named org.springframework.boot:spring-boot-starter-web with version 1.5.2.RELEASE in the stack analysis
     Then I should find analyzed dependency named org.springframework:spring-websocket with version 4.3.7.RELEASE in the stack analysis
