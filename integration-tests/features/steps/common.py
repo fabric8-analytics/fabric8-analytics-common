@@ -202,7 +202,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
     """
 
     timeout = context.stack_analysis_timeout  # in seconds
-    sleep_amount = 30  # we don't have to overload the API with too many calls
+    sleep_amount = 10  # we don't have to overload the API with too many calls
     use_token = parse_token_clause(token)
 
     id = context.response.json().get("id")
@@ -217,10 +217,13 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
-        #log.info("RESPONSE STATUS: {}\n\n".format(status_code))
+        #log.info("%r" % context.response.json())
         # 401 code should be checked later
         if status_code in (200, 401):
-            break
+            json_resp = context.response.json()
+            if json_resp['result'][0].get('recommendations', None).get('alternate', None) is not None:
+                # log.info('Recommendation found')
+                break
         elif status_code != 202:
             raise Exception('Bad HTTP status code {c}'.format(c=status_code))
         time.sleep(sleep_amount)
@@ -860,15 +863,22 @@ def check_outlier_probability(usage_outliers, package_name, threshold_value):
 def stack_analysis_check_outliers(context, component):
     json_data = context.response.json()
     threshold = context.outlier_probability_threshold
+    # log.info('Usage outlier threshold: %r' % threshold)
     path = "result/0/recommendations/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     check_outlier_probability(usage_outliers, component, threshold)
 
+@then('I should find that total {count} outliers are reported')
+def check_outlier_count(context, count=2):
+    json_data = context.response.json()
+    path = "result/0/recommendations/usage_outliers"
+    usage_outliers = get_value_using_path(json_data, path)
+    assert len(usage_outliers) == int(count)
 
 @then('I should find that valid outliers are reported')
 def check_outlier_validity(context):
     json_data = context.response.json()
-    threshold = context.outlier_probability_threshold
+    threshold = 0.9
     path = "result/0/recommendations/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     for usage_outlier in usage_outliers:
@@ -983,7 +993,7 @@ def get_companion_packages(json_data):
 
 
 @then('I should find that none analyzed package can be found in companion packages as well')
-def stack_analysis_check_companion_packages(context, json_data):
+def stack_analysis_check_companion_packages(context):
 
     json_data = context.response.json()
 
@@ -996,3 +1006,6 @@ def stack_analysis_check_companion_packages(context, json_data):
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
 
+@then('I should find that alternate components replace user components')
+def validate_alternate_components(context):
+    return true
