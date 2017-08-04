@@ -1006,7 +1006,6 @@ def perform_alternate_components_validation(json_data):
     for alternate_component in alternate_components:
 
         check_attribute_presence(alternate_component, "name")
-        name = alternate_component.get("name")
 
         check_attribute_presence(alternate_component, "replaces")
         replaces = alternate_component["replaces"]
@@ -1015,7 +1014,7 @@ def perform_alternate_components_validation(json_data):
             check_attribute_presence(replace, "name")
             r_name = replace["name"]
 
-            check_attribute_presence(replace, "name")
+            check_attribute_presence(replace, "version")
             r_version = replace["version"]
 
             assert replace in user_components,  \
