@@ -867,7 +867,7 @@ def check_licenses(node, expected_licenses):
 
 
 @then('I should find the following licenses ({licenses}) under the path {path}')
-def stack_analysis_check_licenses(json_data):
+def stack_analysis_check_licenses(context, licenses, path):
     licenses = split_comma_separated_list(licenses)
     json_data = context.response.json()
     node = get_value_using_path(json_data, path)
@@ -964,7 +964,7 @@ def get_companion_packages(json_data):
 
 
 @then('I should find that none analyzed package can be found in companion packages as well')
-def stack_analysis_check_companion_packages(json_data):
+def stack_analysis_check_companion_packages(context):
 
     json_data = context.response.json()
 
