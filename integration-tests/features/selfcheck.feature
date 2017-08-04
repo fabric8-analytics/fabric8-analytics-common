@@ -24,6 +24,7 @@ Feature: Check the implementation of test steps
     Then I should find proper timestamp under the path result/0/_audit/started_at
     Then I should find proper timestamp under the path result/0/_audit/ended_at
     Then I should find the proper sentiment values in the stack analysis response
+    Then I should find that alternate components replace user components
     Then I should find that none analyzed package can be found in companion packages as well
     Then I should find analyzed dependency named org.springframework:spring-messaging with version 4.3.7.RELEASE in the stack analysis
     Then I should find analyzed dependency named org.springframework.boot:spring-boot-starter-web with version 1.5.2.RELEASE in the stack analysis

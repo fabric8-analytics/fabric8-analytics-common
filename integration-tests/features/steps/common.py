@@ -978,6 +978,58 @@ def stack_analysis_check_companion_packages(context):
             % companion_package
 
 
+def get_user_components(json_data):
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    return get_value_using_path(json_data, path)
+
+
+def get_alternate_components(json_data):
+    path = "result/0/recommendations/alternate"
+    return get_value_using_path(json_data, path)
+
+
+def check_attribute_presence(node, attribute_name):
+    assert attribute_name in node, \
+        "'%s' attribute is expected in the node, " \
+        "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
+
+
+def perform_alternate_components_validation(json_data):
+    user_components = get_user_components(json_data)
+
+    # in order to use the 'in' operator later we need to have a sequence
+    # of dictionaries with 'name' and 'version' keys
+    user_components = [{"name": c["package"],
+                        "version": c["version"]} for c in user_components]
+    alternate_components = get_alternate_components(json_data)
+
+    for alternate_component in alternate_components:
+
+        check_attribute_presence(alternate_component, "name")
+
+        check_attribute_presence(alternate_component, "replaces")
+        replaces = alternate_component["replaces"]
+
+        for replace in replaces:
+            check_attribute_presence(replace, "name")
+            r_name = replace["name"]
+
+            check_attribute_presence(replace, "version")
+            r_version = replace["version"]
+
+            assert replace in user_components,  \
+                "The component %s version %s does not replace any user " \
+                "component" % (r_name, r_version)
+
+
+@then('I should find that alternate components replace user components')
+def stack_analysis_validate_alternate_components(context):
+    json_data = context.response.json()
+    assert json_data is not None, \
+        "JSON response from the previous request does not exist"
+    perform_alternate_components_validation(json_data)
+
+
 class MockedResponse():
     def __init__(self, filename):
         with open(filename) as data_file:
