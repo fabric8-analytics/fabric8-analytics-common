@@ -976,3 +976,17 @@ def stack_analysis_check_companion_packages(json_data):
         assert companion_package not in analyzed_packages, \
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
+
+
+class MockedResponse():
+    def __init__(self, filename):
+        with open(filename) as data_file:
+            self.content = json.load(data_file)
+
+    def json(self):
+        return self.content
+
+
+@when('I mock API response by {filename} file')
+def read_json_file(context, filename):
+    context.response = MockedResponse(filename)
