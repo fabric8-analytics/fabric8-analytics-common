@@ -8,7 +8,7 @@ import re
 from behave import given, then, when
 from urllib.parse import urljoin
 import jsonschema
-import requests 
+import requests
 
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
@@ -896,7 +896,7 @@ def check_licenses(node, expected_licenses):
 
 
 @then('I should find the following licenses ({licenses}) under the path {path}')
-def stack_analysis_check_licenses(context, json_data):
+def stack_analysis_check_licenses(json_data):
     licenses = split_comma_separated_list(licenses)
     json_data = context.response.json()
     node = get_value_using_path(json_data, path)
@@ -939,7 +939,7 @@ def check_sentiment(analyzed_packages):
 
 
 @then('I should find the proper sentiment values in the stack analysis response')
-def stack_analysis_check_sentiment(context):
+def stack_analysis_check_sentiment(json_data):
     """The structure of sentiment details is:
                         "sentiment": {
                             "latest_comment": "",
