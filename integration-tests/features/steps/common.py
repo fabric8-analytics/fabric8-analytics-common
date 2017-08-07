@@ -636,6 +636,14 @@ def check_stack_analyses_request_id(context):
     assert re.fullmatch("[A-Fa-f0-9]+", id), "ID must be hexadecimal number"
 
 
+@then("I should find the status attribute set to success")
+def check_stack_analyses_request_id(context):
+    response = context.response
+    json_data = response.json()
+
+    check_attribute_presence(json_data, 'status')
+
+    assert json_data['status'] == "success"
 
 
 @then("stack analyses response is available via {url}")
