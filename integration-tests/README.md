@@ -33,7 +33,7 @@ add new feature tests, simply edit an existing `<name>.feature` file in
   API endpoints are available and work as expected
 * [Server API](features/server_api.feature): API tests for the server module
 * [Jobs API](features/jobs_api.feature): API tests for the jobs module
-* [Stack analysis v2](features/stackanalysis-v2.feature): API tests for the
+* [Stack analysis v2](features/stack_analyses_v2.feature): API tests for the
   stack analysis endpoint `/api/v2/stack-analyses/`
 * [Component analysis](features/components.feature): API tests for the
   component analysis endpoints under `/api/v1/component-analyses/`
