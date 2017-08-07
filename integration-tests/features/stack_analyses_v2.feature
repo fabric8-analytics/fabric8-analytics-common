@@ -59,6 +59,19 @@ Feature: Stack analysis v2 API
     Then I should get 200 status code
 
   @requires_authorization_token
+  Scenario: Check the stack analysis job IDs for the request and the analysis as well
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
+    Then I should receive JSON response with the correct id
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should get a valid request ID
+    Then I should find the attribute request_id equals to id returned by stack analysis request
+
+  @requires_authorization_token
   Scenario: Check the stack analysis output
     Given System is running
     When I acquire the authorization token
