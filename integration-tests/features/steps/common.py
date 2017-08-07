@@ -514,6 +514,25 @@ def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
 
 
+def check_id_value(context, id_attribute_name):
+    """Check the ID attribute in the JSON response.
+
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    response = context.response
+    json_data = response.json()
+
+    assert json_data is not None
+
+    check_attribute_presence(json_data, id_attribute_name)
+    id = json_data[id_attribute_name]
+
+    assert id is not None
+    assert isinstance(id, str) and len(id) == 32
+    assert all(char in string.hexdigits for char in id)
+
+
 @then('I should receive JSON response with the correct id')
 def check_id_in_json_response(context):
     """Check the ID attribute in the JSON response.
@@ -521,10 +540,7 @@ def check_id_in_json_response(context):
     Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    id = context.response.json().get("id")
-    assert id is not None
-    assert isinstance(id, str) and len(id) == 32
-    assert all(char in string.hexdigits for char in id)
+    check_id_value(context, "id")
 
 
 def check_timestamp(timestamp):
@@ -626,14 +642,12 @@ def validate_analysis_result(context, ecosystem, package, version):
 
 @then("I should get a valid request ID")
 def check_stack_analyses_request_id(context):
-    response = context.response
-    json_data = response.json()
+    """Check the ID attribute in the JSON response.
 
-    check_attribute_presence(json_data, 'id')
-
-    id = json_data['id']
-    assert len(id) > 0, "Job ID attribute is empty"
-    assert re.fullmatch("[A-Fa-f0-9]+", id), "ID must be hexadecimal number"
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    check_id_value(context, "request_id")
 
 
 @then("I should find the status attribute set to success")
@@ -728,7 +742,13 @@ def find_value_under_the_path(context, value, path):
 @then('I should find the attribute request_id equals to id returned by stack analysis request')
 def check_stack_analysis_id(context):
     previous_id = context.stack_analysis_id
-    request_id = context.response.json().get("request_id")
+
+    json_data = context.response.json()
+    assert json_data is not None
+
+    check_attribute_presence(json_data, "request_id")
+    request_id = json_data["request_id"]
+
     assert previous_id is not None
     assert request_id is not None
     assert previous_id == request_id
