@@ -993,6 +993,58 @@ def stack_analysis_check_companion_packages(context):
             % companion_package
 
 
+def replaces_component(replacement, component, version):
+    assert "replaces" in replacement
+    replaces = replacement["replaces"]
+    for replace in replaces:
+        assert "name" in replace
+        assert "version" in replace
+        if replace["name"] == component and replace["version"] == version:
+            return True
+    return False
+
+
+def find_replacements(alternates, component, version):
+    return [replacement
+            for replacement in alternates
+            if replaces_component(replacement, component, version)]
+
+
+@then('I should find that the component {component} version {version} can be replaced by component {replaced_by} version {replacement_version}')
+def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
+    """Check that the component is replaced by the given package
+       and version."""
+    json_data = context.response.json()
+    path = "result/0/recommendations/alternate"
+    alternates = get_value_using_path(json_data, path)
+    replacements = find_replacements(alternates, component, version)
+
+    for replacement in replacements:
+        if replacement["name"] == replaced_by and \
+           replacement["version"] == replacement_version:
+            break
+    else:
+        raise Exception("Can not found expected replacement for the component"
+                        " {component} {version}".format(component=component,
+                                                        version=version))
+
+
+@then('I should find that the component {component} version {version} has only one replacement')
+@then('I should find that the component {component} version {version} has {expected_replacements:d} replacements')
+def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
+    """Check that the component is replaced only once in the alternate
+       analysis."""
+    json_data = context.response.json()
+    path = "result/0/recommendations/alternate"
+    alternates = get_value_using_path(json_data, path)
+    replacements = find_replacements(alternates, component, version)
+    replacements_count = len(replacements)
+
+    assert replacements_count == expected_replacements, \
+        "there must be just %d replacement(s), " \
+        "but %d replacements have been found" % (expected_replacements, replacements_count)
+
+
 def get_user_components(json_data):
     path = "result/0/user_stack_info/analyzed_dependencies"
     return get_value_using_path(json_data, path)
