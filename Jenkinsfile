@@ -41,7 +41,7 @@ node('docker') {
             }
 
             dir('integration-tests') {
-                timeout(20) {
+                timeout(30) {
                     ansiColor('xterm') {
                         sh './runtest.sh'
                     }
