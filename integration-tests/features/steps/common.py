@@ -14,9 +14,9 @@ import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
 # Do not remove - kept for debugging
-# import logging
-# logging.basicConfig(level=logging.INFO)
-# log = logging.getLogger(__name__)
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -994,7 +994,6 @@ def get_companion_packages(json_data):
 
 @then('I should find that none analyzed package can be found in companion packages as well')
 def stack_analysis_check_companion_packages(context):
-
     json_data = context.response.json()
 
     # those two lists should have no element in common
@@ -1006,6 +1005,10 @@ def stack_analysis_check_companion_packages(context):
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
 
-@then('I should find that alternate components replace user components')
-def validate_alternate_components(context):
-    return true
+@then('I should get {name} field in stack report') 
+def verify_stack_level_license_info(context, name):
+    json_data = context.response.json()
+    path = 'result/0/{}'.format(name)
+    user_stack_info = get_value_using_path(json_data, path)
+    assert user_stack_info.get('license_analysis', None) is not None
+

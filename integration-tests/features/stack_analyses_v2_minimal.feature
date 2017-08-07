@@ -28,3 +28,4 @@ Feature: Stack analysis v2 API Minimal
     Then I should find that none analyzed package can be found in companion packages as well
     Then I should find that total 2 outliers are reported
     Then I should find that valid outliers are reported
+    Then I should get user_stack_info field in stack report
