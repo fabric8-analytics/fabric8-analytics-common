@@ -514,6 +514,25 @@ def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
 
 
+def check_id_value(context, id_attribute_name):
+    """Check the ID attribute in the JSON response.
+
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    response = context.response
+    json_data = response.json()
+
+    assert json_data is not None
+
+    check_attribute_presence(json_data, id_attribute_name)
+    id = json_data[id_attribute_name]
+
+    assert id is not None
+    assert isinstance(id, str) and len(id) == 32
+    assert all(char in string.hexdigits for char in id)
+
+
 @then('I should receive JSON response with the correct id')
 def check_id_in_json_response(context):
     """Check the ID attribute in the JSON response.
@@ -521,10 +540,7 @@ def check_id_in_json_response(context):
     Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    id = context.response.json().get("id")
-    assert id is not None
-    assert isinstance(id, str) and len(id) == 32
-    assert all(char in string.hexdigits for char in id)
+    check_id_value(context, "id")
 
 
 def check_timestamp(timestamp):
