@@ -835,8 +835,8 @@ def check_outlier_probability(usage_outliers, package_name, threshold_value):
         if usage_outlier["package_name"] == package_name:
             assert outlier_probability_attribute in usage_outlier, \
                 "'%s' attribute is expected in the node, " \
-                "found: %s attributes " % (outlier_probability_attribute, 
-                                          ", ".join(usage_outlier.keys()))
+                "found: %s attributes " % (outlier_probability_attribute,
+                                           ", ".join(usage_outlier.keys()))
             probability = usage_outlier[outlier_probability_attribute]
             assert probability is not None
             v = float(probability)
