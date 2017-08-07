@@ -262,3 +262,61 @@ Feature: Stack analysis v2 API
     Then I should find the proper outlier record for the org.springframework.boot:spring-boot-starter component
     Then I should find the proper outlier record for the org.springframework.boot:spring-boot-starter-web component
 
+  Scenario: Check that the API entry point requires authorization token
+    Given System is running
+    When I send Maven package manifest pom.xml to stack analysis version 2 without authorization token
+    Then I should get 401 status code
+
+  @requires_authorization_token
+  Scenario: Check that the API entry point requires authorization token
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Maven package manifest pom.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+
+  @requires_authorization_token
+  Scenario: Check that the stack analysis response for the pom.xml that contains only one component
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Maven package manifest pom.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find analyzed dependency named junit:junit with version 3.8.1 in the stack analysis
+    Then I should receive JSON response with the correct timestamp in attribute started_at
+    Then I should receive JSON response with the correct timestamp in attribute finished_at
+    Then I should find proper timestamp under the path result/0/_audit/started_at
+    Then I should find proper timestamp under the path result/0/_audit/ended_at
+
+  @requires_authorization_token
+  Scenario: Check that the stack analysis response for the vertx.xml
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Maven package manifest vertx.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find analyzed dependency named io.vertx:vertx-core with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-web-templ-freemarker with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-jdbc-client with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-web with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-web-templ-handlebars with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-rx-java with version 3.4.1 in the stack analysis
+    Then I should find analyzed dependency named io.vertx:vertx-web-client with version 3.4.1 in the stack analysis
+
+  @requires_authorization_token
+  Scenario: Check that the stack analysis response for the springboot.xml
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I send Maven package manifest springboot.xml to stack analysis version 2 with authorization token
+    Then I should get 200 status code
+    When I wait for stack analysis version 2 to finish with authorization token
+    Then I should get 200 status code
+    Then I should find analyzed dependency named org.springframework:spring-messaging with version 4.3.7.RELEASE in the stack analysis
+    Then I should find analyzed dependency named org.springframework.boot:spring-boot-starter-web with version 1.5.2.RELEASE in the stack analysis
+    Then I should find analyzed dependency named org.springframework:spring-websocket with version 4.3.7.RELEASE in the stack analysis
+    Then I should find analyzed dependency named org.springframework.boot:spring-boot-starter with version 1.5.2.RELEASE in the stack analysis

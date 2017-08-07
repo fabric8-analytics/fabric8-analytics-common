@@ -626,9 +626,24 @@ def validate_analysis_result(context, ecosystem, package, version):
 
 @then("I should get a valid request ID")
 def check_stack_analyses_request_id(context):
-    resp = context.response
-    assert resp['status'] == "success"
-    assert len(resp['id']) > 0
+    response = context.response
+    json_data = response.json()
+
+    check_attribute_presence(json_data, 'id')
+
+    id = json_data['id']
+    assert len(id) > 0, "Job ID attribute is empty"
+    assert re.fullmatch("[A-Fa-f0-9]+", id), "ID must be hexadecimal number"
+
+
+@then("I should find the status attribute set to success")
+def check_stack_analyses_request_id(context):
+    response = context.response
+    json_data = response.json()
+
+    check_attribute_presence(json_data, 'status')
+
+    assert json_data['status'] == "success"
 
 
 @then("stack analyses response is available via {url}")
@@ -835,8 +850,8 @@ def check_outlier_probability(usage_outliers, package_name, threshold_value):
         if usage_outlier["package_name"] == package_name:
             assert outlier_probability_attribute in usage_outlier, \
                 "'%s' attribute is expected in the node, " \
-                "found: %s attributes " % (outlier_probability_attribute, 
-                                          ", ".join(usage_outlier.keys()))
+                "found: %s attributes " % (outlier_probability_attribute,
+                                           ", ".join(usage_outlier.keys()))
             probability = usage_outlier[outlier_probability_attribute]
             assert probability is not None
             v = float(probability)
@@ -867,7 +882,7 @@ def check_licenses(node, expected_licenses):
 
 
 @then('I should find the following licenses ({licenses}) under the path {path}')
-def stack_analysis_check_licenses(json_data):
+def stack_analysis_check_licenses(context, licenses, path):
     licenses = split_comma_separated_list(licenses)
     json_data = context.response.json()
     node = get_value_using_path(json_data, path)
@@ -964,7 +979,7 @@ def get_companion_packages(json_data):
 
 
 @then('I should find that none analyzed package can be found in companion packages as well')
-def stack_analysis_check_companion_packages(json_data):
+def stack_analysis_check_companion_packages(context):
 
     json_data = context.response.json()
 
@@ -976,3 +991,121 @@ def stack_analysis_check_companion_packages(json_data):
         assert companion_package not in analyzed_packages, \
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
+
+
+def replaces_component(replacement, component, version):
+    assert "replaces" in replacement
+    replaces = replacement["replaces"]
+    for replace in replaces:
+        assert "name" in replace
+        assert "version" in replace
+        if replace["name"] == component and replace["version"] == version:
+            return True
+    return False
+
+
+def find_replacements(alternates, component, version):
+    return [replacement
+            for replacement in alternates
+            if replaces_component(replacement, component, version)]
+
+
+@then('I should find that the component {component} version {version} can be replaced by component {replaced_by} version {replacement_version}')
+def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
+    """Check that the component is replaced by the given package
+       and version."""
+    json_data = context.response.json()
+    path = "result/0/recommendations/alternate"
+    alternates = get_value_using_path(json_data, path)
+    replacements = find_replacements(alternates, component, version)
+
+    for replacement in replacements:
+        if replacement["name"] == replaced_by and \
+           replacement["version"] == replacement_version:
+            break
+    else:
+        raise Exception("Can not found expected replacement for the component"
+                        " {component} {version}".format(component=component,
+                                                        version=version))
+
+
+@then('I should find that the component {component} version {version} has only one replacement')
+@then('I should find that the component {component} version {version} has {expected_replacements:d} replacements')
+def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
+    """Check that the component is replaced only once in the alternate
+       analysis."""
+    json_data = context.response.json()
+    path = "result/0/recommendations/alternate"
+    alternates = get_value_using_path(json_data, path)
+    replacements = find_replacements(alternates, component, version)
+    replacements_count = len(replacements)
+
+    assert replacements_count == expected_replacements, \
+        "there must be just %d replacement(s), " \
+        "but %d replacements have been found" % (expected_replacements, replacements_count)
+
+
+def get_user_components(json_data):
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    return get_value_using_path(json_data, path)
+
+
+def get_alternate_components(json_data):
+    path = "result/0/recommendations/alternate"
+    return get_value_using_path(json_data, path)
+
+
+def check_attribute_presence(node, attribute_name):
+    assert attribute_name in node, \
+        "'%s' attribute is expected in the node, " \
+        "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
+
+
+def perform_alternate_components_validation(json_data):
+    user_components = get_user_components(json_data)
+
+    # in order to use the 'in' operator later we need to have a sequence
+    # of dictionaries with 'name' and 'version' keys
+    user_components = [{"name": c["package"],
+                        "version": c["version"]} for c in user_components]
+    alternate_components = get_alternate_components(json_data)
+
+    for alternate_component in alternate_components:
+
+        check_attribute_presence(alternate_component, "name")
+
+        check_attribute_presence(alternate_component, "replaces")
+        replaces = alternate_component["replaces"]
+
+        for replace in replaces:
+            check_attribute_presence(replace, "name")
+            r_name = replace["name"]
+
+            check_attribute_presence(replace, "version")
+            r_version = replace["version"]
+
+            assert replace in user_components,  \
+                "The component %s version %s does not replace any user " \
+                "component" % (r_name, r_version)
+
+
+@then('I should find that alternate components replace user components')
+def stack_analysis_validate_alternate_components(context):
+    json_data = context.response.json()
+    assert json_data is not None, \
+        "JSON response from the previous request does not exist"
+    perform_alternate_components_validation(json_data)
+
+
+class MockedResponse():
+    def __init__(self, filename):
+        with open(filename) as data_file:
+            self.content = json.load(data_file)
+
+    def json(self):
+        return self.content
+
+
+@when('I mock API response by {filename} file')
+def read_json_file(context, filename):
+    context.response = MockedResponse(filename)
