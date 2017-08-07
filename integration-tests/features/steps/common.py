@@ -626,9 +626,16 @@ def validate_analysis_result(context, ecosystem, package, version):
 
 @then("I should get a valid request ID")
 def check_stack_analyses_request_id(context):
-    resp = context.response
-    assert resp['status'] == "success"
-    assert len(resp['id']) > 0
+    response = context.response
+    json_data = response.json()
+
+    check_attribute_presence(json_data, 'id')
+
+    id = json_data['id']
+    assert len(id) > 0, "Job ID attribute is empty"
+    assert re.fullmatch("[A-Fa-f0-9]+", id), "ID must be hexadecimal number"
+
+
 
 
 @then("stack analyses response is available via {url}")
