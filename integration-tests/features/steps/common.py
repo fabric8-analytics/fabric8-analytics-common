@@ -166,7 +166,7 @@ def finish_analysis_for_component(context, ecosystem, component, version):
     404 NOT FOUND: analysis is started or is in progress
     """
 
-    timeout = 600      # in seconds
+    timeout = context.component_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
 
     url = component_analysis_url(context, ecosystem, component, version)
@@ -196,7 +196,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
     401 UNAUTHORIZED : missing or inproper authorization token
     """
 
-    timeout = 600      # in seconds
+    timeout = context.stack_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
     use_token = parse_token_clause(token)
 
@@ -735,6 +735,20 @@ def check_analyzed_dependency(context, package, version):
                         format(package=package, version=version))
 
 
+@then('I should find the following analyzed dependencies ({packages}) in the stack analysis')
+def check_all_analyzed_dependency(context, packages):
+    packages = split_comma_separated_list(packages)
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    analyzed_dependencies = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies is not None
+    dependencies = get_attribute_values(analyzed_dependencies, "package")
+    for package in packages:
+        if package not in dependencies:
+            raise Exception('Package {package} not found'.format(package=package))
+
+
 @when('I generate authorization token from the private key {private_key}')
 def generate_authorization_token(context, private_key):
     expiry = datetime.datetime.utcnow() + datetime.timedelta(days=90)
@@ -842,6 +856,25 @@ def stack_analysis_check_outliers(context, component):
     check_outlier_probability(usage_outliers, component, threshold)
 
 
+def check_licenses(node, expected_licenses):
+    for item in node:
+        licenses = item["licenses"]
+        assert licenses is not None
+        for license in licenses:
+            if license not in expected_licenses:
+                raise Exception("Unexpected license found: {license}".format(
+                                license=license))
+
+
+@then('I should find the following licenses ({licenses}) under the path {path}')
+def stack_analysis_check_licenses(context, licenses, path):
+    licenses = split_comma_separated_list(licenses)
+    json_data = context.response.json()
+    node = get_value_using_path(json_data, path)
+    assert node is not None
+    check_licenses(node, licenses)
+
+
 def check_sentiment(analyzed_packages):
     for package in analyzed_packages:
 
@@ -877,7 +910,7 @@ def check_sentiment(analyzed_packages):
 
 
 @then('I should find the proper sentiment values in the stack analysis response')
-def stack_analysis_check_sentiment(json_data):
+def stack_analysis_check_sentiment(context):
     """The structure of sentiment details is:
                         "sentiment": {
                             "latest_comment": "",
@@ -931,7 +964,7 @@ def get_companion_packages(json_data):
 
 
 @then('I should find that none analyzed package can be found in companion packages as well')
-def stack_analysis_check_companion_packages(json_data):
+def stack_analysis_check_companion_packages(context):
 
     json_data = context.response.json()
 
@@ -995,3 +1028,69 @@ def stack_analysis_check_replaces_count(json_data, component, version, expected_
     assert replacements_count == expected_replacements, \
         "there must be just %d replacement(s), " \
         "but %d replacements have been found" % (expected_replacements, replacements_count)
+
+
+def get_user_components(json_data):
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    return get_value_using_path(json_data, path)
+
+
+def get_alternate_components(json_data):
+    path = "result/0/recommendations/alternate"
+    return get_value_using_path(json_data, path)
+
+
+def check_attribute_presence(node, attribute_name):
+    assert attribute_name in node, \
+        "'%s' attribute is expected in the node, " \
+        "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
+
+
+def perform_alternate_components_validation(json_data):
+    user_components = get_user_components(json_data)
+
+    # in order to use the 'in' operator later we need to have a sequence
+    # of dictionaries with 'name' and 'version' keys
+    user_components = [{"name": c["package"],
+                        "version": c["version"]} for c in user_components]
+    alternate_components = get_alternate_components(json_data)
+
+    for alternate_component in alternate_components:
+
+        check_attribute_presence(alternate_component, "name")
+
+        check_attribute_presence(alternate_component, "replaces")
+        replaces = alternate_component["replaces"]
+
+        for replace in replaces:
+            check_attribute_presence(replace, "name")
+            r_name = replace["name"]
+
+            check_attribute_presence(replace, "version")
+            r_version = replace["version"]
+
+            assert replace in user_components,  \
+                "The component %s version %s does not replace any user " \
+                "component" % (r_name, r_version)
+
+
+@then('I should find that alternate components replace user components')
+def stack_analysis_validate_alternate_components(context):
+    json_data = context.response.json()
+    assert json_data is not None, \
+        "JSON response from the previous request does not exist"
+    perform_alternate_components_validation(json_data)
+
+
+class MockedResponse():
+    def __init__(self, filename):
+        with open(filename) as data_file:
+            self.content = json.load(data_file)
+
+    def json(self):
+        return self.content
+
+
+@when('I mock API response by {filename} file')
+def read_json_file(context, filename):
+    context.response = MockedResponse(filename)

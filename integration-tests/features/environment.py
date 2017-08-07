@@ -23,6 +23,10 @@ _ANITYA_SERVICE = 31005
 # Endpoint for jobs debug API
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
 
+# Default timeout values for the stack analysis and component analysis endpoints
+_DEFAULT_STACK_ANALYSIS_TIMEOUT = 600
+_DEFAULT_COMPONENT_ANALYSIS_TIMEOUT = 600
+
 
 def _make_compose_name(suffix='.yml'):
     return os.path.join(_REPO_DIR, 'docker-compose' + suffix)
@@ -284,6 +288,29 @@ def _send_json_file(endpoint, filename):
     return response
 
 
+def _check_env_for_remote_tests(env_var_name):
+    if os.environ.get(env_var_name):
+        print("Note: {e} environment variable is specified, but tests are " \
+              "still run locally\n" \
+              "Check other values required to run tests against existing " \
+              "deployent".format(e=env_var_name))
+
+
+def _check_api_token_presence():
+    if not os.environ.get("RECOMMENDER_API_TOKEN"):
+        print("Warning: the RECOMMENDER_API_TOKEN environment variable is not" \
+              " set.\n"
+              "         Most tests that require authorization will probably fail")
+
+
+def _parse_int_env_var(env_var_name):
+    val = os.environ.get(env_var_name)
+    try:
+        return int(val)
+    except (TypeError, ValueError):
+        return None
+
+
 def before_all(context):
     context.config.setup_logging()
     context.start_system = _start_system
@@ -331,11 +358,28 @@ def before_all(context):
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
 
+    if context.running_locally:
+        print("Note: integration tests are running localy via docker-compose")
+        if coreapi_url:
+            _check_env_for_remote_tests("F8A_API_URL")
+            _check_env_for_remote_tests("F8A_JOB_API_URL")
+            _check_env_for_remote_tests("F8A_ANITYA_API_URL")
+    else:
+        print("Note: integration tests are running against existing deploment")
+        _check_api_token_presence()
+
     context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
     context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
     context.client = None
+
+    # timeout values can be overwritten by environment variables
+    stack_analysis_timeout = _parse_int_env_var('F8A_STACK_ANALYSIS_TIMEOUT')
+    component_analysis_timeout = _parse_int_env_var('F8A_COMPONENT_ANALYSIS_TIMEOUT')
+
+    context.stack_analysis_timeout = stack_analysis_timeout or _DEFAULT_STACK_ANALYSIS_TIMEOUT
+    context.component_analysis_timeout = component_analysis_timeout or _DEFAULT_COMPONENT_ANALYSIS_TIMEOUT
 
     if context.running_locally:
         context.client = docker.AutoVersionClient()

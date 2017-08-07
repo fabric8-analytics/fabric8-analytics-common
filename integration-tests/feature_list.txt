@@ -5,8 +5,11 @@ features/jobs_api.feature
 features/jobs_debug_api.feature
 #features/ecosystems.feature
 features/components.feature
+#features/stack_analyses_v2_minimal.feature
 #features/versions.feature
 #features/anitya.feature
+#features/stack_analyses_v2.feature
+features/selfcheck.feature
 
 # This is workaround to temporary disable integration tests
 #features/disabled.feature
