@@ -1117,6 +1117,19 @@ def stack_analysis_validate_alternate_components(context):
     perform_alternate_components_validation(json_data)
 
 
+def check_cve_value(cve):
+    pattern = "CVE-([0-9]{4})-[0-9]{4,}"
+
+    match = re.fullmatch(pattern, cve)
+    assert match is not None, "Improper CVE number %s" % cve
+
+    year = int(re.fullmatch(pattern, cve).group(1))
+    current_year = datetime.datetime.now().year
+
+    # well the lower limit is a bit arbitrary
+    assert year > 1980 and year <= current_year
+
+
 class MockedResponse():
     def __init__(self, filename):
         with open(filename) as data_file:
