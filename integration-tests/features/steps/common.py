@@ -13,6 +13,10 @@ import requests
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
+# Do not remove - kept for debugging
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
     "fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
@@ -202,7 +206,9 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
 
     id = context.response.json().get("id")
     context.stack_analysis_id = id
+    #log.info("REQUEST ID: {}\n\n".format(context.stack_analysis_id))
     url = urljoin(stack_analysis_endpoint(context, version), id)
+    #log.info("RECOMMENDER API URL: {}\n\n".format(url))
 
     for _ in range(timeout//sleep_amount):
         if use_token:
@@ -210,8 +216,14 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
+        #log.info("%r" % context.response.json())
+        if status_code == 200:
+            json_resp = context.response.json()
+            if json_resp['result'][0].get('recommendations', None).get('alternate', None) is not None:
+                # log.info('Recommendation found')
+                break
         # 401 code should be checked later
-        if status_code in (200, 401):
+        elif status_code == 401:
             break
         elif status_code != 202:
             raise Exception('Bad HTTP status code {c}'.format(c=status_code))
@@ -314,6 +326,21 @@ def maven_manifest_stack_analysis(context, manifest, version="1", token="without
     send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
                                     endpoint, use_token)
 
+@when("I post {is_valid} input to the {endpoint} endpoint {token} authorization token")
+def post_input_to_user_feedback(context, is_valid, endpoint, token):
+    """Send feedback to user feedback endpoint."""
+    use_token = parse_token_clause(token)
+    api_url = urljoin(context.coreapi_url, endpoint)
+    if is_valid == "valid":
+        data = {"request_id": "test_id", "feedback": [{"ques":"what","ans":"got it"}]}
+    else:
+        data = {"request_id": "test_id"}
+    if use_token:
+        response = requests.post(api_url, json=data,
+                                 headers=authorization(context))
+    else:
+        response = requests.post(api_url, json=data)
+    context.response = response
 
 def job_metadata_filename(metadata):
     return "data/{metadata}".format(metadata=metadata)
@@ -514,6 +541,25 @@ def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
 
 
+def check_id_value(context, id_attribute_name):
+    """Check the ID attribute in the JSON response.
+
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    response = context.response
+    json_data = response.json()
+
+    assert json_data is not None
+
+    check_attribute_presence(json_data, id_attribute_name)
+    id = json_data[id_attribute_name]
+
+    assert id is not None
+    assert isinstance(id, str) and len(id) == 32
+    assert all(char in string.hexdigits for char in id)
+
+
 @then('I should receive JSON response with the correct id')
 def check_id_in_json_response(context):
     """Check the ID attribute in the JSON response.
@@ -521,10 +567,7 @@ def check_id_in_json_response(context):
     Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    id = context.response.json().get("id")
-    assert id is not None
-    assert isinstance(id, str) and len(id) == 32
-    assert all(char in string.hexdigits for char in id)
+    check_id_value(context, "id")
 
 
 def check_timestamp(timestamp):
@@ -626,14 +669,12 @@ def validate_analysis_result(context, ecosystem, package, version):
 
 @then("I should get a valid request ID")
 def check_stack_analyses_request_id(context):
-    response = context.response
-    json_data = response.json()
+    """Check the ID attribute in the JSON response.
 
-    check_attribute_presence(json_data, 'id')
-
-    id = json_data['id']
-    assert len(id) > 0, "Job ID attribute is empty"
-    assert re.fullmatch("[A-Fa-f0-9]+", id), "ID must be hexadecimal number"
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    check_id_value(context, "request_id")
 
 
 @then("I should find the status attribute set to success")
@@ -728,7 +769,13 @@ def find_value_under_the_path(context, value, path):
 @then('I should find the attribute request_id equals to id returned by stack analysis request')
 def check_stack_analysis_id(context):
     previous_id = context.stack_analysis_id
-    request_id = context.response.json().get("request_id")
+
+    json_data = context.response.json()
+    assert json_data is not None
+
+    check_attribute_presence(json_data, "request_id")
+    request_id = json_data["request_id"]
+
     assert previous_id is not None
     assert request_id is not None
     assert previous_id == request_id
@@ -795,6 +842,7 @@ def is_proper_authorization_token(context):
 @when('I acquire the authorization token')
 def acquire_authorization_token(context):
     recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
+    #log.info ("TOKEN: {}\n\n".format(recommender_token))
     if recommender_token is not None:
         context.token = recommender_token
     else:
@@ -866,10 +914,27 @@ def check_outlier_probability(usage_outliers, package_name, threshold_value):
 def stack_analysis_check_outliers(context, component):
     json_data = context.response.json()
     threshold = context.outlier_probability_threshold
+    # log.info('Usage outlier threshold: %r' % threshold)
     path = "result/0/recommendations/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     check_outlier_probability(usage_outliers, component, threshold)
 
+@then('I should find that total {count} outliers are reported')
+def check_outlier_count(context, count=2):
+    json_data = context.response.json()
+    path = "result/0/recommendations/usage_outliers"
+    usage_outliers = get_value_using_path(json_data, path)
+    assert len(usage_outliers) == int(count)
+
+@then('I should find that valid outliers are reported')
+def check_outlier_validity(context):
+    json_data = context.response.json()
+    threshold = 0.9
+    path = "result/0/recommendations/usage_outliers"
+    usage_outliers = get_value_using_path(json_data, path)
+    for usage_outlier in usage_outliers:
+        #log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
+        check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
 
 def check_licenses(node, expected_licenses):
     for item in node:
@@ -992,6 +1057,64 @@ def stack_analysis_check_companion_packages(context):
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
 
+@then('I should get {field_name} field in stack report') 
+def verify_stack_level_license_info(context, field_name):
+    json_data = context.response.json()
+    path = 'result/0/user_stack_info'
+    user_stack_info = get_value_using_path(json_data, path)
+    assert user_stack_info.get(field_name, None) is not None
+
+def replaces_component(replacement, component, version):
+    assert "replaces" in replacement
+    replaces = replacement["replaces"]
+    for replace in replaces:
+        assert "name" in replace
+        assert "version" in replace
+        if replace["name"] == component and replace["version"] == version:
+            return True
+    return False
+
+
+def find_replacements(alternates, component, version):
+    return [replacement
+            for replacement in alternates
+            if replaces_component(replacement, component, version)]
+
+
+@then('I should find that the component {component} version {version} can be replaced by component {replaced_by} version {replacement_version}')
+def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
+    """Check that the component is replaced by the given package
+       and version."""
+    json_data = context.response.json()
+    path = "result/0/recommendations/alternate"
+    alternates = get_value_using_path(json_data, path)
+    replacements = find_replacements(alternates, component, version)
+
+    for replacement in replacements:
+        if replacement["name"] == replaced_by and \
+           replacement["version"] == replacement_version:
+            break
+    else:
+        raise Exception("Can not found expected replacement for the component"
+                        " {component} {version}".format(component=component,
+                                                        version=version))
+
+
+@then('I should find that the component {component} version {version} has only one replacement')
+@then('I should find that the component {component} version {version} has {expected_replacements:d} replacements')
+def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
+    """Check that the component is replaced only once in the alternate
+       analysis."""
+    json_data = context.response.json()
+    path = "result/0/recommendations/alternate"
+    alternates = get_value_using_path(json_data, path)
+    replacements = find_replacements(alternates, component, version)
+    replacements_count = len(replacements)
+
+    assert replacements_count == expected_replacements, \
+        "there must be just %d replacement(s), " \
+        "but %d replacements have been found" % (expected_replacements, replacements_count)
+
 
 def get_user_components(json_data):
     path = "result/0/user_stack_info/analyzed_dependencies"
@@ -1043,6 +1166,57 @@ def stack_analysis_validate_alternate_components(context):
     assert json_data is not None, \
         "JSON response from the previous request does not exist"
     perform_alternate_components_validation(json_data)
+
+
+def check_cve_value(cve):
+    pattern = "CVE-([0-9]{4})-[0-9]{4,}"
+
+    match = re.fullmatch(pattern, cve)
+    assert match is not None, "Improper CVE number %s" % cve
+
+    year = int(re.fullmatch(pattern, cve).group(1))
+    current_year = datetime.datetime.now().year
+
+    # well the lower limit is a bit arbitrary
+    # (according to SRT guys it should be 1999)
+    assert year >= 1999 and year <= current_year
+
+
+def check_cvss_value(cvss):
+    score = float(cvss)
+    # TODO: check the specificaion how to calculate the maximum possible value
+    # https://www.first.org/cvss/specification-document
+    assert score >= 0.0, "CVSS score must be >= 0.0"
+    assert score <= 10.0, "CVSS score must be <= 10.0"
+
+
+def check_security_node(context, path):
+    json_data = context.response.json()
+    assert json_data is not None
+
+    components = get_value_using_path(json_data, path)
+    assert components is not None
+
+    for component in components:
+        check_attribute_presence(component, "security")
+        cve_items = component["security"]
+        for cve_item in cve_items:
+            check_attribute_presence(cve_item, "CVE")
+            check_attribute_presence(cve_item, "CVSS")
+            cve = cve_item["CVE"]
+            cvss = cve_item["CVSS"]
+            check_cve_value(cve)
+            check_cvss_value(cvss)
+
+
+@then('I should find the security node for all dependencies')
+def stack_analysis_check_security_node_for_dependencies(context):
+    check_security_node(context, "result/0/user_stack_info/dependencies")
+
+
+@then('I should find the security node for all alternate components')
+def stack_analysis_check_security_node_for_dependencies(context):
+    check_security_node(context, "result/0/recommendations/alternate")
 
 
 class MockedResponse():
