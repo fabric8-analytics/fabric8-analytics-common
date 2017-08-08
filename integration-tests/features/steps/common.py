@@ -206,9 +206,9 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
 
     id = context.response.json().get("id")
     context.stack_analysis_id = id
-    #log.info("REQUEST ID: {}\n\n".format(context.stack_analysis_id))
+    # log.info("REQUEST ID: {}\n\n".format(context.stack_analysis_id))
     url = urljoin(stack_analysis_endpoint(context, version), id)
-    #log.info("RECOMMENDER API URL: {}\n\n".format(url))
+    # log.info("RECOMMENDER API URL: {}\n\n".format(url))
 
     for _ in range(timeout//sleep_amount):
         if use_token:
@@ -216,7 +216,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
-        #log.info("%r" % context.response.json())
+        # log.info("%r" % context.response.json())
         if status_code == 200:
             json_resp = context.response.json()
             if json_resp['result'][0].get('recommendations', None).get('alternate', None) is not None:
@@ -326,13 +326,14 @@ def maven_manifest_stack_analysis(context, manifest, version="1", token="without
     send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
                                     endpoint, use_token)
 
+
 @when("I post {is_valid} input to the {endpoint} endpoint {token} authorization token")
 def post_input_to_user_feedback(context, is_valid, endpoint, token):
     """Send feedback to user feedback endpoint."""
     use_token = parse_token_clause(token)
     api_url = urljoin(context.coreapi_url, endpoint)
     if is_valid == "valid":
-        data = {"request_id": "test_id", "feedback": [{"ques":"what","ans":"got it"}]}
+        data = {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
     else:
         data = {"request_id": "test_id"}
     if use_token:
@@ -341,6 +342,7 @@ def post_input_to_user_feedback(context, is_valid, endpoint, token):
     else:
         response = requests.post(api_url, json=data)
     context.response = response
+
 
 def job_metadata_filename(metadata):
     return "data/{metadata}".format(metadata=metadata)
@@ -842,7 +844,7 @@ def is_proper_authorization_token(context):
 @when('I acquire the authorization token')
 def acquire_authorization_token(context):
     recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
-    #log.info ("TOKEN: {}\n\n".format(recommender_token))
+    # log.info ("TOKEN: {}\n\n".format(recommender_token))
     if recommender_token is not None:
         context.token = recommender_token
     else:
@@ -919,12 +921,14 @@ def stack_analysis_check_outliers(context, component):
     usage_outliers = get_value_using_path(json_data, path)
     check_outlier_probability(usage_outliers, component, threshold)
 
+
 @then('I should find that total {count} outliers are reported')
 def check_outlier_count(context, count=2):
     json_data = context.response.json()
     path = "result/0/recommendations/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     assert len(usage_outliers) == int(count)
+
 
 @then('I should find that valid outliers are reported')
 def check_outlier_validity(context):
@@ -933,8 +937,9 @@ def check_outlier_validity(context):
     path = "result/0/recommendations/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     for usage_outlier in usage_outliers:
-        #log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
+        # log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
         check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
+
 
 def check_licenses(node, expected_licenses):
     for item in node:
@@ -1057,12 +1062,14 @@ def stack_analysis_check_companion_packages(context):
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
 
-@then('I should get {field_name} field in stack report') 
+
+@then('I should get {field_name} field in stack report')
 def verify_stack_level_license_info(context, field_name):
     json_data = context.response.json()
     path = 'result/0/user_stack_info'
     user_stack_info = get_value_using_path(json_data, path)
     assert user_stack_info.get(field_name, None) is not None
+
 
 def replaces_component(replacement, component, version):
     assert "replaces" in replacement
