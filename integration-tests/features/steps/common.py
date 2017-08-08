@@ -13,6 +13,11 @@ import requests
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
+# Do not remove - kept for debugging
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
+
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
     "fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
@@ -202,7 +207,9 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
 
     id = context.response.json().get("id")
     context.stack_analysis_id = id
+    #log.info("REQUEST ID: {}\n\n".format(context.stack_analysis_id))
     url = urljoin(stack_analysis_endpoint(context, version), id)
+    #log.info("RECOMMENDER API URL: {}\n\n".format(url))
 
     for _ in range(timeout//sleep_amount):
         if use_token:
@@ -210,9 +217,13 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
+        #log.info("%r" % context.response.json())
         # 401 code should be checked later
         if status_code in (200, 401):
-            break
+            json_resp = context.response.json()
+            if json_resp['result'][0].get('recommendations', None).get('alternate', None) is not None:
+                # log.info('Recommendation found')
+                break
         elif status_code != 202:
             raise Exception('Bad HTTP status code {c}'.format(c=status_code))
         time.sleep(sleep_amount)
@@ -815,6 +826,7 @@ def is_proper_authorization_token(context):
 @when('I acquire the authorization token')
 def acquire_authorization_token(context):
     recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
+    #log.info ("TOKEN: {}\n\n".format(recommender_token))
     if recommender_token is not None:
         context.token = recommender_token
     else:
@@ -886,10 +898,27 @@ def check_outlier_probability(usage_outliers, package_name, threshold_value):
 def stack_analysis_check_outliers(context, component):
     json_data = context.response.json()
     threshold = context.outlier_probability_threshold
+    # log.info('Usage outlier threshold: %r' % threshold)
     path = "result/0/recommendations/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     check_outlier_probability(usage_outliers, component, threshold)
 
+@then('I should find that total {count} outliers are reported')
+def check_outlier_count(context, count=2):
+    json_data = context.response.json()
+    path = "result/0/recommendations/usage_outliers"
+    usage_outliers = get_value_using_path(json_data, path)
+    assert len(usage_outliers) == int(count)
+
+@then('I should find that valid outliers are reported')
+def check_outlier_validity(context):
+    json_data = context.response.json()
+    threshold = 0.9
+    path = "result/0/recommendations/usage_outliers"
+    usage_outliers = get_value_using_path(json_data, path)
+    for usage_outlier in usage_outliers:
+        #log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
+        check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
 
 def check_licenses(node, expected_licenses):
     for item in node:
@@ -1012,6 +1041,12 @@ def stack_analysis_check_companion_packages(context):
             "The analyzed package '%s' is found in companion packages as well" \
             % companion_package
 
+@then('I should get {name} field in stack report') 
+def verify_stack_level_license_info(context, name):
+    json_data = context.response.json()
+    path = 'result/0/{}'.format(name)
+    user_stack_info = get_value_using_path(json_data, path)
+    assert user_stack_info.get('license_analysis', None) is not None
 
 def replaces_component(replacement, component, version):
     assert "replaces" in replacement

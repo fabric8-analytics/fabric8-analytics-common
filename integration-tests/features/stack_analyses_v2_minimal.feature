@@ -11,60 +11,21 @@ Feature: Stack analysis v2 API Minimal
 
   Scenario: Check that the API entry point requires authorization token
     Given System is running
-    When I wait 60 seconds
+    When I wait 10 seconds
     When I send Python package manifest requirements.txt to stack analysis version 2 without authorization token
     Then I should get 401 status code
 
-  @requires_authorization_token
-  Scenario: Check that the API entry point requires authorization token
+  Scenario: Check that the stack-analyses-v2 returns a valid response
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
-    When I wait 20 seconds
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-
-  @requires_authorization_token
-  Scenario: Check if the stack analysis requires authorization
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish without authorization token
-    Then I should get 401 status code
-
-  @requires_authorization_token
-  Scenario: Check if the stack analysis is finished
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    When I wait 10 seconds
     When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
     Then I should get 200 status code
     When I wait for stack analysis version 2 to finish with authorization token
     Then I should get 200 status code
-
-  @requires_authorization_token
-  Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_normalize_integer_minor.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
-    When I send Python package manifest requirements_click_normalize_integer_major.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
-    When I send Python package manifest requirements_click_normalize_integer_major_minor.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
-
+    Then I should find the proper sentiment values in the stack analysis response
+    Then I should find that none analyzed package can be found in companion packages as well
+    Then I should find that total 2 outliers are reported
+    Then I should find that valid outliers are reported
+    Then I should get user_stack_info field in stack report
