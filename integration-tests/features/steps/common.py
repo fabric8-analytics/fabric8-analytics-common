@@ -1117,6 +1117,57 @@ def stack_analysis_validate_alternate_components(context):
     perform_alternate_components_validation(json_data)
 
 
+def check_cve_value(cve):
+    pattern = "CVE-([0-9]{4})-[0-9]{4,}"
+
+    match = re.fullmatch(pattern, cve)
+    assert match is not None, "Improper CVE number %s" % cve
+
+    year = int(re.fullmatch(pattern, cve).group(1))
+    current_year = datetime.datetime.now().year
+
+    # well the lower limit is a bit arbitrary
+    # (according to SRT guys it should be 1999)
+    assert year >= 1999 and year <= current_year
+
+
+def check_cvss_value(cvss):
+    score = float(cvss)
+    # TODO: check the specificaion how to calculate the maximum possible value
+    # https://www.first.org/cvss/specification-document
+    assert score >= 0.0, "CVSS score must be >= 0.0"
+    assert score <= 10.0, "CVSS score must be <= 10.0"
+
+
+def check_security_node(context, path):
+    json_data = context.response.json()
+    assert json_data is not None
+
+    components = get_value_using_path(json_data, path)
+    assert components is not None
+
+    for component in components:
+        check_attribute_presence(component, "security")
+        cve_items = component["security"]
+        for cve_item in cve_items:
+            check_attribute_presence(cve_item, "CVE")
+            check_attribute_presence(cve_item, "CVSS")
+            cve = cve_item["CVE"]
+            cvss = cve_item["CVSS"]
+            check_cve_value(cve)
+            check_cvss_value(cvss)
+
+
+@then('I should find the security node for all dependencies')
+def stack_analysis_check_security_node_for_dependencies(context):
+    check_security_node(context, "result/0/user_stack_info/dependencies")
+
+
+@then('I should find the security node for all alternate components')
+def stack_analysis_check_security_node_for_dependencies(context):
+    check_security_node(context, "result/0/recommendations/alternate")
+
+
 class MockedResponse():
     def __init__(self, filename):
         with open(filename) as data_file:
