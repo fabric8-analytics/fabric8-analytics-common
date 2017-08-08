@@ -324,6 +324,21 @@ def maven_manifest_stack_analysis(context, manifest, version="1", token="without
     send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
                                     endpoint, use_token)
 
+@when("I post {is_valid} input to the {endpoint} endpoint {token} authorization token")
+def post_input_to_user_feedback(context, is_valid, endpoint, token):
+    """Send feedback to user feedback endpoint."""
+    use_token = parse_token_clause(token)
+    api_url = urljoin(context.coreapi_url, endpoint)
+    if is_valid == "valid":
+        data = {"request_id": "test_id", "feedback": [{"ques":"what","ans":"got it"}]}
+    else:
+        data = {"request_id": "test_id"}
+    if use_token:
+        response = requests.post(api_url, json=data,
+                                 headers=authorization(context))
+    else:
+        response = requests.post(api_url, json=data)
+    context.response = response
 
 def job_metadata_filename(metadata):
     return "data/{metadata}".format(metadata=metadata)
