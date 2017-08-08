@@ -217,12 +217,14 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
             context.response = requests.get(url)
         status_code = context.response.status_code
         #log.info("%r" % context.response.json())
-        # 401 code should be checked later
-        if status_code in (200, 401):
+        if status_code == 200:
             json_resp = context.response.json()
             if json_resp['result'][0].get('recommendations', None).get('alternate', None) is not None:
                 # log.info('Recommendation found')
                 break
+        # 401 code should be checked later
+        elif status_code == 401:
+            break
         elif status_code != 202:
             raise Exception('Bad HTTP status code {c}'.format(c=status_code))
         time.sleep(sleep_amount)
