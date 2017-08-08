@@ -1130,6 +1130,13 @@ def check_cve_value(cve):
     assert year > 1980 and year <= current_year
 
 
+def check_cvss_value(cvss):
+    score = float(cvss)
+    # TODO: check the specificaion how to calculate the maximum possible value
+    # https://www.first.org/cvss/specification-document
+    assert score >= 0.0
+
+
 class MockedResponse():
     def __init__(self, filename):
         with open(filename) as data_file:
