@@ -1127,14 +1127,16 @@ def check_cve_value(cve):
     current_year = datetime.datetime.now().year
 
     # well the lower limit is a bit arbitrary
-    assert year > 1980 and year <= current_year
+    # (according to SRT guys it should be 1999)
+    assert year >= 1999 and year <= current_year
 
 
 def check_cvss_value(cvss):
     score = float(cvss)
     # TODO: check the specificaion how to calculate the maximum possible value
     # https://www.first.org/cvss/specification-document
-    assert score >= 0.0
+    assert score >= 0.0, "CVSS score must be >= 0.0"
+    assert score <= 10.0, "CVSS score must be <= 10.0"
 
 
 def check_security_node(context, path):
