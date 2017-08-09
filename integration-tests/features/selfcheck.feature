@@ -53,9 +53,10 @@ Feature: Check the implementation of test steps
     Then I should find analyzed dependency named io.vertx:vertx-web-client with version 3.4.1 in the stack analysis
 
   @selfcheck
-  Scenario: Check that the stack analysis response for the springboot.xml
+  Scenario: Check that the stack analysis response for the springboot.xml - CVEs
     Given System is running
     When I mock API response by data/mock_stack_analysis_v2_requirements.json file
     Then I should find the security node for all dependencies
     Then I should find the security node for all alternate components
+    Then I should find the CVE-2010-3492 security issue for the dependency six
 
