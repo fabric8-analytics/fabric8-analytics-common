@@ -852,6 +852,11 @@ def is_proper_authorization_token(context):
     assert context.token is not None
 
 
+@then('I should get the proper job API authorization token')
+def is_proper_authorization_token(context):
+    assert context.jobs_api_token is not None
+
+
 @when('I acquire the authorization token')
 def acquire_authorization_token(context):
     recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
@@ -860,6 +865,12 @@ def acquire_authorization_token(context):
         context.token = recommender_token
     else:
         generate_authorization_token(context, DEFAULT_AUTHORIZATION_TOKEN_FILENAME)
+
+
+@when('I acquire job API authorization token')
+def acquire_jobs_api_authorization_token(context):
+    context.jobs_api_token = os.environ.get("JOB_API_TOKEN")
+    # TODO: authorization via GitHub?
 
 
 def download_file_from_url(url):
