@@ -1222,8 +1222,35 @@ def stack_analysis_check_security_node_for_dependencies(context):
 
 
 @then('I should find the security node for all alternate components')
-def stack_analysis_check_security_node_for_dependencies(context):
+def stack_analysis_check_security_node_for_alternate_components(context):
     check_security_node(context, "result/0/recommendations/alternate")
+
+
+@then('I should find the {cve} security issue for the dependency {package}')
+def check_security_issue_existence(context, cve, package):
+    '''Check if the security issue CVE-yyyy-xxxx can be found for the given
+    analyzed package.'''
+    json_data = context.response.json()
+    assert json_data is not None
+
+    path = "result/0/user_stack_info/dependencies"
+    components = get_value_using_path(json_data, path)
+    assert components is not None
+
+    for component in components:
+        if component["name"] == package:
+            check_attribute_presence(component, "security")
+            cve_items = component["security"]
+            for cve_item in cve_items:
+                check_attribute_presence(cve_item, "CVE")
+                if cve_item["CVE"] == cve:
+                    return
+            else:
+                raise Exception('Could not find the CVE {c} for the '
+                                'package {p}'.format(c=cve, p=package))
+    else:
+        raise Exception('Could not find the analyzed package {p}'
+                        .format(p=package))
 
 
 class MockedResponse():
