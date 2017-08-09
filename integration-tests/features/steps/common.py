@@ -94,6 +94,10 @@ def perform_kerberized_request(context, method, url):
                                           command)
 
 
+def jobs_api_authorization(context):
+    return {'auth-token': '{token}'.format(token=context.jobs_api_token)}
+
+
 def authorization(context):
     return {'Authorization': 'Bearer {token}'.format(token=context.token)}
 
@@ -248,7 +252,7 @@ def jobs_api_url(context, url):
 def jobs_api_url_with_authorization_token(context, url):
     """Access the jobs service API using the HTTP GET method."""
     context.response = requests.get(context.jobs_api_url + url,
-                                    headers=authorization(context))
+                                    headers=jobs_api_authorization(context))
 
 
 @when('I access {url:S}')
