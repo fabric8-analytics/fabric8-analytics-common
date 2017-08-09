@@ -32,3 +32,4 @@ Feature: Stack analysis v2 API Minimal
     Then I should find that total 2 outliers are reported
     Then I should find that valid outliers are reported
     Then I should get license_analysis field in stack report
+    Then I should find that alternate components replace user components
