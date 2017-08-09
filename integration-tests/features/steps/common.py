@@ -238,10 +238,17 @@ def anitya_url(context, url):
     context.response = requests.get(context.anitya_url + url)
 
 
-@when('I access jobs API {url}')
+@when('I access jobs API {url:S}')
 def jobs_api_url(context, url):
     """Access the jobs service API using the HTTP GET method."""
     context.response = requests.get(context.jobs_api_url + url)
+
+
+@when('I access jobs API {url:S} with authorization token')
+def jobs_api_url_with_authorization_token(context, url):
+    """Access the jobs service API using the HTTP GET method."""
+    context.response = requests.get(context.jobs_api_url + url,
+                                    headers=authorization(context))
 
 
 @when('I access {url:S}')
