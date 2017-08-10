@@ -305,6 +305,7 @@ def stack_analysis_endpoint(context, version):
 
 def parse_token_clause(token_clause):
     use_token = {"with": True,
+                 "using": True,
                  "without": False}.get(token_clause)
     if use_token is None:
         raise Exception("Wrong clause specified: {t}".format(t=token_clause))
