@@ -454,14 +454,18 @@ def check_ecosystems(context, num):
         assert 'ecosystem' in e
 
 
+def get_jobs_count(context):
+    jsondata = context.response.json()
+    jobs = jsondata['jobs']
+    return jsondata['jobs_count']
+
+
 @then('I should see {num:d} jobs')
 def check_jobs(context, num):
     """
     check the number of jobs
     """
-    jsondata = context.response.json()
-    jobs = jsondata['jobs']
-    jobs_count = jsondata['jobs_count']
+    jobs_count = get_jobs_count(context)
     assert len(jobs) == num
     assert jobs_count == num
 
