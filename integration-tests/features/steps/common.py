@@ -391,11 +391,14 @@ def send_json_file_to_job_api(context, endpoint, filename, use_token):
 
 
 @when("I post a job metadata {metadata} with state {state}")
-def perform_post_job(context, metadata, state):
-    """API call to create a new job using the provided metadata."""
+@when("I post a job metadata {metadata} with state {state} {token} authorization token")
+def perform_post_job(context, metadata, state, token="without"):
+    """API call to create a new job using the provided metadata. The token
+    parameter can be set to 'with', 'without', or 'using'."""
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state)
-    context.response = context.send_json_file(endpoint, filename)
+    use_token = parse_token_clause(token)
+    send_json_file_to_job_api(context, endpoint, filename, use_token)
 
 
 @when("I post a job metadata {metadata} with job id {job_id} and state {state}")
