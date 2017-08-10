@@ -15,14 +15,18 @@ Feature: Jobs API
   @jobs.requires_auth
   Scenario: Check the API entry point
     Given System is running
-    When I access jobs API /api/v1/service/state
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I access jobs API /api/v1/service/state with authorization token
     Then I should get 200 status code
     Then I should receive JSON response with the state key set to running
 
   @jobs.requires_auth
   Scenario: Check the API entry point
     Given System is running
-    When I access jobs API /api/v1/jobs
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I access jobs API /api/v1/jobs with authorization token
     Then I should get 200 status code
     Then I should receive JSON response containing the jobs key
     Then I should receive JSON response containing the jobs_count key
@@ -30,31 +34,37 @@ Feature: Jobs API
   @jobs.requires_auth
   Scenario: Check initial number of jobs
     Given System is running
-    When I access jobs API /api/v1/jobs
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I access jobs API /api/v1/jobs with authorization token
     Then I should get 200 status code
-    Then I should see 4 jobs
+    Then I should see N jobs
 
   @jobs.requires_auth
   Scenario: Check that new job can be posted with state paused
     Given System is running
-    When I post a job metadata job1.json with state paused
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I post a job metadata job1.json with state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs
-    Then I should see 5 jobs
+    When I access jobs API /api/v1/jobs with authorization token
+    Then I should see N jobs
 
   @jobs.requires_auth
   Scenario: Check that multiple jobs can be posted with state paused
     Given System is running
-    When I access jobs API /api/v1/jobs
-    Then I should see 5 jobs
-    When I post a job metadata job1.json with state paused
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I access jobs API /api/v1/jobs with authorization token
+    Then I should see N jobs
+    When I post a job metadata job1.json with state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs
-    Then I should see 6 jobs
-    When I post a job metadata job1.json with state paused
+    When I access jobs API /api/v1/jobs with authorization token
+    Then I should see N+1 jobs
+    When I post a job metadata job1.json with state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs
-    Then I should see 7 jobs
+    When I access jobs API /api/v1/jobs with authorization token
+    Then I should see N+1 jobs
 
   @jobs.requires_auth
   Scenario: Check that job with given ID can be posted via API
