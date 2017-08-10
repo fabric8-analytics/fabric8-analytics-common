@@ -305,6 +305,7 @@ def stack_analysis_endpoint(context, version):
 
 def parse_token_clause(token_clause):
     use_token = {"with": True,
+                 "using": True,
                  "without": False}.get(token_clause)
     if use_token is None:
         raise Exception("Wrong clause specified: {t}".format(t=token_clause))
@@ -378,20 +379,38 @@ def job_endpoint(context, job_id):
     return url
 
 
+def send_json_file_to_job_api(context, endpoint, filename, use_token):
+    """Send the given file to the selected job API endpoints. If the use_token
+    is set, send the 'auth-token' header with the token taken from the
+    context environment."""
+    if use_token:
+        headers = jobs_api_authorization(context)
+        context.response = context.send_json_file(endpoint, filename, headers)
+    else:
+        context.response = context.send_json_file(endpoint, filename)
+
+
 @when("I post a job metadata {metadata} with state {state}")
-def perform_post_job(context, metadata, state):
-    """API call to create a new job using the provided metadata."""
+@when("I post a job metadata {metadata} with state {state} {token} authorization token")
+def perform_post_job(context, metadata, state, token="without"):
+    """API call to create a new job using the provided metadata. The token
+    parameter can be set to 'with', 'without', or 'using'."""
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state)
-    context.response = context.send_json_file(endpoint, filename)
+    use_token = parse_token_clause(token)
+    send_json_file_to_job_api(context, endpoint, filename, use_token)
 
 
 @when("I post a job metadata {metadata} with job id {job_id} and state {state}")
-def perform_post_job(context, metadata, job_id, state):
-    """API call to create a new job using the provided metadata and set a job to given state."""
+@when("I post a job metadata {metadata} with job id {job_id} and state {state} {token} authorization token")
+def perform_post_job_with_state(context, metadata, job_id, state, token="without"):
+    """API call to create a new job using the provided metadata and set a job
+    to given state. The token parameter can be set to 'with', 'without', or
+    'using'."""
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state, job_id)
-    context.response = context.send_json_file(endpoint, filename)
+    use_token = parse_token_clause(token)
+    send_json_file_to_job_api(context, endpoint, filename, use_token)
 
 
 @when("I delete job without id")

@@ -281,8 +281,13 @@ def _get_api_url(context, attribute, port):
                       'http://localhost:{port}/'.format(port=port)))
 
 
-def _send_json_file(endpoint, filename):
-    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+def _send_json_file(endpoint, filename, custom_headers=None):
+    """Send the JSON file to the selected API endpoint using optional custom
+    headers (if provided)."""
+    headers = {'Content-Type': 'application/json',
+               'Accept': 'application/json'}
+    if custom_headers is not None:
+        headers.update(custom_headers)
     with open(filename) as json_data:
         response = requests.post(endpoint, data=json_data, headers=headers)
     return response
