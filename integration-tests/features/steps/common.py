@@ -379,6 +379,17 @@ def job_endpoint(context, job_id):
     return url
 
 
+def send_json_file_to_job_api(context, endpoint, filename, use_token):
+    """Send the given file to the selected job API endpoints. If the use_token
+    is set, send the 'auth-token' header with the token taken from the
+    context environment."""
+    if use_token:
+        headers = jobs_api_authorization(context)
+        context.response = context.send_json_file(endpoint, filename, headers)
+    else:
+        context.response = context.send_json_file(endpoint, filename)
+
+
 @when("I post a job metadata {metadata} with state {state}")
 def perform_post_job(context, metadata, state):
     """API call to create a new job using the provided metadata."""
