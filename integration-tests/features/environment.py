@@ -38,7 +38,7 @@ def _set_default_compose_path(context):
     # Extra containers are added as needed by integration setup commands
     context.docker_compose_path = [base_compose, test_specific_compose]
 
-### make sure behave uses pytest improved asserts
+# WARNING: make sure behave uses pytest improved asserts
 # Behave runner uses behave.runner.exec_file function to read, compile
 # and exec code of environment file and step files *in this order*.
 # Therefore we provide a new implementation here, which uses pytest's
@@ -47,6 +47,8 @@ def _set_default_compose_path(context):
 # This means that when behave tries to load steps, it will use our exec_file.
 # => SUCCESS
 # Don't ask how long it took me to figure this out.
+
+
 import behave.runner
 
 
@@ -65,8 +67,9 @@ def exec_file(filename, globals=None, locals=None):
     _, code = rewrite._rewrite_test(config, f)
     exec(code, globals, locals)
 
+
 behave.runner.exec_file = exec_file
-### end this madness
+# *** end this madness
 
 
 def _make_compose_command(context, *args):
