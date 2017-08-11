@@ -193,8 +193,8 @@ def finish_analysis_for_component(context, ecosystem, component, version):
 
 def contains_alternate_node(json_resp):
     """Check for the existence of alternate node in the stack analysis."""
-    result = json_resp['result']
-    return bool(result) and type(result) is list \
+    result = json_resp.get('result')
+    return bool(result) and isinstance(result, list) \
         and result[0].get('recommendations', {}).get('alternate', None) is not None
 
 
