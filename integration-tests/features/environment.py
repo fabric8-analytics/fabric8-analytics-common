@@ -382,8 +382,12 @@ def before_all(context):
         print("Note: integration tests are running against existing deploment")
         _check_api_tokens_presence()
 
-    context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
-    context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
+    context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url',
+                                                      _FABRIC8_ANALYTICS_SERVER)
+
+    context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url',
+                                                        _FABRIC8_ANALYTICS_JOBS)
+
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
     context.client = None
@@ -393,7 +397,9 @@ def before_all(context):
     component_analysis_timeout = _parse_int_env_var('F8A_COMPONENT_ANALYSIS_TIMEOUT')
 
     context.stack_analysis_timeout = stack_analysis_timeout or _DEFAULT_STACK_ANALYSIS_TIMEOUT
-    context.component_analysis_timeout = component_analysis_timeout or _DEFAULT_COMPONENT_ANALYSIS_TIMEOUT
+
+    context.component_analysis_timeout = component_analysis_timeout \
+        or _DEFAULT_COMPONENT_ANALYSIS_TIMEOUT
 
     if context.running_locally:
         context.client = docker.AutoVersionClient()
