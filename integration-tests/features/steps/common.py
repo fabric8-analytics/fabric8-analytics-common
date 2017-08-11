@@ -103,7 +103,8 @@ def authorization(context):
 
 
 def perform_component_search(context, component, use_token):
-    url = urljoin(context.coreapi_url, "api/v1/component-search/{component}".format(component=component))
+    path = "api/v1/component-search/{component}".format(component=component)
+    url = urljoin(context.coreapi_url, path)
     if use_token:
         context.response = requests.get(url, headers=authorization(context))
     else:
@@ -179,7 +180,7 @@ def finish_analysis_for_component(context, ecosystem, component, version):
 
     url = component_analysis_url(context, ecosystem, component, version)
 
-    for _ in range(timeout//sleep_amount):
+    for _ in range(timeout // sleep_amount):
         status_code = requests.get(url).status_code
         if status_code == 200:
             break
@@ -219,7 +220,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
     url = urljoin(stack_analysis_endpoint(context, version), id)
     # log.info("RECOMMENDER API URL: {}\n\n".format(url))
 
-    for _ in range(timeout//sleep_amount):
+    for _ in range(timeout // sleep_amount):
         if use_token:
             context.response = requests.get(url, headers=authorization(context))
         else:
@@ -318,7 +319,8 @@ def parse_token_clause(token_clause):
 
 
 @when("I send NPM package manifest {manifest} to stack analysis")
-@when("I send NPM package manifest {manifest} to stack analysis version {version} {token} authorization token")
+@when("I send NPM package manifest {manifest} to stack analysis version {version} {token} "
+      "authorization token")
 def npm_manifest_stack_analysis(context, manifest, version="1", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
@@ -327,7 +329,8 @@ def npm_manifest_stack_analysis(context, manifest, version="1", token="without")
 
 
 @when("I send Python package manifest {manifest} to stack analysis")
-@when("I send Python package manifest {manifest} to stack analysis version {version} {token} authorization token")
+@when("I send Python package manifest {manifest} to stack analysis version {version} {token} "
+      "authorization token")
 def python_manifest_stack_analysis(context, manifest, version="1", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
@@ -336,7 +339,8 @@ def python_manifest_stack_analysis(context, manifest, version="1", token="withou
 
 
 @when("I send Maven package manifest {manifest} to stack analysis")
-@when("I send Maven package manifest {manifest} to stack analysis version {version} {token} authorization token")
+@when("I send Maven package manifest {manifest} to stack analysis version {version} {token} "
+      "authorization token")
 def maven_manifest_stack_analysis(context, manifest, version="1", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
@@ -407,7 +411,8 @@ def perform_post_job(context, metadata, state, token="without"):
 
 
 @when("I post a job metadata {metadata} with job id {job_id} and state {state}")
-@when("I post a job metadata {metadata} with job id {job_id} and state {state} {token} authorization token")
+@when("I post a job metadata {metadata} with job id {job_id} and state {state} {token} "
+      "authorization token")
 def perform_post_job_with_state(context, metadata, job_id, state, token="without"):
     """API call to create a new job using the provided metadata and set a job
     to given state. The token parameter can be set to 'with', 'without', or
@@ -778,7 +783,8 @@ def check_stack_analyses_response(context, url):
             time.sleep(retry_interval)
 
     if iter == retry_count:
-        err = "Stack analyses could not be completed within {t} seconds".format(t=iter*retry_interval)
+        err = "Stack analyses could not be completed within {t} seconds".format(
+            t=iter * retry_interval)
 
     resp_json = get_resp.json()
 
@@ -847,7 +853,8 @@ def check_stack_analysis_id(context):
     assert previous_id == request_id
 
 
-@then('I should find analyzed dependency named {package} with version {version} in the stack analysis')
+@then('I should find analyzed dependency named {package} with version {version} in the stack '
+      'analysis')
 def check_analyzed_dependency(context, package, version):
     jsondata = context.response.json()
     assert jsondata is not None
@@ -1163,7 +1170,8 @@ def find_replacements(alternates, component, version):
             if replaces_component(replacement, component, version)]
 
 
-@then('I should find that the component {component} version {version} can be replaced by component {replaced_by} version {replacement_version}')
+@then('I should find that the component {component} version {version} can be replaced by '
+      'component {replaced_by} version {replacement_version}')
 def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
     """Check that the component is replaced by the given package
        and version."""
@@ -1183,7 +1191,8 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
 
 
 @then('I should find that the component {component} version {version} has only one replacement')
-@then('I should find that the component {component} version {version} has {expected_replacements:d} replacements')
+@then('I should find that the component {component} version {version} has '
+      '{expected_replacements:d} replacements')
 def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
     """Check that the component is replaced only once in the alternate
        analysis."""
