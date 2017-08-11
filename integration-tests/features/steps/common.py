@@ -190,6 +190,11 @@ def finish_analysis_for_component(context, ecosystem, component, version):
         raise Exception('Timeout waiting for the component analysis results')
 
 
+def contains_alternate_node(json_resp):
+    """Check for the existence of alternate node in the stack analysis."""
+    return json_resp['result'][0].get('recommendations', None).get('alternate', None) is not None
+
+
 @when("I wait for stack analysis to finish")
 @when("I wait for stack analysis version {version} to finish {token} authorization token")
 def wait_for_stack_analysis_completion(context, version="1", token="without"):
@@ -223,7 +228,7 @@ def wait_for_stack_analysis_completion(context, version="1", token="without"):
         # log.info("%r" % context.response.json())
         if status_code == 200:
             json_resp = context.response.json()
-            if json_resp['result'][0].get('recommendations', None).get('alternate', None) is not None:
+            if contains_alternate_node(json_resp):
                 # log.info('Recommendation found')
                 break
         # 401 code should be checked later
