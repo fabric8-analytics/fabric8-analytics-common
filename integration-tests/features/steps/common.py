@@ -94,6 +94,10 @@ def perform_kerberized_request(context, method, url):
                                           command)
 
 
+def jobs_api_authorization(context):
+    return {'auth-token': '{token}'.format(token=context.jobs_api_token)}
+
+
 def authorization(context):
     return {'Authorization': 'Bearer {token}'.format(token=context.token)}
 
@@ -238,10 +242,17 @@ def anitya_url(context, url):
     context.response = requests.get(context.anitya_url + url)
 
 
-@when('I access jobs API {url}')
+@when('I access jobs API {url:S}')
 def jobs_api_url(context, url):
     """Access the jobs service API using the HTTP GET method."""
     context.response = requests.get(context.jobs_api_url + url)
+
+
+@when('I access jobs API {url:S} with authorization token')
+def jobs_api_url_with_authorization_token(context, url):
+    """Access the jobs service API using the HTTP GET method."""
+    context.response = requests.get(context.jobs_api_url + url,
+                                    headers=jobs_api_authorization(context))
 
 
 @when('I access {url:S}')
@@ -294,6 +305,7 @@ def stack_analysis_endpoint(context, version):
 
 def parse_token_clause(token_clause):
     use_token = {"with": True,
+                 "using": True,
                  "without": False}.get(token_clause)
     if use_token is None:
         raise Exception("Wrong clause specified: {t}".format(t=token_clause))
@@ -367,20 +379,38 @@ def job_endpoint(context, job_id):
     return url
 
 
+def send_json_file_to_job_api(context, endpoint, filename, use_token):
+    """Send the given file to the selected job API endpoints. If the use_token
+    is set, send the 'auth-token' header with the token taken from the
+    context environment."""
+    if use_token:
+        headers = jobs_api_authorization(context)
+        context.response = context.send_json_file(endpoint, filename, headers)
+    else:
+        context.response = context.send_json_file(endpoint, filename)
+
+
 @when("I post a job metadata {metadata} with state {state}")
-def perform_post_job(context, metadata, state):
-    """API call to create a new job using the provided metadata."""
+@when("I post a job metadata {metadata} with state {state} {token} authorization token")
+def perform_post_job(context, metadata, state, token="without"):
+    """API call to create a new job using the provided metadata. The token
+    parameter can be set to 'with', 'without', or 'using'."""
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state)
-    context.response = context.send_json_file(endpoint, filename)
+    use_token = parse_token_clause(token)
+    send_json_file_to_job_api(context, endpoint, filename, use_token)
 
 
 @when("I post a job metadata {metadata} with job id {job_id} and state {state}")
-def perform_post_job(context, metadata, job_id, state):
-    """API call to create a new job using the provided metadata and set a job to given state."""
+@when("I post a job metadata {metadata} with job id {job_id} and state {state} {token} authorization token")
+def perform_post_job_with_state(context, metadata, job_id, state, token="without"):
+    """API call to create a new job using the provided metadata and set a job
+    to given state. The token parameter can be set to 'with', 'without', or
+    'using'."""
     filename = job_metadata_filename(metadata)
     endpoint = flow_sheduling_endpoint(context, state, job_id)
-    context.response = context.send_json_file(endpoint, filename)
+    use_token = parse_token_clause(token)
+    send_json_file_to_job_api(context, endpoint, filename, use_token)
 
 
 @when("I delete job without id")
@@ -447,16 +477,45 @@ def check_ecosystems(context, num):
         assert 'ecosystem' in e
 
 
+def get_jobs_count(context):
+    jsondata = context.response.json()
+    jobs = jsondata['jobs']
+    return jsondata['jobs_count']
+
+
 @then('I should see {num:d} jobs')
 def check_jobs(context, num):
     """
     check the number of jobs
     """
-    jsondata = context.response.json()
-    jobs = jsondata['jobs']
-    jobs_count = jsondata['jobs_count']
+    jobs_count = get_jobs_count(context)
     assert len(jobs) == num
     assert jobs_count == num
+
+
+@then('I should see N jobs')
+def check_jobs(context):
+    """Check and remember the number of jobs."""
+    jobs_count = get_jobs_count(context)
+    context.jobs_count = jobs_count
+
+
+@then('I should see N+{num:d} jobs')
+def check_jobs(context, num):
+    """Check the relative jobs count and remember the number of jobs."""
+
+    assert context.jobs_count is not None, \
+        "Please use 'I should see N jobs' test step first"
+
+    old_jobs_count = context.jobs_count
+    jobs_count = get_jobs_count(context)
+    expected = old_jobs_count + num
+
+    assert jobs_count == expected, "Expected %d jobs, but %d found instead" % \
+        (expected, jobs_count)
+
+    # remember the new number
+    context.jobs_count = jobs_count
 
 
 def get_job_by_id(jobs, job_id):
@@ -841,6 +900,11 @@ def is_proper_authorization_token(context):
     assert context.token is not None
 
 
+@then('I should get the proper job API authorization token')
+def is_proper_authorization_token(context):
+    assert context.jobs_api_token is not None
+
+
 @when('I acquire the authorization token')
 def acquire_authorization_token(context):
     recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
@@ -849,6 +913,12 @@ def acquire_authorization_token(context):
         context.token = recommender_token
     else:
         generate_authorization_token(context, DEFAULT_AUTHORIZATION_TOKEN_FILENAME)
+
+
+@when('I acquire job API authorization token')
+def acquire_jobs_api_authorization_token(context):
+    context.jobs_api_token = os.environ.get("JOB_API_TOKEN")
+    # TODO: authorization via GitHub?
 
 
 def download_file_from_url(url):
@@ -1222,8 +1292,35 @@ def stack_analysis_check_security_node_for_dependencies(context):
 
 
 @then('I should find the security node for all alternate components')
-def stack_analysis_check_security_node_for_dependencies(context):
+def stack_analysis_check_security_node_for_alternate_components(context):
     check_security_node(context, "result/0/recommendations/alternate")
+
+
+@then('I should find the {cve} security issue for the dependency {package}')
+def check_security_issue_existence(context, cve, package):
+    '''Check if the security issue CVE-yyyy-xxxx can be found for the given
+    analyzed package.'''
+    json_data = context.response.json()
+    assert json_data is not None
+
+    path = "result/0/user_stack_info/dependencies"
+    components = get_value_using_path(json_data, path)
+    assert components is not None
+
+    for component in components:
+        if component["name"] == package:
+            check_attribute_presence(component, "security")
+            cve_items = component["security"]
+            for cve_item in cve_items:
+                check_attribute_presence(cve_item, "CVE")
+                if cve_item["CVE"] == cve:
+                    return
+            else:
+                raise Exception('Could not find the CVE {c} for the '
+                                'package {p}'.format(c=cve, p=package))
+    else:
+        raise Exception('Could not find the analyzed package {p}'
+                        .format(p=package))
 
 
 class MockedResponse():

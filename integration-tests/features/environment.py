@@ -281,8 +281,13 @@ def _get_api_url(context, attribute, port):
                       'http://localhost:{port}/'.format(port=port)))
 
 
-def _send_json_file(endpoint, filename):
-    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+def _send_json_file(endpoint, filename, custom_headers=None):
+    """Send the JSON file to the selected API endpoint using optional custom
+    headers (if provided)."""
+    headers = {'Content-Type': 'application/json',
+               'Accept': 'application/json'}
+    if custom_headers is not None:
+        headers.update(custom_headers)
     with open(filename) as json_data:
         response = requests.post(endpoint, data=json_data, headers=headers)
     return response
@@ -290,17 +295,26 @@ def _send_json_file(endpoint, filename):
 
 def _check_env_for_remote_tests(env_var_name):
     if os.environ.get(env_var_name):
-        print("Note: {e} environment variable is specified, but tests are " \
-              "still run locally\n" \
-              "Check other values required to run tests against existing " \
+        print("Note: {e} environment variable is specified, but tests are "
+              "still run locally\n"
+              "Check other values required to run tests against existing "
               "deployent".format(e=env_var_name))
 
 
-def _check_api_token_presence():
-    if not os.environ.get("RECOMMENDER_API_TOKEN"):
-        print("Warning: the RECOMMENDER_API_TOKEN environment variable is not" \
+def _missing_api_token_warning(env_var_name):
+    if os.environ.get(env_var_name):
+        print("OK: {name} environment is set and will be used as "
+              "authorization token".format(name=env_var_name))
+    else:
+        print("Warning: the {name} environment variable is not"
               " set.\n"
-              "         Most tests that require authorization will probably fail")
+              "Most tests that require authorization will probably fail".format(
+                  name=env_var_name))
+
+
+def _check_api_tokens_presence():
+    _missing_api_token_warning("RECOMMENDER_API_TOKEN")
+    _missing_api_token_warning("JOB_API_TOKEN")
 
 
 def _parse_int_env_var(env_var_name):
@@ -366,7 +380,7 @@ def before_all(context):
             _check_env_for_remote_tests("F8A_ANITYA_API_URL")
     else:
         print("Note: integration tests are running against existing deploment")
-        _check_api_token_presence()
+        _check_api_tokens_presence()
 
     context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
     context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
