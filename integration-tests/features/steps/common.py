@@ -193,7 +193,9 @@ def finish_analysis_for_component(context, ecosystem, component, version):
 
 def contains_alternate_node(json_resp):
     """Check for the existence of alternate node in the stack analysis."""
-    return json_resp['result'][0].get('recommendations', None).get('alternate', None) is not None
+    result = json_resp['result']
+    return bool(result) and type(result) is list \
+        and result[0].get('recommendations', {}).get('alternate', None) is not None
 
 
 @when("I wait for stack analysis to finish")
