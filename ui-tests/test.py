@@ -25,9 +25,22 @@ def front_page(browser, server):
     login_button.click()
 
 
+def login_page(browser, server, username, password):
+    username_input = browser.find_by_id('username').first
+    password_input = browser.find_by_id('password').first
+    assert username_input.visible
+    assert password_input.visible
+    browser.fill('username', username)
+    browser.fill('password', password)
+    login_button = browser.find_by_id('kc-login').first
+    assert login_button.visible
+    login_button.click()
+
+
 def run_tests(engine, server, username, password):
     with Browser(engine) as browser:
         front_page(browser, server)
+        login_page(browser, server, username, password)
 
 
 check_setup()
