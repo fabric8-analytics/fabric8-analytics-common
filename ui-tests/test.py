@@ -15,14 +15,17 @@ def check_setup():
     check_env_variable('OPENSHIFT_PASSWORD')
 
 
+def run_tests(engine, server, username, password):
+    with Browser(engine) as browser:
+        pass
+
+
 check_setup()
 server = os.environ.get('TARGET_SERVER')
 username = os.environ.get('OPENSHIFT_USERNAME')
 password = os.environ.get('OPENSHIFT_PASSWORD')
 engine = os.environ.get('BROWSER_ENGINE', 'chrome')
 
-
 print("Using the following browser engine {e}".format(e=engine))
 
-with Browser(engine) as browser:
-    pass
+run_tests(engine, server, username, password)
