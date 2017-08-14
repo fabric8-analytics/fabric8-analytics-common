@@ -1,6 +1,7 @@
 from splinter import Browser
 import time
 import os
+from urllib.parse import urljoin
 
 
 def check_env_variable(env_var_name):
@@ -15,9 +16,18 @@ def check_setup():
     check_env_variable('OPENSHIFT_PASSWORD')
 
 
+def front_page(browser, server):
+    url = server
+    browser.visit(url)
+    login_button = browser.find_by_css('button#login').first
+    assert login_button.visible
+    assert login_button.value == 'LOG IN'
+    login_button.click()
+
+
 def run_tests(engine, server, username, password):
     with Browser(engine) as browser:
-        pass
+        front_page(browser, server)
 
 
 check_setup()
