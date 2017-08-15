@@ -435,6 +435,7 @@ def perform_post_job_with_state(context, metadata, job_id, state, token="without
 
 
 @when("I delete job without id")
+@when("I delete job without id {token} authorization token")
 @when("I delete job with id {job_id}")
 @when("I delete job with id {job_id} {token} authorization token")
 def delete_job(context, job_id=None, token="without"):
