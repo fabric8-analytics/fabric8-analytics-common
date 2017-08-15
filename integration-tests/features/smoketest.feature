@@ -7,6 +7,7 @@ Feature: Smoke test
 
   Scenario: Check the /schemas entry point
     Given System is running
+    When I wait 30 seconds
     When I access /api/v1/schemas/
     Then I should get 200 status code
 
