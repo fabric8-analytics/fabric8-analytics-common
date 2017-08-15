@@ -414,7 +414,7 @@ def perform_post_job(context, metadata, state, token="without"):
 
 
 def get_unique_job_id(context, job_id):
-    if context.job_id_prefix is not None:
+    if 'job_id_prefix' in context:
         return "{uuid}_{job_id}".format(uuid=context.job_id_prefix, job_id=job_id)
     else:
         return job_id
