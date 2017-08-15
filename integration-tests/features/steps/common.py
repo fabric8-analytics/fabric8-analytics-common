@@ -459,13 +459,18 @@ def set_job_status(context, job_id, status):
 
 @when("I reset status for the job service")
 @when("I set status for job service to {status}")
-def set_job_service_status(context, status=None):
+@when("I set status for job service to {status} {token} authorization token")
+def set_job_service_status(context, status=None, token="without"):
     """API call to set or reset job service status."""
     url = "{jobs_api_url}api/v1/service/state".format(
             jobs_api_url=context.jobs_api_url)
+    use_token = parse_token_clause(token)
     if status is not None:
         url = "{url}?state={status}".format(url=url, status=status)
-    context.response = requests.put(url)
+    if use_token:
+        context.response = requests.put(url, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.put(url)
 
 
 @when("I clean all failed jobs")
