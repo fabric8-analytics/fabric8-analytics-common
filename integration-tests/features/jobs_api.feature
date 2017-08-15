@@ -184,17 +184,17 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I access jobs API /api/v1/service/state
+    When I access jobs API /api/v1/service/state with authorization token
     Then I should get 200 status code
     Then I should receive JSON response with the state key set to running
-    When I set status for job service to paused
+    When I set status for job service to paused using authorization token
     Then I should get 200 status code
-    When I access jobs API /api/v1/service/state
+    When I access jobs API /api/v1/service/state with authorization token
     Then I should get 200 status code
     Then I should receive JSON response with the state key set to paused
-    When I set status for job service to running
+    When I set status for job service to running using authorization token
     Then I should get 200 status code
-    When I access jobs API /api/v1/service/state
+    When I access jobs API /api/v1/service/state with authorization token
     Then I should get 200 status code
     Then I should receive JSON response with the state key set to running
 
