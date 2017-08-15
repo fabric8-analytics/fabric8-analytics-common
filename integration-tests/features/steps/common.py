@@ -474,10 +474,15 @@ def set_job_service_status(context, status=None, token="without"):
 
 
 @when("I clean all failed jobs")
-def clean_all_failed_jobs(context):
+@when("I clean all failed jobs {token} authorization token")
+def clean_all_failed_jobs(context, token="without"):
     """API call to clean up all failed jobs."""
     url = "{url}api/v1/jobs/clean-failed".format(url=context.jobs_api_url)
-    context.response = requests.delete(url)
+    use_token = parse_token_clause(token)
+    if use_token:
+        context.response = requests.delete(url, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.delete(url)
 
 
 @when("I ask for analyses report for ecosystem {ecosystem}")
