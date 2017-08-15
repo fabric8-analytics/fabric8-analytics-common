@@ -413,6 +413,13 @@ def perform_post_job(context, metadata, state, token="without"):
     send_json_file_to_job_api(context, endpoint, filename, use_token)
 
 
+def get_unique_job_id(context, job_id):
+    if context.job_id_prefix is not None:
+        return "{uuid}_{job_id}".format(uuid=context.job_id_prefix, job_id=job_id)
+    else:
+        return job_id
+
+
 @when("I post a job metadata {metadata} with job id {job_id} and state {state}")
 @when("I post a job metadata {metadata} with job id {job_id} and state {state} {token} "
       "authorization token")
@@ -421,6 +428,7 @@ def perform_post_job_with_state(context, metadata, job_id, state, token="without
     to given state. The token parameter can be set to 'with', 'without', or
     'using'."""
     filename = job_metadata_filename(metadata)
+    job_id = get_unique_job_id(context, job_id)
     endpoint = flow_sheduling_endpoint(context, state, job_id)
     use_token = parse_token_clause(token)
     send_json_file_to_job_api(context, endpoint, filename, use_token)
@@ -430,6 +438,7 @@ def perform_post_job_with_state(context, metadata, job_id, state, token="without
 @when("I delete job with id {job_id}")
 def delete_job(context, job_id=None):
     """API call to delete a job with given ID."""
+    job_id = get_unique_job_id(context, job_id)
     endpoint = job_endpoint(context, job_id)
     context.response = requests.delete(endpoint)
 
@@ -544,6 +553,7 @@ def find_job(context, job_id, state=None):
     """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
+    job_id = get_unique_job_id(context, job_id)
     job_ids = [job["job_id"] for job in jobs]
     assert job_id in job_ids
     if state is not None:
@@ -560,6 +570,7 @@ def should_not_find_job_by_id(context, job_id):
     """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
+    job_id = get_unique_job_id(context, job_id)
     job_ids = [job["job_id"] for job in jobs]
     assert job_id not in job_ids
 
