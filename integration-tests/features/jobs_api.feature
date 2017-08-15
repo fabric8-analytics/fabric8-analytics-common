@@ -224,6 +224,7 @@ Feature: Jobs API
     Then I should get 200 status code
     Then I should receive JSON response with the state key set to running
 
+  @jobs.requires_auth
   Scenario: Check if improper job service state is detected properly
     Given System is running
     When I acquire job API authorization token
@@ -231,6 +232,7 @@ Feature: Jobs API
     When I set status for job service to UNKNOWN
     Then I should get 400 status code
 
+  @jobs.requires_auth
   Scenario: Check if new job service state is checked
     Given System is running
     When I acquire job API authorization token
