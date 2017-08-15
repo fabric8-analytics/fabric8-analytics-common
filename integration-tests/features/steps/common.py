@@ -436,11 +436,16 @@ def perform_post_job_with_state(context, metadata, job_id, state, token="without
 
 @when("I delete job without id")
 @when("I delete job with id {job_id}")
-def delete_job(context, job_id=None):
+@when("I delete job with id {job_id} {token} authorization token")
+def delete_job(context, job_id=None, token="without"):
     """API call to delete a job with given ID."""
     job_id = get_unique_job_id(context, job_id)
     endpoint = job_endpoint(context, job_id)
-    context.response = requests.delete(endpoint)
+    use_token = parse_token_clause(token)
+    if use_token:
+        context.response = requests.delete(endpoint, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.delete(endpoint)
 
 
 @when("I set status for job with id {job_id} to {status}")
