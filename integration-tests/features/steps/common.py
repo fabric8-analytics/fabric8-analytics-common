@@ -9,6 +9,7 @@ from behave import given, then, when
 from urllib.parse import urljoin
 import jsonschema
 import requests
+import uuid
 
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
@@ -1337,6 +1338,11 @@ def check_security_issue_existence(context, cve, package):
     else:
         raise Exception('Could not find the analyzed package {p}'
                         .format(p=package))
+
+
+@when('I generate unique job ID prefix')
+def generate_job_id_prefix(context):
+    context.job_id_prefix = uuid.uuid1()
 
 
 class MockedResponse():
