@@ -141,7 +141,7 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I delete job without ID
+    When I delete job without ID using authorization token
     Then I should get 405 status code
 
   @jobs.requires_auth
