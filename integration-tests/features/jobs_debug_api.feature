@@ -45,3 +45,18 @@ Feature: Jobs debug API
     When I ask for analyses report for ecosystem pypi with authorization token
     Then I should get 200 status code
 
+  Scenario: Basic check for the endpoint /debug/github-tokens w/o authorization key
+    Given System is running
+    Given Jobs debug API is running
+    When I access jobs API /api/v1/debug/github-tokens
+    Then I should get 401 status code
+
+  @jobs.requires_auth
+  Scenario: Basic check for the endpoint /debug/github-tokens with authorization key
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I access jobs API /api/v1/debug/github-tokens with authorization token
+    Then I should get 200 status code
+
