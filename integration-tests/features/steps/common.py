@@ -485,6 +485,19 @@ def clean_all_failed_jobs(context, token="without"):
         context.response = requests.delete(url)
 
 
+@when('I logout from the job service')
+@when('I logout from the job service {token} authorization token')
+def logout_from_the_jobs_service(context, token='without'):
+    url = "{jobs_api_url}api/v1/logout".format(
+            jobs_api_url=context.jobs_api_url)
+    use_token = parse_token_clause(token)
+    if use_token:
+        headers = jobs_api_authorization(context)
+        context.response = requests.get(url, headers)
+    else:
+        context.response = requests.get(url)
+
+
 @when('I access the job service endpoint to generate token')
 def job_service_generate_token(context):
     url = "{jobs_api_url}api/v1/generate-token".format(
