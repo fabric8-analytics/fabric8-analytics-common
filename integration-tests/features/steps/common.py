@@ -9,6 +9,7 @@ from behave import given, then, when
 from urllib.parse import urljoin
 import jsonschema
 import requests
+import uuid
 
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
@@ -412,6 +413,13 @@ def perform_post_job(context, metadata, state, token="without"):
     send_json_file_to_job_api(context, endpoint, filename, use_token)
 
 
+def get_unique_job_id(context, job_id):
+    if 'job_id_prefix' in context:
+        return "{uuid}_{job_id}".format(uuid=context.job_id_prefix, job_id=job_id)
+    else:
+        return job_id
+
+
 @when("I post a job metadata {metadata} with job id {job_id} and state {state}")
 @when("I post a job metadata {metadata} with job id {job_id} and state {state} {token} "
       "authorization token")
@@ -420,17 +428,25 @@ def perform_post_job_with_state(context, metadata, job_id, state, token="without
     to given state. The token parameter can be set to 'with', 'without', or
     'using'."""
     filename = job_metadata_filename(metadata)
+    job_id = get_unique_job_id(context, job_id)
     endpoint = flow_sheduling_endpoint(context, state, job_id)
     use_token = parse_token_clause(token)
     send_json_file_to_job_api(context, endpoint, filename, use_token)
 
 
 @when("I delete job without id")
+@when("I delete job without id {token} authorization token")
 @when("I delete job with id {job_id}")
-def delete_job(context, job_id=None):
+@when("I delete job with id {job_id} {token} authorization token")
+def delete_job(context, job_id=None, token="without"):
     """API call to delete a job with given ID."""
+    job_id = get_unique_job_id(context, job_id)
     endpoint = job_endpoint(context, job_id)
-    context.response = requests.delete(endpoint)
+    use_token = parse_token_clause(token)
+    if use_token:
+        context.response = requests.delete(endpoint, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.delete(endpoint)
 
 
 @when("I set status for job with id {job_id} to {status}")
@@ -443,20 +459,30 @@ def set_job_status(context, job_id, status):
 
 @when("I reset status for the job service")
 @when("I set status for job service to {status}")
-def set_job_service_status(context, status=None):
+@when("I set status for job service to {status} {token} authorization token")
+def set_job_service_status(context, status=None, token="without"):
     """API call to set or reset job service status."""
     url = "{jobs_api_url}api/v1/service/state".format(
             jobs_api_url=context.jobs_api_url)
+    use_token = parse_token_clause(token)
     if status is not None:
         url = "{url}?state={status}".format(url=url, status=status)
-    context.response = requests.put(url)
+    if use_token:
+        context.response = requests.put(url, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.put(url)
 
 
 @when("I clean all failed jobs")
-def clean_all_failed_jobs(context):
+@when("I clean all failed jobs {token} authorization token")
+def clean_all_failed_jobs(context, token="without"):
     """API call to clean up all failed jobs."""
     url = "{url}api/v1/jobs/clean-failed".format(url=context.jobs_api_url)
-    context.response = requests.delete(url)
+    use_token = parse_token_clause(token)
+    if use_token:
+        context.response = requests.delete(url, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.delete(url)
 
 
 @when("I ask for analyses report for ecosystem {ecosystem}")
@@ -543,6 +569,7 @@ def find_job(context, job_id, state=None):
     """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
+    job_id = get_unique_job_id(context, job_id)
     job_ids = [job["job_id"] for job in jobs]
     assert job_id in job_ids
     if state is not None:
@@ -559,6 +586,7 @@ def should_not_find_job_by_id(context, job_id):
     """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
+    job_id = get_unique_job_id(context, job_id)
     job_ids = [job["job_id"] for job in jobs]
     assert job_id not in job_ids
 
@@ -1337,6 +1365,11 @@ def check_security_issue_existence(context, cve, package):
     else:
         raise Exception('Could not find the analyzed package {p}'
                         .format(p=package))
+
+
+@when('I generate unique job ID prefix')
+def generate_job_id_prefix(context):
+    context.job_id_prefix = uuid.uuid1()
 
 
 class MockedResponse():
