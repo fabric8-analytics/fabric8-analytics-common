@@ -254,6 +254,15 @@ Feature: Jobs API
     Then I should get 201 status code
     Then I should receive empty JSON response
 
+  @jobs.requires_auth
+  Scenario: Check the logout endpoint accessed with authorization token
+    Given System is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I logout from the job service with authorization token
+    Then I should get 201 status code
+    Then I should receive empty JSON response
+
   Scenario: Check the redirection for the generate-token endpoint
     Given System is running
     When I access the job service endpoint to generate token
