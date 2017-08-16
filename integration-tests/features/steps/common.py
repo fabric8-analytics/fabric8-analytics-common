@@ -492,6 +492,14 @@ def job_service_generate_token(context):
     context.response = requests.get(url)
 
 
+@then('I should be redirected to {url}')
+def check_redirection(context, url):
+    assert context.response is not None
+    assert context.response.history is not None
+    assert context.response.url is not None
+    assert context.response.url.startswith(url)
+
+
 @when("I ask for analyses report for ecosystem {ecosystem}")
 def access_analyses_report(context, ecosystem):
     """API call to get analyses report for selected ecosystem."""
