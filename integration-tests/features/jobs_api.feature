@@ -248,6 +248,12 @@ Feature: Jobs API
     When I clean all failed jobs with authorization token
     Then I should get 200 status code
 
+  Scenario: Check the logout endpoint accessed without authorization token
+    Given System is running
+    When I logout from the job service
+    Then I should get 201 status code
+    Then I should receive empty JSON response
+
   Scenario: Check the redirection for the generate-token endpoint
     Given System is running
     When I access the job service endpoint to generate token
