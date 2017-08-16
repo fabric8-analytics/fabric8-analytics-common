@@ -248,3 +248,9 @@ Feature: Jobs API
     When I clean all failed jobs with authorization token
     Then I should get 200 status code
 
+  Scenario: Check the redirection for the generate-token endpoint
+    Given System is running
+    When I access the job service endpoint to generate token
+    Then I should get 200 status code
+    Then I should be redirected to https://github.com/login
+
