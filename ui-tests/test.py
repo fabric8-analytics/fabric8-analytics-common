@@ -131,6 +131,24 @@ def create_new_space_step_4(browser):
     assert release_radio is not None
     time.sleep(SLEEP_BEFORE_CLICK)
     release_radio.click()
+    next_button = browser.find_by_id('forge-next-button').first
+    assert next_button is not None
+    print(next_button.text)
+    time.sleep(SLEEP_BEFORE_CLICK)
+    next_button.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
+def create_new_space_step_5(browser):
+    print('Create new Space: step 5')
+    next_button = browser.find_by_id('forge-next-button').first
+    assert next_button is not None
+    print(next_button.text)
+    time.sleep(SLEEP_BEFORE_CLICK)
+    next_button.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
@@ -146,6 +164,7 @@ def spaces_page(browser, server, username):
     create_new_space_step_2(browser)
     create_new_space_step_3(browser)
     create_new_space_step_4(browser)
+    create_new_space_step_5(browser)
     time.sleep(1000)
 
 
