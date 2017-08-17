@@ -125,6 +125,15 @@ def create_new_space_step_3(browser):
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
+def create_new_space_step_4(browser):
+    print('Create new Space: step 4')
+    release_radio = browser.find_by_value('Release').first
+    assert release_radio is not None
+    time.sleep(SLEEP_BEFORE_CLICK)
+    release_radio.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
 def spaces_page(browser, server, username):
     '''Go to the Spaces page with list of available Spaces.'''
     print("Spaces page")
@@ -136,6 +145,7 @@ def spaces_page(browser, server, username):
     create_new_space_step_1(browser, new_space_name)
     create_new_space_step_2(browser)
     create_new_space_step_3(browser)
+    create_new_space_step_4(browser)
     time.sleep(1000)
 
 
