@@ -115,6 +115,16 @@ def create_new_space_step_2(browser):
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
+def create_new_space_step_3(browser):
+    print('Create new Space: step 3')
+    next_button = browser.find_by_id('forge-next-button').first
+    assert next_button is not None
+    print(next_button.text)
+    time.sleep(SLEEP_BEFORE_CLICK)
+    next_button.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
 def spaces_page(browser, server, username):
     '''Go to the Spaces page with list of available Spaces.'''
     print("Spaces page")
@@ -124,9 +134,9 @@ def spaces_page(browser, server, username):
     new_space_name = generate_unique_space_name(space_names)
     print("Unique name for new Space\n    " + new_space_name)
     create_new_space_step_1(browser, new_space_name)
+    create_new_space_step_2(browser)
+    create_new_space_step_3(browser)
     time.sleep(1000)
-
-
 
 
 def run_tests(engine, server, username, password):
