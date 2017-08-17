@@ -149,6 +149,13 @@ def create_new_space_step_5(browser):
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
+def create_new_space_step_6(browser):
+    print('Create new Space: step 6')
+    finish_button = browser.find_by_id('forge-finish-button').first
+    assert finish_button is not None
+    print(finish_button.text)
+    time.sleep(SLEEP_BEFORE_CLICK)
+    finish_button.click()
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
@@ -165,6 +172,7 @@ def spaces_page(browser, server, username):
     create_new_space_step_3(browser)
     create_new_space_step_4(browser)
     create_new_space_step_5(browser)
+    create_new_space_step_6(browser)
     time.sleep(1000)
 
 
