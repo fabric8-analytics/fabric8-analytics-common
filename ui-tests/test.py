@@ -87,6 +87,34 @@ def generate_unique_space_name(space_names):
     return space_name(prefix, index)
 
 
+def create_new_space_step_1(browser, new_space_name):
+    print('Create new Space: step 1')
+    new_space_button = browser.find_by_text('New').first
+    assert new_space_button is not None
+    time.sleep(SLEEP_BEFORE_CLICK)
+    new_space_button.click()
+    name_input = browser.find_by_id('name').first
+    assert name_input.visible
+    browser.fill('name', new_space_name)
+    create_space_button = browser.find_by_id('createSpaceButton').first
+    assert create_space_button.visible
+    time.sleep(SLEEP_BEFORE_CLICK)
+    create_space_button.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
+def spaces_page(browser, server, username):
+    '''Go to the Spaces page with list of available Spaces.'''
+    print("Spaces page")
+    url = urljoin(server, username+"/_spaces")
+    browser.visit(url)
+    space_names = get_all_existing_space_names(browser)
+    new_space_name = generate_unique_space_name(space_names)
+    print("Unique name for new Space\n    " + new_space_name)
+    create_new_space_step_1(browser, new_space_name)
+    time.sleep(1000)
+
+
 
 
 def run_tests(engine, server, username, password):
