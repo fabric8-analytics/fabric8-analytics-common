@@ -4,6 +4,10 @@ import os
 from urllib.parse import urljoin
 
 
+SLEEP_BETWEEN_PAGES = 15
+SLEEP_BEFORE_CLICK = 15
+
+
 def check_env_variable(env_var_name):
     assert os.environ.get(env_var_name), \
         'The environment variable {v} should be set properly'.format(
@@ -17,15 +21,23 @@ def check_setup():
 
 
 def front_page(browser, server):
+    '''Go to the Openshift.io front page and click the Login button.'''
+    print("Front page")
     url = server
     browser.visit(url)
+    time.sleep(SLEEP_BEFORE_CLICK)
     login_button = browser.find_by_css('button#login').first
     assert login_button.visible
     assert login_button.value == 'LOG IN'
+    time.sleep(SLEEP_BEFORE_CLICK)
     login_button.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
 
 
 def login_page(browser, server, username, password):
+    '''Login into the Openshift.io using the provided username and
+    password.'''
+    print("Login page")
     username_input = browser.find_by_id('username').first
     password_input = browser.find_by_id('password').first
     assert username_input.visible
@@ -34,7 +46,9 @@ def login_page(browser, server, username, password):
     browser.fill('password', password)
     login_button = browser.find_by_id('kc-login').first
     assert login_button.visible
+    time.sleep(SLEEP_BEFORE_CLICK)
     login_button.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
 
 
 def run_tests(engine, server, username, password):
