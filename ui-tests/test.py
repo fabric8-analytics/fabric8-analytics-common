@@ -103,6 +103,18 @@ def create_new_space_step_1(browser, new_space_name):
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
+def create_new_space_step_2(browser):
+    print('Create new Space: step 2')
+    time.sleep(15)
+    quick_start_button = browser.find_by_text('Quickstart').first
+    assert quick_start_button is not None
+    time.sleep(SLEEP_BEFORE_CLICK)
+    quick_start_button.mouse_over()
+    time.sleep(SLEEP_BEFORE_CLICK)
+    quick_start_button.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
 def spaces_page(browser, server, username):
     '''Go to the Spaces page with list of available Spaces.'''
     print("Spaces page")
