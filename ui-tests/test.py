@@ -51,6 +51,44 @@ def login_page(browser, server, username, password):
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
+def get_all_existing_space_names(browser):
+    '''Returns list of names of Spaces.'''
+    spaces = browser.find_by_xpath("//div[@class='space-item']/h2/a")
+    assert spaces is not None
+    names = [space.value for space in spaces]
+    print("Already created Spaces")
+    for name in names:
+        print("    " + name)
+    return names
+
+
+def generate_space_prefix():
+    localtime = time.localtime()
+    return time.strftime("test%Y-%m-%d-")
+
+
+def space_name(prefix, index):
+    return "{p}{i}".format(p=prefix,i=index)
+
+
+def is_space_name_unique(prefix, index, space_names):
+    name = space_name(prefix, index)
+    return name not in space_names
+
+
+def generate_unique_space_name(space_names):
+    '''Generate a name for a Space. The name is based on current date
+    and is unique (by adding a small index to the date.'''
+    prefix = generate_space_prefix()
+
+    index = 1
+    while not is_space_name_unique(prefix, index, space_names):
+        index += 1
+    return space_name(prefix, index)
+
+
+
+
 def run_tests(engine, server, username, password):
     with Browser(engine) as browser:
         front_page(browser, server)
