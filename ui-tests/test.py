@@ -57,7 +57,7 @@ def get_all_existing_space_names(browser):
     assert spaces is not None
     names = [space.value for space in spaces]
     print("Already created Spaces")
-    print(" ".join(names)
+    print(" ".join(names))
     return names
 
 
