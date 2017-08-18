@@ -184,6 +184,26 @@ def spaces_page(context):
     create_new_space_step_6(context)
 
 
+def check_text_presence(context, text):
+    tag = context.browser.find_by_text(text).first
+    assert tag is not None
+    print("    The text '{t}' is found on the page".format(t=text))
+
+
+def stack_recommendation_on_space_page(context):
+    url = urljoin(context.server, context.username+"/" + context.space_name)
+    print("Going to the Space {s}".format(s=context.space_name))
+    context.browser.visit(url)
+    time.sleep(SLEEP_BEFORE_CLICK)
+
+    recommendation1 = 'Recommendation: Change io.vertx:vertx-web : 3.4.1'
+    check_text_presence(context, recommendation1)
+    recommendation2 = 'Recommendation: Change io.vertx:vertx-core : 3.4.1'
+    check_text_presence(context, recommendation2)
+
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
 
 def run_tests(engine, server, username, password):
     context = Context(server, username, password)
