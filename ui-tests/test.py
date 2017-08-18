@@ -167,6 +167,18 @@ def create_new_space_step_6(context):
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
+def create_new_space_step_7(context):
+    '''Click in the OK button on the last past of the forge wizard.
+    This step is needed so the repo will be shown on the Space page!'''
+    print('Create new Space: step 7')
+    finish_button = context.browser.find_by_id('forge-ok-button').first
+    assert finish_button is not None
+    print(finish_button.text)
+    time.sleep(SLEEP_BEFORE_CLICK)
+    finish_button.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
 def spaces_page(context):
     '''Go to the Spaces page with list of available Spaces.'''
     print("Spaces page")
@@ -182,6 +194,7 @@ def spaces_page(context):
     create_new_space_step_4(context)
     create_new_space_step_5(context)
     create_new_space_step_6(context)
+    create_new_space_step_7(context)
 
 
 def check_text_presence(context, text):
@@ -237,7 +250,7 @@ def run_tests(engine, server, username, password):
         front_page(context)
         login_page(context)
         spaces_page(context)
-        # it is really neede to wait for > 10 minutes here
+        # it is really needed to wait for > 10 minutes here
         time.sleep(60*10)
         stack_recommendation(context)
 
