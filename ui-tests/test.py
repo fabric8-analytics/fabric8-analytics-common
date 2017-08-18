@@ -204,6 +204,31 @@ def stack_recommendation_on_space_page(context):
     time.sleep(SLEEP_BETWEEN_PAGES)
 
 
+def stack_reccomendation_on_pipepines_page(context):
+    url = urljoin(context.server, context.username + "/" + context.space_name
+                  + "/create/pipelines")
+    print("Going to the pipeline page for the Space {s}".format(
+        s=context.space_name))
+    context.browser.visit(url)
+    time.sleep(SLEEP_BEFORE_CLICK)
+    check_text_presence(context, "Stack Reports")
+    link = context.browser.find_by_text("Stack Reports")
+    link.click()
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+    # TODO - ask why the text is different: Recommendation/Recommended
+    recommendation1 = 'Recommended - Change io.vertx:vertx-web : 3.4.1'
+    check_text_presence(context, recommendation1)
+    recommendation2 = 'Recommended - Change io.vertx:vertx-core : 3.4.1'
+    check_text_presence(context, recommendation2)
+
+    time.sleep(SLEEP_BETWEEN_PAGES)
+
+
+def stack_recommendation(context):
+    stack_recommendation_on_space_page(context)
+    stack_reccomendation_on_pipepines_page(context)
+
 
 def run_tests(engine, server, username, password):
     context = Context(server, username, password)
@@ -212,6 +237,9 @@ def run_tests(engine, server, username, password):
         front_page(context)
         login_page(context)
         spaces_page(context)
+        # it is really neede to wait for > 10 minutes here
+        time.sleep(60*10)
+        stack_recommendation(context)
 
 
 check_setup()
