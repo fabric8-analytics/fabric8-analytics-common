@@ -5,6 +5,14 @@ function prepare_venv() {
     virtualenv -p python3 venv && source venv/bin/activate && python3 `which pip3` install pycodestyle
 }
 
+echo "----------------------------------------------------"
+echo "Running Python linter against following directories:"
+echo $directories
+echo "----------------------------------------------------"
+echo
+
+ls -1
+
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
 for directory in $directories
