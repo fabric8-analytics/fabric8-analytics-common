@@ -1405,7 +1405,7 @@ def check_job_token_attributes(token):
     attribs = ["limit", "remaining", "reset"]
     for attr in attribs:
         assert attr in token
-        assert int(token[attr]) > 0
+        assert int(token[attr]) >= 0
 
 
 @then('I should see proper information about job API tokens')
