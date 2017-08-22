@@ -1401,6 +1401,42 @@ def check_security_issue_existence(context, cve, package):
                         .format(p=package))
 
 
+def check_job_token_attributes(token):
+    attribs = ["limit", "remaining", "reset"]
+    for attr in attribs:
+        assert attr in token
+        assert int(token[attr]) >= 0
+
+
+@then('I should see proper information about job API tokens')
+def check_job_api_tokens_information(context):
+    '''Check the tokens information returned by job API.'''
+
+    json_data = context.response.json()
+    assert json_data is not None
+
+    assert "tokens" in json_data
+    tokens = json_data["tokens"]
+
+    assert len(tokens) > 0
+
+    for token in tokens:
+        assert "token" in token
+        assert "rate" in token
+        assert "resources" in token
+
+        rate_token = token["rate"]
+        check_job_token_attributes(rate_token)
+
+        resources = token["resources"]
+
+        token_names = ["core", "graphql", "search"]
+
+        for token_name in token_names:
+            assert token_name in resources
+            check_job_token_attributes(resources[token_name])
+
+
 @when('I generate unique job ID prefix')
 def generate_job_id_prefix(context):
     context.job_id_prefix = uuid.uuid1()
