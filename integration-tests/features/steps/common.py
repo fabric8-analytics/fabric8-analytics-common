@@ -522,7 +522,7 @@ def access_analyses_report(context, ecosystem, token="without"):
            url=context.jobs_api_url, ecosystem=ecosystem)
     if use_token:
         headers = jobs_api_authorization(context)
-        context.response = requests.get(url, headers = headers)
+        context.response = requests.get(url, headers=headers)
     else:
         context.response = requests.get(url)
 
