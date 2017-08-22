@@ -24,8 +24,8 @@ _ANITYA_SERVICE = 31005
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
 
 # Default timeout values for the stack analysis and component analysis endpoints
-_DEFAULT_STACK_ANALYSIS_TIMEOUT = 600
-_DEFAULT_COMPONENT_ANALYSIS_TIMEOUT = 600
+_DEFAULT_STACK_ANALYSIS_TIMEOUT = 1200
+_DEFAULT_COMPONENT_ANALYSIS_TIMEOUT = 1200
 
 
 def _make_compose_name(suffix='.yml'):
