@@ -57,5 +57,11 @@ node('docker') {
             }
         }
     }
+
+    stage('Source code linter') {
+        timeout(30) {
+            sh './run-linter.sh'
+        }
+    }
 }
 
