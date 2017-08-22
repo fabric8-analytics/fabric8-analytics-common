@@ -493,9 +493,9 @@ def logout_from_the_jobs_service(context, token='without'):
     use_token = parse_token_clause(token)
     if use_token:
         headers = jobs_api_authorization(context)
-        context.response = requests.get(url, headers)
+        context.response = requests.put(url, headers)
     else:
-        context.response = requests.get(url)
+        context.response = requests.put(url)
 
 
 @when('I access the job service endpoint to generate token')
