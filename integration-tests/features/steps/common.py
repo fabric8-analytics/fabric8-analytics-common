@@ -515,11 +515,21 @@ def check_redirection(context, url):
 
 @when("I ask for analyses report for ecosystem {ecosystem}")
 @when("I ask for analyses report for ecosystem {ecosystem} {token} authorization token")
-def access_analyses_report(context, ecosystem, token="without"):
+@when("I ask for analyses report for ecosystem {ecosystem} from date {from_date} {token} "
+      "authorization token")
+@when("I ask for analyses report for ecosystem {ecosystem} to date {to_date} {token} "
+      "authorization token")
+@when("I ask for analyses report for ecosystem {ecosystem} between dates {from_date} {to_date} "
+      "{token} authorization token")
+def access_analyses_report(context, ecosystem, from_date=None, to_date=None, token="without"):
     """API call to get analyses report for selected ecosystem."""
     use_token = parse_token_clause(token)
     url = "{url}api/v1/debug/analyses-report?ecosystem={ecosystem}".format(
            url=context.jobs_api_url, ecosystem=ecosystem)
+    if from_date is not None:
+        url += "&from_date=" + from_date
+    if to_date is not None:
+        url += "&to_date=" + to_date
     if use_token:
         headers = jobs_api_authorization(context)
         context.response = requests.get(url, headers=headers)
