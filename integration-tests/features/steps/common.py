@@ -927,6 +927,16 @@ def find_null_value_under_the_path(context, path):
     assert v is None
 
 
+@then('I should find the timestamp value under the path {path} in the JSON response')
+def find_timestamp_value_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v is not None
+    check_timestamp(v)
+
+
 @then('I should find the attribute request_id equals to id returned by stack analysis request')
 def check_stack_analysis_id(context):
     previous_id = context.stack_analysis_id
