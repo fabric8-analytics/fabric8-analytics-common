@@ -294,8 +294,12 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
     filename = 'data/{manifest}'.format(manifest=manifest)
     manifest_file_dir = os.path.dirname(filename)
     path_to_manifest_file = os.path.abspath(manifest_file_dir)
+
+    # please note that the trick with (None, path_to_manifest_file) has to be
+    # used here so the REST API call would work properly. It is similar to use
+    # curl -F 'manifest[]=@filename' -F 'filePath[]=PATH_TO_FILE'
     files = {'manifest[]': (name, open(filename, 'rb')),
-             'filePath[]': path_to_manifest_file}
+             'filePath[]': (None, path_to_manifest_file)}
     if use_token:
         response = requests.post(endpoint, files=files,
                                  headers=authorization(context))
