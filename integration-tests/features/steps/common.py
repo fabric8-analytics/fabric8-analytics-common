@@ -1067,7 +1067,7 @@ def stack_analysis_check_outliers(context, component):
     json_data = context.response.json()
     threshold = context.outlier_probability_threshold
     # log.info('Usage outlier threshold: %r' % threshold)
-    path = "result/0/recommendations/usage_outliers"
+    path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     check_outlier_probability(usage_outliers, component, threshold)
 
@@ -1075,7 +1075,7 @@ def stack_analysis_check_outliers(context, component):
 @then('I should find that total {count} outliers are reported')
 def check_outlier_count(context, count=2):
     json_data = context.response.json()
-    path = "result/0/recommendations/usage_outliers"
+    path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     assert len(usage_outliers) == int(count)
 
@@ -1084,7 +1084,7 @@ def check_outlier_count(context, count=2):
 def check_outlier_validity(context):
     json_data = context.response.json()
     threshold = 0.9
-    path = "result/0/recommendations/usage_outliers"
+    path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     for usage_outlier in usage_outliers:
         # log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
@@ -1167,7 +1167,7 @@ def stack_analysis_check_sentiment(context):
     """
     json_data = context.response.json()
     recommendations_node = get_value_using_path(json_data,
-                                                "result/0/recommendations")
+                                                "result/0/recommendation")
     user_stack_info_node = get_value_using_path(json_data,
                                                 "result/0/user_stack_info")
 
@@ -1193,7 +1193,7 @@ def get_analyzed_packages(json_data):
 
 def get_companion_packages(json_data):
     """Get names of all packages in companion list."""
-    path = "result/0/recommendations/companion"
+    path = "result/0/recommendation/companion"
     companion = get_value_using_path(json_data, path)
     return get_attribute_values(companion, "name")
 
@@ -1244,7 +1244,7 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
     """Check that the component is replaced by the given package
        and version."""
     json_data = context.response.json()
-    path = "result/0/recommendations/alternate"
+    path = "result/0/recommendation/alternate"
     alternates = get_value_using_path(json_data, path)
     replacements = find_replacements(alternates, component, version)
 
@@ -1265,7 +1265,7 @@ def stack_analysis_check_replaces_count(json_data, component, version, expected_
     """Check that the component is replaced only once in the alternate
        analysis."""
     json_data = context.response.json()
-    path = "result/0/recommendations/alternate"
+    path = "result/0/recommendation/alternate"
     alternates = get_value_using_path(json_data, path)
     replacements = find_replacements(alternates, component, version)
     replacements_count = len(replacements)
@@ -1281,7 +1281,7 @@ def get_user_components(json_data):
 
 
 def get_alternate_components(json_data):
-    path = "result/0/recommendations/alternate"
+    path = "result/0/recommendation/alternate"
     return get_value_using_path(json_data, path)
 
 
@@ -1375,7 +1375,7 @@ def stack_analysis_check_security_node_for_dependencies(context):
 
 @then('I should find the security node for all alternate components')
 def stack_analysis_check_security_node_for_alternate_components(context):
-    check_security_node(context, "result/0/recommendations/alternate")
+    check_security_node(context, "result/0/recommendation/alternate")
 
 
 @then('I should find the {cve} security issue for the dependency {package}')
