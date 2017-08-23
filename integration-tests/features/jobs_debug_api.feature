@@ -25,7 +25,7 @@ Feature: Jobs debug API
     Then I should get 401 status code
 
   @jobs.requires_auth
-  Scenario: Basic check the endpoint for analyses report output with authorization token
+  Scenario: Basic check the endpoint for analyses report output with authorization token, maven ecosystem is tested
     Given System is running
     Given Jobs debug API is running
     When I acquire job API authorization token
@@ -34,7 +34,7 @@ Feature: Jobs debug API
     Then I should get 200 status code
 
   @jobs.requires_auth
-  Scenario: Basic check the endpoint for analyses report output with authorization token
+  Scenario: Basic check the endpoint for analyses report output with authorization token, npm ecosystem is tested
     Given System is running
     Given Jobs debug API is running
     When I acquire job API authorization token
@@ -43,7 +43,7 @@ Feature: Jobs debug API
     Then I should get 200 status code
 
   @jobs.requires_auth
-  Scenario: Basic check the endpoint for analyses report output with authorization token
+  Scenario: Basic check the endpoint for analyses report output with authorization token, pypi ecosystem is tested
     Given System is running
     Given Jobs debug API is running
     When I acquire job API authorization token
@@ -52,7 +52,7 @@ Feature: Jobs debug API
     Then I should get 200 status code
 
   @jobs.requires_auth
-  Scenario: Basic check the endpoint for analyses report output with authorization token
+  Scenario: Basic check the endpoint for analyses report output with authorization token, nuget ecosystem is tested
     Given System is running
     Given Jobs debug API is running
     When I acquire job API authorization token
