@@ -196,7 +196,7 @@ def contains_alternate_node(json_resp):
     """Check for the existence of alternate node in the stack analysis."""
     result = json_resp.get('result')
     return bool(result) and isinstance(result, list) \
-        and result[0].get('recommendations', {}).get('alternate', None) is not None
+        and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
 
 
 @when("I wait for stack analysis to finish")
