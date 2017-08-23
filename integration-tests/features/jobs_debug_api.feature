@@ -60,6 +60,20 @@ Feature: Jobs debug API
     When I ask for analyses report for ecosystem nuget with authorization token
     Then I should get 200 status code
 
+  @jobs.requires_auth
+  Scenario: Basic check the endpoint for analyses report output with authorization token, maven ecosystem is tested
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I ask for analyses report for ecosystem maven with authorization token
+    Then I should get 200 status code
+    Then I should see proper analyses report
+    Then I should find the null value under the path from_date in the JSON response
+    Then I should find the null value under the path to_date in the JSON response
+    Then I should find the timestamp value under the path now in the JSON response
+    Then I should find the value maven under the path report/ecosystem in the JSON response
+
   Scenario: Basic check for the endpoint /debug/github-tokens w/o authorization key
     Given System is running
     Given Jobs debug API is running
