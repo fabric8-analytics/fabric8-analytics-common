@@ -719,6 +719,12 @@ def check_timestamp(timestamp):
     """Check if the string contains proper timestamp value."""
     assert timestamp is not None
     assert isinstance(timestamp, str)
+
+    # some attributes contains timestamp without the millisecond part
+    # so we need to take care of it
+    if len(timestamp) == len("YYYY-mm-dd HH:MM:SS") and '.' not in timestamp:
+        timestamp += '.0'
+
     assert len(timestamp) >= len("YYYY-mm-dd HH:MM:SS.")
 
     # we have to support the following formats:
