@@ -74,6 +74,45 @@ Feature: Jobs debug API
     Then I should find the timestamp value under the path now in the JSON response
     Then I should find the value maven under the path report/ecosystem in the JSON response
 
+  @jobs.requires_auth
+  Scenario: Basic check the endpoint for analyses report output with from_date, maven ecosystem is tested
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I ask for analyses report for ecosystem maven from date 2000-01-01 with authorization token
+    Then I should get 200 status code
+    Then I should find the timestamp value under the path from_date in the JSON response
+    Then I should find the null value under the path to_date in the JSON response
+    Then I should find the timestamp value under the path now in the JSON response
+    Then I should find the value maven under the path report/ecosystem in the JSON response
+
+  @jobs.requires_auth
+  Scenario: Basic check the endpoint for analyses report output with to_date, maven ecosystem is tested
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I ask for analyses report for ecosystem maven to date 2099-01-01 with authorization token
+    Then I should get 200 status code
+    Then I should find the null value under the path from_date in the JSON response
+    Then I should find the timestamp value under the path to_date in the JSON response
+    Then I should find the timestamp value under the path now in the JSON response
+    Then I should find the value maven under the path report/ecosystem in the JSON response
+
+  @jobs.requires_auth
+  Scenario: Basic check the endpoint for analyses report output with from_date and to_date, maven ecosystem is tested
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I ask for analyses report for ecosystem maven between dates 2000-01-01 2099-01-01 with authorization token
+    Then I should get 200 status code
+    Then I should find the timestamp value under the path from_date in the JSON response
+    Then I should find the timestamp value under the path to_date in the JSON response
+    Then I should find the timestamp value under the path now in the JSON response
+    Then I should find the value maven under the path report/ecosystem in the JSON response
+
   Scenario: Basic check for the endpoint /debug/github-tokens w/o authorization key
     Given System is running
     Given Jobs debug API is running
