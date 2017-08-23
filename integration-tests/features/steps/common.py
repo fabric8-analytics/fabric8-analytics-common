@@ -1472,6 +1472,27 @@ def check_job_api_tokens_information(context):
             check_job_token_attributes(resources[token_name])
 
 
+@then('I should see proper analyses report')
+def check_job_debug_analyses_report(context):
+    '''Check the analyses report returned by job API.'''
+    json_data = context.response.json()
+    assert json_data is not None
+
+    assert "now" in json_data
+    check_timestamp(json_data["now"])
+
+    assert "report" in json_data
+    report = json_data["report"]
+
+    attributes = ["analyses", "analyses_finished", "analyses_finished_unique",
+                  "analyses_unfinished", "analyses_unique", "packages",
+                  "packages_finished", "versions"]
+
+    for attribute in attributes:
+        assert attribute in report
+        assert int(report[attribute]) >= 0
+
+
 @when('I generate unique job ID prefix')
 def generate_job_id_prefix(context):
     context.job_id_prefix = uuid.uuid1()
