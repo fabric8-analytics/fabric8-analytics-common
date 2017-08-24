@@ -434,6 +434,42 @@ Feature: Jobs debug API
     Then I should find the value 0 under the path report/packages_finished in the JSON response
     Then I should find the value 0 under the path report/versions in the JSON response
 
+  @jobs.requires_auth
+  Scenario: Check that the endpoint for analyses report does not accept unknown ecosystem
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I ask for analyses report for ecosystem UNKNOWN with authorization token
+    Then I should get 400 status code
+ 
+  @jobs.requires_auth
+  Scenario: Check that the endpoint for analyses report does not accept improper from_date
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I ask for analyses report for ecosystem maven from date BAD_DATE with authorization token
+    Then I should get 400 status code
+ 
+  @jobs.requires_auth
+  Scenario: Check that the endpoint for analyses report does not accept improper to_date
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I ask for analyses report for ecosystem maven to date BAD_DATE with authorization token
+    Then I should get 400 status code
+ 
+  @jobs.requires_auth
+  Scenario: Check that the endpoint for analyses report does not accept improper from_date nor to_date
+    Given System is running
+    Given Jobs debug API is running
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I ask for analyses report for ecosystem maven between dates BAD_DATE BAD_DATE with authorization token
+    Then I should get 400 status code
+
   Scenario: Basic check for the endpoint /debug/github-tokens w/o authorization key
     Given System is running
     Given Jobs debug API is running
