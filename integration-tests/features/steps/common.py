@@ -519,11 +519,21 @@ def check_redirection(context, url):
 
 @when("I ask for analyses report for ecosystem {ecosystem}")
 @when("I ask for analyses report for ecosystem {ecosystem} {token} authorization token")
-def access_analyses_report(context, ecosystem, token="without"):
+@when("I ask for analyses report for ecosystem {ecosystem} from date {from_date} {token} "
+      "authorization token")
+@when("I ask for analyses report for ecosystem {ecosystem} to date {to_date} {token} "
+      "authorization token")
+@when("I ask for analyses report for ecosystem {ecosystem} between dates {from_date} {to_date} "
+      "{token} authorization token")
+def access_analyses_report(context, ecosystem, from_date=None, to_date=None, token="without"):
     """API call to get analyses report for selected ecosystem."""
     use_token = parse_token_clause(token)
     url = "{url}api/v1/debug/analyses-report?ecosystem={ecosystem}".format(
            url=context.jobs_api_url, ecosystem=ecosystem)
+    if from_date is not None:
+        url += "&from_date=" + from_date
+    if to_date is not None:
+        url += "&to_date=" + to_date
     if use_token:
         headers = jobs_api_authorization(context)
         context.response = requests.get(url, headers=headers)
@@ -713,6 +723,12 @@ def check_timestamp(timestamp):
     """Check if the string contains proper timestamp value."""
     assert timestamp is not None
     assert isinstance(timestamp, str)
+
+    # some attributes contains timestamp without the millisecond part
+    # so we need to take care of it
+    if len(timestamp) == len("YYYY-mm-dd HH:MM:SS") and '.' not in timestamp:
+        timestamp += '.0'
+
     assert len(timestamp) >= len("YYYY-mm-dd HH:MM:SS.")
 
     # we have to support the following formats:
@@ -904,6 +920,25 @@ def find_value_under_the_path(context, value, path):
         assert v == int(value)
     else:
         assert v == value
+
+
+@then('I should find the null value under the path {path} in the JSON response')
+def find_null_value_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v is None
+
+
+@then('I should find the timestamp value under the path {path} in the JSON response')
+def find_timestamp_value_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v is not None
+    check_timestamp(v)
 
 
 @then('I should find the attribute request_id equals to id returned by stack analysis request')
@@ -1439,6 +1474,27 @@ def check_job_api_tokens_information(context):
         for token_name in token_names:
             assert token_name in resources
             check_job_token_attributes(resources[token_name])
+
+
+@then('I should see proper analyses report')
+def check_job_debug_analyses_report(context):
+    '''Check the analyses report returned by job API.'''
+    json_data = context.response.json()
+    assert json_data is not None
+
+    assert "now" in json_data
+    check_timestamp(json_data["now"])
+
+    assert "report" in json_data
+    report = json_data["report"]
+
+    attributes = ["analyses", "analyses_finished", "analyses_finished_unique",
+                  "analyses_unfinished", "analyses_unique", "packages",
+                  "packages_finished", "versions"]
+
+    for attribute in attributes:
+        assert attribute in report
+        assert int(report[attribute]) >= 0
 
 
 @when('I generate unique job ID prefix')
