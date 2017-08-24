@@ -61,7 +61,7 @@ Feature: Jobs debug API
     Then I should get 200 status code
 
   @jobs.requires_auth
-  Scenario: Basic check the endpoint for analyses report output with authorization token, maven ecosystem is tested
+  Scenario: Check that all expected attributes are presented in analyses report output with authorization token, maven ecosystem is tested
     Given System is running
     Given Jobs debug API is running
     When I acquire job API authorization token
