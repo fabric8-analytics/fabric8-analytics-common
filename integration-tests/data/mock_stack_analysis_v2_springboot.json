@@ -10,7 +10,7 @@
             },
             "_release": "None:None:None",
             "manifest_name": "pom.xml",
-            "recommendations": {
+            "recommendation": {
                 "alternate": [
                     {
                         "code_metrics": {
