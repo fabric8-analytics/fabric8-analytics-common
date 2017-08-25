@@ -149,14 +149,14 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I post a job metadata job1.json with job id PAUSED_JOB and state paused
+    When I post a job metadata job1.json with job id PAUSED_JOB and state paused using authorization token
     Then I should get 201 status code
     When I read list of jobs using authorization token
     Then I should find job with id PAUSED_JOB
     Then I should find job with id PAUSED_JOB and state paused
-    When I set status for job with id PAUSED_JOB to paused
+    When I set status for job with id PAUSED_JOB to paused using authorization token
     Then I should get 200 status code
-    When I set status for job with id PAUSED_JOB to running
+    When I set status for job with id PAUSED_JOB to running using authorization token
     Then I should get 200 status code
 
   @jobs.requires_auth
@@ -164,11 +164,11 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I post a job metadata job1.json with job id PAUSED_JOB_2 and state paused
+    When I post a job metadata job1.json with job id PAUSED_JOB_2 and state paused using authorization token
     Then I should get 201 status code
     When I read list of jobs using authorization token
     Then I should find job with id PAUSED_JOB_2 and state paused
-    When I set status for job with id PAUSED_JOB_2 to unknown_state
+    When I set status for job with id PAUSED_JOB_2 to unknown_state using authorization token
     Then I should get 400 status code
 
   @jobs.requires_auth
@@ -176,7 +176,7 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I set status for job with id NONEXISTENT_JOB to paused
+    When I set status for job with id NONEXISTENT_JOB to paused using authorization token
     Then I should get 404 status code
 
   @jobs.requires_auth
