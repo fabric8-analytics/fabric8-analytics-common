@@ -32,6 +32,37 @@ Feature: Jobs API
     Then I should receive JSON response containing the jobs_count key
 
   @jobs.requires_auth
+  Scenario: Check that job type 'all' is supported
+    Given System is running
+    When I acquire job API authorization token
+    When I read list of jobs with type all using authorization token
+    Then I should get 200 status code
+    Then I should see N jobs
+
+  @jobs.requires_auth
+  Scenario: Check that job type 'failed' is supported
+    Given System is running
+    When I acquire job API authorization token
+    When I read list of jobs with type failed using authorization token
+    Then I should get 200 status code
+    Then I should see N jobs
+
+  @jobs.requires_auth
+  Scenario: Check that job type 'user' is supported
+    Given System is running
+    When I acquire job API authorization token
+    When I read list of jobs with type user using authorization token
+    Then I should get 200 status code
+    Then I should see N jobs
+
+  @jobs.requires_auth
+  Scenario: Check that improper job type is checked
+    Given System is running
+    When I acquire job API authorization token
+    When I read list of jobs with type BAD using authorization token
+    Then I should get 400 status code
+
+  @jobs.requires_auth
   Scenario: Check initial number of jobs
     Given System is running
     When I acquire job API authorization token
