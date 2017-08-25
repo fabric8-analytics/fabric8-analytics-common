@@ -6,3 +6,4 @@ requests
 docker-py
 pyjwt
 pycrypto
+boto3
