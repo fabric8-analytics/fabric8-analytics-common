@@ -10,8 +10,6 @@ botocore==1.6.6           # via boto3, s3transfer
 docker-py==1.10.6
 docker-pycreds==0.2.1     # via docker-py
 docutils==0.14            # via botocore
-enum34==1.1.6             # via parse-type
-futures==3.1.1            # via s3transfer
 jmespath==0.9.3           # via boto3, botocore
 jsonschema==2.5.1
 parse-type==0.3.4         # via behave
@@ -21,7 +19,6 @@ pycrypto==2.6.1
 pyjwt==1.5.2
 pytest==3.0.3
 python-dateutil==2.6.1    # via botocore
-repoze.lru==0.6           # via jsonschema
 requests==2.11.1
 s3transfer==0.1.10        # via boto3
 six==1.10.0               # via behave, docker-py, docker-pycreds, parse-type, python-dateutil, websocket-client
