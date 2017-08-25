@@ -470,11 +470,16 @@ def delete_job(context, job_id=None, token="without"):
 
 
 @when("I set status for job with id {job_id} to {status}")
-def set_job_status(context, job_id, status):
+@when("I set status for job with id {job_id} to {status} {token} authorization token")
+def set_job_status(context, job_id, status, token="without"):
     """API call to set job status."""
     endpoint = job_endpoint(context, job_id)
     url = "{endpoint}?state={status}".format(endpoint=endpoint, status=status)
-    context.response = requests.put(url)
+    use_token = parse_token_clause(token)
+    if use_token:
+        context.response = requests.put(url, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.put(url)
 
 
 @when("I reset status for the job service")
