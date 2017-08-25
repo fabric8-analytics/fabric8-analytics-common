@@ -325,8 +325,8 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
 
 
 def stack_analysis_endpoint(context, version):
-    endpoint = {"1": "/api/v1/stack-analyses/",
-                "2": "/api/v1/stack-analyses-v2/"}.get(version)
+    endpoint = {"1": "/api/v1/stack-analyses-v1/",
+                "2": "/api/v1/stack-analyses/"}.get(version)
     if endpoint is None:
         raise Exception("Wrong version specified: {v}".format(v=version))
     return urljoin(context.coreapi_url, endpoint)
