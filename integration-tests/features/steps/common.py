@@ -386,7 +386,7 @@ def flow_sheduling_endpoint(context, state, job_id=None):
                format(jobs_api_url=context.jobs_api_url, state=state)
 
 
-def job_endpoint(context, job_id):
+def job_endpoint(context, job_id=None):
     """Return URL for given job id that can be used to job state manipulation."""
     url = "{jobs_api_url}api/v1/jobs".format(
            jobs_api_url=context.jobs_api_url)
