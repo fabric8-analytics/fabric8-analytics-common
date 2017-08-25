@@ -264,6 +264,22 @@ def jobs_api_url_with_authorization_token(context, url):
                                     headers=jobs_api_authorization(context))
 
 
+@when('I read list of jobs')
+@when('I read list of jobs with type {type}')
+@when('I read list of jobs {token} authorization token')
+@when('I read list of jobs with type {type} {token} authorization token')
+def list_of_jobs(context, type=None, token=None):
+    '''Read list of jobs via job API.'''
+    endpoint = job_endpoint(context)
+    if type is not None:
+        endpoint += "?job_type=" + type
+    use_token = parse_token_clause(token)
+    if use_token:
+        context.response = requests.get(endpoint, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.get(endpoint)
+
+
 @when('I access {url:S}')
 def access_url(context, url):
     """Access the service API using the HTTP GET method."""
