@@ -13,5 +13,5 @@ docker run -t \
     -e F8A_JOB_API_URL=${F8A_JOB_API_URL} \
     -e F8A_ANITYA_API_URL=${F8A_ANITYA_API_URL} \
     ${RECOMMENDER_API_TOKEN:+-e RECOMMENDER_API_TOKEN=${RECOMMENDER_API_TOKEN}} \
-    f8a-e2e-tests --tags=-jobs.requires_auth --no-color $@
+    f8a-e2e-tests --tags=-jobs.requires_auth --tags=-requires_authorization_token --no-color $@
 
