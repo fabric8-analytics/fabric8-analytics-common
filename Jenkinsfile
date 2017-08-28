@@ -29,7 +29,7 @@ node('docker') {
             dockerCleanup()
             docker.build(image.id, '--pull --no-cache postgres-docker/')
             sh "docker tag ${image.id} registry.devshift.net/${image.id}"
-            docker.withRegistry('https://push.registry.devshift.net/', 'devshift-registry') {
+            docker.withRegistry('https://registry.devshift.net/') {
                 docker.image('bayesian/bayesian-api').pull()
                 docker.image('bayesian/cucos-worker').pull()
                 docker.image('bayesian/coreapi-jobs').pull()
