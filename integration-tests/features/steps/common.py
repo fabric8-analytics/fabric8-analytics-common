@@ -343,6 +343,7 @@ def parse_token_clause(token_clause):
 
 
 @when("I send NPM package manifest {manifest} to stack analysis")
+@when("I send NPM package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send NPM package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
 def npm_manifest_stack_analysis(context, manifest, version="2", token="without"):
@@ -353,6 +354,7 @@ def npm_manifest_stack_analysis(context, manifest, version="2", token="without")
 
 
 @when("I send Python package manifest {manifest} to stack analysis")
+@when("I send Python package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send Python package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
 def python_manifest_stack_analysis(context, manifest, version="2", token="without"):
@@ -363,6 +365,7 @@ def python_manifest_stack_analysis(context, manifest, version="2", token="withou
 
 
 @when("I send Maven package manifest {manifest} to stack analysis")
+@when("I send Maven package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send Maven package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
 def maven_manifest_stack_analysis(context, manifest, version="2", token="without"):
