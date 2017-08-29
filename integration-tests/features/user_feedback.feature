@@ -4,6 +4,7 @@ Feature: Components API V1
     When I access /api/v1/
     Then I should get 200 status code
 
+  @requires_authorization_token
   Scenario: Check if the user feedback is received by the system
     Given System is running
     When I acquire the authorization token

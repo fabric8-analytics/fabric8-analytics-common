@@ -24,8 +24,8 @@ _ANITYA_SERVICE = 31005
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
 
 # Default timeout values for the stack analysis and component analysis endpoints
-_DEFAULT_STACK_ANALYSIS_TIMEOUT = 600
-_DEFAULT_COMPONENT_ANALYSIS_TIMEOUT = 600
+_DEFAULT_STACK_ANALYSIS_TIMEOUT = 1200
+_DEFAULT_COMPONENT_ANALYSIS_TIMEOUT = 1200
 
 
 def _make_compose_name(suffix='.yml'):
@@ -38,7 +38,7 @@ def _set_default_compose_path(context):
     # Extra containers are added as needed by integration setup commands
     context.docker_compose_path = [base_compose, test_specific_compose]
 
-### make sure behave uses pytest improved asserts
+# WARNING: make sure behave uses pytest improved asserts
 # Behave runner uses behave.runner.exec_file function to read, compile
 # and exec code of environment file and step files *in this order*.
 # Therefore we provide a new implementation here, which uses pytest's
@@ -47,6 +47,8 @@ def _set_default_compose_path(context):
 # This means that when behave tries to load steps, it will use our exec_file.
 # => SUCCESS
 # Don't ask how long it took me to figure this out.
+
+
 import behave.runner
 
 
@@ -65,8 +67,9 @@ def exec_file(filename, globals=None, locals=None):
     _, code = rewrite._rewrite_test(config, f)
     exec(code, globals, locals)
 
+
 behave.runner.exec_file = exec_file
-### end this madness
+# *** end this madness
 
 
 def _make_compose_command(context, *args):
@@ -382,8 +385,12 @@ def before_all(context):
         print("Note: integration tests are running against existing deploment")
         _check_api_tokens_presence()
 
-    context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
-    context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
+    context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url',
+                                                      _FABRIC8_ANALYTICS_SERVER)
+
+    context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url',
+                                                        _FABRIC8_ANALYTICS_JOBS)
+
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
     context.client = None
@@ -393,7 +400,9 @@ def before_all(context):
     component_analysis_timeout = _parse_int_env_var('F8A_COMPONENT_ANALYSIS_TIMEOUT')
 
     context.stack_analysis_timeout = stack_analysis_timeout or _DEFAULT_STACK_ANALYSIS_TIMEOUT
-    context.component_analysis_timeout = component_analysis_timeout or _DEFAULT_COMPONENT_ANALYSIS_TIMEOUT
+
+    context.component_analysis_timeout = component_analysis_timeout \
+        or _DEFAULT_COMPONENT_ANALYSIS_TIMEOUT
 
     if context.running_locally:
         context.client = docker.AutoVersionClient()
