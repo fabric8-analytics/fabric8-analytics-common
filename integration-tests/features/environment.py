@@ -229,13 +229,15 @@ def _wait_for_component_search_service(context, wait_for_service=60):
 
 
 def _restart_system(context, wait_for_server=60):
-    try:
-        _teardown_system(context)
-        _start_system(context)
-        _wait_for_system(context, wait_for_server)
-    except subprocess.CalledProcessError as e:
-        raise Exception('Failed to restart system. Command "{c}" failed:\n{o}'.
-                        format(c=' '.join(e.cmd), o=e.output))
+    # NOTE: it does make sense to restart the local system only
+    if context.running_locally:
+        try:
+            _teardown_system(context)
+            _start_system(context)
+            _wait_for_system(context, wait_for_server)
+        except subprocess.CalledProcessError as e:
+            raise Exception('Failed to restart system. Command "{c}" failed:\n{o}'.
+                            format(c=' '.join(e.cmd), o=e.output))
 
 
 def _is_api_running(url):
