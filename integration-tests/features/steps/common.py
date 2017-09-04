@@ -125,11 +125,19 @@ def search_for_component_with_token(context, component):
 
 
 @when("I read {ecosystem}/{component}/{version} component analysis")
-def read_analysis_for_component(context, ecosystem, component, version):
+@when("I read {ecosystem}/{component}/{version} component analysis "
+      "{token} authorization token")
+def read_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Read component analysis (or an error message) for the selected
     ecosystem."""
     url = component_analysis_url(context, ecosystem, component, version)
-    context.response = requests.get(url)
+
+    use_token = parse_token_clause(token)
+
+    if use_token:
+        context.response = requests.get(url, headers=authorization(context))
+    else:
+        context.response = requests.get(url)
 
 
 def component_analysis_url(context, ecosystem, component, version):
