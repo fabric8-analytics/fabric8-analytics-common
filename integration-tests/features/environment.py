@@ -387,6 +387,15 @@ def _check_api_tokens_presence():
     _missing_api_token_warning("JOB_API_TOKEN")
 
 
+def _check_env_var_presence_s3_db(env_var_name):
+    '''Check the existence of environment variable needed to connect to the
+    AWS S3 database.'''
+    if os.environ.get(env_var_name) is None:
+        print("Warning: the {name} environment variable is not set.\n"
+              "All tests that access AWS S3 database will fail\n".format(
+                  name=env_var_name))
+
+
 def _parse_int_env_var(env_var_name):
     val = os.environ.get(env_var_name)
     try:
@@ -408,6 +417,11 @@ def before_all(context):
     context.send_json_file = _send_json_file
     context.wait_for_jobs_debug_api_service = _wait_for_jobs_debug_api_service
     context.wait_for_component_search_service = _wait_for_component_search_service
+    context.connect_to_aws_s3 = _connect_to_aws_s3
+    context.read_all_buckets_from_s3 = _read_all_buckets_from_s3
+    context.does_bucket_exist = _does_bucket_exist
+    context.read_object_from_s3 = _read_object_from_s3
+    context.read_object_metadata_from_s3 = _read_object_metadata_from_s3
 
     # Configure container logging
     context.dump_logs = _read_boolean_setting(context, 'dump_logs')
@@ -459,6 +473,15 @@ def before_all(context):
                                                         _FABRIC8_ANALYTICS_JOBS)
 
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
+
+    # informations needed to access S3 database from tests
+    _check_env_var_presence_s3_db('AWS_ACCESS_KEY_ID')
+    _check_env_var_presence_s3_db('AWS_SECRET_ACCESS_KEY')
+    _check_env_var_presence_s3_db('S3_REGION_NAME')
+
+    context.aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+    context.aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    context.s3_region_name = os.environ.get('S3_REGION_NAME')
 
     context.client = None
 
