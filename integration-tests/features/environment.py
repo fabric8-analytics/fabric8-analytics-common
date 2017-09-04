@@ -314,6 +314,22 @@ def _does_bucket_exist(context, bucket_name):
         return False
 
 
+def _read_object_from_s3(context, bucket_name, key):
+    '''Read byte stream from S3, decode it into string, and parse as JSON.'''
+    s3 = context.s3_resource
+    assert s3 is not None
+    data = s3.Object(bucket_name, key).get()['Body'].read().decode()
+    return json.loads(data)
+
+
+def _read_object_metadata_from_s3(context, bucket_name, key, attribute):
+    '''Read byte stream from S3, decode it into string, and parse as JSON.'''
+    s3 = context.s3_resource
+    assert s3 is not None
+    data = s3.Object(bucket_name, key).get()[attribute]
+    return data
+
+
 def _read_boolean_setting(context, setting_name):
     setting = context.config.userdata.get(setting_name, '').lower()
     if setting in ('1', 'yes', 'true', 'on'):
