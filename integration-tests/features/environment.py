@@ -8,6 +8,9 @@ from behave.log_capture import capture
 import docker
 import requests
 import time
+import sys
+import boto3
+import botocore
 
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
@@ -263,6 +266,35 @@ def _is_jobs_debug_api_running(context):
 def _is_component_search_service_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT +
                            "/component-search/any-component")
+
+
+def _connect_to_aws_s3(context):
+    '''Connect to the AWS S3 database using access key, secret access key,
+    and region. That parameters are part of "context" object.'''
+
+    if 's3_resource' in context:
+        return
+
+    assert context.aws_access_key_id is not None
+    assert context.aws_secret_access_key is not None
+    assert context.s3_region_name is not None
+
+    context.s3_session = boto3.session.Session(
+        aws_access_key_id=context.aws_access_key_id,
+        aws_secret_access_key=context.aws_secret_access_key,
+        region_name=context.s3_region_name)
+
+    assert context.s3_session is not None
+
+    use_ssl = True
+    endpoint_url = None
+
+    context.s3_resource = context.s3_session.resource(
+        's3',
+        config=botocore.client.Config(signature_version='s3v4'),
+        use_ssl=use_ssl, endpoint_url=endpoint_url)
+
+    assert context.s3_resource is not None
 
 
 def _read_boolean_setting(context, setting_name):
