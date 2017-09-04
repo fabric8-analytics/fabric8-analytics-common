@@ -125,11 +125,19 @@ def search_for_component_with_token(context, component):
 
 
 @when("I read {ecosystem}/{component}/{version} component analysis")
-def read_analysis_for_component(context, ecosystem, component, version):
+@when("I read {ecosystem}/{component}/{version} component analysis "
+      "{token} authorization token")
+def read_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Read component analysis (or an error message) for the selected
     ecosystem."""
     url = component_analysis_url(context, ecosystem, component, version)
-    context.response = requests.get(url)
+
+    use_token = parse_token_clause(token)
+
+    if use_token:
+        context.response = requests.get(url, headers=authorization(context))
+    else:
+        context.response = requests.get(url)
 
 
 def component_analysis_url(context, ecosystem, component, version):
@@ -168,7 +176,9 @@ def start_analysis_for_component(context, ecosystem, component, version):
 
 
 @when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
-def finish_analysis_for_component(context, ecosystem, component, version):
+@when("I wait for {ecosystem}/{component}/{version} component analysis to finish "
+      "{token} authorization token")
+def finish_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Try to wait for the component analysis to be finished.
 
     Current API implementation returns just two HTTP codes:
@@ -179,10 +189,15 @@ def finish_analysis_for_component(context, ecosystem, component, version):
     timeout = context.component_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
 
+    use_token = parse_token_clause(token)
+
     url = component_analysis_url(context, ecosystem, component, version)
 
     for _ in range(timeout // sleep_amount):
-        status_code = requests.get(url).status_code
+        if use_token:
+            status_code = requests.get(url, headers=authorization(context)).status_code
+        else:
+            status_code = requests.get(url).status_code
         if status_code == 200:
             break
         elif status_code != 404:
