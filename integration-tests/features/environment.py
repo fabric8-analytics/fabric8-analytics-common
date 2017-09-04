@@ -297,6 +297,23 @@ def _connect_to_aws_s3(context):
     assert context.s3_resource is not None
 
 
+def _read_all_buckets_from_s3(context):
+    '''Read all available buckets from the AWS S3 database.'''
+    return context.s3_resource.buckets.all()
+
+
+def _does_bucket_exist(context, bucket_name):
+    '''Return True only when bucket with given name exist and can be read
+    by current AWS S3 database user.'''
+    try:
+        s3 = context.s3_resource
+        assert s3 is not None
+        s3.meta.client.head_bucket(Bucket=bucket_name)
+        return True
+    except ClientError:
+        return False
+
+
 def _read_boolean_setting(context, setting_name):
     setting = context.config.userdata.get(setting_name, '').lower()
     if setting in ('1', 'yes', 'true', 'on'):
