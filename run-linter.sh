@@ -1,4 +1,4 @@
-directories="integration-tests ui-tests"
+directories="integration-tests ui-tests perf-tests"
 fail=0
 
 function prepare_venv() {
