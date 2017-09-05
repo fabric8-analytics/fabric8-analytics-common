@@ -207,6 +207,11 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
         raise Exception('Timeout waiting for the component analysis results')
 
 
+def parse_timestamp(string):
+    timeformat = '%Y-%m-%dT%H:%M:%S.%f'
+    return datetime.datetime.strptime(string, timeformat)
+
+
 def contains_alternate_node(json_resp):
     """Check for the existence of alternate node in the stack analysis."""
     result = json_resp.get('result')
