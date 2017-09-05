@@ -1547,6 +1547,51 @@ def find_bucket_in_s3(context, bucket):
     assert context.does_bucket_exist(context, bucket)
 
 
+def key_into_s3(ecosystem, package, version):
+    return "{ecosystem}/{package}/{version}.json".format(ecosystem=ecosystem,
+                                                         package=package,
+                                                         version=version)
+
+
+@when('I read job toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} from the AWS S3 database bucket {bucket}')
+def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
+    key = key_into_s3(ecosystem, package, version)
+    s3_data = context.read_object_from_s3(context, bucket, key)
+    assert s3_data is not None
+    context.s3_data = s3_data
+
+
+@then('I should find the correct job toplevel metadata for package {package} '
+      'version {version} ecosystem {ecosystem} with latest version {latest}')
+def check_job_toplevel_file(context, package, version, ecosystem, latest):
+    data = context.s3_data
+
+    check_attribute_presence(data, 'ecosystem')
+    assert data['ecosystem'] == ecosystem
+
+    check_attribute_presence(data, 'package')
+    assert data['package'] == package
+
+    check_attribute_presence(data, 'version')
+    assert data['version'] == version
+
+    check_attribute_presence(data, 'latest_version')
+    assert data['latest_version'] == latest
+
+    release = "{ecosystem}:{package}:{version}".format(ecosystem=ecosystem,
+                                                       package=package,
+                                                       version=version)
+    check_attribute_presence(data, 'release')
+    assert data['release'] == release
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+
 
 
 @when('I generate unique job ID prefix')
