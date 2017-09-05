@@ -207,6 +207,11 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
         raise Exception('Timeout waiting for the component analysis results')
 
 
+def parse_timestamp(string):
+    timeformat = '%Y-%m-%dT%H:%M:%S.%f'
+    return datetime.datetime.strptime(string, timeformat)
+
+
 def contains_alternate_node(json_resp):
     """Check for the existence of alternate node in the stack analysis."""
     result = json_resp.get('result')
@@ -1531,6 +1536,123 @@ def check_job_debug_analyses_report(context):
     for attribute in attributes:
         assert attribute in report
         assert int(report[attribute]) >= 0
+
+
+@when('I connect to the AWS S3 database')
+def connect_to_aws_s3(context):
+    '''Try to connect to the AWS S3 database using the given access key,
+    secret access key, and region name.'''
+    context.connect_to_aws_s3(context)
+
+
+@then('I should see {bucket} bucket')
+def find_bucket_in_s3(context, bucket):
+    '''Check if bucket with given name can be found and can be read by
+    current AWS S3 database user.'''
+    assert context.does_bucket_exist(context, bucket)
+
+
+def component_key_into_s3(ecosystem, package, version):
+    return "{ecosystem}/{package}/{version}.json".format(ecosystem=ecosystem,
+                                                         package=package,
+                                                         version=version)
+
+
+@when('I read job toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} from the AWS S3 database bucket {bucket}')
+def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
+    key = component_key_into_s3(ecosystem, package, version)
+    s3_data = context.read_object_from_s3(context, bucket, key)
+    assert s3_data is not None
+    context.s3_data = s3_data
+
+
+@then('I should find the correct job toplevel metadata for package {package} '
+      'version {version} ecosystem {ecosystem} with latest version {latest}')
+def check_job_toplevel_file(context, package, version, ecosystem, latest):
+    data = context.s3_data
+
+    check_attribute_presence(data, 'ecosystem')
+    assert data['ecosystem'] == ecosystem
+
+    check_attribute_presence(data, 'package')
+    assert data['package'] == package
+
+    check_attribute_presence(data, 'version')
+    assert data['version'] == version
+
+    check_attribute_presence(data, 'latest_version')
+    assert data['latest_version'] == latest
+
+    release = "{ecosystem}:{package}:{version}".format(ecosystem=ecosystem,
+                                                       package=package,
+                                                       version=version)
+    check_attribute_presence(data, 'release')
+    assert data['release'] == release
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+
+@when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} in the AWS S3 database bucket {bucket}')
+def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
+    timeout = 300 * 60
+    sleep_amount = 10
+
+    key = component_key_into_s3(ecosystem, package, version)
+
+    for _ in range(timeout // sleep_amount):
+        current_date = datetime.datetime.now(datetime.timezone.utc)
+        last_modified = context.read_object_metadata_from_s3(context, bucket, key, "LastModified")
+        delta = current_date - last_modified
+        # print(current_date, "   ", last_modified, "   ", delta)
+        if delta.days == 0 and delta.seconds < sleep_amount * 2:
+            # print("done!")
+            read_core_data_from_bucket(context, package, version, ecosystem, bucket)
+            return
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the job metadata in S3!')
+
+
+@when('I remember timestamps from the last job toplevel data')
+def remember_timestamps_from_job_toplevel_data(context):
+    data = context.s3_data
+    context.job_timestamp_started_at = data['started_at']
+    context.job_timestamp_finished_at = data['finished_at']
+
+    # print("\n\nRemember")
+    # print(context.job_timestamp_started_at)
+    # print(context.job_timestamp_finished_at)
+
+
+@then('I should find that timestamps from current toplevel metadata are newer than '
+      'remembered timestamps')
+def check_new_timestamps(context):
+    data = context.s3_data
+
+    # print("\n\nCurrent")
+    # print(data['started_at'])
+    # print(data['finished_at'])
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+    remembered_started_at = parse_timestamp(context.job_timestamp_started_at)
+    remembered_finished_at = parse_timestamp(context.job_timestamp_finished_at)
+    current_started_at = parse_timestamp(data['started_at'])
+    current_finished_at = parse_timestamp(data['finished_at'])
+
+    assert current_started_at > remembered_started_at, \
+        "Current metadata are not newer: failed on started_at attributes comparison"
+    assert current_finished_at > remembered_finished_at, \
+        "Current metadata are not newer: failed on finished_at attributes comparison"
 
 
 @when('I generate unique job ID prefix')
