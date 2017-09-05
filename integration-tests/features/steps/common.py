@@ -1552,7 +1552,7 @@ def find_bucket_in_s3(context, bucket):
     assert context.does_bucket_exist(context, bucket)
 
 
-def key_into_s3(ecosystem, package, version):
+def component_key_into_s3(ecosystem, package, version):
     return "{ecosystem}/{package}/{version}.json".format(ecosystem=ecosystem,
                                                          package=package,
                                                          version=version)
@@ -1561,7 +1561,7 @@ def key_into_s3(ecosystem, package, version):
 @when('I read job toplevel data for the package {package} version {version} in ecosystem '
       '{ecosystem} from the AWS S3 database bucket {bucket}')
 def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
-    key = key_into_s3(ecosystem, package, version)
+    key = component_key_into_s3(ecosystem, package, version)
     s3_data = context.read_object_from_s3(context, bucket, key)
     assert s3_data is not None
     context.s3_data = s3_data
@@ -1603,7 +1603,7 @@ def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
     timeout = 300 * 60
     sleep_amount = 10
 
-    key = key_into_s3(ecosystem, package, version)
+    key = component_key_into_s3(ecosystem, package, version)
 
     for _ in range(timeout // sleep_amount):
         current_date = datetime.datetime.now(datetime.timezone.utc)
