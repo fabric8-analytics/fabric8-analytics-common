@@ -1618,6 +1618,41 @@ def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
     raise Exception('Timeout waiting for the job metadata in S3!')
 
 
+@when('I remember timestamps from the last job toplevel data')
+def remember_timestamps_from_job_toplevel_data(context):
+    data = context.s3_data
+    context.job_timestamp_started_at = data['started_at']
+    context.job_timestamp_finished_at = data['finished_at']
+
+    # print("\n\nRemember")
+    # print(context.job_timestamp_started_at)
+    # print(context.job_timestamp_finished_at)
+
+
+@then('I should find that timestamps from current toplevel metadata are newer than '
+      'remembered timestamps')
+def check_new_timestamps(context):
+    data = context.s3_data
+
+    # print("\n\nCurrent")
+    # print(data['started_at'])
+    # print(data['finished_at'])
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+    remembered_started_at = parse_timestamp(context.job_timestamp_started_at)
+    remembered_finished_at = parse_timestamp(context.job_timestamp_finished_at)
+    current_started_at = parse_timestamp(data['started_at'])
+    current_finished_at = parse_timestamp(data['finished_at'])
+
+    assert current_started_at > remembered_started_at, \
+        "Current metadata are not newer: failed on started_at attributes comparison"
+    assert current_finished_at > remembered_finished_at, \
+        "Current metadata are not newer: failed on finished_at attributes comparison"
 
 
 @when('I generate unique job ID prefix')
