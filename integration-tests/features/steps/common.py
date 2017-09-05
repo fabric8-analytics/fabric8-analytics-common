@@ -1533,6 +1533,22 @@ def check_job_debug_analyses_report(context):
         assert int(report[attribute]) >= 0
 
 
+@when('I connect to the AWS S3 database')
+def connect_to_aws_s3(context):
+    '''Try to connect to the AWS S3 database using the given access key,
+    secret access key, and region name.'''
+    context.connect_to_aws_s3(context)
+
+
+@then('I should see {bucket} bucket')
+def find_bucket_in_s3(context, bucket):
+    '''Check if bucket with given name can be found and can be read by
+    current AWS S3 database user.'''
+    assert context.does_bucket_exist(context, bucket)
+
+
+
+
 @when('I generate unique job ID prefix')
 def generate_job_id_prefix(context):
     context.job_id_prefix = uuid.uuid1()
