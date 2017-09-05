@@ -1592,6 +1592,27 @@ def check_job_toplevel_file(context, package, version, ecosystem, latest):
     check_timestamp(data['finished_at'])
 
 
+@when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} in the AWS S3 database bucket {bucket}')
+def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
+    timeout = 300 * 60
+    sleep_amount = 10
+
+    key = key_into_s3(ecosystem, package, version)
+
+    for _ in range(timeout // sleep_amount):
+        current_date = datetime.datetime.now(datetime.timezone.utc)
+        last_modified = context.read_object_metadata_from_s3(context, bucket, key, "LastModified")
+        delta = current_date - last_modified
+        # print(current_date, "   ", last_modified, "   ", delta)
+        if delta.days == 0 and delta.seconds < sleep_amount * 2:
+            # print("done!")
+            read_core_data_from_bucket(context, package, version, ecosystem, bucket)
+            return
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the job metadata in S3!')
+
+
 
 
 @when('I generate unique job ID prefix')
