@@ -65,3 +65,11 @@ Feature: Components API V1
     When I start analysis for component npm/sequence/2.2.0
     Then I should get 401 status code
 
+  Scenario: Check if component analysis is accessible via API
+    Given System is running
+    Given Component search service is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I read npm/sequence/2.2.0 component analysis using authorization token
+    Then I should get 200 status code
+
