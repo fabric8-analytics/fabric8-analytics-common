@@ -1,12 +1,14 @@
 import requests
+import os
 
 
 class Api:
 
     _API_ENDPOINT = 'api/v1'
 
-    def __init__(self, url):
+    def __init__(self, url, token=None):
         self.url = Api.add_slash(url)
+        self.token = token
 
     def is_api_running(self):
         try:
