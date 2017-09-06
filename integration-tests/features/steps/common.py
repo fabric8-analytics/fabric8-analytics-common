@@ -702,10 +702,11 @@ def print_search_results(search_results):
     print("\n\n\n")
 
 
-@then('I should find the analysis for the {component} from ecosystem {ecosystem}')
+@then('I should find the analysis for the component {component} from ecosystem {ecosystem}')
 def check_component_analysis_existence(context, component, ecosystem):
     json_data = context.response.json()
     search_results = json_data['result']
+
     for search_result in search_results:
         if search_result['ecosystem'] == ecosystem and \
            search_result['name'] == component:
