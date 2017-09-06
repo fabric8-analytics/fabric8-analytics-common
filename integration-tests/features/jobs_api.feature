@@ -282,7 +282,7 @@ Feature: Jobs API
   Scenario: Check the logout endpoint accessed without authorization token
     Given System is running
     When I logout from the job service
-    Then I should get 201 status code
+    Then I should get 401 status code
     Then I should receive empty JSON response
 
   @jobs.requires_auth
