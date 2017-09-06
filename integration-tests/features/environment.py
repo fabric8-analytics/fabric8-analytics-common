@@ -302,13 +302,17 @@ def _read_all_buckets_from_s3(context):
     return context.s3_resource.buckets.all()
 
 
+def _full_bucket_name(context, bucket_name):
+    return "{p}-{b}".format(p=context.deployment_prefix, b=bucket_name)
+
+
 def _does_bucket_exist(context, bucket_name):
     '''Return True only when bucket with given name exist and can be read
     by current AWS S3 database user.'''
     try:
         s3 = context.s3_resource
         assert s3 is not None
-        s3.meta.client.head_bucket(Bucket=bucket_name)
+        s3.meta.client.head_bucket(Bucket=_full_bucket_name(context, bucket_name))
         return True
     except ClientError:
         return False
@@ -318,7 +322,7 @@ def _read_object_from_s3(context, bucket_name, key):
     '''Read byte stream from S3, decode it into string, and parse as JSON.'''
     s3 = context.s3_resource
     assert s3 is not None
-    data = s3.Object(bucket_name, key).get()['Body'].read().decode()
+    data = s3.Object(_full_bucket_name(context, bucket_name), key).get()['Body'].read().decode()
     return json.loads(data)
 
 
@@ -326,7 +330,7 @@ def _read_object_metadata_from_s3(context, bucket_name, key, attribute):
     '''Read byte stream from S3, decode it into string, and parse as JSON.'''
     s3 = context.s3_resource
     assert s3 is not None
-    data = s3.Object(bucket_name, key).get()[attribute]
+    data = s3.Object(_full_bucket_name(context, bucket_name), key).get()[attribute]
     return data
 
 
@@ -455,6 +459,8 @@ def before_all(context):
     anitya_url = _add_slash(os.environ.get('F8A_ANITYA_API_URL', None))
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
+
+    context.deployment_prefix = os.environ.get('DEPLOYMENT_PREFIX', 'STAGE')
 
     if context.running_locally:
         print("Note: integration tests are running localy via docker-compose")
