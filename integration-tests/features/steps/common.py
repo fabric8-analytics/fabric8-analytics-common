@@ -694,6 +694,29 @@ def check_components(context, num=0, components='', ecosystem=''):
         assert search_result['name'] in components
 
 
+def print_search_results(search_results):
+    print("\n\n\n")
+    print("The following components can be found")
+    for r in search_results:
+        print(r)
+    print("\n\n\n")
+
+
+@then('I should find the analysis for the {component} from ecosystem {ecosystem}')
+def check_component_analysis_existence(context, component, ecosystem):
+    json_data = context.response.json()
+    search_results = json_data['result']
+    for search_result in search_results:
+        if search_result['ecosystem'] == ecosystem and \
+           search_result['name'] == component:
+            return
+
+    # print_search_results(search_results)
+
+    raise Exception('Component {component} for ecosystem {ecosystem} could not be found'.
+                    format(component=component, ecosystem=ecosystem))
+
+
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
 def check_versions(context, num=0, versions='', ecosystem='', package=''):
     versions = split_comma_separated_list(versions)
