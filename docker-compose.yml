@@ -53,6 +53,7 @@ services:
     container_name: coreapi-server
     environment:
       F8A_DEBUG: 'true'
+      F8A_UNCLOUDED_MODE: 'true'
       DEPLOYMENT_PREFIX: "${USER}"
       WORKER_ADMINISTRATION_REGION: api
       # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
@@ -115,6 +116,7 @@ services:
       POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+      F8A_UNCLOUDED_MODE: 'true'
       # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
       # credentials even for server and worker
       # Both can be omitted, defaults to eu-west-1
@@ -135,6 +137,7 @@ services:
      - gremlin-http
     environment: &worker_environment
       DEPLOYMENT_PREFIX: "${USER}"
+      F8A_UNCLOUDED_MODE: 'true'
       WORKER_ADMINISTRATION_REGION: api
       RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
       F8A_SERVER_SERVICE_HOST: coreapi-server
@@ -209,6 +212,7 @@ services:
      - pgbouncer
     command: /alembic/run-db-migrations.sh
     environment:
+      F8A_UNCLOUDED_MODE: 'true'
       POSTGRESQL_USER: coreapi
       POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
@@ -311,6 +315,7 @@ services:
     restart: on-failure
     network_mode: bridge
     environment:
+      F8A_UNCLOUDED_MODE: 'true'
       AWS_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
       AWS_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
       DEPLOYMENT_PREFIX: "${USER}"
