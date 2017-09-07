@@ -51,6 +51,95 @@ def check_system(core_api, jobs_api):
         print("    ok")
 
 
+def run_core_api_sequenced_calls_benchmark(core_api):
+    print("Core API sequenced calls benchmark")
+    run_sequenced_benchmark(core_api,
+                            "Core API endpoint",
+                            "core_api_sequenced_calls",
+                            lambda api, measurement_count, pause_time:
+                                benchmarks.core_api_benchmark(api, measurement_count, pause_time))
+
+
+def wait_for_all_threads(threads):
+        for t in threads:
+            t.join()
+
+
+def run_sequenced_benchmark(core_api, title_prefix, name_prefix, function):
+    pauses = [1, 0.5, 0]
+    # pauses = [10, 5, 1, 0.5, 0]
+
+    min_times = []
+    max_times = []
+    avg_times = []
+
+    for pause in pauses:
+        title = "{t}, {s} seconds between calls".format(t=title_prefix, s=pause)
+        print("  " + title)
+        name = "{n}_{s}_pause_time".format(n=name_prefix, s=pause)
+        values = function(core_api, 1, pause)
+        graph.generate_wait_times_graph(title, name, values)
+        time.sleep(10)
+
+        min_times.append(min(values))
+        max_times.append(max(values))
+        avg_times.append(sum(values) / len(values))
+
+    print(min_times)
+    print(max_times)
+    print(avg_times)
+    title = "{t}: min. max. and avg times".format(t=title_prefix)
+    name = "{n}_min_max_avg_times".format(n=name_prefix)
+    graph.generate_timing_statistic_graph(title, name,
+                                          pauses, min_times, max_times, avg_times)
+    pass
+
+
+def run_concurrent_benchmark(core_api, function_to_call):
+    measurement_count = 10
+    min_thread_count = 5
+    max_thread_count = 10
+    pauses = [2.0, 1.5, 1.0, 0.5, 0]  # 2, 1, 0.5, 0]
+    pauses = [2, 0.5, 0, ]
+
+    for thread_count in range(min_thread_count, 1 + max_thread_count):
+        min_times = []
+        max_times = []
+        avg_times = []
+
+        for pause in pauses:
+            threads = []
+            q = queue.Queue()
+
+            for thread_id in range(0, thread_count):
+                t = threading.Thread(target=function_to_call,
+                                     args=(core_api, measurement_count, pause, q, thread_id))
+                t.start()
+                threads.append(t)
+
+            wait_for_all_threads(threads)
+
+            values = sum([q.get() for t in threads], [])
+            title = "core API endpoint, {t} concurrent threads, {s} seconds between calls".format(
+                t=thread_count, s=pause)
+            name = "core_api_concurrent_{t}_threads_{s}_pause_time".format(t=thread_count, s=pause)
+            graph.generate_wait_times_graph(title, name, values)
+
+            min_times.append(min(values))
+            max_times.append(max(values))
+            avg_times.append(sum(values) / len(values))
+
+            print("Breathe...")
+            time.sleep(20)
+
+        print(min_times)
+        print(max_times)
+        print(avg_times)
+        generate_statistic_graph(thread_count, pauses, min_times, max_times, avg_times)
+        print("Breathe (statistic graph)...")
+        time.sleep(20)
+
+
 def main():
     check_environment_variables()
 
@@ -72,6 +161,7 @@ def main():
     check_system(core_api, jobs_api)
 
 
+    run_benchmarks(core_api, jobs_api)
     pass
 
 
