@@ -140,6 +140,24 @@ def run_concurrent_benchmark(core_api, function_to_call):
         time.sleep(20)
 
 
+def run_core_api_concurrent_benchmark(core_api):
+    print("Core API concurrent benchmark")
+    run_concurrent_benchmark(core_api, benchmarks.core_api_benchmark_thread)
+
+
+def run_benchmarks(core_api, jobs_api):
+    run_core_api_sequenced_calls_benchmark(core_api)
+    run_core_api_concurrent_benchmark(core_api)
+
+
+def generate_statistic_graph(thread_count, pauses, min_times, max_times, avg_times):
+    title = "core API endpoint: min, max, and avg times for {t} concurrent threads".format(
+        t=thread_count)
+    name = "core_api_concurrent_{t}_threads_min_max_avg_times".format(t=thread_count)
+    graph.generate_timing_statistic_graph(title, name, pauses, min_times, max_times, avg_times)
+    pass
+
+
 def main():
     check_environment_variables()
 
