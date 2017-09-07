@@ -178,7 +178,6 @@ def main():
 
     check_system(core_api, jobs_api)
 
-
     run_benchmarks(core_api, jobs_api)
     pass
 
