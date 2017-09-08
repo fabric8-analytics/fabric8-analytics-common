@@ -20,6 +20,13 @@ class JobsApi(Api):
             response = requests.post(endpoint, data=json_data, headers=headers)
         return response
 
+    def check_auth_token_validity(self):
+        endpoint = self.url + 'api/v1/jobs'
+        response = requests.get(endpoint, headers=self.authorization())
+        if response.status_code != 200:
+            self.print_error_response(response, "detail")
+        return response.status_code == 200
+
     def start_component_analysis(self):
         filename = "data/job_pypi_clojure_py.json"
         endpoint = "{jobs_api_url}api/v1/jobs/flow-scheduling?state=running".\

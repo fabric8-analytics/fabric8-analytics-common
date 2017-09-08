@@ -43,12 +43,27 @@ def is_system_running(core_api, jobs_api):
 
 
 def check_system(core_api, jobs_api):
+    # try to access system endpoints
     print("Checking: core API and JOBS API endpoints")
     if not is_system_running(core_api, jobs_api):
         print("Fatal: tested system is not available")
         sys.exit(1)
     else:
         print("    ok")
+
+    # check the authorization token for the core API
+    print("Checking: authorization token for the core API")
+    if core_api.check_auth_token_validity():
+        print("    ok")
+    else:
+        sys.exit(1)
+
+    # check the authorization token for the jobs API
+    print("Checking: authorization token for the jobs API")
+    if jobs_api.check_auth_token_validity():
+        print("    ok")
+    else:
+        sys.exit(1)
 
 
 def run_core_api_sequenced_calls_benchmark(core_api):
