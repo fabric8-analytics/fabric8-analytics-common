@@ -100,13 +100,15 @@ def save_graph(fig, imageFile):
     plt.savefig(imageFile, facecolor=fig.get_facecolor())
 
 
-def generate_wait_times_graph(title, name, y_axis_label, values):
+def generate_wait_times_graph(title, name, values):
     labels = range(1, 1 + len(values))
-    fig = create_graph(title, y_axis_label, labels, values)
+    fig = create_graph(title, "seconds", labels, values)
     save_graph(fig, name + ".png")
+    plt.close(fig)
 
 
-def generate_statistic_graph(title, name, y_axis_label, pauses, min_times, max_times, avg_times):
+def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, avg_times):
     labels = range(1, 1 + len(pauses))
-    fig = create_statistic_graph(title, y_axis_label, pauses, min_times, max_times, avg_times)
+    fig = create_statistic_graph(title, "seconds", pauses, min_times, max_times, avg_times)
     save_graph(fig, name + ".png")
+    plt.close(fig)

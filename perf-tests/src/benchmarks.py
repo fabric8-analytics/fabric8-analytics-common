@@ -33,6 +33,12 @@ def jobs_api_benchmark(jobs_api, measurement_count, pause_time, thread_id=None):
                    thread_id)
 
 
+def stack_analysis_benchmark(core_api, measurement_count, pause_time, thread_id=None):
+    return measure(lambda: core_api.stack_analysis(),
+                   lambda retval: retval.status_code == 200, measurement_count, pause_time,
+                   thread_id)
+
+
 def core_api_benchmark_thread(core_api, measurement_count, pause_time, q, thread_id):
     measurements = core_api_benchmark(core_api, measurement_count, pause_time, thread_id)
     q.put(measurements)
