@@ -98,6 +98,7 @@ services:
      # forces docker-compose to build the image after its base worker image
      - worker-api
      - worker-ingestion
+     - worker-priority
      - pgbouncer
     links:
      - broker
@@ -205,6 +206,11 @@ services:
     environment:
       <<: *worker_environment
       WORKER_ADMINISTRATION_REGION: ingestion
+  worker-priority:
+    <<: *worker
+    environment:
+      <<: *worker_environment
+      WORKER_ADMINISTRATION_REGION: priority
   worker-db-migrations:
     image: registry.devshift.net/bayesian/cucos-worker
     restart: on-failure
