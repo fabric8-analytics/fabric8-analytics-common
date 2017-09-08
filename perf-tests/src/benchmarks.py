@@ -1,11 +1,16 @@
 import time
 
 
-def measure(function_to_call, check_function, measurement_count, pause_time, thread_id):
+def measure(function_to_call, check_function, measurement_count, pause_time, thread_id, s3=None):
     measurements = []
     for i in range(measurement_count):
         t1 = time.clock()
-        retval = function_to_call()
+        if s3 is None:
+            retval = function_to_call(i)
+        else:
+            retval = function_to_call(i, s3)
+
+        print("Return value: ", retval)
         assert check_function(retval)
         t2 = time.clock()
         delta = t2 - t1
@@ -22,19 +27,19 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
 
 
 def core_api_benchmark(core_api, measurement_count, pause_time, thread_id=None):
-    return measure(lambda: core_api.get(),
+    return measure(lambda i: core_api.get(),
                    lambda retval: retval.status_code == 200, measurement_count, pause_time,
                    thread_id)
 
 
 def jobs_api_benchmark(jobs_api, measurement_count, pause_time, thread_id=None):
-    return measure(lambda: jobs_api.get(),
+    return measure(lambda i: jobs_api.get(),
                    lambda retval: retval.status_code == 200, measurement_count, pause_time,
                    thread_id)
 
 
 def stack_analysis_benchmark(core_api, measurement_count, pause_time, thread_id=None):
-    return measure(lambda: core_api.stack_analysis(),
+    return measure(lambda i: core_api.stack_analysis(),
                    lambda retval: retval.status_code == 200, measurement_count, pause_time,
                    thread_id)
 
