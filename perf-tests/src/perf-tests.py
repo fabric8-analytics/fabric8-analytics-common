@@ -56,7 +56,6 @@ def check_system(core_api, jobs_api):
     if core_api.check_auth_token_validity():
         print("    ok")
     else:
-        print("Fatal: auth. token is probably outdated")
         sys.exit(1)
 
     # check the authorization token for the jobs API
@@ -64,7 +63,6 @@ def check_system(core_api, jobs_api):
     if jobs_api.check_auth_token_validity():
         print("    ok")
     else:
-        print("Fatal: auth. token is probably outdated")
         sys.exit(1)
 
 
