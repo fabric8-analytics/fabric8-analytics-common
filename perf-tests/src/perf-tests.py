@@ -51,13 +51,24 @@ def check_system(core_api, jobs_api):
         print("    ok")
 
 
-def run_core_api_sequenced_calls_benchmark(core_api):
+def run_core_api_sequenced_calls_benchmark(core_api, s3):
     print("Core API sequenced calls benchmark")
-    run_sequenced_benchmark(core_api,
+    run_sequenced_benchmark(core_api, s3,
                             "Core API endpoint",
                             "core_api_sequenced_calls",
-                            lambda api, measurement_count, pause_time:
+                            lambda api, s3, measurement_count, pause_time:
                                 benchmarks.core_api_benchmark(api, measurement_count, pause_time))
+
+
+def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
+    print("Component analysis sequenced calls benchmark")
+    run_sequenced_benchmark(jobs_api, s3,
+                            "Component analysis flow scheduling",
+                            "component_analysis_flow_scheduling",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.component_analysis_flow_scheduling(api, s3,
+                                                                              measurement_count,
+                                                                              pause_time))
 
 
 def wait_for_all_threads(threads):
@@ -65,7 +76,8 @@ def wait_for_all_threads(threads):
             t.join()
 
 
-def run_sequenced_benchmark(core_api, title_prefix, name_prefix, function):
+def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function):
+    measurement_count = 10
     pauses = [1, 0.5, 0]
     # pauses = [10, 5, 1, 0.5, 0]
 
@@ -77,7 +89,7 @@ def run_sequenced_benchmark(core_api, title_prefix, name_prefix, function):
         title = "{t}, {s} seconds between calls".format(t=title_prefix, s=pause)
         print("  " + title)
         name = "{n}_{s}_pause_time".format(n=name_prefix, s=pause)
-        values = function(core_api, 1, pause)
+        values = function(api, s3, measurement_count, pause)
         graph.generate_wait_times_graph(title, name, values)
         time.sleep(10)
 
@@ -145,9 +157,10 @@ def run_core_api_concurrent_benchmark(core_api):
     run_concurrent_benchmark(core_api, benchmarks.core_api_benchmark_thread)
 
 
-def run_benchmarks(core_api, jobs_api):
-    run_core_api_sequenced_calls_benchmark(core_api)
+def run_benchmarks(core_api, jobs_api, s3):
+    run_core_api_sequenced_calls_benchmark(core_api, s3)
     run_core_api_concurrent_benchmark(core_api)
+    run_component_analysis_sequenced_calls_benchmark(jobs_api, s3)
 
 
 def generate_statistic_graph(thread_count, pauses, min_times, max_times, avg_times):
@@ -176,9 +189,9 @@ def main():
     jobs_api = JobsApi(jobs_api_url, job_api_token)
     s3 = S3Interface(aws_access_key_id, aws_secret_access_key, s3_region_name, deployment_prefix)
 
-    check_system(core_api, jobs_api)
+    check_system(core_api, jobs_api, s3)
 
-    run_benchmarks(core_api, jobs_api)
+    run_benchmarks(core_api, jobs_api, s3)
     pass
 
 
