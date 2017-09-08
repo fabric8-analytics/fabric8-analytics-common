@@ -26,3 +26,8 @@ class Api:
 
     def get(self):
         return requests.get(self.url)
+
+    def print_error_response(self, response, message_key):
+        error_message = response.json().get(message_key, "Server does not sent error message")
+        print("    Server returned HTTP code {c}".format(c=response.status_code))
+        print("    Error message: {m}".format(m=error_message))
