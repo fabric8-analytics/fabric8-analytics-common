@@ -32,6 +32,7 @@ class JobsApi(Api):
         endpoint = "{jobs_api_url}api/v1/jobs/flow-scheduling?state=running".\
             format(jobs_api_url=self.url)
         response = self.send_json_file(endpoint, filename)
+        assert response.status_code == 201
         print(response)
         print(response.json())
 
@@ -52,11 +53,16 @@ class JobsApi(Api):
             if delta.days == 0 and delta.seconds < sleep_amount * 2:
                 print("done!")
                 # s3.read_core_data_from_bucket(context, package, version, ecosystem, bucket)
-                return
+                return True
             time.sleep(sleep_amount)
-        raise Exception('Timeout waiting for the job metadata in S3!')
 
-    def component_analysis(self, s3):
+        # raise Exception('Timeout waiting for the job metadata in S3!')
+
+        print('Timeout waiting for the job metadata in S3!\n'
+              '(timetout is se to {s} seconds)'.format(s=timeout))
+        return False
+
+    def component_analysis(self, i, s3):
         s3.connect()
         self.start_component_analysis()
-        self.wait_for_component_analysis(s3, "pypi", "clojure_py", "0.2.4")
+        return self.wait_for_component_analysis(s3, "pypi", "clojure_py", "0.2.4")
