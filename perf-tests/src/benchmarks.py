@@ -4,7 +4,7 @@ import time
 def measure(function_to_call, check_function, measurement_count, pause_time, thread_id, s3=None):
     measurements = []
     for i in range(measurement_count):
-        t1 = time.clock()
+        t1 = time.time()
         if s3 is None:
             retval = function_to_call(i)
         else:
@@ -12,7 +12,7 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
 
         print("Return value: ", retval)
         assert check_function(retval)
-        t2 = time.clock()
+        t2 = time.time()
         delta = t2 - t1
         if thread_id is not None:
             print("    thread: #{t}    call {i}/{m}    {delta}".format(t=thread_id,
