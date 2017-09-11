@@ -1646,7 +1646,8 @@ def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
     for _ in range(timeout // sleep_amount):
         current_date = datetime.datetime.now(datetime.timezone.utc)
         try:
-            last_modified = context.read_object_metadata_from_s3(context, bucket, key, "LastModified")
+            last_modified = context.read_object_metadata_from_s3(context, bucket, key,
+                                                                 "LastModified")
             delta = current_date - last_modified
             # print(current_date, "   ", last_modified, "   ", delta)
             if delta.days == 0 and delta.seconds < sleep_amount * 2:
