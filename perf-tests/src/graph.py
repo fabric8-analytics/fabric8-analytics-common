@@ -4,6 +4,52 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def create_component_analysis_timing_graph(durations):
+    N = len(durations)
+
+    selectors = ["security_issues", "github_details", "source_licenses",
+                 "metadata", "keywords_tagging", "dependency_snapshot",
+                 "digests", "code_metrics"]
+
+    colors = ["#cc4040", "#cccc40", "#40cc40", "#40cccc",
+              "#cccccc", "#804040", "#808040", "#408040"]
+
+    fig, ax = plt.subplots()
+
+    column1data = np.array([duration["overall"].duration_seconds
+                           for duration in durations.values()])
+
+    column2data = [np.array([duration[selector].duration_seconds
+                            for duration in durations.values()]) for selector in selectors]
+
+    ind = np.arange(N)  # the x locations for the groups
+    width = 0.35        # the width of the bars
+
+    column1 = ax.bar(ind, column1data, width, color='orange')
+
+    bottom = np.zeros(N)
+    column2 = []
+    for elem, color in zip(column2data, colors):
+        column2.append(ax.bar(ind + width, elem, width, bottom=bottom, color=color))
+        bottom += elem
+
+    plt.ylabel('duration (seconds)')
+    plt.title('component analysis')
+
+    plt.xticks(ind, durations.keys())
+
+    legend_labels = selectors[:]
+    legend_labels.insert(0, "overall")
+
+    legend_keys = [column1[0]]
+    for c in column2:
+        legend_keys.append(c[0])
+
+    ax.legend(legend_keys, legend_labels)
+
+    return fig
+
+
 def create_graph(title, y_axis_label, labels, values):
     N = len(values)
     indexes = np.arange(N)
@@ -111,4 +157,10 @@ def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, a
     labels = range(1, 1 + len(pauses))
     fig = create_statistic_graph(title, "seconds", pauses, min_times, max_times, avg_times)
     save_graph(fig, name + ".png")
+    plt.close(fig)
+
+
+def generate_component_analysis_timing_graph(durations):
+    fig = create_component_analysis_timing_graph(durations)
+    save_graph(fig, "test.png")
     plt.close(fig)
