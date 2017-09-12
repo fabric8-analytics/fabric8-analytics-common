@@ -1,13 +1,18 @@
 import time
 
 
-def measure(function_to_call, check_function, measurement_count, pause_time, thread_id):
+def measure(function_to_call, check_function, measurement_count, pause_time, thread_id, s3=None):
     measurements = []
     for i in range(measurement_count):
-        t1 = time.clock()
-        retval = function_to_call()
+        t1 = time.time()
+        if s3 is None:
+            retval = function_to_call(i)
+        else:
+            retval = function_to_call(i, s3)
+
+        print("Return value: ", retval)
         assert check_function(retval)
-        t2 = time.clock()
+        t2 = time.time()
         delta = t2 - t1
         if thread_id is not None:
             print("    thread: #{t}    call {i}/{m}    {delta}".format(t=thread_id,
@@ -22,21 +27,28 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
 
 
 def core_api_benchmark(core_api, measurement_count, pause_time, thread_id=None):
-    return measure(lambda: core_api.get(),
+    return measure(lambda i: core_api.get(),
                    lambda retval: retval.status_code == 200, measurement_count, pause_time,
                    thread_id)
 
 
 def jobs_api_benchmark(jobs_api, measurement_count, pause_time, thread_id=None):
-    return measure(lambda: jobs_api.get(),
+    return measure(lambda i: jobs_api.get(),
                    lambda retval: retval.status_code == 200, measurement_count, pause_time,
                    thread_id)
 
 
 def stack_analysis_benchmark(core_api, measurement_count, pause_time, thread_id=None):
-    return measure(lambda: core_api.stack_analysis(),
+    return measure(lambda i: core_api.stack_analysis(),
                    lambda retval: retval.status_code == 200, measurement_count, pause_time,
                    thread_id)
+
+
+def component_analysis_flow_scheduling(jobs_api, s3, measurement_count, pause_time,
+                                       thread_id=None):
+    return measure(lambda i, s3: jobs_api.component_analysis(i, s3),
+                   lambda retval: retval is True, measurement_count, pause_time,
+                   thread_id, s3)
 
 
 def core_api_benchmark_thread(core_api, measurement_count, pause_time, q, thread_id):

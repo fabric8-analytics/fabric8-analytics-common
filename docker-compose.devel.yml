@@ -41,6 +41,8 @@ services:
      - ./fabric8-analytics-worker/hack/workers.sh:/usr/bin/workers.sh:ro,z
   worker-ingestion:
     <<: *worker
+  worker-priority:
+    <<: *worker
   worker-db-migrations:
     build:
       context: fabric8-analytics-worker/

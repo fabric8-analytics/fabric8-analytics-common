@@ -10,6 +10,13 @@ class CoreApi(Api):
     def authorization(self):
         return {'Authorization': 'Bearer {token}'.format(token=self.token)}
 
+    def check_auth_token_validity(self):
+        endpoint = self.url + 'api/v1/component-search/foobar'
+        response = requests.get(endpoint, headers=self.authorization())
+        if response.status_code != 200:
+            self.print_error_response(response, "error")
+        return response.status_code == 200
+
     def start_stack_analysis(self):
         filename = 'data/requirements_click_6_star.txt'
         manifest_file_dir = os.path.dirname(filename)

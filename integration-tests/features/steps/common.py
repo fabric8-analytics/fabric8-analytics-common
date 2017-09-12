@@ -1641,15 +1641,21 @@ def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
 
     key = component_key_into_s3(ecosystem, package, version)
 
+    start_time = datetime.datetime.now(datetime.timezone.utc)
+
     for _ in range(timeout // sleep_amount):
         current_date = datetime.datetime.now(datetime.timezone.utc)
-        last_modified = context.read_object_metadata_from_s3(context, bucket, key, "LastModified")
-        delta = current_date - last_modified
-        # print(current_date, "   ", last_modified, "   ", delta)
-        if delta.days == 0 and delta.seconds < sleep_amount * 2:
-            # print("done!")
-            read_core_data_from_bucket(context, package, version, ecosystem, bucket)
-            return
+        try:
+            last_modified = context.read_object_metadata_from_s3(context, bucket, key,
+                                                                 "LastModified")
+            delta = current_date - last_modified
+            # print(current_date, "   ", last_modified, "   ", delta)
+            if delta.days == 0 and delta.seconds < sleep_amount * 2:
+                # print("done!")
+                read_core_data_from_bucket(context, package, version, ecosystem, bucket)
+                return
+        except ClientError as e:
+            print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
         time.sleep(sleep_amount)
     raise Exception('Timeout waiting for the job metadata in S3!')
 
