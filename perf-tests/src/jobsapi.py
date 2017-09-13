@@ -85,7 +85,8 @@ class JobsApi(Api):
             try:
                 last_modified = s3.read_object_metadata(bucket, key, "LastModified")
                 delta = current_date - last_modified
-                print(thread_id, "   ", current_date, "   ", last_modified, "   ", delta, "   ", delta.seconds)
+                print(thread_id, "  ", "   ", key, "   ", current_date, "   ", last_modified, "   ", delta, "   ", delta.seconds,
+                      "    ", current_date - start_time)
                 if delta.days == 0 and delta.seconds < sleep_amount * 2:
                     print("done!", thread_id, "   ", key)
                     # s3.read_core_data_from_bucket(context, package, version, ecosystem, bucket)
@@ -100,7 +101,10 @@ class JobsApi(Api):
               '(timetout is se to {s} seconds)'.format(s=timeout))
         return False
 
-    def component_analysis(self, i, s3, thread_id=None):
+    def component_analysis(self, i, s3, thread_id=None,
+                           ecosystem=None, component=None, version=None):
+        if ecosystem is None or component is None or version is None:
+            ecosystem, component, version = next(self.componentGeneratorForPypi)
         s3.connect()
-        self.start_component_analysis(thread_id)
-        return self.wait_for_component_analysis(s3, "pypi", "clojure_py", "0.2.4")
+        self.start_component_analysis(ecosystem, component, version, thread_id)
+        return self.wait_for_component_analysis(s3, ecosystem, component, version, thread_id)
