@@ -69,7 +69,7 @@ class JobsApi(Api):
         print(response)
         print(response.json())
 
-    def wait_for_component_analysis(self, s3, ecosystem, package, version):
+    def wait_for_component_analysis(self, s3, ecosystem, package, version, thread_id=""):
         timeout = 300 * 60
         sleep_amount = 10
 
@@ -85,9 +85,9 @@ class JobsApi(Api):
             try:
                 last_modified = s3.read_object_metadata(bucket, key, "LastModified")
                 delta = current_date - last_modified
-                print(current_date, "   ", last_modified, "   ", delta, "   ", delta.seconds)
+                print(thread_id, "   ", current_date, "   ", last_modified, "   ", delta, "   ", delta.seconds)
                 if delta.days == 0 and delta.seconds < sleep_amount * 2:
-                    print("done!")
+                    print("done!", thread_id, "   ", key)
                     # s3.read_core_data_from_bucket(context, package, version, ecosystem, bucket)
                     return True
             except ClientError as e:
@@ -100,7 +100,7 @@ class JobsApi(Api):
               '(timetout is se to {s} seconds)'.format(s=timeout))
         return False
 
-    def component_analysis(self, i, s3):
+    def component_analysis(self, i, s3, thread_id=None):
         s3.connect()
-        self.start_component_analysis()
+        self.start_component_analysis(thread_id)
         return self.wait_for_component_analysis(s3, "pypi", "clojure_py", "0.2.4")
