@@ -89,8 +89,17 @@ def run_core_api_sequenced_calls_benchmark(core_api, s3):
 def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
     print("Component analysis sequenced calls benchmark")
     run_sequenced_benchmark(jobs_api, s3,
-                            "Component analysis flow scheduling",
-                            "component_analysis_flow_scheduling",
+                            "Component analysis flow scheduling, same component",
+                            "component_analysis_flow_scheduling_same_component",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.component_analysis_flow_scheduling(api, s3,
+                                                                              measurement_count,
+                                                                              60, None, "pypi",
+                                                                              "clojure_py",
+                                                                              "0.2.4"))
+    run_sequenced_benchmark(jobs_api, s3,
+                            "Component analysis flow scheduling, different components",
+                            "component_analysis_flow_scheduling_different_components",
                             lambda api, s3, measurement_count, pause_time:
                                 benchmarks.component_analysis_flow_scheduling(api, s3,
                                                                               measurement_count,
