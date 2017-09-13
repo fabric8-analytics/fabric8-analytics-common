@@ -11,6 +11,7 @@ from coreapi import *
 from jobsapi import *
 import benchmarks
 import graph
+from s3interface import *
 
 
 def check_environment_variable(env_var_name):
@@ -42,7 +43,7 @@ def is_system_running(core_api, jobs_api):
            jobs_api.is_api_running()
 
 
-def check_system(core_api, jobs_api):
+def check_system(core_api, jobs_api, s3):
     # try to access system endpoints
     print("Checking: core API and JOBS API endpoints")
     if not is_system_running(core_api, jobs_api):
@@ -63,6 +64,16 @@ def check_system(core_api, jobs_api):
     if jobs_api.check_auth_token_validity():
         print("    ok")
     else:
+        sys.exit(1)
+
+    print("Checking: connection to the S3")
+    # try to connect to AWS S3
+    s3.connect()
+    buckets = s3.read_all_buckets()
+    if buckets is not None:
+        print("    ok")
+    else:
+        print("Fatal: can not connect to S3 nor to read the data")
         sys.exit(1)
 
 
