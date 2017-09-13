@@ -1,6 +1,9 @@
 from api import *
 import time
 import datetime
+import json
+import botocore
+from botocore.exceptions import ClientError
 from componentgenerator import *
 
 
@@ -75,15 +78,20 @@ class JobsApi(Api):
         key = s3.component_key(ecosystem, package, version)
         print(key)
 
+        start_time = datetime.datetime.now(datetime.timezone.utc)
+
         for _ in range(timeout // sleep_amount):
             current_date = datetime.datetime.now(datetime.timezone.utc)
-            last_modified = s3.read_object_metadata(bucket, key, "LastModified")
-            delta = current_date - last_modified
-            print(current_date, "   ", last_modified, "   ", delta, "   ", delta.seconds)
-            if delta.days == 0 and delta.seconds < sleep_amount * 2:
-                print("done!")
-                # s3.read_core_data_from_bucket(context, package, version, ecosystem, bucket)
-                return True
+            try:
+                last_modified = s3.read_object_metadata(bucket, key, "LastModified")
+                delta = current_date - last_modified
+                print(current_date, "   ", last_modified, "   ", delta, "   ", delta.seconds)
+                if delta.days == 0 and delta.seconds < sleep_amount * 2:
+                    print("done!")
+                    # s3.read_core_data_from_bucket(context, package, version, ecosystem, bucket)
+                    return True
+            except ClientError as e:
+                print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
             time.sleep(sleep_amount)
 
         # raise Exception('Timeout waiting for the job metadata in S3!')
