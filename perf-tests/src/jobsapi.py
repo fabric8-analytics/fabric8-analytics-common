@@ -85,7 +85,8 @@ class JobsApi(Api):
             try:
                 last_modified = s3.read_object_metadata(bucket, key, "LastModified")
                 delta = current_date - last_modified
-                print(thread_id, "  ", "   ", key, "   ", current_date, "   ", last_modified, "   ", delta, "   ", delta.seconds,
+                print(thread_id, "  ", "   ", key, "   ", current_date, "   ", last_modified,
+                      "   ", delta, "   ", delta.seconds,
                       "    ", current_date - start_time)
                 if delta.days == 0 and delta.seconds < sleep_amount * 2:
                     print("done!", thread_id, "   ", key)
