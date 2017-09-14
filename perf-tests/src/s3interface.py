@@ -51,6 +51,18 @@ class S3Interface():
                                                              package=package,
                                                              version=version)
 
+    def component_analysis_key(self, ecosystem, package, version, analysis):
+        return "{ecosystem}/{package}/{version}/{analysis}.json".format(ecosystem=ecosystem,
+                                                                        package=package,
+                                                                        version=version,
+                                                                        analysis=analysis)
+
+    def component_core_package_data_key(self, ecosystem, package, version, analysis):
+        return "{ecosystem}/{package}/{analysis}.json".format(ecosystem=ecosystem,
+                                                              package=package,
+                                                              version=version,
+                                                              analysis=analysis)
+
     def does_bucket_exist(self, bucket_name):
         '''Return True only when bucket with given name exist and can be read
         by current AWS S3 database user.'''
