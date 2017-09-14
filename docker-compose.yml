@@ -120,6 +120,9 @@ services:
       F8A_UNCLOUDED_MODE: 'true'
       AWS_S3_ACCESS_KEY_ID: GNV3SAHAHA3DOT99GQII
       AWS_S3_SECRET_ACCESS_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
+      AWS_S3_IS_LOCAL: 1
+      AWS_EPV_BUCKET: "${USER}-bayesian-core-data"
+      AWS_PKG_BUCKET: "${USER}-bayesian-core-package-data"
       # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
       # credentials even for server and worker
       # Both can be omitted, defaults to eu-west-1
@@ -131,12 +134,12 @@ services:
     network_mode: bridge
     depends_on:
      - worker-db-migrations
+     - worker-graph-schema
     links:
      - anitya-server
      - broker
      - pgbouncer
      - minio-s3
-     - data-model-importer
      - gremlin-http
     environment: &worker_environment
       DEPLOYMENT_PREFIX: "${USER}"
@@ -186,8 +189,6 @@ services:
       LICENSE_SERVICE_PORT: "80"
       BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
       BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
-      BAYESIAN_DATA_IMPORTER_SERVICE_HOST: "data-model-importer"
-      BAYESIAN_DATA_IMPORTER_SERVICE_PORT: "9192"
       # Provide credentials from Google's key.json here:
       GCP_TYPE: ""
       GCP_PROJECT_ID: ""
@@ -200,6 +201,12 @@ services:
       GCP_AUTH_PROVIDER_X509_CERT_URL: ""
       GCP_CLIENT_X509_CERT_URL: ""
       SCANCODE_PROCESSES: "4"
+      AWS_EPV_BUCKET: "${USER}-bayesian-core-data"
+      AWS_PKG_BUCKET: "${USER}-bayesian-core-package-data"
+      GREMLIN_USE_SECURE_CONNECTION: "false"
+      AWS_S3_IS_LOCAL: 1
+      AWS_S3_ACCESS_KEY_ID: GNV3SAHAHA3DOT99GQII
+      AWS_S3_SECRET_ACCESS_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
     tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
   worker-ingestion:
     <<: *worker
@@ -211,6 +218,21 @@ services:
     environment:
       <<: *worker_environment
       WORKER_ADMINISTRATION_REGION: priority
+  worker-graph-schema:
+    image: registry.devshift.net/bayesian/cucos-worker
+    restart: on-failure
+    container_name: coreapi-worker-graph-schema
+    network_mode: bridge
+    links:
+     - gremlin-http
+    command: python3 /graph/create_graph_schema.py
+    environment:
+      BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
+      BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
+      WORKER_ADMINISTRATION_REGION: ingestion
+      F8A_UNCLOUDED_MODE: 'true'
+    depends_on:
+     - gremlin-http
   worker-db-migrations:
     image: registry.devshift.net/bayesian/cucos-worker
     restart: on-failure
@@ -275,47 +297,13 @@ services:
       - REST=1
       - DEBUG_GRAPH_METRICS=0
     ports:
-      - "8181:8182"
+      - "8182:8182"
     depends_on:
       - dynamodb
     mem_limit: 2G
     container_name: bayesian-gremlin-http
     links:
       - dynamodb
-
-  data-model-importer:
-    image: registry.devshift.net/bayesian/data-model-importer
-    restart: always
-    network_mode: bridge
-    entrypoint:
-      - /bin/entrypoint.sh
-    # volumes:
-    #   - ./data-model/src:/src:z
-    environment:
-      DATA_IMPORTER_SERVICE_PORT: "9192"
-      DATA_IMPORTER_SERVICE_TIMEOUT: "3600"
-      NUMBER_WORKER_PROCESS: "1"
-      # controls whether to use http/ws or https/wss
-      GREMLIN_USE_SECURE_CONNECTION: "false"
-      BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
-      BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
-      AWS_S3_IS_LOCAL: 1
-      AWS_S3_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
-      AWS_S3_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
-      DEPLOYMENT_PREFIX: "${USER}"
-      AWS_EPV_BUCKET: "${USER}-bayesian-core-data"
-      AWS_PKG_BUCKET: "${USER}-bayesian-core-package-data"
-      POSTGRESQL_USER: coreapi
-      POSTGRESQL_PASSWORD: coreapi
-      POSTGRESQL_DATABASE: coreapi
-      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
-      BAYESIAN_PGBOUNCER_SERVICE_HOST: "coreapi-pgbouncer"
-      BAYESIAN_PGBOUNCER_SERVICE_PORT: 5432
-    ports:
-      - "9192:9192"
-    links:
-      - gremlin-http
-      - minio-s3
   cvedb-s3-dump:
     # this service just copies pre-built CVE DB to S3 and exits
     # https://github.com/fabric8-analytics/cvedb-s3-dump-docker
