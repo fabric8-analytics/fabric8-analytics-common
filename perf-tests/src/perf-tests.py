@@ -11,6 +11,7 @@ from coreapi import *
 from jobsapi import *
 import benchmarks
 import graph
+from s3interface import *
 
 
 def check_environment_variable(env_var_name):
@@ -42,7 +43,7 @@ def is_system_running(core_api, jobs_api):
            jobs_api.is_api_running()
 
 
-def check_system(core_api, jobs_api):
+def check_system(core_api, jobs_api, s3):
     # try to access system endpoints
     print("Checking: core API and JOBS API endpoints")
     if not is_system_running(core_api, jobs_api):
@@ -65,6 +66,16 @@ def check_system(core_api, jobs_api):
     else:
         sys.exit(1)
 
+    print("Checking: connection to the S3")
+    # try to connect to AWS S3
+    s3.connect()
+    buckets = s3.read_all_buckets()
+    if buckets is not None:
+        print("    ok")
+    else:
+        print("Fatal: can not connect to S3 nor to read the data")
+        sys.exit(1)
+
 
 def run_core_api_sequenced_calls_benchmark(core_api, s3):
     print("Core API sequenced calls benchmark")
@@ -84,6 +95,53 @@ def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
                                 benchmarks.component_analysis_flow_scheduling(api, s3,
                                                                               measurement_count,
                                                                               pause_time))
+
+
+def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
+    print("Component analysis concurrent benchmark")
+    measurement_count = 1
+    min_thread_count = 2
+    max_thread_count = 5
+
+    for thread_count in range(min_thread_count, 1 + max_thread_count):
+        min_times = []
+        max_times = []
+        avg_times = []
+
+        threads = []
+        q = queue.Queue()
+
+        for thread_id in range(0, thread_count):
+            t = threading.Thread(target=lambda api, s3, measurement_count, pause_time, q,
+                                 thread_id:
+                                 benchmarks.component_analysis_thread(api, s3,
+                                                                      measurement_count,
+                                                                      pause_time, q, thread_id),
+                                 args=(jobs_api, s3, measurement_count, 10, q, thread_id))
+            t.start()
+            threads.append(t)
+
+        print("---------------------------------")
+        print("Waiting for all threads to finish")
+        wait_for_all_threads(threads)
+        print("Done")
+
+        values = sum([q.get() for t in threads], [])
+        title = "Component analysis, {t} concurrent threads".format(
+            t=thread_count)
+        name = "jobs_flow_scheduling_{t}_threads".format(t=thread_count)
+        graph.generate_wait_times_graph(title, name, values)
+
+        min_times.append(min(values))
+        max_times.append(max(values))
+        avg_times.append(sum(values) / len(values))
+
+        print(min_times)
+        print(max_times)
+        print(avg_times)
+        generate_statistic_graph(thread_count, [10], min_times, max_times, avg_times)
+        print("Breathe (statistic graph)...")
+        time.sleep(20)
 
 
 def wait_for_all_threads(threads):
@@ -176,6 +234,7 @@ def run_benchmarks(core_api, jobs_api, s3):
     run_core_api_sequenced_calls_benchmark(core_api, s3)
     run_core_api_concurrent_benchmark(core_api)
     run_component_analysis_sequenced_calls_benchmark(jobs_api, s3)
+    run_component_analysis_concurrent_calls_benchmark(jobs_api, s3)
 
 
 def generate_statistic_graph(thread_count, pauses, min_times, max_times, avg_times):

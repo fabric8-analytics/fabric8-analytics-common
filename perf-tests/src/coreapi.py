@@ -56,4 +56,4 @@ class CoreApi(Api):
 
     def stack_analysis(self):
         job_id = self.start_stack_analysis()
-        self.wait_for_stack_analysis(job_id)
+        return self.wait_for_stack_analysis(job_id)

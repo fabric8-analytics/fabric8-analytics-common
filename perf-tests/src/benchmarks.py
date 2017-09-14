@@ -45,12 +45,20 @@ def stack_analysis_benchmark(core_api, measurement_count, pause_time, thread_id=
 
 
 def component_analysis_flow_scheduling(jobs_api, s3, measurement_count, pause_time,
-                                       thread_id=None):
-    return measure(lambda i, s3: jobs_api.component_analysis(i, s3),
+                                       thread_id=None,
+                                       ecosystem=None, component=None, version=None):
+    return measure(lambda i, s3: jobs_api.component_analysis(i, s3, thread_id,
+                                                             ecosystem, component, version),
                    lambda retval: retval is True, measurement_count, pause_time,
                    thread_id, s3)
 
 
 def core_api_benchmark_thread(core_api, measurement_count, pause_time, q, thread_id):
     measurements = core_api_benchmark(core_api, measurement_count, pause_time, thread_id)
+    q.put(measurements)
+
+
+def component_analysis_thread(jobs_api, s3, measurement_count, pause_time, q, thread_id):
+    measurements = component_analysis_flow_scheduling(jobs_api, s3, measurement_count,
+                                                      pause_time, thread_id)
     q.put(measurements)
