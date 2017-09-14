@@ -35,7 +35,7 @@ def read_component_analysis_from_core_package(s3, ecosystem, component):
     durations["overall"] = Duration.from_data(data)
 
     # we have to specify analysis manually here
-    analyses = ["github_details", "keywords_tagging", "libraries_io"]
+    analyses = ["git_stats", "github_details", "keywords_tagging", "libraries_io"]
 
     for analysis in analyses:
         key = s3.component_core_package_data_analysis_key(ecosystem, component, analysis)
