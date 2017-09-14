@@ -57,10 +57,13 @@ class S3Interface():
                                                                         version=version,
                                                                         analysis=analysis)
 
-    def component_core_package_data_key(self, ecosystem, package, version, analysis):
+    def component_core_package_data_key(self, ecosystem, package):
+        return "{ecosystem}/{package}.json".format(ecosystem=ecosystem,
+                                                   package=package)
+
+    def component_core_package_data_analysis_key(self, ecosystem, package, analysis):
         return "{ecosystem}/{package}/{analysis}.json".format(ecosystem=ecosystem,
                                                               package=package,
-                                                              version=version,
                                                               analysis=analysis)
 
     def does_bucket_exist(self, bucket_name):
