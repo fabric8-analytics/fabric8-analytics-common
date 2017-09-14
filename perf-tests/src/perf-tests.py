@@ -89,8 +89,17 @@ def run_core_api_sequenced_calls_benchmark(core_api, s3):
 def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
     print("Component analysis sequenced calls benchmark")
     run_sequenced_benchmark(jobs_api, s3,
-                            "Component analysis flow scheduling",
-                            "component_analysis_flow_scheduling",
+                            "Component analysis flow scheduling, same component",
+                            "component_analysis_flow_scheduling_same_component",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.component_analysis_flow_scheduling(api, s3,
+                                                                              measurement_count,
+                                                                              60, None, "pypi",
+                                                                              "clojure_py",
+                                                                              "0.2.4"))
+    run_sequenced_benchmark(jobs_api, s3,
+                            "Component analysis flow scheduling, different components",
+                            "component_analysis_flow_scheduling_different_components",
                             lambda api, s3, measurement_count, pause_time:
                                 benchmarks.component_analysis_flow_scheduling(api, s3,
                                                                               measurement_count,
@@ -145,14 +154,12 @@ def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
 
 
 def wait_for_all_threads(threads):
-        for t in threads:
-            t.join()
+    for t in threads:
+        t.join()
 
 
-def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function):
-    measurement_count = 10
-    pauses = [1, 0.5, 0]
-    # pauses = [10, 5, 1, 0.5, 0]
+def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
+                            pauses=[10], measurement_count=10):
 
     min_times = []
     max_times = []
@@ -164,7 +171,7 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function):
         name = "{n}_{s}_pause_time".format(n=name_prefix, s=pause)
         values = function(api, s3, measurement_count, pause)
         graph.generate_wait_times_graph(title, name, values)
-        time.sleep(10)
+        time.sleep(30)
 
         min_times.append(min(values))
         max_times.append(max(values))
