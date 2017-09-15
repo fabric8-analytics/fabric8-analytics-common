@@ -9,9 +9,6 @@ class S3Interface():
                  deployment_prefix):
         '''Remember the access key, secret access key, region, and deployment
         prefix that will be used later to connect to the AWS S3.'''
-        assert aws_access_key_id is not None
-        assert aws_secret_access_key is not None
-        assert s3_region_name is not None
 
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
@@ -22,6 +19,10 @@ class S3Interface():
         self.s3_session = None
 
     def connect(self):
+        assert aws_access_key_id is not None
+        assert aws_secret_access_key is not None
+        assert s3_region_name is not None
+
         if self.s3_resource is not None:
             return
 
