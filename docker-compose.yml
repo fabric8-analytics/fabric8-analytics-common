@@ -219,18 +219,16 @@ services:
       <<: *worker_environment
       WORKER_ADMINISTRATION_REGION: priority
   worker-graph-schema:
-    image: registry.devshift.net/bayesian/cucos-worker
+    <<: *worker
+    environment:
+      <<: *worker_environment
+      WORKER_ADMINISTRATION_REGION: ingestion
     restart: on-failure
     container_name: coreapi-worker-graph-schema
     network_mode: bridge
     links:
      - gremlin-http
     command: python3 /graph/create_graph_schema.py
-    environment:
-      BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
-      BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
-      WORKER_ADMINISTRATION_REGION: ingestion
-      F8A_UNCLOUDED_MODE: 'true'
     depends_on:
      - gremlin-http
   worker-db-migrations:
