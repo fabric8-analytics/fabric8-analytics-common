@@ -16,6 +16,33 @@ def seconds_for_analysis(duration, measurement_type, selector):
     return 0
 
 
+def add_legend(ax, columns, component_selectors, component_colors,
+               package_selectors, package_colors):
+    legend_labels = []
+    legend_labels.append("component: overall")
+
+    for label in component_selectors:
+        legend_labels.append(label)
+
+    legend_labels.append("package: overall")
+
+    for label in package_selectors:
+        legend_labels.append(label)
+
+    legend_keys = []
+    legend_keys.append(columns[0][0])
+
+    for c in columns[1]:
+        legend_keys.append(c[0])
+
+    legend_keys.append(columns[2][0])
+
+    for c in columns[3]:
+        legend_keys.append(c[0])
+
+    ax.legend(legend_keys, legend_labels)
+
+
 def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
                                            height=DEFAULT_HEIGHT, dpi=DPI):
     N = len(durations)
@@ -69,32 +96,10 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
 
     plt.ylabel('duration (seconds)')
     plt.title('component analysis')
-
     plt.xticks(ind, durations.keys())
 
-    legend_labels = []
-    legend_labels.append("component: overall")
-
-    for label in component_selectors:
-        legend_labels.append(label)
-
-    legend_labels.append("package: overall")
-
-    for label in package_selectors:
-        legend_labels.append(label)
-
-    legend_keys = []
-    legend_keys.append(column1[0])
-
-    for c in column2:
-        legend_keys.append(c[0])
-
-    legend_keys.append(column3[0])
-
-    for c in column4:
-        legend_keys.append(c[0])
-
-    ax.legend(legend_keys, legend_labels)
+    add_legend(ax, columns, component_selectors, component_colors, package_selectors,
+               package_colors)
 
     return fig
 
