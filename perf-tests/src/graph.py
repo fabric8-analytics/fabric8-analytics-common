@@ -8,11 +8,19 @@ DEFAULT_HEIGHT = 800
 DPI = 100
 
 
+def seconds_for_analysis(duration, measurement_type, selector):
+    if measurement_type in duration:
+        data = duration[measurement_type]
+        if selector in data:
+            return data[selector].duration_seconds
+    return 0
+
+
 def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
                                            height=DEFAULT_HEIGHT, dpi=DPI):
     N = len(durations)
 
-    selectors = ["security_issues", "github_details", "source_licenses",
+    selectors = ["security_issues", "source_licenses",
                  "metadata", "keywords_tagging", "dependency_snapshot",
                  "digests", "code_metrics"]
 
@@ -21,10 +29,10 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
 
     fig, ax = plt.subplots(figsize=(1.0 * width / dpi, 1.0 * height / dpi), dpi=dpi)
 
-    column1data = np.array([duration["overall"].duration_seconds
+    column1data = np.array([duration["core-data"]["overall"].duration_seconds
                            for duration in durations.values()])
 
-    column2data = [np.array([duration[selector].duration_seconds
+    column2data = [np.array([seconds_for_analysis(duration, "core-data", selector)
                             for duration in durations.values()]) for selector in selectors]
 
     ind = np.arange(N)  # the x locations for the groups
