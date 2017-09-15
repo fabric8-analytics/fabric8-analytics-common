@@ -20,12 +20,16 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
                                            height=DEFAULT_HEIGHT, dpi=DPI):
     N = len(durations)
 
-    selectors = ["security_issues", "source_licenses",
-                 "metadata", "keywords_tagging", "dependency_snapshot",
-                 "digests", "code_metrics"]
+    component_selectors = ["security_issues", "source_licenses",
+                           "metadata", "keywords_tagging", "dependency_snapshot",
+                           "digests", "code_metrics"]
 
-    colors = ["#cc4040", "#cccc40", "#40cc40", "#40cccc",
-              "#cccccc", "#804040", "#808040", "#408040"]
+    package_selectors = ["github_details", "keywords_tagging", "libraries_io"]
+
+    component_colors = ["#cc4040", "#cccc40", "#40cc40", "#40cccc",
+                        "#cccccc", "#804040", "#808040", "#408040"]
+
+    package_colors = ["#0040cc", "#ff4040", "#40ff40"]
 
     fig, ax = plt.subplots(figsize=(1.0 * width / dpi, 1.0 * height / dpi), dpi=dpi)
 
@@ -33,17 +37,34 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
                            for duration in durations.values()])
 
     column2data = [np.array([seconds_for_analysis(duration, "core-data", selector)
-                            for duration in durations.values()]) for selector in selectors]
+                            for duration in durations.values()])
+                   for selector in component_selectors]
+
+    column3data = np.array([duration["core-package-data"]["overall"].duration_seconds
+                           for duration in durations.values()])
+
+    column4data = [np.array([seconds_for_analysis(duration, "core-package-data", selector)
+                            for duration in durations.values()])
+                   for selector in package_selectors]
 
     ind = np.arange(N)  # the x locations for the groups
-    width = 0.35        # the width of the bars
+    width = 0.30        # the width of the bars
 
     column1 = ax.bar(ind, column1data, width, color='orange')
 
     bottom = np.zeros(N)
     column2 = []
-    for elem, color in zip(column2data, colors):
-        column2.append(ax.bar(ind + width, elem, width, bottom=bottom, color=color))
+    for elem, color in zip(column2data, component_colors):
+        column2.append(ax.bar(ind + width / 3, elem, width, bottom=bottom, color=color))
+        bottom += elem
+
+    column3 = ax.bar(ind + width + 0.2, column3data, width, color='yellow')
+
+    bottom = np.zeros(N)
+    column4 = []
+    for elem, color in zip(column4data, package_colors):
+        column4.append(ax.bar(ind + width + 0.2 + width / 3, elem, width, bottom=bottom,
+                       color=color))
         bottom += elem
 
     plt.ylabel('duration (seconds)')
@@ -51,11 +72,26 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
 
     plt.xticks(ind, durations.keys())
 
-    legend_labels = selectors[:]
-    legend_labels.insert(0, "overall")
+    legend_labels = []
+    legend_labels.append("component: overall")
 
-    legend_keys = [column1[0]]
+    for label in component_selectors:
+        legend_labels.append(label)
+
+    legend_labels.append("package: overall")
+
+    for label in package_selectors:
+        legend_labels.append(label)
+
+    legend_keys = []
+    legend_keys.append(column1[0])
+
     for c in column2:
+        legend_keys.append(c[0])
+
+    legend_keys.append(column3[0])
+
+    for c in column4:
         legend_keys.append(c[0])
 
     ax.legend(legend_keys, legend_labels)
