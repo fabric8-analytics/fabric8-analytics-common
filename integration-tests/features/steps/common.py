@@ -14,6 +14,9 @@ import uuid
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
+import botocore
+from botocore.exceptions import ClientError
+
 # Do not remove - kept for debugging
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -1578,14 +1581,14 @@ def check_job_debug_analyses_report(context):
 def connect_to_aws_s3(context):
     '''Try to connect to the AWS S3 database using the given access key,
     secret access key, and region name.'''
-    context.connect_to_aws_s3(context)
+    context.s3interface.connect()
 
 
 @then('I should see {bucket} bucket')
 def find_bucket_in_s3(context, bucket):
     '''Check if bucket with given name can be found and can be read by
     current AWS S3 database user.'''
-    assert context.does_bucket_exist(context, bucket)
+    assert context.s3interface.does_bucket_exist(bucket)
 
 
 def component_key_into_s3(ecosystem, package, version):
@@ -1598,7 +1601,7 @@ def component_key_into_s3(ecosystem, package, version):
       '{ecosystem} from the AWS S3 database bucket {bucket}')
 def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
     key = component_key_into_s3(ecosystem, package, version)
-    s3_data = context.read_object_from_s3(context, bucket, key)
+    s3_data = context.s3interface.read_object(bucket, key)
     assert s3_data is not None
     context.s3_data = s3_data
 
@@ -1646,8 +1649,8 @@ def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
     for _ in range(timeout // sleep_amount):
         current_date = datetime.datetime.now(datetime.timezone.utc)
         try:
-            last_modified = context.read_object_metadata_from_s3(context, bucket, key,
-                                                                 "LastModified")
+            last_modified = context.s3interface.read_object_metadata(bucket, key,
+                                                                     "LastModified")
             delta = current_date - last_modified
             # print(current_date, "   ", last_modified, "   ", delta)
             if delta.days == 0 and delta.seconds < sleep_amount * 2:
