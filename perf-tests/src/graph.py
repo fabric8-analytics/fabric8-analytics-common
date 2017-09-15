@@ -43,6 +43,15 @@ def add_legend(ax, columns, component_selectors, component_colors,
     ax.legend(legend_keys, legend_labels)
 
 
+def stacked_column(measurements, ind, ax, columndata, colors, width, offset):
+    bottom = np.zeros(measurements)
+    column = []
+    for elem, color in zip(columndata, colors):
+        column.append(ax.bar(ind + offset, elem, width, bottom=bottom, color=color))
+        bottom += elem
+    return column
+
+
 def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
                                            height=DEFAULT_HEIGHT, dpi=DPI):
     N = len(durations)
@@ -60,39 +69,32 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
 
     fig, ax = plt.subplots(figsize=(1.0 * width / dpi, 1.0 * height / dpi), dpi=dpi)
 
-    column1data = np.array([duration["core-data"]["overall"].duration_seconds
-                           for duration in durations.values()])
+    columndata = []
+    columndata.append(np.array([duration["core-data"]["overall"].duration_seconds
+                      for duration in durations.values()]))
 
-    column2data = [np.array([seconds_for_analysis(duration, "core-data", selector)
-                            for duration in durations.values()])
-                   for selector in component_selectors]
+    columndata.append([np.array([seconds_for_analysis(duration, "core-data", selector)
+                                for duration in durations.values()])
+                      for selector in component_selectors])
 
-    column3data = np.array([duration["core-package-data"]["overall"].duration_seconds
-                           for duration in durations.values()])
+    columndata.append(np.array([duration["core-package-data"]["overall"].duration_seconds
+                      for duration in durations.values()]))
 
-    column4data = [np.array([seconds_for_analysis(duration, "core-package-data", selector)
-                            for duration in durations.values()])
-                   for selector in package_selectors]
+    columndata.append([np.array([seconds_for_analysis(duration, "core-package-data", selector)
+                                for duration in durations.values()])
+                      for selector in package_selectors])
 
-    ind = np.arange(N)  # the x locations for the groups
-    width = 0.30        # the width of the bars
+    ind = np.arange(N)   # the x locations for the groups
+    width = 0.30         # the width of the bars
+    offset = width / 3   # offset for the second column(s)
 
-    column1 = ax.bar(ind, column1data, width, color='orange')
+    pitch = width + 0.2  # pitch between component and package column tuples
 
-    bottom = np.zeros(N)
-    column2 = []
-    for elem, color in zip(column2data, component_colors):
-        column2.append(ax.bar(ind + width / 3, elem, width, bottom=bottom, color=color))
-        bottom += elem
-
-    column3 = ax.bar(ind + width + 0.2, column3data, width, color='yellow')
-
-    bottom = np.zeros(N)
-    column4 = []
-    for elem, color in zip(column4data, package_colors):
-        column4.append(ax.bar(ind + width + 0.2 + width / 3, elem, width, bottom=bottom,
-                       color=color))
-        bottom += elem
+    columns = []
+    columns.append(ax.bar(ind, columndata[0], width, color='orange'))
+    columns.append(stacked_column(N, ind, ax, columndata[1], component_colors, width, offset))
+    columns.append(ax.bar(ind + pitch, columndata[2], width, color='yellow'))
+    columns.append(stacked_column(N, ind, ax, columndata[3], package_colors, width, offset + pitch))
 
     plt.ylabel('duration (seconds)')
     plt.title('component analysis')
