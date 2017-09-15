@@ -198,8 +198,6 @@ services:
       GCP_AUTH_PROVIDER_X509_CERT_URL: ""
       GCP_CLIENT_X509_CERT_URL: ""
       SCANCODE_PROCESSES: "4"
-      AWS_S3_ACCESS_KEY_ID: GNV3SAHAHA3DOT99GQII
-      AWS_S3_SECRET_ACCESS_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
     tty: true  # yes, really -ti -d, binwalk chokes when there's no tty kept open
   worker-ingestion:
     <<: *worker
@@ -218,7 +216,6 @@ services:
       WORKER_ADMINISTRATION_REGION: ingestion
     restart: on-failure
     container_name: coreapi-worker-graph-schema
-    network_mode: bridge
     links:
      - gremlin-http
     command: python3 /graph/create_graph_schema.py
