@@ -3,8 +3,13 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+DEFAULT_WIDTH = 1680
+DEFAULT_HEIGHT = 800
+DPI = 100
 
-def create_component_analysis_timing_graph(durations):
+
+def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
+                                           height=DEFAULT_HEIGHT, dpi=DPI):
     N = len(durations)
 
     selectors = ["security_issues", "github_details", "source_licenses",
@@ -14,7 +19,7 @@ def create_component_analysis_timing_graph(durations):
     colors = ["#cc4040", "#cccc40", "#40cc40", "#40cccc",
               "#cccccc", "#804040", "#808040", "#408040"]
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(1.0 * width / dpi, 1.0 * height / dpi), dpi=dpi)
 
     column1data = np.array([duration["overall"].duration_seconds
                            for duration in durations.values()])
@@ -142,8 +147,8 @@ def create_statistic_graph(title, y_axis_label, labels, min_values, max_values, 
     return fig
 
 
-def save_graph(fig, imageFile):
-    plt.savefig(imageFile, facecolor=fig.get_facecolor())
+def save_graph(fig, imageFile, dpi=DPI):
+    plt.savefig(imageFile, facecolor=fig.get_facecolor(), dpi=dpi)
 
 
 def generate_wait_times_graph(title, name, values):
