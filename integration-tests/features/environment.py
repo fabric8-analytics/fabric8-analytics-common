@@ -9,8 +9,8 @@ import docker
 import requests
 import time
 import sys
-import boto3
-import botocore
+
+from src.s3interface import S3Interface
 
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
@@ -268,72 +268,6 @@ def _is_component_search_service_running(context):
                            "/component-search/any-component")
 
 
-def _connect_to_aws_s3(context):
-    '''Connect to the AWS S3 database using access key, secret access key,
-    and region. That parameters are part of "context" object.'''
-
-    if 's3_resource' in context:
-        return
-
-    assert context.aws_access_key_id is not None
-    assert context.aws_secret_access_key is not None
-    assert context.s3_region_name is not None
-
-    context.s3_session = boto3.session.Session(
-        aws_access_key_id=context.aws_access_key_id,
-        aws_secret_access_key=context.aws_secret_access_key,
-        region_name=context.s3_region_name)
-
-    assert context.s3_session is not None
-
-    use_ssl = True
-    endpoint_url = None
-
-    context.s3_resource = context.s3_session.resource(
-        's3',
-        config=botocore.client.Config(signature_version='s3v4'),
-        use_ssl=use_ssl, endpoint_url=endpoint_url)
-
-    assert context.s3_resource is not None
-
-
-def _read_all_buckets_from_s3(context):
-    '''Read all available buckets from the AWS S3 database.'''
-    return context.s3_resource.buckets.all()
-
-
-def _full_bucket_name(context, bucket_name):
-    return "{p}-{b}".format(p=context.deployment_prefix, b=bucket_name)
-
-
-def _does_bucket_exist(context, bucket_name):
-    '''Return True only when bucket with given name exist and can be read
-    by current AWS S3 database user.'''
-    try:
-        s3 = context.s3_resource
-        assert s3 is not None
-        s3.meta.client.head_bucket(Bucket=_full_bucket_name(context, bucket_name))
-        return True
-    except ClientError:
-        return False
-
-
-def _read_object_from_s3(context, bucket_name, key):
-    '''Read byte stream from S3, decode it into string, and parse as JSON.'''
-    s3 = context.s3_resource
-    assert s3 is not None
-    data = s3.Object(_full_bucket_name(context, bucket_name), key).get()['Body'].read().decode()
-    return json.loads(data)
-
-
-def _read_object_metadata_from_s3(context, bucket_name, key, attribute):
-    '''Read byte stream from S3, decode it into string, and parse as JSON.'''
-    s3 = context.s3_resource
-    assert s3 is not None
-    data = s3.Object(_full_bucket_name(context, bucket_name), key).get()[attribute]
-    return data
-
-
 def _read_boolean_setting(context, setting_name):
     setting = context.config.userdata.get(setting_name, '').lower()
     if setting in ('1', 'yes', 'true', 'on'):
@@ -421,11 +355,6 @@ def before_all(context):
     context.send_json_file = _send_json_file
     context.wait_for_jobs_debug_api_service = _wait_for_jobs_debug_api_service
     context.wait_for_component_search_service = _wait_for_component_search_service
-    context.connect_to_aws_s3 = _connect_to_aws_s3
-    context.read_all_buckets_from_s3 = _read_all_buckets_from_s3
-    context.does_bucket_exist = _does_bucket_exist
-    context.read_object_from_s3 = _read_object_from_s3
-    context.read_object_metadata_from_s3 = _read_object_metadata_from_s3
 
     # Configure container logging
     context.dump_logs = _read_boolean_setting(context, 'dump_logs')
@@ -460,8 +389,6 @@ def before_all(context):
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
 
-    context.deployment_prefix = os.environ.get('DEPLOYMENT_PREFIX', 'STAGE')
-
     if context.running_locally:
         print("Note: integration tests are running localy via docker-compose")
         if coreapi_url:
@@ -485,9 +412,13 @@ def before_all(context):
     _check_env_var_presence_s3_db('AWS_SECRET_ACCESS_KEY')
     _check_env_var_presence_s3_db('S3_REGION_NAME')
 
-    context.aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
-    context.aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    context.s3_region_name = os.environ.get('S3_REGION_NAME')
+    aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+    aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    s3_region_name = os.environ.get('S3_REGION_NAME')
+    deployment_prefix = os.environ.get('DEPLOYMENT_PREFIX', 'STAGE')
+
+    context.s3interface = S3Interface(aws_access_key_id, aws_secret_access_key,
+                                      s3_region_name, deployment_prefix)
 
     context.client = None
 

@@ -7,9 +7,8 @@ class S3Interface():
 
     def __init__(self, aws_access_key_id, aws_secret_access_key, s3_region_name,
                  deployment_prefix):
-        assert aws_access_key_id is not None
-        assert aws_secret_access_key is not None
-        assert s3_region_name is not None
+        '''Remember the access key, secret access key, region, and deployment
+        prefix that will be used later to connect to the AWS S3.'''
 
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
@@ -20,6 +19,10 @@ class S3Interface():
         self.s3_session = None
 
     def connect(self):
+        assert aws_access_key_id is not None
+        assert aws_secret_access_key is not None
+        assert s3_region_name is not None
+
         if self.s3_resource is not None:
             return
 
@@ -41,9 +44,11 @@ class S3Interface():
         assert self.s3_resource is not None
 
     def read_all_buckets(self):
+        '''Read all available buckets from the AWS S3 database.'''
         return self.s3_resource.buckets.all()
 
     def full_bucket_name(self, bucket_name):
+        '''Insert deployment prefix to the given bucket name.'''
         return "{p}-{b}".format(p=self.deployment_prefix, b=bucket_name)
 
     def component_key(self, ecosystem, package, version):
