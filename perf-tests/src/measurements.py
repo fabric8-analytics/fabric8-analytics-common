@@ -1,5 +1,6 @@
 from s3interface import *
 from duration import *
+from botocore.exceptions import *
 
 
 def read_component_analysis_from_core_data(s3, ecosystem, component, version):
@@ -14,13 +15,18 @@ def read_component_analysis_from_core_data(s3, ecosystem, component, version):
     analyses = data.get("analyses")
 
     # Remove this analysis because it is not performed on component-version level
-    analyses.remove("github_details")
+    if "github_details" in analyses:
+        analyses.remove("github_details")
     # analyses.remove("code_metrics")
 
     for analysis in analyses:
         key = s3.component_analysis_key(ecosystem, component, version, analysis)
-        data = s3.read_object(bucket, key)
-        durations[analysis] = Duration.from_audit(data)
+        try:
+            data = s3.read_object(bucket, key)
+            durations[analysis] = Duration.from_audit(data)
+        except ClientError:
+            print("Warning: duration for the following analysis won't be "
+                  "be computed: {a}".format(a=analysis))
 
     return durations
 
@@ -39,8 +45,12 @@ def read_component_analysis_from_core_package(s3, ecosystem, component):
 
     for analysis in analyses:
         key = s3.component_core_package_data_analysis_key(ecosystem, component, analysis)
-        data = s3.read_object(bucket, key)
-        durations[analysis] = Duration.from_audit(data)
+        try:
+            data = s3.read_object(bucket, key)
+            durations[analysis] = Duration.from_audit(data)
+        except ClientError:
+            print("Warning: duration for the following analysis won't be "
+                  "be computed: {a}".format(a=analysis))
 
     return durations
 
