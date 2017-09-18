@@ -24,7 +24,8 @@ Feature: Stack analysis v2 API Minimal
     Then I should get 200 status code
     Then I should receive JSON response with the correct id
     When I wait for stack analysis to finish with authorization token
-    Then I should get 200 status code
+
+Then I should get 200 status code
     Then I should get a valid request ID
     Then I should find the attribute request_id equals to id returned by stack analysis request
     Then I should find the proper sentiment values in the stack analysis response

@@ -14,6 +14,9 @@ import uuid
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
+import botocore
+from botocore.exceptions import ClientError
+
 # Do not remove - kept for debugging
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -125,11 +128,19 @@ def search_for_component_with_token(context, component):
 
 
 @when("I read {ecosystem}/{component}/{version} component analysis")
-def read_analysis_for_component(context, ecosystem, component, version):
+@when("I read {ecosystem}/{component}/{version} component analysis "
+      "{token} authorization token")
+def read_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Read component analysis (or an error message) for the selected
     ecosystem."""
     url = component_analysis_url(context, ecosystem, component, version)
-    context.response = requests.get(url)
+
+    use_token = parse_token_clause(token)
+
+    if use_token:
+        context.response = requests.get(url, headers=authorization(context))
+    else:
+        context.response = requests.get(url)
 
 
 def component_analysis_url(context, ecosystem, component, version):
@@ -168,7 +179,9 @@ def start_analysis_for_component(context, ecosystem, component, version):
 
 
 @when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
-def finish_analysis_for_component(context, ecosystem, component, version):
+@when("I wait for {ecosystem}/{component}/{version} component analysis to finish "
+      "{token} authorization token")
+def finish_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Try to wait for the component analysis to be finished.
 
     Current API implementation returns just two HTTP codes:
@@ -179,10 +192,15 @@ def finish_analysis_for_component(context, ecosystem, component, version):
     timeout = context.component_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
 
+    use_token = parse_token_clause(token)
+
     url = component_analysis_url(context, ecosystem, component, version)
 
     for _ in range(timeout // sleep_amount):
-        status_code = requests.get(url).status_code
+        if use_token:
+            status_code = requests.get(url, headers=authorization(context)).status_code
+        else:
+            status_code = requests.get(url).status_code
         if status_code == 200:
             break
         elif status_code != 404:
@@ -190,6 +208,11 @@ def finish_analysis_for_component(context, ecosystem, component, version):
         time.sleep(sleep_amount)
     else:
         raise Exception('Timeout waiting for the component analysis results')
+
+
+def parse_timestamp(string):
+    timeformat = '%Y-%m-%dT%H:%M:%S.%f'
+    return datetime.datetime.strptime(string, timeformat)
 
 
 def contains_alternate_node(json_resp):
@@ -522,9 +545,9 @@ def logout_from_the_jobs_service(context, token='without'):
     use_token = parse_token_clause(token)
     if use_token:
         headers = jobs_api_authorization(context)
-        context.response = requests.get(url, headers)
+        context.response = requests.put(url, headers)
     else:
-        context.response = requests.get(url)
+        context.response = requests.put(url)
 
 
 @when('I access the job service endpoint to generate token')
@@ -676,6 +699,42 @@ def check_components(context, num=0, components='', ecosystem=''):
     for search_result in search_results:
         assert search_result['ecosystem'] == ecosystem
         assert search_result['name'] in components
+
+
+def print_search_results(search_results):
+    print("\n\n\n")
+    print("The following components can be found")
+    for r in search_results:
+        print(r)
+    print("\n\n\n")
+
+
+@then('I should find the analysis for the component {component} from ecosystem {ecosystem}')
+def check_component_analysis_existence(context, component, ecosystem):
+    json_data = context.response.json()
+    search_results = json_data['result']
+
+    for search_result in search_results:
+        if search_result['ecosystem'] == ecosystem and \
+           search_result['name'] == component:
+            return
+
+    # print_search_results(search_results)
+
+    raise Exception('Component {component} for ecosystem {ecosystem} could not be found'.
+                    format(component=component, ecosystem=ecosystem))
+
+
+@then('I should not find the analysis for the {component} from ecosystem {ecosystem}')
+def check_component_analysis_nonexistence(context, component, ecosystem):
+    json_data = context.response.json()
+    search_results = json_data['result']
+
+    for search_result in search_results:
+        if search_result['ecosystem'] == ecosystem and \
+           search_result['name'] == component:
+            raise Exception('Component {component} for ecosystem {ecosystem} was found'.
+                            format(component=component, ecosystem=ecosystem))
 
 
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
@@ -1520,6 +1579,129 @@ def check_job_debug_analyses_report(context):
     for attribute in attributes:
         assert attribute in report
         assert int(report[attribute]) >= 0
+
+
+@when('I connect to the AWS S3 database')
+def connect_to_aws_s3(context):
+    '''Try to connect to the AWS S3 database using the given access key,
+    secret access key, and region name.'''
+    context.s3interface.connect()
+
+
+@then('I should see {bucket} bucket')
+def find_bucket_in_s3(context, bucket):
+    '''Check if bucket with given name can be found and can be read by
+    current AWS S3 database user.'''
+    assert context.s3interface.does_bucket_exist(bucket)
+
+
+def component_key_into_s3(ecosystem, package, version):
+    return "{ecosystem}/{package}/{version}.json".format(ecosystem=ecosystem,
+                                                         package=package,
+                                                         version=version)
+
+
+@when('I read job toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} from the AWS S3 database bucket {bucket}')
+def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
+    key = component_key_into_s3(ecosystem, package, version)
+    s3_data = context.s3interface.read_object(bucket, key)
+    assert s3_data is not None
+    context.s3_data = s3_data
+
+
+@then('I should find the correct job toplevel metadata for package {package} '
+      'version {version} ecosystem {ecosystem} with latest version {latest}')
+def check_job_toplevel_file(context, package, version, ecosystem, latest):
+    data = context.s3_data
+
+    check_attribute_presence(data, 'ecosystem')
+    assert data['ecosystem'] == ecosystem
+
+    check_attribute_presence(data, 'package')
+    assert data['package'] == package
+
+    check_attribute_presence(data, 'version')
+    assert data['version'] == version
+
+    check_attribute_presence(data, 'latest_version')
+    assert data['latest_version'] == latest
+
+    release = "{ecosystem}:{package}:{version}".format(ecosystem=ecosystem,
+                                                       package=package,
+                                                       version=version)
+    check_attribute_presence(data, 'release')
+    assert data['release'] == release
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+
+@when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} in the AWS S3 database bucket {bucket}')
+def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
+    timeout = 300 * 60
+    sleep_amount = 10
+
+    key = component_key_into_s3(ecosystem, package, version)
+
+    start_time = datetime.datetime.now(datetime.timezone.utc)
+
+    for _ in range(timeout // sleep_amount):
+        current_date = datetime.datetime.now(datetime.timezone.utc)
+        try:
+            last_modified = context.s3interface.read_object_metadata(bucket, key,
+                                                                     "LastModified")
+            delta = current_date - last_modified
+            # print(current_date, "   ", last_modified, "   ", delta)
+            if delta.days == 0 and delta.seconds < sleep_amount * 2:
+                # print("done!")
+                read_core_data_from_bucket(context, package, version, ecosystem, bucket)
+                return
+        except ClientError as e:
+            print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the job metadata in S3!')
+
+
+@when('I remember timestamps from the last job toplevel data')
+def remember_timestamps_from_job_toplevel_data(context):
+    data = context.s3_data
+    context.job_timestamp_started_at = data['started_at']
+    context.job_timestamp_finished_at = data['finished_at']
+
+    # print("\n\nRemember")
+    # print(context.job_timestamp_started_at)
+    # print(context.job_timestamp_finished_at)
+
+
+@then('I should find that timestamps from current toplevel metadata are newer than '
+      'remembered timestamps')
+def check_new_timestamps(context):
+    data = context.s3_data
+
+    # print("\n\nCurrent")
+    # print(data['started_at'])
+    # print(data['finished_at'])
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+    remembered_started_at = parse_timestamp(context.job_timestamp_started_at)
+    remembered_finished_at = parse_timestamp(context.job_timestamp_finished_at)
+    current_started_at = parse_timestamp(data['started_at'])
+    current_finished_at = parse_timestamp(data['finished_at'])
+
+    assert current_started_at > remembered_started_at, \
+        "Current metadata are not newer: failed on started_at attributes comparison"
+    assert current_finished_at > remembered_finished_at, \
+        "Current metadata are not newer: failed on finished_at attributes comparison"
 
 
 @when('I generate unique job ID prefix')
