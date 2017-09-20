@@ -15,6 +15,7 @@ ls -1
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
+# checks for the whole directories
 for directory in $directories
 do
     files=`find $directory -path $directory/venv -prune -o -name '*.py' -print`
@@ -28,7 +29,7 @@ do
             echo "    Pass"
         else
             echo "    Fail"
-            fail=1
+            let "fail++"
         fi
     done
 done
@@ -38,6 +39,6 @@ if [ $fail -eq 0 ]
 then
     echo "All checks passed"
 else
-    echo "Linter fail"
+    echo "Linter fail, $fail source files need to be fixed"
     exit 1
 fi
