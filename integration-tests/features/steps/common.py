@@ -224,7 +224,7 @@ def contains_alternate_node(json_resp):
 
 @when("I wait for stack analysis to finish")
 @when("I wait for stack analysis version {version} to finish {token} authorization token")
-def wait_for_stack_analysis_completion(context, version="1", token="without"):
+def wait_for_stack_analysis_completion(context, version="2", token="without"):
     """Try to wait for the stack analysis to be finished.
 
     This step assumes that stack analysis has been started previously and
@@ -348,8 +348,9 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
 
 
 def stack_analysis_endpoint(context, version):
-    endpoint = {"1": "/api/v1/stack-analyses/",
-                "2": "/api/v1/stack-analyses-v2/"}.get(version)
+    # please note that the stack analysis v2 now becames the only available endpoint
+    endpoint = {"1": "/api/v1/stack-analyses-v1/",
+                "2": "/api/v1/stack-analyses/"}.get(version)
     if endpoint is None:
         raise Exception("Wrong version specified: {v}".format(v=version))
     return urljoin(context.coreapi_url, endpoint)
@@ -365,9 +366,10 @@ def parse_token_clause(token_clause):
 
 
 @when("I send NPM package manifest {manifest} to stack analysis")
+@when("I send NPM package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send NPM package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
-def npm_manifest_stack_analysis(context, manifest, version="1", token="without"):
+def npm_manifest_stack_analysis(context, manifest, version="2", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'package.json',
@@ -375,9 +377,10 @@ def npm_manifest_stack_analysis(context, manifest, version="1", token="without")
 
 
 @when("I send Python package manifest {manifest} to stack analysis")
+@when("I send Python package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send Python package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
-def python_manifest_stack_analysis(context, manifest, version="1", token="without"):
+def python_manifest_stack_analysis(context, manifest, version="2", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'requirements.txt',
@@ -385,9 +388,10 @@ def python_manifest_stack_analysis(context, manifest, version="1", token="withou
 
 
 @when("I send Maven package manifest {manifest} to stack analysis")
+@when("I send Maven package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send Maven package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
-def maven_manifest_stack_analysis(context, manifest, version="1", token="without"):
+def maven_manifest_stack_analysis(context, manifest, version="2", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'pom.xml',

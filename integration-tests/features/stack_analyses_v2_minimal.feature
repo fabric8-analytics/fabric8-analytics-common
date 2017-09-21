@@ -6,25 +6,26 @@ Feature: Stack analysis v2 API Minimal
 
   Scenario: Check that the API entry point
     Given System is running
-    When I access /api/v1/stack-analyses-v2
+    When I access /api/v1/stack-analyses
     Then I should get 401 status code
 
   Scenario: Check that the API entry point requires authorization token
     Given System is running
     When I wait 10 seconds
-    When I send Python package manifest requirements.txt to stack analysis version 2 without authorization token
+    When I send Python package manifest requirements.txt to stack analysis without authorization token
     Then I should get 401 status code
 
-  Scenario: Check that the stack-analyses-v2 returns a valid response
+  Scenario: Check that the stack-analyses returns a valid response
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
-    When I wait 30 seconds
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
+    When I wait 10 seconds
+    When I send Python package manifest requirements.txt to stack analysis with authorization token
     Then I should get 200 status code
     Then I should receive JSON response with the correct id
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
+    When I wait for stack analysis to finish with authorization token
+
+Then I should get 200 status code
     Then I should get a valid request ID
     Then I should find the attribute request_id equals to id returned by stack analysis request
     Then I should find the proper sentiment values in the stack analysis response
