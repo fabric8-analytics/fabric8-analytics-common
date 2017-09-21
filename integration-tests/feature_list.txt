@@ -11,6 +11,7 @@ features/user_feedback.feature
 #features/anitya.feature
 #features/stack_analyses_v2.feature
 features/selfcheck.feature
+#features/regression_tests.feature
 
 # This is workaround to temporary disable integration tests
 #features/disabled.feature
