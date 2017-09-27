@@ -10,7 +10,7 @@
             },
             "_release": "None:None:None",
             "manifest_name": "requirements.txt",
-            "recommendations": {
+            "recommendation": {
                 "alternate": [
                     {
                         "code_metrics": {

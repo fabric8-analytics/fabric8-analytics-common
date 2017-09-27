@@ -14,6 +14,9 @@ import uuid
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
+import botocore
+from botocore.exceptions import ClientError
+
 # Do not remove - kept for debugging
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -125,11 +128,19 @@ def search_for_component_with_token(context, component):
 
 
 @when("I read {ecosystem}/{component}/{version} component analysis")
-def read_analysis_for_component(context, ecosystem, component, version):
+@when("I read {ecosystem}/{component}/{version} component analysis "
+      "{token} authorization token")
+def read_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Read component analysis (or an error message) for the selected
     ecosystem."""
     url = component_analysis_url(context, ecosystem, component, version)
-    context.response = requests.get(url)
+
+    use_token = parse_token_clause(token)
+
+    if use_token:
+        context.response = requests.get(url, headers=authorization(context))
+    else:
+        context.response = requests.get(url)
 
 
 def component_analysis_url(context, ecosystem, component, version):
@@ -168,7 +179,9 @@ def start_analysis_for_component(context, ecosystem, component, version):
 
 
 @when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
-def finish_analysis_for_component(context, ecosystem, component, version):
+@when("I wait for {ecosystem}/{component}/{version} component analysis to finish "
+      "{token} authorization token")
+def finish_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Try to wait for the component analysis to be finished.
 
     Current API implementation returns just two HTTP codes:
@@ -179,10 +192,15 @@ def finish_analysis_for_component(context, ecosystem, component, version):
     timeout = context.component_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
 
+    use_token = parse_token_clause(token)
+
     url = component_analysis_url(context, ecosystem, component, version)
 
     for _ in range(timeout // sleep_amount):
-        status_code = requests.get(url).status_code
+        if use_token:
+            status_code = requests.get(url, headers=authorization(context)).status_code
+        else:
+            status_code = requests.get(url).status_code
         if status_code == 200:
             break
         elif status_code != 404:
@@ -192,16 +210,21 @@ def finish_analysis_for_component(context, ecosystem, component, version):
         raise Exception('Timeout waiting for the component analysis results')
 
 
+def parse_timestamp(string):
+    timeformat = '%Y-%m-%dT%H:%M:%S.%f'
+    return datetime.datetime.strptime(string, timeformat)
+
+
 def contains_alternate_node(json_resp):
     """Check for the existence of alternate node in the stack analysis."""
     result = json_resp.get('result')
     return bool(result) and isinstance(result, list) \
-        and result[0].get('recommendations', {}).get('alternate', None) is not None
+        and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
 
 
 @when("I wait for stack analysis to finish")
 @when("I wait for stack analysis version {version} to finish {token} authorization token")
-def wait_for_stack_analysis_completion(context, version="1", token="without"):
+def wait_for_stack_analysis_completion(context, version="2", token="without"):
     """Try to wait for the stack analysis to be finished.
 
     This step assumes that stack analysis has been started previously and
@@ -264,6 +287,22 @@ def jobs_api_url_with_authorization_token(context, url):
                                     headers=jobs_api_authorization(context))
 
 
+@when('I read list of jobs')
+@when('I read list of jobs with type {type}')
+@when('I read list of jobs {token} authorization token')
+@when('I read list of jobs with type {type} {token} authorization token')
+def list_of_jobs(context, type=None, token=None):
+    '''Read list of jobs via job API.'''
+    endpoint = job_endpoint(context)
+    if type is not None:
+        endpoint += "?job_type=" + type
+    use_token = parse_token_clause(token)
+    if use_token:
+        context.response = requests.get(endpoint, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.get(endpoint)
+
+
 @when('I access {url:S}')
 def access_url(context, url):
     """Access the service API using the HTTP GET method."""
@@ -309,8 +348,9 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
 
 
 def stack_analysis_endpoint(context, version):
-    endpoint = {"1": "/api/v1/stack-analyses/",
-                "2": "/api/v1/stack-analyses-v2/"}.get(version)
+    # please note that the stack analysis v2 now becames the only available endpoint
+    endpoint = {"1": "/api/v1/stack-analyses-v1/",
+                "2": "/api/v1/stack-analyses/"}.get(version)
     if endpoint is None:
         raise Exception("Wrong version specified: {v}".format(v=version))
     return urljoin(context.coreapi_url, endpoint)
@@ -326,9 +366,10 @@ def parse_token_clause(token_clause):
 
 
 @when("I send NPM package manifest {manifest} to stack analysis")
+@when("I send NPM package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send NPM package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
-def npm_manifest_stack_analysis(context, manifest, version="1", token="without"):
+def npm_manifest_stack_analysis(context, manifest, version="2", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'package.json',
@@ -336,9 +377,10 @@ def npm_manifest_stack_analysis(context, manifest, version="1", token="without")
 
 
 @when("I send Python package manifest {manifest} to stack analysis")
+@when("I send Python package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send Python package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
-def python_manifest_stack_analysis(context, manifest, version="1", token="without"):
+def python_manifest_stack_analysis(context, manifest, version="2", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'requirements.txt',
@@ -346,9 +388,10 @@ def python_manifest_stack_analysis(context, manifest, version="1", token="withou
 
 
 @when("I send Maven package manifest {manifest} to stack analysis")
+@when("I send Maven package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send Maven package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
-def maven_manifest_stack_analysis(context, manifest, version="1", token="without"):
+def maven_manifest_stack_analysis(context, manifest, version="2", token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
@@ -386,7 +429,7 @@ def flow_sheduling_endpoint(context, state, job_id=None):
                format(jobs_api_url=context.jobs_api_url, state=state)
 
 
-def job_endpoint(context, job_id):
+def job_endpoint(context, job_id=None):
     """Return URL for given job id that can be used to job state manipulation."""
     url = "{jobs_api_url}api/v1/jobs".format(
            jobs_api_url=context.jobs_api_url)
@@ -454,11 +497,16 @@ def delete_job(context, job_id=None, token="without"):
 
 
 @when("I set status for job with id {job_id} to {status}")
-def set_job_status(context, job_id, status):
+@when("I set status for job with id {job_id} to {status} {token} authorization token")
+def set_job_status(context, job_id, status, token="without"):
     """API call to set job status."""
     endpoint = job_endpoint(context, job_id)
     url = "{endpoint}?state={status}".format(endpoint=endpoint, status=status)
-    context.response = requests.put(url)
+    use_token = parse_token_clause(token)
+    if use_token:
+        context.response = requests.put(url, headers=jobs_api_authorization(context))
+    else:
+        context.response = requests.put(url)
 
 
 @when("I reset status for the job service")
@@ -497,9 +545,9 @@ def logout_from_the_jobs_service(context, token='without'):
     use_token = parse_token_clause(token)
     if use_token:
         headers = jobs_api_authorization(context)
-        context.response = requests.get(url, headers)
+        context.response = requests.put(url, headers)
     else:
-        context.response = requests.get(url)
+        context.response = requests.put(url)
 
 
 @when('I access the job service endpoint to generate token')
@@ -519,11 +567,21 @@ def check_redirection(context, url):
 
 @when("I ask for analyses report for ecosystem {ecosystem}")
 @when("I ask for analyses report for ecosystem {ecosystem} {token} authorization token")
-def access_analyses_report(context, ecosystem, token="without"):
+@when("I ask for analyses report for ecosystem {ecosystem} from date {from_date} {token} "
+      "authorization token")
+@when("I ask for analyses report for ecosystem {ecosystem} to date {to_date} {token} "
+      "authorization token")
+@when("I ask for analyses report for ecosystem {ecosystem} between dates {from_date} {to_date} "
+      "{token} authorization token")
+def access_analyses_report(context, ecosystem, from_date=None, to_date=None, token="without"):
     """API call to get analyses report for selected ecosystem."""
     use_token = parse_token_clause(token)
     url = "{url}api/v1/debug/analyses-report?ecosystem={ecosystem}".format(
            url=context.jobs_api_url, ecosystem=ecosystem)
+    if from_date is not None:
+        url += "&from_date=" + from_date
+    if to_date is not None:
+        url += "&to_date=" + to_date
     if use_token:
         headers = jobs_api_authorization(context)
         context.response = requests.get(url, headers=headers)
@@ -643,6 +701,42 @@ def check_components(context, num=0, components='', ecosystem=''):
         assert search_result['name'] in components
 
 
+def print_search_results(search_results):
+    print("\n\n\n")
+    print("The following components can be found")
+    for r in search_results:
+        print(r)
+    print("\n\n\n")
+
+
+@then('I should find the analysis for the component {component} from ecosystem {ecosystem}')
+def check_component_analysis_existence(context, component, ecosystem):
+    json_data = context.response.json()
+    search_results = json_data['result']
+
+    for search_result in search_results:
+        if search_result['ecosystem'] == ecosystem and \
+           search_result['name'] == component:
+            return
+
+    # print_search_results(search_results)
+
+    raise Exception('Component {component} for ecosystem {ecosystem} could not be found'.
+                    format(component=component, ecosystem=ecosystem))
+
+
+@then('I should not find the analysis for the {component} from ecosystem {ecosystem}')
+def check_component_analysis_nonexistence(context, component, ecosystem):
+    json_data = context.response.json()
+    search_results = json_data['result']
+
+    for search_result in search_results:
+        if search_result['ecosystem'] == ecosystem and \
+           search_result['name'] == component:
+            raise Exception('Component {component} for ecosystem {ecosystem} was found'.
+                            format(component=component, ecosystem=ecosystem))
+
+
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
 def check_versions(context, num=0, versions='', ecosystem='', package=''):
     versions = split_comma_separated_list(versions)
@@ -713,6 +807,12 @@ def check_timestamp(timestamp):
     """Check if the string contains proper timestamp value."""
     assert timestamp is not None
     assert isinstance(timestamp, str)
+
+    # some attributes contains timestamp without the millisecond part
+    # so we need to take care of it
+    if len(timestamp) == len("YYYY-mm-dd HH:MM:SS") and '.' not in timestamp:
+        timestamp += '.0'
+
     assert len(timestamp) >= len("YYYY-mm-dd HH:MM:SS.")
 
     # we have to support the following formats:
@@ -906,6 +1006,25 @@ def find_value_under_the_path(context, value, path):
         assert v == value
 
 
+@then('I should find the null value under the path {path} in the JSON response')
+def find_null_value_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v is None
+
+
+@then('I should find the timestamp value under the path {path} in the JSON response')
+def find_timestamp_value_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v is not None
+    check_timestamp(v)
+
+
 @then('I should find the attribute request_id equals to id returned by stack analysis request')
 def check_stack_analysis_id(context):
     previous_id = context.stack_analysis_id
@@ -1067,7 +1186,7 @@ def stack_analysis_check_outliers(context, component):
     json_data = context.response.json()
     threshold = context.outlier_probability_threshold
     # log.info('Usage outlier threshold: %r' % threshold)
-    path = "result/0/recommendations/usage_outliers"
+    path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     check_outlier_probability(usage_outliers, component, threshold)
 
@@ -1075,7 +1194,7 @@ def stack_analysis_check_outliers(context, component):
 @then('I should find that total {count} outliers are reported')
 def check_outlier_count(context, count=2):
     json_data = context.response.json()
-    path = "result/0/recommendations/usage_outliers"
+    path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     assert len(usage_outliers) == int(count)
 
@@ -1084,7 +1203,7 @@ def check_outlier_count(context, count=2):
 def check_outlier_validity(context):
     json_data = context.response.json()
     threshold = 0.9
-    path = "result/0/recommendations/usage_outliers"
+    path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     for usage_outlier in usage_outliers:
         # log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
@@ -1110,6 +1229,7 @@ def stack_analysis_check_licenses(context, licenses, path):
     check_licenses(node, licenses)
 
 
+
 def get_attribute_values(list, attribute_name):
     return [item[attribute_name] for item in list]
 
@@ -1123,7 +1243,7 @@ def get_analyzed_packages(json_data):
 
 def get_companion_packages(json_data):
     """Get names of all packages in companion list."""
-    path = "result/0/recommendations/companion"
+    path = "result/0/recommendation/companion"
     companion = get_value_using_path(json_data, path)
     return get_attribute_values(companion, "name")
 
@@ -1174,7 +1294,7 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
     """Check that the component is replaced by the given package
        and version."""
     json_data = context.response.json()
-    path = "result/0/recommendations/alternate"
+    path = "result/0/recommendation/alternate"
     alternates = get_value_using_path(json_data, path)
     replacements = find_replacements(alternates, component, version)
 
@@ -1195,7 +1315,7 @@ def stack_analysis_check_replaces_count(json_data, component, version, expected_
     """Check that the component is replaced only once in the alternate
        analysis."""
     json_data = context.response.json()
-    path = "result/0/recommendations/alternate"
+    path = "result/0/recommendation/alternate"
     alternates = get_value_using_path(json_data, path)
     replacements = find_replacements(alternates, component, version)
     replacements_count = len(replacements)
@@ -1211,7 +1331,7 @@ def get_user_components(json_data):
 
 
 def get_alternate_components(json_data):
-    path = "result/0/recommendations/alternate"
+    path = "result/0/recommendation/alternate"
     return get_value_using_path(json_data, path)
 
 
@@ -1305,7 +1425,7 @@ def stack_analysis_check_security_node_for_dependencies(context):
 
 @then('I should find the security node for all alternate components')
 def stack_analysis_check_security_node_for_alternate_components(context):
-    check_security_node(context, "result/0/recommendations/alternate")
+    check_security_node(context, "result/0/recommendation/alternate")
 
 
 @then('I should find the {cve} security issue for the dependency {package}')
@@ -1369,6 +1489,150 @@ def check_job_api_tokens_information(context):
         for token_name in token_names:
             assert token_name in resources
             check_job_token_attributes(resources[token_name])
+
+
+@then('I should see proper analyses report')
+def check_job_debug_analyses_report(context):
+    '''Check the analyses report returned by job API.'''
+    json_data = context.response.json()
+    assert json_data is not None
+
+    assert "now" in json_data
+    check_timestamp(json_data["now"])
+
+    assert "report" in json_data
+    report = json_data["report"]
+
+    attributes = ["analyses", "analyses_finished", "analyses_finished_unique",
+                  "analyses_unfinished", "analyses_unique", "packages",
+                  "packages_finished", "versions"]
+
+    for attribute in attributes:
+        assert attribute in report
+        assert int(report[attribute]) >= 0
+
+
+@when('I connect to the AWS S3 database')
+def connect_to_aws_s3(context):
+    '''Try to connect to the AWS S3 database using the given access key,
+    secret access key, and region name.'''
+    context.s3interface.connect()
+
+
+@then('I should see {bucket} bucket')
+def find_bucket_in_s3(context, bucket):
+    '''Check if bucket with given name can be found and can be read by
+    current AWS S3 database user.'''
+    assert context.s3interface.does_bucket_exist(bucket)
+
+
+def component_key_into_s3(ecosystem, package, version):
+    return "{ecosystem}/{package}/{version}.json".format(ecosystem=ecosystem,
+                                                         package=package,
+                                                         version=version)
+
+
+@when('I read job toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} from the AWS S3 database bucket {bucket}')
+def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
+    key = component_key_into_s3(ecosystem, package, version)
+    s3_data = context.s3interface.read_object(bucket, key)
+    assert s3_data is not None
+    context.s3_data = s3_data
+
+
+@then('I should find the correct job toplevel metadata for package {package} '
+      'version {version} ecosystem {ecosystem} with latest version {latest}')
+def check_job_toplevel_file(context, package, version, ecosystem, latest):
+    data = context.s3_data
+
+    check_attribute_presence(data, 'ecosystem')
+    assert data['ecosystem'] == ecosystem
+
+    check_attribute_presence(data, 'package')
+    assert data['package'] == package
+
+    check_attribute_presence(data, 'version')
+    assert data['version'] == version
+
+    check_attribute_presence(data, 'latest_version')
+    assert data['latest_version'] == latest
+
+    release = "{ecosystem}:{package}:{version}".format(ecosystem=ecosystem,
+                                                       package=package,
+                                                       version=version)
+    check_attribute_presence(data, 'release')
+    assert data['release'] == release
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+
+@when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} in the AWS S3 database bucket {bucket}')
+def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
+    timeout = 300 * 60
+    sleep_amount = 10
+
+    key = component_key_into_s3(ecosystem, package, version)
+
+    start_time = datetime.datetime.now(datetime.timezone.utc)
+
+    for _ in range(timeout // sleep_amount):
+        current_date = datetime.datetime.now(datetime.timezone.utc)
+        try:
+            last_modified = context.s3interface.read_object_metadata(bucket, key,
+                                                                     "LastModified")
+            delta = current_date - last_modified
+            # print(current_date, "   ", last_modified, "   ", delta)
+            if delta.days == 0 and delta.seconds < sleep_amount * 2:
+                # print("done!")
+                read_core_data_from_bucket(context, package, version, ecosystem, bucket)
+                return
+        except ClientError as e:
+            print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the job metadata in S3!')
+
+
+@when('I remember timestamps from the last job toplevel data')
+def remember_timestamps_from_job_toplevel_data(context):
+    data = context.s3_data
+    context.job_timestamp_started_at = data['started_at']
+    context.job_timestamp_finished_at = data['finished_at']
+
+    # print("\n\nRemember")
+    # print(context.job_timestamp_started_at)
+    # print(context.job_timestamp_finished_at)
+
+
+@then('I should find that timestamps from current toplevel metadata are newer than '
+      'remembered timestamps')
+def check_new_timestamps(context):
+    data = context.s3_data
+
+    # print("\n\nCurrent")
+    # print(data['started_at'])
+    # print(data['finished_at'])
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+    remembered_started_at = parse_timestamp(context.job_timestamp_started_at)
+    remembered_finished_at = parse_timestamp(context.job_timestamp_finished_at)
+    current_started_at = parse_timestamp(data['started_at'])
+    current_finished_at = parse_timestamp(data['finished_at'])
+
+    assert current_started_at > remembered_started_at, \
+        "Current metadata are not newer: failed on started_at attributes comparison"
+    assert current_finished_at > remembered_finished_at, \
+        "Current metadata are not newer: failed on finished_at attributes comparison"
 
 
 @when('I generate unique job ID prefix')

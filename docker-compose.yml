@@ -53,6 +53,7 @@ services:
     container_name: coreapi-server
     environment:
       F8A_DEBUG: 'true'
+      F8A_UNCLOUDED_MODE: 'true'
       DEPLOYMENT_PREFIX: "${USER}"
       WORKER_ADMINISTRATION_REGION: api
       # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
@@ -97,6 +98,7 @@ services:
      # forces docker-compose to build the image after its base worker image
      - worker-api
      - worker-ingestion
+     - worker-priority
      - pgbouncer
     links:
      - broker
@@ -108,6 +110,8 @@ services:
       #JOB_SERVICE_PORT: 34000
       DEPLOYMENT_PREFIX: "${USER}"
       DISABLE_AUTHENTICATION: "1"
+      #If we want to use gh_most_started api locally then need to put the right github-access token in below variable
+      GITHUB_ACCESS_TOKENS: ""
       # We use ingestion in deployment, but force to api here as we have only one worker that is serving api requests by default
       WORKER_ADMINISTRATION_REGION: api
       RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
@@ -115,6 +119,9 @@ services:
       POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+      F8A_UNCLOUDED_MODE: 'true'
+      AWS_S3_ACCESS_KEY_ID: GNV3SAHAHA3DOT99GQII
+      AWS_S3_SECRET_ACCESS_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
       # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
       # credentials even for server and worker
       # Both can be omitted, defaults to eu-west-1
@@ -135,6 +142,7 @@ services:
      - gremlin-http
     environment: &worker_environment
       DEPLOYMENT_PREFIX: "${USER}"
+      F8A_UNCLOUDED_MODE: 'true'
       WORKER_ADMINISTRATION_REGION: api
       RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
       F8A_SERVER_SERVICE_HOST: coreapi-server
@@ -200,6 +208,11 @@ services:
     environment:
       <<: *worker_environment
       WORKER_ADMINISTRATION_REGION: ingestion
+  worker-priority:
+    <<: *worker
+    environment:
+      <<: *worker_environment
+      WORKER_ADMINISTRATION_REGION: priority
   worker-db-migrations:
     image: registry.devshift.net/bayesian/cucos-worker
     restart: on-failure
@@ -209,6 +222,7 @@ services:
      - pgbouncer
     command: /alembic/run-db-migrations.sh
     environment:
+      F8A_UNCLOUDED_MODE: 'true'
       POSTGRESQL_USER: coreapi
       POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
@@ -311,6 +325,7 @@ services:
     restart: on-failure
     network_mode: bridge
     environment:
+      F8A_UNCLOUDED_MODE: 'true'
       AWS_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
       AWS_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
       DEPLOYMENT_PREFIX: "${USER}"

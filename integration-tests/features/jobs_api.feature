@@ -26,17 +26,48 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should get 200 status code
     Then I should receive JSON response containing the jobs key
     Then I should receive JSON response containing the jobs_count key
+
+  @jobs.requires_auth
+  Scenario: Check that job type 'all' is supported
+    Given System is running
+    When I acquire job API authorization token
+    When I read list of jobs with type all using authorization token
+    Then I should get 200 status code
+    Then I should see N jobs
+
+  @jobs.requires_auth
+  Scenario: Check that job type 'failed' is supported
+    Given System is running
+    When I acquire job API authorization token
+    When I read list of jobs with type failed using authorization token
+    Then I should get 200 status code
+    Then I should see N jobs
+
+  @jobs.requires_auth
+  Scenario: Check that job type 'user' is supported
+    Given System is running
+    When I acquire job API authorization token
+    When I read list of jobs with type user using authorization token
+    Then I should get 200 status code
+    Then I should see N jobs
+
+  @jobs.requires_auth
+  Scenario: Check that improper job type is checked
+    Given System is running
+    When I acquire job API authorization token
+    When I read list of jobs with type BAD using authorization token
+    Then I should get 400 status code
 
   @jobs.requires_auth
   Scenario: Check initial number of jobs
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should get 200 status code
     Then I should see N jobs
 
@@ -47,7 +78,7 @@ Feature: Jobs API
     Then I should get the proper job API authorization token
     When I post a job metadata job1.json with state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should see N jobs
 
   @jobs.requires_auth
@@ -59,11 +90,11 @@ Feature: Jobs API
     Then I should see N jobs
     When I post a job metadata job1.json with state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should see N+1 jobs
     When I post a job metadata job1.json with state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should see N+1 jobs
 
   @jobs.requires_auth
@@ -83,7 +114,7 @@ Feature: Jobs API
     When I generate unique job ID prefix
     When I post a job metadata job1.json with job id TEST_2 and state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should find job with id TEST_2
 
   @jobs.requires_auth
@@ -92,19 +123,19 @@ Feature: Jobs API
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
     When I generate unique job ID prefix
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should not find job with id TEST_3
     Then I should not find job with id TEST_4
     Then I should not find job with id TEST_5
     When I post a job metadata job1.json with job id TEST_3 and state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should find job with id TEST_3
     Then I should not find job with id TEST_4
     Then I should not find job with id TEST_5
     When I post a job metadata job1.json with job id TEST_4 and state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should find job with id TEST_3
     Then I should find job with id TEST_4
     Then I should not find job with id TEST_5
@@ -115,15 +146,15 @@ Feature: Jobs API
     When I acquire job API authorization token
     When I generate unique job ID prefix
     Then I should get the proper job API authorization token
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should not find job with id TEST_TO_DELETE
     When I post a job metadata job1.json with job id TEST_TO_DELETE and state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should find job with id TEST_TO_DELETE
     When I delete job with id TEST_TO_DELETE using authorization token
     Then I should get 200 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should not find job with id TEST_TO_DELETE
 
   @jobs.requires_auth
@@ -131,7 +162,7 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should not find job with id NONEXISTENT_JOB
     When I delete job with id NONEXISTENT_JOB using authorization token
     Then I should get 410 status code
@@ -149,14 +180,14 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I post a job metadata job1.json with job id PAUSED_JOB and state paused
+    When I post a job metadata job1.json with job id PAUSED_JOB and state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should find job with id PAUSED_JOB
     Then I should find job with id PAUSED_JOB and state paused
-    When I set status for job with id PAUSED_JOB to paused
+    When I set status for job with id PAUSED_JOB to paused using authorization token
     Then I should get 200 status code
-    When I set status for job with id PAUSED_JOB to running
+    When I set status for job with id PAUSED_JOB to running using authorization token
     Then I should get 200 status code
 
   @jobs.requires_auth
@@ -164,11 +195,11 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I post a job metadata job1.json with job id PAUSED_JOB_2 and state paused
+    When I post a job metadata job1.json with job id PAUSED_JOB_2 and state paused using authorization token
     Then I should get 201 status code
-    When I access jobs API /api/v1/jobs with authorization token
+    When I read list of jobs using authorization token
     Then I should find job with id PAUSED_JOB_2 and state paused
-    When I set status for job with id PAUSED_JOB_2 to unknown_state
+    When I set status for job with id PAUSED_JOB_2 to unknown_state using authorization token
     Then I should get 400 status code
 
   @jobs.requires_auth
@@ -176,7 +207,7 @@ Feature: Jobs API
     Given System is running
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
-    When I set status for job with id NONEXISTENT_JOB to paused
+    When I set status for job with id NONEXISTENT_JOB to paused using authorization token
     Then I should get 404 status code
 
   @jobs.requires_auth
@@ -251,7 +282,7 @@ Feature: Jobs API
   Scenario: Check the logout endpoint accessed without authorization token
     Given System is running
     When I logout from the job service
-    Then I should get 201 status code
+    Then I should get 401 status code
     Then I should receive empty JSON response
 
   @jobs.requires_auth

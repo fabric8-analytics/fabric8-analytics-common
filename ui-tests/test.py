@@ -125,6 +125,7 @@ def create_new_space_step_2(context):
 
 def create_new_space_step_3(context):
     print('Create new Space: step 3')
+    time.sleep(15)
     next_button = context.browser.find_by_id('forge-next-button').first
     assert next_button is not None
     print(next_button.text)
@@ -255,12 +256,17 @@ def run_tests(engine, server, username, password):
         stack_recommendation(context)
 
 
-check_setup()
-server = os.environ.get('TARGET_SERVER')
-username = os.environ.get('OPENSHIFT_USERNAME')
-password = os.environ.get('OPENSHIFT_PASSWORD')
-engine = os.environ.get('BROWSER_ENGINE', 'chrome')
+def main():
+    check_setup()
+    server = os.environ.get('TARGET_SERVER')
+    username = os.environ.get('OPENSHIFT_USERNAME')
+    password = os.environ.get('OPENSHIFT_PASSWORD')
+    engine = os.environ.get('BROWSER_ENGINE', 'chrome')
 
-print("Using the following browser engine {e}".format(e=engine))
+    print("Using the following browser engine {e}".format(e=engine))
 
-run_tests(engine, server, username, password)
+    run_tests(engine, server, username, password)
+
+
+if __name__ == "__main__":
+    main()

@@ -8,6 +8,9 @@ from behave.log_capture import capture
 import docker
 import requests
 import time
+import sys
+
+from src.s3interface import S3Interface
 
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
@@ -229,13 +232,15 @@ def _wait_for_component_search_service(context, wait_for_service=60):
 
 
 def _restart_system(context, wait_for_server=60):
-    try:
-        _teardown_system(context)
-        _start_system(context)
-        _wait_for_system(context, wait_for_server)
-    except subprocess.CalledProcessError as e:
-        raise Exception('Failed to restart system. Command "{c}" failed:\n{o}'.
-                        format(c=' '.join(e.cmd), o=e.output))
+    # NOTE: it does make sense to restart the local system only
+    if context.running_locally:
+        try:
+            _teardown_system(context)
+            _start_system(context)
+            _wait_for_system(context, wait_for_server)
+        except subprocess.CalledProcessError as e:
+            raise Exception('Failed to restart system. Command "{c}" failed:\n{o}'.
+                            format(c=' '.join(e.cmd), o=e.output))
 
 
 def _is_api_running(url):
@@ -320,6 +325,15 @@ def _check_api_tokens_presence():
     _missing_api_token_warning("JOB_API_TOKEN")
 
 
+def _check_env_var_presence_s3_db(env_var_name):
+    '''Check the existence of environment variable needed to connect to the
+    AWS S3 database.'''
+    if os.environ.get(env_var_name) is None:
+        print("Warning: the {name} environment variable is not set.\n"
+              "All tests that access AWS S3 database will fail\n".format(
+                  name=env_var_name))
+
+
 def _parse_int_env_var(env_var_name):
     val = os.environ.get(env_var_name)
     try:
@@ -392,6 +406,19 @@ def before_all(context):
                                                         _FABRIC8_ANALYTICS_JOBS)
 
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
+
+    # informations needed to access S3 database from tests
+    _check_env_var_presence_s3_db('AWS_ACCESS_KEY_ID')
+    _check_env_var_presence_s3_db('AWS_SECRET_ACCESS_KEY')
+    _check_env_var_presence_s3_db('S3_REGION_NAME')
+
+    aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+    aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    s3_region_name = os.environ.get('S3_REGION_NAME')
+    deployment_prefix = os.environ.get('DEPLOYMENT_PREFIX', 'STAGE')
+
+    context.s3interface = S3Interface(aws_access_key_id, aws_secret_access_key,
+                                      s3_region_name, deployment_prefix)
 
     context.client = None
 
