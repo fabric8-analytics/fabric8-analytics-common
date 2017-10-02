@@ -1595,6 +1595,17 @@ def find_bucket_in_s3(context, bucket):
     assert context.s3interface.does_bucket_exist(bucket)
 
 
+def package_key_into_s3(ecosystem, package):
+    return "{ecosystem}/{package}.json".format(ecosystem=ecosystem,
+                                               package=package)
+
+
+def package_data_key_into_s3(ecosystem, package, metadata):
+    return "{ecosystem}/{package}/{metadata}.json".format(ecosystem=ecosystem,
+                                                          package=package,
+                                                          metadata=metadata)
+
+
 def component_key_into_s3(ecosystem, package, version):
     return "{ecosystem}/{package}/{version}.json".format(ecosystem=ecosystem,
                                                          package=package,
@@ -1608,6 +1619,49 @@ def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
     s3_data = context.s3interface.read_object(bucket, key)
     assert s3_data is not None
     context.s3_data = s3_data
+
+
+def selector_to_key(selector):
+    return selector.lower().replace(" ", "_")
+
+
+@when('I read {selector} metadata for the package {package} in ecosystem '
+      '{ecosystem} from the AWS S3 database bucket {bucket}')
+def read_core_package_data_from_bucket(context, selector, package, ecosystem, bucket):
+    # At this moment, the following selectors can be used:
+    # package toplevel
+    # GitHub details
+    # keywords tagging
+    # libraries io
+    if selector == "package toplevel":
+        key = package_key_into_s3(ecosystem, package)
+    else:
+        metadata = selector_to_key(selector)
+        key = package_data_key_into_s3(ecosystem, package, metadata)
+
+    s3_data = context.s3interface.read_object(bucket, key)
+    assert s3_data is not None
+    context.s3_data = s3_data
+
+
+@then('I should find the correct package toplevel metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_package_toplevel_file(context, package, ecosystem):
+    data = context.s3_data
+
+    check_attribute_presence(data, 'id')
+    assert int(data['id'])
+
+    check_attribute_presence(data, 'package_id')
+    assert int(data['package_id'])
+
+    check_attribute_presence(data, 'analyses')
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
 
 
 @then('I should find the correct component toplevel metadata for package {package} '
