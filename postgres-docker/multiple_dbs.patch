@@ -1,0 +1,26 @@
+diff --git a/postgres-docker/common.sh b/postgres-docker/common.sh
+index 1e39b4f..0c54351 100644
+--- a/postgres-docker/common.sh
++++ b/postgres-docker/common.sh
+@@ -61,7 +61,8 @@ function check_env_vars() {
+     [[ -v POSTGRESQL_USER && -v POSTGRESQL_PASSWORD && -v POSTGRESQL_DATABASE ]] || usage
+     [[ "$POSTGRESQL_USER"     =~ $psql_identifier_regex ]] || usage
+     [[ "$POSTGRESQL_PASSWORD" =~ $psql_password_regex   ]] || usage
+-    [[ "$POSTGRESQL_DATABASE" =~ $psql_identifier_regex ]] || usage
++    # We know what we are doing, disable this check
++    #[[ "$POSTGRESQL_DATABASE" =~ $psql_identifier_regex ]] || usage
+     [ ${#POSTGRESQL_USER}     -le 63 ] || usage "PostgreSQL username too long (maximum 63 characters)"
+     [ ${#POSTGRESQL_DATABASE} -le 63 ] || usage "Database name too long (maximum 63 characters)"
+     postinitdb_actions+=",simple_db"
+@@ -164,7 +165,10 @@ EOF
+ function create_users() {
+   if [[ ",$postinitdb_actions," = *,simple_db,* ]]; then
+     createuser "$POSTGRESQL_USER"
+-    createdb --owner="$POSTGRESQL_USER" "$POSTGRESQL_DATABASE"
++    for database in ${POSTGRESQL_DATABASE//;/ }; do
++      echo "Creating database \"${database}\"..."
++      createdb --owner="$POSTGRESQL_USER" "$database"
++    done
+   fi
+ 
+   if [ -v POSTGRESQL_MASTER_USER ]; then
