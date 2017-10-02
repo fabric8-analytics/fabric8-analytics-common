@@ -19,9 +19,9 @@ class S3Interface():
         self.s3_session = None
 
     def connect(self):
-        assert aws_access_key_id is not None
-        assert aws_secret_access_key is not None
-        assert s3_region_name is not None
+        assert self.aws_access_key_id is not None
+        assert self.aws_secret_access_key is not None
+        assert self.s3_region_name is not None
 
         if self.s3_resource is not None:
             return
