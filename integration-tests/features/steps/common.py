@@ -1644,6 +1644,26 @@ def read_core_package_data_from_bucket(context, selector, package, ecosystem, bu
     context.s3_data = s3_data
 
 
+@then('I should find the correct package toplevel metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_package_toplevel_file(context, package, ecosystem):
+    data = context.s3_data
+
+    check_attribute_presence(data, 'id')
+    assert int(data['id'])
+
+    check_attribute_presence(data, 'package_id')
+    assert int(data['package_id'])
+
+    check_attribute_presence(data, 'analyses')
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+
 @then('I should find the correct component toplevel metadata for package {package} '
       'version {version} ecosystem {ecosystem} with latest version {latest}')
 def check_component_toplevel_file(context, package, version, ecosystem, latest):
