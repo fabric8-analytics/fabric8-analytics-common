@@ -1601,7 +1601,7 @@ def component_key_into_s3(ecosystem, package, version):
                                                          version=version)
 
 
-@when('I read job toplevel data for the package {package} version {version} in ecosystem '
+@when('I read component toplevel metadata for the package {package} version {version} in ecosystem '
       '{ecosystem} from the AWS S3 database bucket {bucket}')
 def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
     key = component_key_into_s3(ecosystem, package, version)
@@ -1610,9 +1610,9 @@ def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
     context.s3_data = s3_data
 
 
-@then('I should find the correct job toplevel metadata for package {package} '
+@then('I should find the correct component toplevel metadata for package {package} '
       'version {version} ecosystem {ecosystem} with latest version {latest}')
-def check_job_toplevel_file(context, package, version, ecosystem, latest):
+def check_component_toplevel_file(context, package, version, ecosystem, latest):
     data = context.s3_data
 
     check_attribute_presence(data, 'ecosystem')
@@ -1667,7 +1667,7 @@ def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
     raise Exception('Timeout waiting for the job metadata in S3!')
 
 
-@when('I remember timestamps from the last job toplevel data')
+@when('I remember timestamps from the last component toplevel metadata')
 def remember_timestamps_from_job_toplevel_data(context):
     data = context.s3_data
     context.job_timestamp_started_at = data['started_at']
