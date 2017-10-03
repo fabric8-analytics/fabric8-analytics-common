@@ -803,6 +803,22 @@ def check_id_in_json_response(context):
     check_id_value(context, "id")
 
 
+def check_audit_metadata(data):
+    """Check if all common attributes can be found in the audit node
+    in the component or package metadata."""
+    assert "_audit" in data
+    audit = data["_audit"]
+
+    assert "version" in audit
+    assert audit["version"] == "v1"
+
+    assert "started_at" in audit
+    check_timestamp(audit["started_at"])
+
+    assert "ended_at" in audit
+    check_timestamp(audit["ended_at"])
+
+
 def check_timestamp(timestamp):
     """Check if the string contains proper timestamp value."""
     assert timestamp is not None
@@ -1662,6 +1678,109 @@ def check_package_toplevel_file(context, package, ecosystem):
 
     check_attribute_presence(data, 'finished_at')
     check_timestamp(data['finished_at'])
+
+
+def check_status_attribute(data):
+    check_attribute_presence(data, "status")
+    assert data["status"] in ["success", "error"]
+
+
+def release_string(ecosystem, package, version=None):
+    return "{e}:{p}:{v}".format(e=ecosystem, p=package, v=version)
+
+
+def check_release_attribute(data, ecosystem, package, version=None):
+    check_attribute_presence(data, "_release")
+    assert data["_release"] == release_string(ecosystem, package)
+
+
+@then('I should find the correct GitHub details metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_github_details_file(context, package, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package)
+    check_status_attribute(data)
+
+    check_attribute_presence(data, "summary")
+    # TODO check github-specific entries
+
+
+@then('I should find the correct keywords tagging metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_keywords_tagging_file(context, package, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package)
+    check_status_attribute(data)
+    # TODO check keywords tagging-specific entries
+
+
+@then('I should find the correct libraries io metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_libraries_io_file(context, package, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package)
+    check_status_attribute(data)
+    # TODO check libraires.io-specific entries
+
+
+def get_releases_node_from_libraries_io(context):
+    data = context.s3_data
+
+    check_attribute_presence(data, 'details')
+    details = data['details']
+
+    check_attribute_presence(details, 'releases')
+    return details['releases']
+
+
+@then('I should find that the latest package version {version} was published on {date}')
+def check_latest_package_version_publication(context, version, date):
+    '''Check the latest package version and publication date.'''
+    releases = get_releases_node_from_libraries_io(context)
+
+    check_attribute_presence(releases, 'latest')
+    latest_release = releases['latest']
+
+    check_attribute_presence(latest_release, "version")
+    check_attribute_presence(latest_release, "published_at")
+
+    stored_version = latest_release["version"]
+    stored_date = latest_release["published_at"]
+
+    assert stored_version == version, \
+        "Package latest version differs, {v} is expected, but {f} is found instead".\
+        format(v=version, f=stored_version)
+
+    assert latest_release["published_at"] == date, \
+        "Package latest release data differs, {d} is expected, but {f} is found instead".\
+        format(d=date, f=stored_date)
+
+
+@then('I should find that the recent package version {version} was published on {date}')
+def check_recent_package_version_publication(context, version, date):
+    releases = get_releases_node_from_libraries_io(context)
+
+    # TODO: update together with https://github.com/openshiftio/openshift.io/issues/1040
+    check_attribute_presence(releases, 'latest')
+    latest_release = releases['latest']
+
+    check_attribute_presence(latest_release, 'recent')
+    recent_releases = latest_release['recent']
+
+    # try to find the exact version published at given date
+    for v, published_at in recent_releases.items():
+        if v == version and date == published_at:
+            return
+
+    # nothing was found
+    raise Exception('Can not find the package recent version {v} published at {d}'.format(
+        v=version, d=date))
 
 
 @then('I should find the correct component toplevel metadata for package {package} '
