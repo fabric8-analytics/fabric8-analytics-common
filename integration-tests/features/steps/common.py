@@ -803,6 +803,22 @@ def check_id_in_json_response(context):
     check_id_value(context, "id")
 
 
+def check_audit_metadata(data):
+    """Check if all common attributes can be found in the audit node
+    in the component or package metadata."""
+    assert "_audit" in data
+    audit = data["_audit"]
+
+    assert "version" in audit
+    assert audit["version"] == "v1"
+
+    assert "started_at" in audit
+    check_timestamp(audit["started_at"])
+
+    assert "ended_at" in audit
+    check_timestamp(audit["ended_at"])
+
+
 def check_timestamp(timestamp):
     """Check if the string contains proper timestamp value."""
     assert timestamp is not None
@@ -1662,6 +1678,22 @@ def check_package_toplevel_file(context, package, ecosystem):
 
     check_attribute_presence(data, 'finished_at')
     check_timestamp(data['finished_at'])
+
+
+def check_status_attribute(data):
+    check_attribute_presence(data, "status")
+    assert data["status"] in ["success", "error"]
+
+
+def release_string(ecosystem, package, version=None):
+    return "{e}:{p}:{v}".format(e=ecosystem, p=package, v=version)
+
+
+def check_release_attribute(data, ecosystem, package, version=None):
+    check_attribute_presence(data, "_release")
+    assert data["_release"] == release_string(ecosystem, package)
+
+
 
 
 @then('I should find the correct component toplevel metadata for package {package} '
