@@ -1739,6 +1739,48 @@ def get_releases_node_from_libraries_io(context):
     return details['releases']
 
 
+@then('I should find that the latest package version {version} was published on {date}')
+def check_latest_package_version_publication(context, version, date):
+    '''Check the latest package version and publication date.'''
+    releases = get_releases_node_from_libraries_io(context)
+
+    check_attribute_presence(releases, 'latest')
+    latest_release = releases['latest']
+
+    check_attribute_presence(latest_release, "version")
+    check_attribute_presence(latest_release, "published_at")
+
+    stored_version = latest_release["version"]
+    stored_date = latest_release["published_at"]
+
+    assert stored_version == version, \
+        "Package latest version differs, {v} is expected, but {f} is found instead".\
+        format(v=version, f=stored_version)
+
+    assert latest_release["published_at"] == date, \
+        "Package latest release data differs, {d} is expected, but {f} is found instead".\
+        format(d=date, f=stored_date)
+
+
+@then('I should find that the recent package version {version} was published on {date}')
+def check_recent_package_version_publication(context, version, date):
+    releases = get_releases_node_from_libraries_io(context)
+
+    # TODO: update together with https://github.com/openshiftio/openshift.io/issues/1040
+    check_attribute_presence(releases, 'latest')
+    latest_release = releases['latest']
+
+    check_attribute_presence(latest_release, 'recent')
+    recent_releases = latest_release['recent']
+
+    # try to find the exact version published at given date
+    for v, published_at in recent_releases.items():
+        if v == version and date == published_at:
+            return
+
+    # nothing was found
+    raise Exception('Can not find the package recent version {v} published at {d}'.format(
+        v=version, d=date))
 
 
 @then('I should find the correct component toplevel metadata for package {package} '
