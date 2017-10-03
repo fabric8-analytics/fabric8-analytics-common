@@ -1694,6 +1694,51 @@ def check_release_attribute(data, ecosystem, package, version=None):
     assert data["_release"] == release_string(ecosystem, package)
 
 
+@then('I should find the correct GitHub details metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_github_details_file(context, package, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package)
+    check_status_attribute(data)
+
+    check_attribute_presence(data, "summary")
+    # TODO check github-specific entries
+
+
+@then('I should find the correct keywords tagging metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_keywords_tagging_file(context, package, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package)
+    check_status_attribute(data)
+    # TODO check keywords tagging-specific entries
+
+
+@then('I should find the correct libraries io metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_libraries_io_file(context, package, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package)
+    check_status_attribute(data)
+    # TODO check libraires.io-specific entries
+
+
+def get_releases_node_from_libraries_io(context):
+    data = context.s3_data
+
+    check_attribute_presence(data, 'details')
+    details = data['details']
+
+    check_attribute_presence(details, 'releases')
+    return details['releases']
+
+
 
 
 @then('I should find the correct component toplevel metadata for package {package} '
