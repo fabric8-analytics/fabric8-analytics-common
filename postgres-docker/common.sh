@@ -37,20 +37,28 @@ function usage() {
   fi
 
   cat >&2 <<EOF
-You must either specify the following environment variables:
+For general container run, you must either specify the following environment
+variables:
   POSTGRESQL_USER (regex: '$psql_identifier_regex')
   POSTGRESQL_PASSWORD (regex: '$psql_password_regex')
   POSTGRESQL_DATABASE (regex: '$psql_identifier_regex')
 Or the following environment variable:
   POSTGRESQL_ADMIN_PASSWORD (regex: '$psql_password_regex')
 Or both.
+
+To migrate data from different PostgreSQL container:
+  POSTGRESQL_MIGRATION_REMOTE_HOST (hostname or IP address)
+  POSTGRESQL_MIGRATION_ADMIN_PASSWORD (password of remote 'postgres' user)
+And optionally:
+  POSTGRESQL_MIGRATION_IGNORE_ERRORS=yes (default is 'no')
+
 Optional settings:
   POSTGRESQL_MAX_CONNECTIONS (default: 100)
   POSTGRESQL_MAX_PREPARED_TRANSACTIONS (default: 0)
   POSTGRESQL_SHARED_BUFFERS (default: 32MB)
 
 For more information see /usr/share/container-scripts/postgresql/README.md
-within the container or visit https://github.com/openshift/postgresql.
+within the container or visit https://github.com/sclorg/postgresql-container.
 EOF
   exit 1
 }
@@ -73,11 +81,16 @@ function check_env_vars() {
     postinitdb_actions+=",admin_pass"
   fi
 
-  case ",$postinitdb_actions," in
-    *,admin_pass,*|*,simple_db,*) ;;
+  if [ -v POSTGRESQL_MIGRATION_REMOTE_HOST -a \
+       -v POSTGRESQL_MIGRATION_ADMIN_PASSWORD ]; then
+    postinitdb_actions+=",migration"
+  fi
+
+  case "$postinitdb_actions" in
+    ,simple_db,admin_pass) ;;
+    ,migration|,simple_db|,admin_pass) ;;
     *) usage ;;
   esac
-
 }
 
 # Make sure env variables don't propagate to PostgreSQL process.
@@ -132,11 +145,16 @@ function generate_passwd_file() {
   export NSS_WRAPPER_GROUP=/etc/group
 }
 
-function initialize_database() {
+initdb_wrapper ()
+{
   # Initialize the database cluster with utf8 support enabled by default.
   # This might affect performance, see:
   # http://www.postgresql.org/docs/9.4/static/locale.html
-  LANG=${LANG:-en_US.utf8} initdb
+  LANG=${LANG:-en_US.utf8} "$@"
+}
+
+function initialize_database() {
+  initdb_wrapper initdb
 
   # PostgreSQL configuration.
   cat >> "$PGDATA/postgresql.conf" <<EOF
@@ -191,6 +209,23 @@ function set_passwords() {
   fi
 }
 
+migrate_db ()
+{
+    test "$postinitdb_actions" = ",migration" || return 0
+
+    # Migration path.
+    (
+        if [ ${POSTGRESQL_MIGRATION_IGNORE_ERRORS-no} = no ]; then
+            echo '\set ON_ERROR_STOP on'
+        fi
+        # initdb automatically creates 'postgres' role;  creating it again would
+        # fail the whole migration so we drop it here
+        PGPASSWORD="$POSTGRESQL_MIGRATION_ADMIN_PASSWORD" \
+        pg_dumpall -h "$POSTGRESQL_MIGRATION_REMOTE_HOST" \
+            | grep -v '^CREATE ROLE postgres;'
+    ) | psql
+}
+
 function set_pgdata ()
 {
   # backwards compatibility case, we used to put the data here,
@@ -201,7 +236,7 @@ function set_pgdata ()
     # move everything except the userdata directory itself, into the userdata directory.
     mv !(userdata) "userdata"
     popd
-  else
+  else 
     # create a subdirectory that the user owns
     mkdir -p "${HOME}/data/userdata"
   fi
@@ -221,4 +256,166 @@ function wait_for_postgresql_master() {
     fi
     sleep 1
   done
+}
+
+
+run_pgupgrade ()
+(
+  optimized=false
+  old_raw_version=${POSTGRESQL_PREV_VERSION//\./}
+  new_raw_version=${POSTGRESQL_VERSION//\./}
+
+  if test "$old_raw_version" = 92; then
+    old_collection=postgresql92
+  else
+    old_collection=rh-postgresql$old_raw_version
+  fi
+
+  old_pgengine=/opt/rh/$old_collection/root/usr/bin
+  new_pgengine=/opt/rh/rh-postgresql${new_raw_version}/root/usr/bin
+  PGDATA_new="${PGDATA}-new"
+
+  printf >&2 "\n==========  \$PGDATA upgrade: %s -> %s  ==========\n\n" \
+             "$POSTGRESQL_PREV_VERSION" \
+             "$POSTGRESQL_VERSION"
+
+  info_msg () { printf >&2 "\n===>  $*\n\n" ;}
+
+  # pg_upgrade writes logs to cwd, so go to the persistent storage first
+  cd "$HOME"/data
+
+  # disable this because of scl_source, 'set +u' just makes the code ugly
+  # anyways
+  set +u
+
+  # we need to have the old SCL enabled, otherwise the $old_pgengine is not
+  # working.  The scl_source script doesn't pay attention to non-zero exit
+  # statuses, so use 'set +e'.
+  set +e
+  source scl_source enable $old_collection
+  set -e
+
+  case $POSTGRESQL_UPGRADE in
+    copy) # we accept this
+      ;;
+    hardlink)
+      optimized=:
+      ;;
+    *)
+      echo >&2 "Unsupported value: \$POSTGRESQL_UPGRADE=$POSTGRESQL_UPGRADE"
+      false
+      ;;
+  esac
+
+  # Ensure $PGDATA_new doesn't exist yet, so we can immediately remove it if
+  # there's some problem.
+  test ! -e "$PGDATA_new"
+
+  # initialize the database
+  info_msg "Initialize new data directory; we will migrate to that."
+  initdb_cmd=( initdb_wrapper "$new_pgengine"/initdb "$PGDATA_new" )
+  eval "\${initdb_cmd[@]} ${POSTGRESQL_UPGRADE_INITDB_OPTIONS-}" || \
+    { rm -rf "$PGDATA_new" ; false ; }
+
+  upgrade_cmd=(
+      "$new_pgengine"/pg_upgrade
+      "--old-bindir=$old_pgengine"
+      "--new-bindir=$new_pgengine"
+      "--old-datadir=$PGDATA"
+      "--new-datadir=$PGDATA_new"
+  )
+
+  # Dangerous --link option, we loose $DATADIR if something goes wrong.
+  ! $optimized || upgrade_cmd+=(--link)
+
+  # User-specififed options for pg_upgrade.
+  eval "upgrade_cmd+=(${POSTGRESQL_UPGRADE_PGUPGRADE_OPTIONS-})"
+
+  # the upgrade
+  info_msg "Starting the pg_upgrade process."
+
+  # Once we stop support for PostgreSQL 9.4, we don't need
+  # REDHAT_PGUPGRADE_FROM_RHEL hack as we don't upgrade from 9.2 -- that means
+  # that we don't need to fiddle with unix_socket_director{y,ies} option.
+  REDHAT_PGUPGRADE_FROM_RHEL=1 \
+  "${upgrade_cmd[@]}" || { rm -rf "$PGDATA_new" && false ; }
+
+  # Move the important configuration and remove old data.  This is highly
+  # careless, but we can't do more for this over-automatized process.
+  info_msg "Swap the old and new PGDATA and cleanup."
+  mv "$PGDATA"/*.conf "$PGDATA_new"
+  rm -rf "$PGDATA"
+  mv "$PGDATA_new" "$PGDATA"
+
+  info_msg "Upgrade DONE."
+)
+
+
+# Run right after container startup, when the data volume is already initialized
+# (not initialized by this container run) and thus there exists a chance that
+# the data was generated by incompatible PostgreSQL major version.
+try_pgupgrade ()
+{
+  local versionfile="$PGDATA"/PG_VERSION version upgrade_available
+
+  # This file always exists.
+  test -f "$versionfile"
+  version=$(cat "$versionfile")
+
+  # If we don't support pg_upgrade, skip.
+  test -z "${POSTGRESQL_PREV_VERSION-}" && return 0
+
+  if test "$POSTGRESQL_VERSION" = "$version"; then
+      # No need to call pg_upgrade.
+
+      # Mistakenly requests upgrade?  If not, just start the DB.
+      test -z "${POSTGRESQL_UPGRADE-}" && return 0
+
+      # Make _sure_ we have this safety-belt here, otherwise our users would
+      # just specify '-e POSTGRESQL_UPGRADE=hardlink' permanently, even for
+      # re-deployment cases when upgrade is not needed.  Setting such
+      # unfortunate default could mean that pg_upgrade might (after some user
+      # mistake) migrate (or even destruct, especially with --link) the old data
+      # directory with limited rollback options, if any.
+      echo >&2
+      echo >&2 "== WARNING!! =="
+      echo >&2 "PostgreSQL server version matches the datadir PG_VERSION."
+      echo >&2 "The \$POSTGRESQL_UPGRADE makes no sense and you probably"
+      echo >&2 "made some mistake, keeping the variable set you might"
+      echo >&2 "risk a data loss in future!"
+      echo >&2 "==============="
+      echo >&2
+
+      # Exit here, but allow _really explicit_ foot-shot.
+      ${POSTGRESQL_UPGRADE_FORCE-false}
+      return 0
+  fi
+
+  # At this point in code we know that PG_VERSION doesn't match the PostgreSQL
+  # server major version;  this might mean that user either (a) mistakenly
+  # deploys from a bad image, or (b) user wants to perform upgrade.  For the
+  # upgrade we require explicit request -- just to avoid disasters in (a)-cases.
+
+  if test -z "${POSTGRESQL_UPGRADE-}"; then
+    echo >&2 "Incompatible data directory.  This container image provides"
+    echo >&2 "PostgreSQL '$POSTGRESQL_VERSION', but data directory is of"
+    echo >&2 "version '$version'."
+    echo >&2
+    echo >&2 "This image supports automatic data directory upgrade from"
+    echo >&2 "'$POSTGRESQL_PREV_VERSION', please _carefully_ consult image documentation"
+    echo >&2 "about how to use the '\$POSTGRESQL_UPGRADE' startup option."
+    # We could wait for postgresql startup failure (there's no risk of data dir
+    # corruption), but fail rather early.
+    false
+  fi
+
+  # We support pg_upgrade process only from previous version of this container
+  # (upgrade to N to N+1 is possible, so e.g. 9.4 to 9.5).
+  if test "$POSTGRESQL_PREV_VERSION" != "$version"; then
+    echo >&2 "With this container image you can only upgrade from data directory"
+    echo >&2 "of version '$POSTGRESQL_PREV_VERSION', not '$version'."
+    false
+  fi
+
+  run_pgupgrade
 }
