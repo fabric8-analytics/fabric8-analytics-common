@@ -50,6 +50,7 @@ services:
      - broker
      - pgbouncer
      - gremlin-http
+     - minio-s3
     container_name: coreapi-server
     environment:
       F8A_DEBUG: 'true'
