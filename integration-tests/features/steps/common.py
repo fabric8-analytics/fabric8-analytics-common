@@ -1306,6 +1306,7 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
                         " {component} {version}".format(component=component,
                                                         version=version))
 
+
 @then('I should find that the component {component} version {version} has only one replacement')
 @then('I should find that the component {component} version {version} has '
       '{expected_replacements:d} replacements')
