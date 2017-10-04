@@ -52,3 +52,22 @@ Feature: Checks the component metadata in AWS S3 database
     When I wait for new toplevel data for the package clojure_py version 0.2.4 in ecosystem pypi in the AWS S3 database bucket bayesian-core-data
     Then I should find that timestamps from current toplevel metadata are newer than remembered timestamps
 
+  @requires_s3_access
+  Scenario: Check the package metadata content
+    Given System is running
+    When I connect to the AWS S3 database
+    Then I should see bayesian-core-package-data bucket
+    When I read package toplevel metadata for the package clojure_py in ecosystem pypi from the AWS S3 database bucket bayesian-core-package-data
+    Then I should find the correct package toplevel metadata for package clojure_py from ecosystem pypi
+    When I read GitHub details metadata for the package clojure_py in ecosystem pypi from the AWS S3 database bucket bayesian-core-package-data
+    Then I should find the correct GitHub details metadata for package clojure_py from ecosystem pypi
+    When I read keywords tagging metadata for the package clojure_py in ecosystem pypi from the AWS S3 database bucket bayesian-core-package-data
+    Then I should find the correct keywords tagging metadata for package clojure_py from ecosystem pypi
+    When I read libraries io metadata for the package clojure_py in ecosystem pypi from the AWS S3 database bucket bayesian-core-package-data
+    Then I should find the correct libraries io metadata for package clojure_py from ecosystem pypi
+     and I should find that the latest package version 0.2.4 was published on Apr 10, 2012
+     and I should find that the recent package version 0.1.0g was published on Mar 8, 2012
+     and I should find that the recent package version 0.2.0 was published on Apr 10, 2012
+     and I should find that the recent package version 0.2.1 was published on Apr 10, 2012
+     and I should find that the recent package version 0.2.2 was published on Apr 10, 2012
+     and I should find that the recent package version 0.2.3 was published on Apr 10, 2012
