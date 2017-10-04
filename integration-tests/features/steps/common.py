@@ -1229,7 +1229,6 @@ def stack_analysis_check_licenses(context, licenses, path):
     check_licenses(node, licenses)
 
 
-
 def get_attribute_values(list, attribute_name):
     return [item[attribute_name] for item in list]
 
@@ -1306,7 +1305,6 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
         raise Exception("Can not found expected replacement for the component"
                         " {component} {version}".format(component=component,
                                                         version=version))
-
 
 @then('I should find that the component {component} version {version} has only one replacement')
 @then('I should find that the component {component} version {version} has '
