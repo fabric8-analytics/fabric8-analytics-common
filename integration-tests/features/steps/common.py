@@ -1736,11 +1736,26 @@ def check_dependent_repositories_count(context, expected_repo_count):
     dependent_repositories = details["dependent_repositories"]
 
     check_attribute_presence(dependent_repositories, 'count')
-    repo_count = releases['count']
+    repo_count = dependent_repositories['count']
 
     assert int(repo_count) == expected_repo_count, \
         "Expected {e} repositories, but found {f} instead".format(e=expected_repo_count,
                                                                   f=repo_count)
+
+
+@then('I should find {expected_dependents_count:d} dependent projects for this package')
+def check_dependents_count(context, expected_dependents_count):
+    details = get_details_node_from_libraries_io(context)
+
+    check_attribute_presence(details, 'dependents')
+    dependents = details["dependents"]
+
+    check_attribute_presence(dependents, 'count')
+    dependents_count = dependents['count']
+
+    assert int(dependents_count) == expected_dependents_count, \
+        "Expected {e} dependents, but found {f} instead".format(e=expected_dependents_count,
+                                                                f=dependents_count)
 
 
 @then('I should find the correct component toplevel metadata for package {package} '
