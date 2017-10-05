@@ -1,0 +1,33 @@
+{
+  "_audit": {
+    "ended_at": "2017-09-27T13:19:34.409685",
+    "started_at": "2017-09-27T13:19:33.045812",
+    "version": "v1"
+  },
+  "_release": "pypi:clojure_py:None",
+  "details": {
+    "dependent_repositories": {
+      "count": "0",
+      "top": {}
+    },
+    "dependents": {
+      "count": "0"
+    },
+    "releases": {
+      "count": "6",
+      "latest": {
+        "published_at": "Apr 10, 2012",
+        "recent": {
+          "0.1.0g": "Mar 8, 2012",
+          "0.2.0": "Apr 10, 2012",
+          "0.2.1": "Apr 10, 2012",
+          "0.2.2": "Apr 10, 2012",
+          "0.2.3": "Apr 10, 2012"
+        },
+        "version": "0.2.4"
+      }
+    }
+  },
+  "status": "success",
+  "summary": []
+}

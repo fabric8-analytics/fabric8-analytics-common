@@ -1,0 +1,15 @@
+{
+  "_audit": {
+    "ended_at": "2017-09-27T13:19:14.308873",
+    "started_at": "2017-09-27T13:19:14.021922",
+    "version": "v1"
+  },
+  "_release": "pypi:clojure_py:None",
+  "details": {},
+  "schema": {
+    "name": "github_details",
+    "version": "1-0-4"
+  },
+  "status": "error",
+  "summary": []
+}
