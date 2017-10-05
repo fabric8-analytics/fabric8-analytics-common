@@ -128,6 +128,33 @@ services:
       # Both can be omitted, defaults to eu-west-1
       #AWS_SQS_REGION: ''
       #AWS_S3_REGION: ''
+  webapp:
+    image: registry.devshift.net/bayesian/coreapi-webapp
+    network_mode: bridge
+    container_name: coreapi-webapp
+    restart: always
+    ports:
+     - "35000:35000"
+    links:
+     - broker
+     - minio-s3
+     - pgbouncer
+    environment:
+      DEPLOYMENT_PREFIX: "${USER}"
+      DISABLE_AUTHENTICATION: "1"
+      GITHUB_ACCESS_TOKENS: ""
+      # We use ingestion in deployment, but force to api here as we have only one worker that is serving api requests by default
+      WORKER_ADMINISTRATION_REGION: ingestion
+      RABBITMQ_SERVICE_SERVICE_HOST: coreapi-broker
+      #AWS_S3_ACCESS_KEY_ID: GNV3SAHAHA3DOT99GQII
+      #AWS_S3_SECRET_ACCESS_KEY: ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ
+      F8A_UNCLOUDED_MODE: 'true'
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
+      GITHUB_CONSUMER_KEY: ''
+      GITHUB_CONSUMER_SECRET: ''
   worker-api: &worker
     image: registry.devshift.net/bayesian/cucos-worker
     restart: always

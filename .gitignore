@@ -88,6 +88,7 @@ target/
 
 # ignore checked out repos with fabric8-analytics components
 fabric8-analytics-worker/
+fabric8-analytics-webapp/
 fabric8-analytics-server/
 fabric8-analytics-jobs/
 fabric8-analytics-pgbouncer/
