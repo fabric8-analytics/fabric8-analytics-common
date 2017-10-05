@@ -1788,6 +1788,18 @@ def check_component_toplevel_file(context, package, version, ecosystem, latest):
     check_timestamp(data['finished_at'])
 
 
+@then('I should find the weight for the word {word} in the {where}')
+def check_weight_for_word_in_keywords_tagging(context, word, where):
+    selector = selector_to_key(where)
+    assert selector in ["package_name", "repository_description"]
+
+    details = get_details_node(context)
+    word_dict = check_and_get_attribute(details, selector)
+
+    check_attribute_presence(word_dict, word)
+    assert float(word_dict[word]) > 0.0
+
+
 @when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
       '{ecosystem} in the AWS S3 database bucket {bucket}')
 def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
