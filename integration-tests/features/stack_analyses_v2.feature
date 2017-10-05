@@ -258,7 +258,7 @@ Feature: Stack analysis v2 API
     Then I should find the following analyzed dependencies (click) in the stack analysis
 
   @requires_authorization_token
-  Scenario: Check the sentiment analysis and outlier records
+  Scenario: Check the outlier records
     Given System is running
     When I download and parse outlier probability threshold value
     Then I should have outlier probability threshold value between 0.0 and 1.0
@@ -270,7 +270,6 @@ Feature: Stack analysis v2 API
     Then I should get 200 status code
     Then I should receive JSON response with the correct timestamp in attribute started_at
     Then I should receive JSON response with the correct timestamp in attribute finished_at
-    Then I should find the proper sentiment values in the stack analysis response
     Then I should find the proper outlier record for the org.springframework:spring-messaging component
     Then I should find the proper outlier record for the org.springframework.boot:spring-boot-starter component
     Then I should find the proper outlier record for the org.springframework.boot:spring-boot-starter-web component

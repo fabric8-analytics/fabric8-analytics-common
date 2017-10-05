@@ -28,7 +28,6 @@ Feature: Stack analysis v2 API Minimal
 Then I should get 200 status code
     Then I should get a valid request ID
     Then I should find the attribute request_id equals to id returned by stack analysis request
-    Then I should find the proper sentiment values in the stack analysis response
     Then I should find that none analyzed package can be found in companion packages as well
     Then I should find that total 2 outliers are reported
     Then I should find that valid outliers are reported
