@@ -58,3 +58,18 @@ Feature: Check the implementation of test steps
     Then I should find the security node for all alternate components
     Then I should find the CVE-2010-3492 security issue for the dependency six
 
+  @requires_s3_access
+  Scenario: Check the package and component tests by using mocked data
+    Given System is running
+    When I mock S3 data by content of data/clojure_py_package/github_details.json file
+    Then I should find the correct GitHub details metadata for package clojure_py from ecosystem pypi
+    When I mock S3 data by content of data/clojure_py_package/keywords_tagging.json file
+    Then I should find the correct keywords tagging metadata for package clojure_py from ecosystem pypi
+    When I mock S3 data by content of data/clojure_py_package/libraries_io.json file
+    Then I should find the correct libraries io metadata for package clojure_py from ecosystem pypi
+     and I should find that the latest package version 0.2.4 was published on Apr 10, 2012
+     and I should find that the recent package version 0.1.0g was published on Mar 8, 2012
+     and I should find that the recent package version 0.2.0 was published on Apr 10, 2012
+     and I should find that the recent package version 0.2.1 was published on Apr 10, 2012
+     and I should find that the recent package version 0.2.2 was published on Apr 10, 2012
+     and I should find that the recent package version 0.2.3 was published on Apr 10, 2012
