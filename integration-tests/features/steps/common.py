@@ -1669,15 +1669,13 @@ def check_libraries_io_file(context, package, ecosystem):
 def get_details_node_from_libraries_io(context):
     data = context.s3_data
 
-    check_attribute_presence(data, 'details')
-    return data['details']
+   return check_and_get_attribute(data, 'details')
 
 
 def get_releases_node_from_libraries_io(context):
     details = get_details_node_from_libraries_io(context)
 
-    check_attribute_presence(details, 'releases')
-    return details['releases']
+    return check_and_get_attribute(details, 'releases')
 
 
 @then('I should find that the latest package version {version} was published on {date}')
@@ -1685,8 +1683,7 @@ def check_latest_package_version_publication(context, version, date):
     '''Check the latest package version and publication date.'''
     releases = get_releases_node_from_libraries_io(context)
 
-    check_attribute_presence(releases, 'latest')
-    latest_release = releases['latest']
+    latest_release = check_and_get_attribute(releases, 'latest')
 
     check_attribute_presence(latest_release, "version")
     check_attribute_presence(latest_release, "published_at")
@@ -1708,11 +1705,9 @@ def check_recent_package_version_publication(context, version, date):
     releases = get_releases_node_from_libraries_io(context)
 
     # TODO: update together with https://github.com/openshiftio/openshift.io/issues/1040
-    check_attribute_presence(releases, 'latest')
-    latest_release = releases['latest']
+    latest_release = check_and_get_attribute(releases, 'latest')
 
-    check_attribute_presence(latest_release, 'recent')
-    recent_releases = latest_release['recent']
+    recent_releases = check_and_get_attribute(latest_release, 'recent')
 
     # try to find the exact version published at given date
     for v, published_at in recent_releases.items():
@@ -1728,8 +1723,7 @@ def check_recent_package_version_publication(context, version, date):
 def check_releases_count(context, expected_count):
     releases = get_releases_node_from_libraries_io(context)
 
-    check_attribute_presence(releases, 'count')
-    releases_count = releases['count']
+    releases_count = check_and_get_attribute(releases, 'count')
 
     assert int(releases_count) == expected_count, \
         "Expected {e} releases, but found {f}".format(e=expected_count, f=releases_count)
@@ -1739,11 +1733,9 @@ def check_releases_count(context, expected_count):
 def check_dependent_repositories_count(context, expected_repo_count):
     details = get_details_node_from_libraries_io(context)
 
-    check_attribute_presence(details, 'dependent_repositories')
-    dependent_repositories = details["dependent_repositories"]
+    dependent_repositories = check_and_get_attribute(details, 'dependent_repositories')
 
-    check_attribute_presence(dependent_repositories, 'count')
-    repo_count = dependent_repositories['count']
+    repo_count = check_and_get_attribute(dependent_repositories, 'count')
 
     assert int(repo_count) == expected_repo_count, \
         "Expected {e} repositories, but found {f} instead".format(e=expected_repo_count,
@@ -1754,11 +1746,9 @@ def check_dependent_repositories_count(context, expected_repo_count):
 def check_dependents_count(context, expected_dependents_count):
     details = get_details_node_from_libraries_io(context)
 
-    check_attribute_presence(details, 'dependents')
-    dependents = details["dependents"]
+    dependents = check_and_get_attribute(details, 'dependents')
 
-    check_attribute_presence(dependents, 'count')
-    dependents_count = dependents['count']
+    dependents_count = check_and_get_attribute(dependents, 'count')
 
     assert int(dependents_count) == expected_dependents_count, \
         "Expected {e} dependents, but found {f} instead".format(e=expected_dependents_count,
