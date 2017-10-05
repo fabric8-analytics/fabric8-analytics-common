@@ -1351,9 +1351,16 @@ def get_alternate_components(json_data):
 
 
 def check_attribute_presence(node, attribute_name):
+    '''Check the attribute presence in the dictionary. To be used for deserialized JSON data etc.'''
     assert attribute_name in node, \
         "'%s' attribute is expected in the node, " \
         "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
+
+
+def check_and_get_attribute(node, attribute_name):
+    '''Check the attribute presence and if the attribute is found, return its value.'''
+    check_attribute_presence(node, attribute_name)
+    return node[attribute_name]
 
 
 def perform_alternate_components_validation(json_data):
