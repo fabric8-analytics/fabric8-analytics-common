@@ -1713,6 +1713,17 @@ def check_recent_package_version_publication(context, version, date):
         v=version, d=date))
 
 
+@then('I should find {expected_count:d} releases for this package')
+def check_releases_count(context, expected_count):
+    releases = get_releases_node_from_libraries_io(context)
+
+    check_attribute_presence(releases, 'count')
+    releases_count = releases['count']
+
+    assert int(releases_count) == expected_count, \
+        "Expected {e} releases, but found {f}".format(e=expected_count, f=releases_count)
+
+
 @then('I should find the correct component toplevel metadata for package {package} '
       'version {version} ecosystem {ecosystem} with latest version {latest}')
 def check_component_toplevel_file(context, package, version, ecosystem, latest):
