@@ -1728,6 +1728,21 @@ def check_releases_count(context, expected_count):
         "Expected {e} releases, but found {f}".format(e=expected_count, f=releases_count)
 
 
+@then('I should find {expected_repo_count:d} dependent repositories for this package')
+def check_dependent_repositories_count(context, expected_repo_count):
+    details = get_details_node_from_libraries_io(context)
+
+    check_attribute_presence(details, 'dependent_repositories')
+    dependent_repositories = details["dependent_repositories"]
+
+    check_attribute_presence(dependent_repositories, 'count')
+    repo_count = releases['count']
+
+    assert int(repo_count) == expected_repo_count, \
+        "Expected {e} repositories, but found {f} instead".format(e=expected_repo_count,
+                                                                  f=repo_count)
+
+
 @then('I should find the correct component toplevel metadata for package {package} '
       'version {version} ecosystem {ecosystem} with latest version {latest}')
 def check_component_toplevel_file(context, package, version, ecosystem, latest):
