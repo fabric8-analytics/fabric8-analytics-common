@@ -1652,7 +1652,10 @@ def check_keywords_tagging_file(context, package, ecosystem):
     check_audit_metadata(data)
     check_release_attribute(data, ecosystem, package)
     check_status_attribute(data)
-    # TODO check keywords tagging-specific entries
+
+    details = get_details_node(context)
+    check_attribute_presence(details, "package_name")
+    check_attribute_presence(details, "repository_description")
 
 
 @then('I should find the correct libraries io metadata for package {package} '
