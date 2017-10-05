@@ -1666,14 +1666,14 @@ def check_libraries_io_file(context, package, ecosystem):
     # TODO check libraires.io-specific entries
 
 
-def get_details_node_from_libraries_io(context):
+def get_details_node(context):
     data = context.s3_data
 
-   return check_and_get_attribute(data, 'details')
+    return check_and_get_attribute(data, 'details')
 
 
 def get_releases_node_from_libraries_io(context):
-    details = get_details_node_from_libraries_io(context)
+    details = get_details_node(context)
 
     return check_and_get_attribute(details, 'releases')
 
@@ -1731,7 +1731,7 @@ def check_releases_count(context, expected_count):
 
 @then('I should find {expected_repo_count:d} dependent repositories for this package')
 def check_dependent_repositories_count(context, expected_repo_count):
-    details = get_details_node_from_libraries_io(context)
+    details = get_details_node(context)
 
     dependent_repositories = check_and_get_attribute(details, 'dependent_repositories')
 
@@ -1744,7 +1744,7 @@ def check_dependent_repositories_count(context, expected_repo_count):
 
 @then('I should find {expected_dependents_count:d} dependent projects for this package')
 def check_dependents_count(context, expected_dependents_count):
-    details = get_details_node_from_libraries_io(context)
+    details = get_details_node(context)
 
     dependents = check_and_get_attribute(details, 'dependents')
 
