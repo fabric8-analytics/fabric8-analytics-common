@@ -1659,11 +1659,15 @@ def check_libraries_io_file(context, package, ecosystem):
     # TODO check libraires.io-specific entries
 
 
-def get_releases_node_from_libraries_io(context):
+def get_details_node_from_libraries_io(context):
     data = context.s3_data
 
     check_attribute_presence(data, 'details')
-    details = data['details']
+    return data['details']
+
+
+def get_releases_node_from_libraries_io(context):
+    details = get_details_node_from_libraries_io(context)
 
     check_attribute_presence(details, 'releases')
     return details['releases']
