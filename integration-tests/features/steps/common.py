@@ -1824,3 +1824,9 @@ class MockedResponse():
 @when('I mock API response by {filename} file')
 def read_json_file(context, filename):
     context.response = MockedResponse(filename)
+
+
+@when('I mock S3 data by content of {filename} file')
+def read_json_file(context, filename):
+    with open(filename) as data_file:
+        context.s3_data = json.load(data_file)
