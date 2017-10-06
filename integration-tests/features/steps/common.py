@@ -1642,7 +1642,13 @@ def check_github_details_file(context, package, ecosystem):
     check_status_attribute(data)
 
     check_attribute_presence(data, "summary")
-    # TODO check github-specific entries
+    check_attribute_presence(data, "details")
+    check_attribute_presence(data, "schema")
+
+    schema = data["schema"]
+    check_attribute_presence(schema, "name")
+    check_attribute_presence(schema, "version")
+
 
 
 @then('I should find the correct keywords tagging metadata for package {package} '
