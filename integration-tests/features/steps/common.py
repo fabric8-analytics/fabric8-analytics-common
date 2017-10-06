@@ -1352,9 +1352,16 @@ def get_alternate_components(json_data):
 
 
 def check_attribute_presence(node, attribute_name):
+    '''Check the attribute presence in the dictionary. To be used for deserialized JSON data etc.'''
     assert attribute_name in node, \
         "'%s' attribute is expected in the node, " \
         "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
+
+
+def check_and_get_attribute(node, attribute_name):
+    '''Check the attribute presence and if the attribute is found, return its value.'''
+    check_attribute_presence(node, attribute_name)
+    return node[attribute_name]
 
 
 def perform_alternate_components_validation(json_data):
@@ -1646,7 +1653,10 @@ def check_keywords_tagging_file(context, package, ecosystem):
     check_audit_metadata(data)
     check_release_attribute(data, ecosystem, package)
     check_status_attribute(data)
-    # TODO check keywords tagging-specific entries
+
+    details = get_details_node(context)
+    check_attribute_presence(details, "package_name")
+    check_attribute_presence(details, "repository_description")
 
 
 @then('I should find the correct libraries io metadata for package {package} '
@@ -1660,14 +1670,16 @@ def check_libraries_io_file(context, package, ecosystem):
     # TODO check libraires.io-specific entries
 
 
-def get_releases_node_from_libraries_io(context):
+def get_details_node(context):
     data = context.s3_data
 
-    check_attribute_presence(data, 'details')
-    details = data['details']
+    return check_and_get_attribute(data, 'details')
 
-    check_attribute_presence(details, 'releases')
-    return details['releases']
+
+def get_releases_node_from_libraries_io(context):
+    details = get_details_node(context)
+
+    return check_and_get_attribute(details, 'releases')
 
 
 @then('I should find that the latest package version {version} was published on {date}')
@@ -1675,8 +1687,7 @@ def check_latest_package_version_publication(context, version, date):
     '''Check the latest package version and publication date.'''
     releases = get_releases_node_from_libraries_io(context)
 
-    check_attribute_presence(releases, 'latest')
-    latest_release = releases['latest']
+    latest_release = check_and_get_attribute(releases, 'latest')
 
     check_attribute_presence(latest_release, "version")
     check_attribute_presence(latest_release, "published_at")
@@ -1698,11 +1709,9 @@ def check_recent_package_version_publication(context, version, date):
     releases = get_releases_node_from_libraries_io(context)
 
     # TODO: update together with https://github.com/openshiftio/openshift.io/issues/1040
-    check_attribute_presence(releases, 'latest')
-    latest_release = releases['latest']
+    latest_release = check_and_get_attribute(releases, 'latest')
 
-    check_attribute_presence(latest_release, 'recent')
-    recent_releases = latest_release['recent']
+    recent_releases = check_and_get_attribute(latest_release, 'recent')
 
     # try to find the exact version published at given date
     for v, published_at in recent_releases.items():
@@ -1712,6 +1721,42 @@ def check_recent_package_version_publication(context, version, date):
     # nothing was found
     raise Exception('Can not find the package recent version {v} published at {d}'.format(
         v=version, d=date))
+
+
+@then('I should find {expected_count:d} releases for this package')
+def check_releases_count(context, expected_count):
+    releases = get_releases_node_from_libraries_io(context)
+
+    releases_count = check_and_get_attribute(releases, 'count')
+
+    assert int(releases_count) == expected_count, \
+        "Expected {e} releases, but found {f}".format(e=expected_count, f=releases_count)
+
+
+@then('I should find {expected_repo_count:d} dependent repositories for this package')
+def check_dependent_repositories_count(context, expected_repo_count):
+    details = get_details_node(context)
+
+    dependent_repositories = check_and_get_attribute(details, 'dependent_repositories')
+
+    repo_count = check_and_get_attribute(dependent_repositories, 'count')
+
+    assert int(repo_count) == expected_repo_count, \
+        "Expected {e} repositories, but found {f} instead".format(e=expected_repo_count,
+                                                                  f=repo_count)
+
+
+@then('I should find {expected_dependents_count:d} dependent projects for this package')
+def check_dependents_count(context, expected_dependents_count):
+    details = get_details_node(context)
+
+    dependents = check_and_get_attribute(details, 'dependents')
+
+    dependents_count = check_and_get_attribute(dependents, 'count')
+
+    assert int(dependents_count) == expected_dependents_count, \
+        "Expected {e} dependents, but found {f} instead".format(e=expected_dependents_count,
+                                                                f=dependents_count)
 
 
 @then('I should find the correct component toplevel metadata for package {package} '
@@ -1742,6 +1787,18 @@ def check_component_toplevel_file(context, package, version, ecosystem, latest):
 
     check_attribute_presence(data, 'finished_at')
     check_timestamp(data['finished_at'])
+
+
+@then('I should find the weight for the word {word} in the {where}')
+def check_weight_for_word_in_keywords_tagging(context, word, where):
+    selector = selector_to_key(where)
+    assert selector in ["package_name", "repository_description"]
+
+    details = get_details_node(context)
+    word_dict = check_and_get_attribute(details, selector)
+
+    check_attribute_presence(word_dict, word)
+    assert float(word_dict[word]) > 0.0
 
 
 @when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
