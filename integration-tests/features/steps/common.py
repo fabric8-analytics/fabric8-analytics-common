@@ -1650,6 +1650,11 @@ def check_github_details_file(context, package, ecosystem):
     check_attribute_presence(schema, "version")
 
 
+@then('I should find empty details about GitHub repository')
+def check_empty_github_details(context):
+    details = get_details_node(context)
+    assert not details, "Empty 'details' node is expected"
+
 
 @then('I should find the correct keywords tagging metadata for package {package} '
       'from ecosystem {ecosystem}')
