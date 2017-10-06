@@ -223,6 +223,7 @@ def contains_alternate_node(json_resp):
 
 
 @when("I wait for stack analysis to finish")
+@when("I wait for stack analysis to finish {token} authorization token")
 @when("I wait for stack analysis version {version} to finish {token} authorization token")
 def wait_for_stack_analysis_completion(context, version="2", token="without"):
     """Try to wait for the stack analysis to be finished.
