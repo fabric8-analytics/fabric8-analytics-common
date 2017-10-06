@@ -63,8 +63,14 @@ Feature: Check the implementation of test steps
     Given System is running
     When I mock S3 data by content of data/clojure_py_package/github_details.json file
     Then I should find the correct GitHub details metadata for package clojure_py from ecosystem pypi
+     and I should find empty details about GitHub repository
     When I mock S3 data by content of data/clojure_py_package/keywords_tagging.json file
     Then I should find the correct keywords tagging metadata for package clojure_py from ecosystem pypi
+     and I should find the weight for the word clojure in the package name
+     and I should find the weight for the word py in the package name
+     and I should find the weight for the word clojure in the repository description
+     and I should find the weight for the word bytecode in the repository description
+     and I should find the weight for the word python in the repository description
     When I mock S3 data by content of data/clojure_py_package/libraries_io.json file
     Then I should find the correct libraries io metadata for package clojure_py from ecosystem pypi
      and I should find that the latest package version 0.2.4 was published on Apr 10, 2012
@@ -73,3 +79,6 @@ Feature: Check the implementation of test steps
      and I should find that the recent package version 0.2.1 was published on Apr 10, 2012
      and I should find that the recent package version 0.2.2 was published on Apr 10, 2012
      and I should find that the recent package version 0.2.3 was published on Apr 10, 2012
+     and I should find 6 releases for this package
+     and I should find 0 dependent repositories for this package
+     and I should find 0 dependent projects for this package
