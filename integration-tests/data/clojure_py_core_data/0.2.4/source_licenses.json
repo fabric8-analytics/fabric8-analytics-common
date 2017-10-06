@@ -1,0 +1,65 @@
+{
+  "_audit": {
+    "ended_at": "2017-10-06T13:41:06.586541",
+    "started_at": "2017-10-06T13:41:00.834244",
+    "version": "v1"
+  },
+  "_release": "pypi:clojure_py:0.2.4",
+  "details": {
+    "files_count": 5,
+    "licenses": {
+      "EPL 1.0": {
+        "category": "Copyleft Limited",
+        "dejacode_url": "https://enterprise.dejacode.com/urn/urn:dje:license:epl-1.0",
+        "homepage_url": "http://www.eclipse.org/legal/epl-v10.html",
+        "owner": "Eclipse Foundation",
+        "paths": [
+          "clojure_py-0.2.4/clojure_py.egg-info/PKG-INFO",
+          "clojure_py-0.2.4/PKG-INFO",
+          "clojure_py-0.2.4/clojure/core.clj"
+        ],
+        "spdx_license_key": "EPL-1.0",
+        "spdx_url": "https://spdx.org/licenses/EPL-1.0",
+        "text_url": "http://www.eclipse.org/legal/epl-v10.html"
+      },
+      "LGPL 2.1 or later": {
+        "category": "Copyleft Limited",
+        "dejacode_url": "https://enterprise.dejacode.com/urn/urn:dje:license:lgpl-2.1-plus",
+        "homepage_url": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html",
+        "owner": "Free Software Foundation (FSF)",
+        "paths": [
+          "clojure_py-0.2.4/clojure/util/byteplay.py"
+        ],
+        "spdx_license_key": "LGPL-2.1+",
+        "spdx_url": "https://spdx.org/licenses/LGPL-2.1",
+        "text_url": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html"
+      },
+      "MIT License": {
+        "category": "Permissive",
+        "dejacode_url": "https://enterprise.dejacode.com/urn/urn:dje:license:mit",
+        "homepage_url": "http://opensource.org/licenses/mit-license.php",
+        "owner": "MIT",
+        "paths": [
+          "clojure_py-0.2.4/clojure/lang/gmp.py"
+        ],
+        "spdx_license_key": "MIT",
+        "spdx_url": "https://spdx.org/licenses/MIT",
+        "text_url": "http://opensource.org/licenses/mit-license.php"
+      }
+    },
+    "scancode_notice": "Generated with ScanCode and provided on an \"AS IS\" BASIS, WITHOUT WARRANTIES\nOR CONDITIONS OF ANY KIND, either express or implied. No content created from\nScanCode should be considered or used as legal advice. Consult an Attorney\nfor any legal advice.\nScanCode is a free software code scanning tool from nexB Inc. and others.\nVisit https://github.com/nexB/scancode-toolkit/ for support and download.",
+    "scancode_version": "2.0.1"
+  },
+  "schema": {
+    "name": "source_licenses",
+    "version": "3-0-0"
+  },
+  "status": "success",
+  "summary": {
+    "sure_licenses": [
+      "MIT License",
+      "EPL 1.0",
+      "LGPL 2.1 or later"
+    ]
+  }
+}

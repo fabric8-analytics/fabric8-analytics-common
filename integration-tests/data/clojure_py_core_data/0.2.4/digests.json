@@ -1,0 +1,24 @@
+{
+  "_audit": {
+    "ended_at": "2017-10-06T13:41:06.946750",
+    "started_at": "2017-10-06T13:41:06.895423",
+    "version": "v1"
+  },
+  "_release": "pypi:clojure_py:0.2.4",
+  "details": [
+    {
+      "artifact": true,
+      "md5": "db0025db3e80fae44f20efba1bab6e3c",
+      "path": "clojure_py-0.2.4.tar.gz",
+      "sha1": "6703fc426ac60906c4c8c6e1bc6f8934ee097fc2",
+      "sha256": "688943c6e9fce571b81c5d0f4c09dd5d7ef4444e49d93b2e9a9e1bd4fa773abd",
+      "ssdeep": "1536:nu4FNqGJWw7fFh2qI6c3o2TXYgpLCnnBlh3ZlsspxBJ9BZbbOzb1MjRY8Hh0YEyw:uaUw7fP2HfLIgYqijJ9Xeb1MjLhIXIm"
+    }
+  ],
+  "schema": {
+    "name": "digests",
+    "version": "1-0-0"
+  },
+  "status": "success",
+  "summary": []
+}

@@ -1,0 +1,15 @@
+{
+  "_audit": {
+    "ended_at": "2017-10-06T13:41:00.791739",
+    "started_at": "2017-10-06T13:39:39.444219",
+    "version": "v1"
+  },
+  "_release": "pypi:clojure_py:0.2.4",
+  "details": [],
+  "schema": {
+    "name": "security_issues",
+    "version": "3-0-0"
+  },
+  "status": "success",
+  "summary": []
+}

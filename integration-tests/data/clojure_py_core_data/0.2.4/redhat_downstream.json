@@ -1,0 +1,40 @@
+{
+  "_audit": {
+    "ended_at": "2017-10-06T13:41:22.926661",
+    "started_at": "2017-10-06T13:41:22.217416",
+    "version": "v1"
+  },
+  "_release": "pypi:clojure_py:0.2.4",
+  "details": {
+    "brew": [],
+    "pulp_cdn": [],
+    "redhat_anitya": {
+      "backend": "PyPI",
+      "created_on": 1507297276.0,
+      "homepage": "https://github.com/halgari/clojure-py",
+      "id": 1,
+      "name": "clojure_py",
+      "packages": [],
+      "regex": null,
+      "updated_on": 1507297276.0,
+      "version": "0.2.4",
+      "version_url": null,
+      "versions": [
+        "0.2.4"
+      ]
+    }
+  },
+  "schema": {
+    "name": "redhat_downstream",
+    "version": "2-2-1"
+  },
+  "status": "success",
+  "summary": {
+    "all_rhn_channels": [],
+    "all_rhsm_content_sets": [],
+    "all_rhsm_product_names": [],
+    "package_names": [],
+    "registered_srpms": [],
+    "rh_mvn_matched_versions": []
+  }
+}

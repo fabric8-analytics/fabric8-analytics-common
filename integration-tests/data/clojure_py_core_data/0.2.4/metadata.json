@@ -1,0 +1,34 @@
+{
+  "_audit": {
+    "ended_at": "2017-10-06T13:41:06.836221",
+    "started_at": "2017-10-06T13:41:06.631844",
+    "version": "v1"
+  },
+  "_release": "pypi:clojure_py:0.2.4",
+  "details": [
+    {
+      "author": "Timothy Baldridge <tbaldridge@gmail.com>",
+      "code_repository": {
+        "type": "git",
+        "url": "https://github.com/halgari/clojure-py"
+      },
+      "declared_licenses": [
+        "UNKNOWN"
+      ],
+      "dependencies": [],
+      "description": "Clojure implemented on top of Python",
+      "ecosystem": "python-dist",
+      "homepage": "https://github.com/halgari/clojure-py",
+      "keywords": null,
+      "name": "clojure-py",
+      "platform": "UNKNOWN",
+      "version": "0.2.4"
+    }
+  ],
+  "schema": {
+    "name": "metadata",
+    "version": "3-2-0"
+  },
+  "status": "success",
+  "summary": []
+}
