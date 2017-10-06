@@ -1,0 +1,26 @@
+{
+  "analyses": [
+    "security_issues",
+    "metadata",
+    "keywords_tagging",
+    "redhat_downstream",
+    "digests",
+    "source_licenses",
+    "dependency_snapshot"
+  ],
+  "audit": null,
+  "dependents_count": -1,
+  "ecosystem": "pypi",
+  "finished_at": "2017-10-06T13:41:43.450021",
+  "id": 1,
+  "latest_version": "0.2.4",
+  "package": "clojure_py",
+  "package_info": {
+    "dependents_count": -1,
+    "relative_usage": "not used"
+  },
+  "release": "pypi:clojure_py:0.2.4",
+  "started_at": "2017-10-06T13:39:30.134801",
+  "subtasks": null,
+  "version": "0.2.4"
+}

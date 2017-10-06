@@ -1,0 +1,22 @@
+{
+  "_audit": {
+    "ended_at": "2017-10-06T13:41:15.970921",
+    "started_at": "2017-10-06T13:41:15.968194",
+    "version": "v1"
+  },
+  "_release": "pypi:clojure_py:0.2.4",
+  "details": {
+    "runtime": []
+  },
+  "schema": {
+    "name": "dependency_snapshot",
+    "version": "1-0-0"
+  },
+  "status": "success",
+  "summary": {
+    "dependency_counts": {
+      "runtime": 0
+    },
+    "errors": []
+  }
+}
