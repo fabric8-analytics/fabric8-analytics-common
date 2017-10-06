@@ -43,20 +43,6 @@ for repo in $repos; do
   fullrepo=fabric8-analytics-${repo}
   if ! `ls $fullrepo &>/dev/null`; then
     git clone "git@github.com:fabric8-analytics/${fullrepo}.git"
-    if [[ $repo == "worker" ]]; then
-      cat > ${fullrepo}/hack/secrets.yaml << \EOF
-pulp:
-  # url: "https://pulp.com"
-  # username: "user"
-  # password: "password"
-github:
-  # Generate your token at https://github.com/settings/tokens
-  # token: "123456asdf"
-bigquery:
-  # token: 'mysecrettokentobigquery'
-EOF
-      echo "Dummy worker/hack/secrets.yaml created. Modify it as necessary."
-    fi
   fi
 
   if [[ -n "$remotes" ]]; then

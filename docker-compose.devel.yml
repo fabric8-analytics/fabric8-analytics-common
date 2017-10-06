@@ -37,7 +37,6 @@ services:
       dockerfile: Dockerfile
     volumes:
      - ./fabric8-analytics-worker/f8a_worker:/usr/lib/python3.4/site-packages/f8a_worker:ro,z
-     - ./fabric8-analytics-worker/hack/secrets.yaml:/var/lib/secrets/secrets.yaml:ro,z
      - ./fabric8-analytics-worker/hack/workers.sh:/usr/bin/workers.sh:ro,z
   worker-ingestion:
     <<: *worker

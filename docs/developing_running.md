@@ -84,12 +84,8 @@ $ sudo ./docker-compose.sh -f docker-compose.yml -f docker-compose.anitya-cron.y
 #### Secrets
 
 Some parts (GithubTask, DownstreamUsageTask, BlackDuckTask) need credentials
-for proper operation. You can either drop a `secrets.yaml` into `worker/hack`.
-Sample secrets file is generated when running `setup.sh` script.
-
-Another options is to provide environment variables to `worker` service
-in `docker-compose.yml`. If both are provided, the environment variables take
-precedence over the `secrets.yaml` file.
+for proper operation. You can provide environment variables in `worker_environment`
+in `docker-compose.yml`.
 
 #### Scaling
 
