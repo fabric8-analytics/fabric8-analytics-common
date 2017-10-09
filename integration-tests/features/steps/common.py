@@ -1745,6 +1745,21 @@ def check_component_digest_data(context, package, version, ecosystem):
     check_attribute_presence(data, "details")
 
 
+@then('I should find digest metadata {selector} set to {expected_value}')
+def check_component_diget_metadata_value(context, selector, expected_value):
+    data = context.s3_data
+    details = check_and_get_attribute(data, "details")
+
+    for detail in details:
+        actual_value = check_and_get_attribute(detail, selector)
+        if actual_value == expected_value:
+            return
+
+    # nothing was found
+    raise Exception('Can not find the digest metadata {selector} set to {expected_value}'.format(
+        selector=selector, expected_value=expected_value))
+
+
 @then('I should find the correct keywords tagging data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_keywords_tagging_data(context, package, version, ecosystem):
