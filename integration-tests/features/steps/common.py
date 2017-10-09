@@ -1871,19 +1871,72 @@ def check_component_keywords_tagging_data(context, package, version, ecosystem):
 @then('I should find the correct Red Hat downstream data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_redhat_downstream_data(context, package, version, ecosystem):
-    pass
 
 
 @then('I should find the correct security issues data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_security_issues_data(context, package, version, ecosystem):
-    pass
 
 
 @then('I should find the correct source licenses data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_source_licenses_data(context, package, version, ecosystem):
-    pass
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "source_licenses", "3-0-0")
+    check_status_attribute(data)
+    check_summary_attribute(data)
+
+
+@then('I should find the package in Brew')
+def check_package_is_in_brew(context):
+    details = get_details_node(context)
+    brew = check_and_get_attribute(details, "brew")
+    assert brew, "Expecting that the brew attrbute is not empty list"
+
+
+@then('I should find the package in CDN')
+def check_package_is_in_cdn(context):
+    details = get_details_node(context)
+    cdn = check_and_get_attribute(details, "pulp_cdn")
+    assert cdn, "Expecting that the pupl_cdm attrbute is not empty list"
+
+
+@then('I should find the package in Red Hat Anitya')
+def check_package_is_in_cdn(context):
+    details = get_details_node(context)
+    cdn = check_and_get_attribute(details, "redhat_anitya")
+    assert cdn, "Expecting that the redhat_anitya attrbute is not empty list"
+
+
+@then('I should not find the package in Brew')
+def check_package_not_in_brew(context):
+    details = get_details_node(context)
+    brew = check_and_get_attribute(details, "brew")
+    assert not brew, "Expecting that the brew attrbute is empty list"
+
+
+@then('I should not find the package in CDN')
+def check_package_not_in_cdn(context):
+    details = get_details_node(context)
+    cdn = check_and_get_attribute(details, "pulp_cdn")
+    assert not cdn, "Expecting that the pupl_cdm attrbute is empty list"
+
+
+@then('I should not find the package in Red Hat Anitya')
+def check_package_not_in_cdn(context):
+    details = get_details_node(context)
+    cdn = check_and_get_attribute(details, "redhat_anitya")
+    assert not cdn, "Expecting that the redhat_anitya attrbute is empty list"
+
+
+@then('I should find that the package uses {license} license')
+def check_package_license(context, license):
+    details = get_details_node(context)
+    licenses = check_and_get_attribute(details, "licenses")
+    assert license in licenses, "Can not find license {lic}".format(lic=license)
 
 
 def get_details_node(context):
