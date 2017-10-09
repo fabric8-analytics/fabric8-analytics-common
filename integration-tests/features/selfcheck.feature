@@ -90,6 +90,8 @@ Feature: Check the implementation of test steps
     Then I should find the correct component core data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/dependency_snapshot.json file
     Then I should find the correct dependency snapshot data for package clojure_py version 0.2.4 from ecosystem pypi
+     and I should find 0 runtime details in dependency snapshot
+     and I should find 0 dependencies in dependency snapshot summary
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/digests.json file
     Then I should find the correct digest data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/keywords_tagging.json file

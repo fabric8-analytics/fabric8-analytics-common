@@ -1710,6 +1710,30 @@ def check_component_dependency_snapshot_data(context, package, version, ecosyste
     assert status == "success"
 
 
+@then('I should find {num:d} runtime details in dependency snapshot')
+def check_runtime_dependency_count(context, num):
+    data = context.s3_data
+
+    details = check_and_get_attribute(data, "details")
+    runtime = check_and_get_attribute(details, "runtime")
+
+    cnt = len(runtime)
+    assert cnt == num, "Expected {n1} runtime details, but found {n2}".format(n1=num, n2=cnt)
+
+
+@then('I should find {num:d} dependencies in dependency snapshot summary')
+def check_runtime_dependency_count_in_summary(context, num):
+    data = context.s3_data
+
+    summary = check_and_get_attribute(data, "summary")
+    dependency_counts = check_and_get_attribute(summary, "dependency_counts")
+    runtime_count = check_and_get_attribute(dependency_counts, "runtime")
+
+    cnt = int(runtime_count)
+    assert cnt == num, "Expected {n1} runtime dependency counts, but found {n2}".format(
+        n1=num, n2=cnt)
+
+
 @then('I should find the correct digest data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_digest_data(context, package, version, ecosystem):
