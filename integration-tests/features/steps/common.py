@@ -1851,26 +1851,67 @@ def check_vsc(context, vcs):
         "but {v2} has been found instead".format(v1=vcs, v2=actual_vcs)
 
 
-@then('I should find the correct metadata for package {package} version {version} '
+@then('I should find that the repository can be found at {url}')
+def check_repository_url(context, url):
+    details = get_details_node(context)[0]
+    code_repository = check_and_get_attribute(details, "code_repository")
+    actual_url = check_and_get_attribute(code_repository, "url")
+    assert actual_url == url, "Repository URL should be set to {u1}, " \
+        "but {u2} has been found instead".format(u1=url, u2=actual_url)
+
+
+@then('I should find that the project homepage can be found at {url}')
+def check_project_homepage(context, url):
+    details = get_details_node(context)[0]
+    actual_homepage = check_and_get_attribute(details, "homepage")
+    assert actual_homepage == url, "Homepage URL should be set to {u1}, " \
+        "but {u2} has been found instead".format(u1=url, u2=actual_homepage)
+
+
+@then('I should find that the package description is {description}')
+def check_project_homepage(context, description):
+    details = get_details_node(context)[0]
+    actual_description = check_and_get_attribute(details, "description")
+    assert actual_description == description, "Description is set to {d1}, " \
+        "but {d2} is expected".format(d1=actual_description, d2=description)
+
+
+@then('I should find that the package name is {name} and version is {version}')
+def check_package_name_and_version(context, name, version):
+    details = get_details_node(context)[0]
+    actual_name = check_and_get_attribute(details, "name")
+    actual_version = check_and_get_attribute(details, "version")
+
+    assert name == actual_name, "Name '{n1}' is different from " \
+        "expected name '{n2}'".format(n1=actual_name, n2=name)
+
+    assert version == actual_version, "Version {v1} is different from expected " \
+        "version {v2}".format(v1=actual_version, v2=version)
+
+
+@then('I should find the correct keywords tagging data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_keywords_tagging_data(context, package, version, ecosystem):
     data = context.s3_data
 
     check_audit_metadata(data)
     check_release_attribute(data, ecosystem, package, version)
-    check_schema_attribute(data, "metadata", "3-2-0")
+    #  no schema to check (yet?)
+    #  tracked here: https://github.com/openshiftio/openshift.io/issues/1074
     check_status_attribute(data)
-
-
-@then('I should find the correct keywords tagging data for package {package} version {version} '
-      'from ecosystem {ecosystem}')
-def check_component_keywords_tagging_data(context, package, version, ecosystem):
-    pass
+    check_summary_attribute(data)
 
 
 @then('I should find the correct Red Hat downstream data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_redhat_downstream_data(context, package, version, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "redhat_downstream", "2-2-1")
+    check_status_attribute(data)
+    check_summary_attribute(data)
 
 
 @then('I should find the correct security issues data for package {package} version {version} '
