@@ -1824,6 +1824,35 @@ def check_component_digest_metadata_value(context, selector, expected_value):
 
 @then('I should find the correct metadata for package {package} version {version} '
       'from ecosystem {ecosystem}')
+def check_component_metadata_data(context, package, version, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "metadata", "3-2-0")
+    check_status_attribute(data)
+    check_summary_attribute(data)
+
+
+@then('I should find that author of this project is {author}')
+def check_package_author(context, author):
+    details = get_details_node(context)[0]
+    actual_author = check_and_get_attribute(details, "author")
+    assert actual_author.startswith(author), "Expected author {a1}, " \
+        "but {a2} has been found instead".format(a1=author, a2=actual_author)
+
+
+@then('I should find that the project use {vcs} as a version control system')
+def check_vsc(context, vcs):
+    details = get_details_node(context)[0]
+    code_repository = check_and_get_attribute(details, "code_repository")
+    actual_vcs = check_and_get_attribute(code_repository, "type")
+    assert actual_vcs == vcs.lower(), "Expected {v1} version control system type, " \
+        "but {v2} has been found instead".format(v1=vcs, v2=actual_vcs)
+
+
+@then('I should find the correct metadata for package {package} version {version} '
+      'from ecosystem {ecosystem}')
 def check_component_keywords_tagging_data(context, package, version, ecosystem):
     data = context.s3_data
 
