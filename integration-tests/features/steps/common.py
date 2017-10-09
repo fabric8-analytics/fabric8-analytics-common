@@ -1710,7 +1710,41 @@ def check_libraries_io_file(context, package, ecosystem):
 @then('I should find the correct component core data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_core_data(context, package, version, ecosystem):
-    pass
+    data = context.s3_data
+
+    started_at = check_and_get_attribute(data, "started_at")
+    check_timestamp(started_at)
+
+    finished_at = check_and_get_attribute(data, "finished_at")
+    check_timestamp(finished_at)
+
+    actual_ecosystem = check_and_get_attribute(data, "ecosystem")
+    assert ecosystem == actual_ecosystem, "Ecosystem {e1} differs from expected " \
+        "ecosystem {e2}".format(e1=actual_ecosystem, e2=ecosystem)
+
+    actual_package = check_and_get_attribute(data, "package")
+    assert package == actual_package, "Package {p1} differs from expected " \
+        "package {p2}".format(p1=actual_package, p2=package)
+
+    actual_version = check_and_get_attribute(data, "version")
+    assert version == actual_version, "Version {v1} differs from expected " \
+        "version {v2}".format(v1=actual_version, v2=version)
+
+    actual_release = check_and_get_attribute(data, "release")
+    release = release_string(ecosystem, package, version)
+    assert actual_release == release, "Release string {r1} differs from expected " \
+        "value {r2}".format(r1=actual_release, r2=release)
+
+    attributes_to_check = ["id", "analyses", "audit", "dependents_count", "latest_version",
+                           "package_info", "subtasks"]
+    check_attributes_presence(data, attributes_to_check)
+
+    analyses = data["analyses"]
+    attributes_to_check = ["security_issues", "metadata", "keywords_tagging",
+                           "redhat_downstream", "digests", "source_licenses",
+                           "dependency_snapshot"]
+
+    check_attributes_presence(analyses, attributes_to_check)
 
 
 @then('I should find the correct dependency snapshot data for package {package} version {version} '
@@ -1933,7 +1967,7 @@ def check_component_toplevel_file(context, package, version, ecosystem, latest):
 @then('I should find the weight for the word {word} in the {where}')
 def check_weight_for_word_in_keywords_tagging(context, word, where):
     selector = selector_to_key(where)
-    assert selector in ["package_name", "repository_description"]
+    assert selector in ["package_name", "repository_description", "description"]
 
     details = get_details_node(context)
     word_dict = check_and_get_attribute(details, selector)
