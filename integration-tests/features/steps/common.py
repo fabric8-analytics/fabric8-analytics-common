@@ -1678,7 +1678,48 @@ def check_libraries_io_file(context, package, ecosystem):
     check_audit_metadata(data)
     check_release_attribute(data, ecosystem, package)
     check_status_attribute(data)
-    # TODO check libraires.io-specific entries
+
+
+@then('I should find the correct component core data for package {package} release {release} '
+      'from ecosystem {ecosystem}')
+def check_component_core_data(context, package, release, ecosystem):
+    pass
+
+
+@then('I should find the correct dependency snapshot data for package {package} release {release} '
+      'from ecosystem {ecosystem}')
+def check_component_dependency_snapshot_data(context, package, release, ecosystem):
+    pass
+
+
+@then('I should find the correct digest data for package {package} release {release} '
+      'from ecosystem {ecosystem}')
+def check_component_digest_data(context, package, release, ecosystem):
+    pass
+
+
+@then('I should find the correct keywords tagging data for package {package} release {release} '
+      'from ecosystem {ecosystem}')
+def check_component_keywords_tagging_data(context, package, release, ecosystem):
+    pass
+
+
+@then('I should find the correct Red Hat downstream data for package {package} release {release} '
+      'from ecosystem {ecosystem}')
+def check_component_redhat_downstream_data(context, package, release, ecosystem):
+    pass
+
+
+@then('I should find the correct security issues data for package {package} release {release} '
+      'from ecosystem {ecosystem}')
+def check_component_security_issues_data(context, package, release, ecosystem):
+    pass
+
+
+@then('I should find the correct source licenses data for package {package} release {release} '
+      'from ecosystem {ecosystem}')
+def check_component_source_licenses_data(context, package, release, ecosystem):
+    pass
 
 
 def get_details_node(context):
