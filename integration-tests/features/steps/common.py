@@ -1632,6 +1632,20 @@ def check_release_attribute(data, ecosystem, package, version=None):
     assert data["_release"] == release_string(ecosystem, package, version)
 
 
+def check_schema_attribute(data, expected_schema_name, expected_schema_version):
+    check_attribute_presence(data, "schema")
+
+    schema = data["schema"]
+    name = check_and_get_attribute(schema, "name")
+    version = check_and_get_attribute(schema, "version")
+
+    assert name == expected_schema_name, "Schema name '{n1}' is different from " \
+        "expected name '{n2}'".format(n1=name, n2=expected_schema_name)
+
+    assert version == expected_schema_version, "Schema version {v1} is different from expected " \
+        "version {v2}".format(v1=version, v2=expected_schema_version)
+
+
 @then('I should find the correct GitHub details metadata for package {package} '
       'from ecosystem {ecosystem}')
 def check_github_details_file(context, package, ecosystem):
@@ -1643,11 +1657,8 @@ def check_github_details_file(context, package, ecosystem):
 
     check_attribute_presence(data, "summary")
     check_attribute_presence(data, "details")
-    check_attribute_presence(data, "schema")
 
-    schema = data["schema"]
-    check_attribute_presence(schema, "name")
-    check_attribute_presence(schema, "version")
+    check_schema_attribute(data, "github_details", "1-0-4")
 
 
 @then('I should find empty details about GitHub repository')
