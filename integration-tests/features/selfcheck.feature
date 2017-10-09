@@ -82,3 +82,30 @@ Feature: Check the implementation of test steps
      and I should find 6 releases for this package
      and I should find 0 dependent repositories for this package
      and I should find 0 dependent projects for this package
+
+  @requires_s3_access
+  Scenario: Check the component tests by using mocked data
+    Given System is running
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4.json file
+    Then I should find the correct component core data for package clojure_py version 0.2.4 from ecosystem pypi
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/dependency_snapshot.json file
+    Then I should find the correct dependency snapshot data for package clojure_py version 0.2.4 from ecosystem pypi
+     and I should find 0 runtime details in dependency snapshot
+     and I should find 0 dependencies in dependency snapshot summary
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/digests.json file
+    Then I should find the correct digest data for package clojure_py version 0.2.4 from ecosystem pypi
+     and I should find digest metadata path set to clojure_py-0.2.4.tar.gz
+     and I should find digest metadata md5 set to db0025db3e80fae44f20efba1bab6e3c
+     and I should find digest metadata sha1 set to 6703fc426ac60906c4c8c6e1bc6f8934ee097fc2
+     and I should find digest metadata sha256 set to 688943c6e9fce571b81c5d0f4c09dd5d7ef4444e49d93b2e9a9e1bd4fa773abd
+     and I should find digest metadata ssdeep set to 1536:nu4FNqGJWw7fFh2qI6c3o2TXYgpLCnnBlh3ZlsspxBJ9BZbbOzb1MjRY8Hh0YEyw:uaUw7fP2HfLIgYqijJ9Xeb1MjLhIXIm
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/keywords_tagging.json file
+    Then I should find the correct keywords tagging data for package clojure_py version 0.2.4 from ecosystem pypi
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/metadata.json file
+    Then I should find the correct metadata for package clojure_py version 0.2.4 from ecosystem pypi
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/redhat_downstream.json file
+    Then I should find the correct Red Hat downstream data for package clojure_py version 0.2.4 from ecosystem pypi
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/security_issues.json file
+    Then I should find the correct security issues data for package clojure_py version 0.2.4 from ecosystem pypi
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/source_licenses.json file
+    Then I should find the correct source licenses data for package clojure_py version 0.2.4 from ecosystem pypi

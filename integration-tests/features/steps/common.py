@@ -1629,7 +1629,21 @@ def release_string(ecosystem, package, version=None):
 
 def check_release_attribute(data, ecosystem, package, version=None):
     check_attribute_presence(data, "_release")
-    assert data["_release"] == release_string(ecosystem, package)
+    assert data["_release"] == release_string(ecosystem, package, version)
+
+
+def check_schema_attribute(data, expected_schema_name, expected_schema_version):
+    check_attribute_presence(data, "schema")
+
+    schema = data["schema"]
+    name = check_and_get_attribute(schema, "name")
+    version = check_and_get_attribute(schema, "version")
+
+    assert name == expected_schema_name, "Schema name '{n1}' is different from " \
+        "expected name '{n2}'".format(n1=name, n2=expected_schema_name)
+
+    assert version == expected_schema_version, "Schema version {v1} is different from expected " \
+        "version {v2}".format(v1=version, v2=expected_schema_version)
 
 
 @then('I should find the correct GitHub details metadata for package {package} '
@@ -1643,11 +1657,8 @@ def check_github_details_file(context, package, ecosystem):
 
     check_attribute_presence(data, "summary")
     check_attribute_presence(data, "details")
-    check_attribute_presence(data, "schema")
 
-    schema = data["schema"]
-    check_attribute_presence(schema, "name")
-    check_attribute_presence(schema, "version")
+    check_schema_attribute(data, "github_details", "1-0-4")
 
 
 @then('I should find empty details about GitHub repository')
@@ -1678,7 +1689,110 @@ def check_libraries_io_file(context, package, ecosystem):
     check_audit_metadata(data)
     check_release_attribute(data, ecosystem, package)
     check_status_attribute(data)
-    # TODO check libraires.io-specific entries
+
+
+@then('I should find the correct component core data for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_core_data(context, package, version, ecosystem):
+    pass
+
+
+@then('I should find the correct dependency snapshot data for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_dependency_snapshot_data(context, package, version, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "dependency_snapshot", "1-0-0")
+    check_status_attribute(data)
+
+
+@then('I should find {num:d} runtime details in dependency snapshot')
+def check_runtime_dependency_count(context, num):
+    data = context.s3_data
+
+    details = check_and_get_attribute(data, "details")
+    runtime = check_and_get_attribute(details, "runtime")
+
+    cnt = len(runtime)
+    assert cnt == num, "Expected {n1} runtime details, but found {n2}".format(n1=num, n2=cnt)
+
+
+@then('I should find {num:d} dependencies in dependency snapshot summary')
+def check_runtime_dependency_count_in_summary(context, num):
+    data = context.s3_data
+
+    summary = check_and_get_attribute(data, "summary")
+    dependency_counts = check_and_get_attribute(summary, "dependency_counts")
+    runtime_count = check_and_get_attribute(dependency_counts, "runtime")
+
+    cnt = int(runtime_count)
+    assert cnt == num, "Expected {n1} runtime dependency counts, but found {n2}".format(
+        n1=num, n2=cnt)
+
+
+@then('I should find the correct digest data for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_digest_data(context, package, version, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "digests", "1-0-0")
+    check_status_attribute(data)
+
+    check_attribute_presence(data, "details")
+
+
+@then('I should find digest metadata {selector} set to {expected_value}')
+def check_component_diget_metadata_value(context, selector, expected_value):
+    data = context.s3_data
+    details = check_and_get_attribute(data, "details")
+
+    for detail in details:
+        actual_value = check_and_get_attribute(detail, selector)
+        if actual_value == expected_value:
+            return
+
+    # nothing was found
+    raise Exception('Can not find the digest metadata {selector} set to {expected_value}'.format(
+        selector=selector, expected_value=expected_value))
+
+
+@then('I should find the correct metadata for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_keywords_tagging_data(context, package, version, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "metadata", "3-2-0")
+    check_status_attribute(data)
+
+
+@then('I should find the correct keywords tagging data for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_keywords_tagging_data(context, package, version, ecosystem):
+    pass
+
+
+@then('I should find the correct Red Hat downstream data for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_redhat_downstream_data(context, package, version, ecosystem):
+    pass
+
+
+@then('I should find the correct security issues data for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_security_issues_data(context, package, version, ecosystem):
+    pass
+
+
+@then('I should find the correct source licenses data for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_source_licenses_data(context, package, version, ecosystem):
+    pass
 
 
 def get_details_node(context):
