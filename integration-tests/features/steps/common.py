@@ -1633,6 +1633,12 @@ def check_status_attribute(data):
     assert data["status"] in ["success", "error"]
 
 
+def check_summary_attribute(data):
+    '''Basic check for the summary attribute that can be found all generated metadata.'''
+    summary = check_and_get_attribute(data, "summary")
+    assert type(summary) is list or type(summary) is dict
+
+
 def release_string(ecosystem, package, version=None):
     return "{e}:{p}:{v}".format(e=ecosystem, p=package, v=version)
 
