@@ -1705,9 +1705,7 @@ def check_component_dependency_snapshot_data(context, package, version, ecosyste
     check_audit_metadata(data)
     check_release_attribute(data, ecosystem, package, version)
     check_schema_attribute(data, "dependency_snapshot", "1-0-0")
-
-    status = check_and_get_attribute(data, "status")
-    assert status == "success"
+    check_status_attribute(data)
 
 
 @then('I should find {num:d} runtime details in dependency snapshot')
@@ -1737,7 +1735,14 @@ def check_runtime_dependency_count_in_summary(context, num):
 @then('I should find the correct digest data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_digest_data(context, package, version, ecosystem):
-    pass
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "digests", "1-0-0")
+    check_status_attribute(data)
+
+    check_attribute_presence(data, "details")
 
 
 @then('I should find the correct keywords tagging data for package {package} version {version} '
