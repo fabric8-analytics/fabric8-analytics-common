@@ -1747,6 +1747,16 @@ def check_component_core_data(context, package, version, ecosystem):
     check_attributes_presence(analyses, attributes_to_check)
 
 
+@then('I should find that the latest component version is {version}')
+def check_component_latest_version(context, version):
+    '''Check the attribute 'latest_version' used in component metadata.'''
+    data = context.s3_data
+
+    latest_version = check_and_get_attribute(data, "latest_version")
+    assert version == latest_version, "Latest version should be set to {v1}, " \
+        "but {v2} has been found instead".format(v1=version, v2=latest_version)
+
+
 @then('I should find the correct dependency snapshot data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_dependency_snapshot_data(context, package, version, ecosystem):
@@ -1756,6 +1766,7 @@ def check_component_dependency_snapshot_data(context, package, version, ecosyste
     check_release_attribute(data, ecosystem, package, version)
     check_schema_attribute(data, "dependency_snapshot", "1-0-0")
     check_status_attribute(data)
+    check_summary_attribute(data)
 
 
 @then('I should find {num:d} runtime details in dependency snapshot')
@@ -1791,12 +1802,13 @@ def check_component_digest_data(context, package, version, ecosystem):
     check_release_attribute(data, ecosystem, package, version)
     check_schema_attribute(data, "digests", "1-0-0")
     check_status_attribute(data)
+    check_summary_attribute(data)
 
     check_attribute_presence(data, "details")
 
 
 @then('I should find digest metadata {selector} set to {expected_value}')
-def check_component_diget_metadata_value(context, selector, expected_value):
+def check_component_digest_metadata_value(context, selector, expected_value):
     data = context.s3_data
     details = check_and_get_attribute(data, "details")
 
