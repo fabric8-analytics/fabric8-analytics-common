@@ -1876,6 +1876,16 @@ def check_component_redhat_downstream_data(context, package, version, ecosystem)
 @then('I should find the correct security issues data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_security_issues_data(context, package, version, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "security_issues", "3-0-0")
+    check_status_attribute(data)
+    check_summary_attribute(data)
+
+    details = check_and_get_attribute(data, "details")
+    assert type(details) is list
 
 
 @then('I should find the correct source licenses data for package {package} version {version} '
