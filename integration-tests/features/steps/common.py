@@ -1700,7 +1700,14 @@ def check_component_core_data(context, package, version, ecosystem):
 @then('I should find the correct dependency snapshot data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_dependency_snapshot_data(context, package, version, ecosystem):
-    pass
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "dependency_snapshot", "1-0-0")
+
+    status = check_and_get_attribute(data, "status")
+    assert status == "success"
 
 
 @then('I should find the correct digest data for package {package} version {version} '
