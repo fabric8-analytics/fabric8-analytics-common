@@ -87,16 +87,16 @@ Feature: Check the implementation of test steps
   Scenario: Check the component tests by using mocked data
     Given System is running
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4.json file
-    Then I should find the correct component core data for package clojure_py release 0.2.4 from ecosystem pypi
+    Then I should find the correct component core data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/dependency_snapshot.json file
-    Then I should find the correct dependency snapshot data for package clojure_py release 0.2.4 from ecosystem pypi
+    Then I should find the correct dependency snapshot data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/digests.json file
-    Then I should find the correct digest data for package clojure_py release 0.2.4 from ecosystem pypi
+    Then I should find the correct digest data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/keywords_tagging.json file
-    Then I should find the correct keywords tagging data for package clojure_py release 0.2.4 from ecosystem pypi
+    Then I should find the correct keywords tagging data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/redhat_downstream.json file
-    Then I should find the correct Red Hat downstream data for package clojure_py release 0.2.4 from ecosystem pypi
+    Then I should find the correct Red Hat downstream data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/security_issues.json file
-    Then I should find the correct security issues data for package clojure_py release 0.2.4 from ecosystem pypi
+    Then I should find the correct security issues data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/source_licenses.json file
-    Then I should find the correct source licenses data for package clojure_py release 0.2.4 from ecosystem pypi
+    Then I should find the correct source licenses data for package clojure_py version 0.2.4 from ecosystem pypi

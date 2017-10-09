@@ -1680,45 +1680,45 @@ def check_libraries_io_file(context, package, ecosystem):
     check_status_attribute(data)
 
 
-@then('I should find the correct component core data for package {package} release {release} '
+@then('I should find the correct component core data for package {package} version {version} '
       'from ecosystem {ecosystem}')
-def check_component_core_data(context, package, release, ecosystem):
+def check_component_core_data(context, package, version, ecosystem):
     pass
 
 
-@then('I should find the correct dependency snapshot data for package {package} release {release} '
+@then('I should find the correct dependency snapshot data for package {package} version {version} '
       'from ecosystem {ecosystem}')
-def check_component_dependency_snapshot_data(context, package, release, ecosystem):
+def check_component_dependency_snapshot_data(context, package, version, ecosystem):
     pass
 
 
-@then('I should find the correct digest data for package {package} release {release} '
+@then('I should find the correct digest data for package {package} version {version} '
       'from ecosystem {ecosystem}')
-def check_component_digest_data(context, package, release, ecosystem):
+def check_component_digest_data(context, package, version, ecosystem):
     pass
 
 
-@then('I should find the correct keywords tagging data for package {package} release {release} '
+@then('I should find the correct keywords tagging data for package {package} version {version} '
       'from ecosystem {ecosystem}')
-def check_component_keywords_tagging_data(context, package, release, ecosystem):
+def check_component_keywords_tagging_data(context, package, version, ecosystem):
     pass
 
 
-@then('I should find the correct Red Hat downstream data for package {package} release {release} '
+@then('I should find the correct Red Hat downstream data for package {package} version {version} '
       'from ecosystem {ecosystem}')
-def check_component_redhat_downstream_data(context, package, release, ecosystem):
+def check_component_redhat_downstream_data(context, package, version, ecosystem):
     pass
 
 
-@then('I should find the correct security issues data for package {package} release {release} '
+@then('I should find the correct security issues data for package {package} version {version} '
       'from ecosystem {ecosystem}')
-def check_component_security_issues_data(context, package, release, ecosystem):
+def check_component_security_issues_data(context, package, version, ecosystem):
     pass
 
 
-@then('I should find the correct source licenses data for package {package} release {release} '
+@then('I should find the correct source licenses data for package {package} version {version} '
       'from ecosystem {ecosystem}')
-def check_component_source_licenses_data(context, package, release, ecosystem):
+def check_component_source_licenses_data(context, package, version, ecosystem):
     pass
 
 
