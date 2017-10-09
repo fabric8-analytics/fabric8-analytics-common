@@ -1629,7 +1629,7 @@ def release_string(ecosystem, package, version=None):
 
 def check_release_attribute(data, ecosystem, package, version=None):
     check_attribute_presence(data, "_release")
-    assert data["_release"] == release_string(ecosystem, package)
+    assert data["_release"] == release_string(ecosystem, package, version)
 
 
 @then('I should find the correct GitHub details metadata for package {package} '
