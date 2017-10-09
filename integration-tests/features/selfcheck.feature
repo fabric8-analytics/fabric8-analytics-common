@@ -58,8 +58,7 @@ Feature: Check the implementation of test steps
     Then I should find the security node for all alternate components
     Then I should find the CVE-2010-3492 security issue for the dependency six
 
-  @requires_s3_access
-  Scenario: Check the package and component tests by using mocked data
+  Scenario: Check the package tests by using mocked data
     Given System is running
     When I mock S3 data by content of data/clojure_py_package/github_details.json file
     Then I should find the correct GitHub details metadata for package clojure_py from ecosystem pypi
@@ -83,7 +82,6 @@ Feature: Check the implementation of test steps
      and I should find 0 dependent repositories for this package
      and I should find 0 dependent projects for this package
 
-  @requires_s3_access
   Scenario: Check the component tests by using mocked data
     Given System is running
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4.json file
