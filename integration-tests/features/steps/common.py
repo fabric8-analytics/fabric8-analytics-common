@@ -1358,6 +1358,16 @@ def check_attribute_presence(node, attribute_name):
         "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
 
 
+def check_attributes_presence(node, attribute_names):
+    '''Check the presence of all attributes in the dictionary.
+    To be used for deserialized JSON data etc.'''
+
+    for attribute_name in attribute_names:
+        assert attribute_name in node, \
+            "'%s' attribute is expected in the node, " \
+            "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
+
+
 def check_and_get_attribute(node, attribute_name):
     '''Check the attribute presence and if the attribute is found, return its value.'''
     check_attribute_presence(node, attribute_name)
