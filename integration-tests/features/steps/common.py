@@ -1760,6 +1760,17 @@ def check_component_diget_metadata_value(context, selector, expected_value):
         selector=selector, expected_value=expected_value))
 
 
+@then('I should find the correct metadata for package {package} version {version} '
+      'from ecosystem {ecosystem}')
+def check_component_keywords_tagging_data(context, package, version, ecosystem):
+    data = context.s3_data
+
+    check_audit_metadata(data)
+    check_release_attribute(data, ecosystem, package, version)
+    check_schema_attribute(data, "metadata", "3-2-0")
+    check_status_attribute(data)
+
+
 @then('I should find the correct keywords tagging data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_keywords_tagging_data(context, package, version, ecosystem):

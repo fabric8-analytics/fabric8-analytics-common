@@ -101,6 +101,8 @@ Feature: Check the implementation of test steps
      and I should find digest metadata ssdeep set to 1536:nu4FNqGJWw7fFh2qI6c3o2TXYgpLCnnBlh3ZlsspxBJ9BZbbOzb1MjRY8Hh0YEyw:uaUw7fP2HfLIgYqijJ9Xeb1MjLhIXIm
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/keywords_tagging.json file
     Then I should find the correct keywords tagging data for package clojure_py version 0.2.4 from ecosystem pypi
+    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/metadata.json file
+    Then I should find the correct metadata for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/redhat_downstream.json file
     Then I should find the correct Red Hat downstream data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/security_issues.json file
