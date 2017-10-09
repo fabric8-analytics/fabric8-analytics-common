@@ -58,8 +58,7 @@ Feature: Check the implementation of test steps
     Then I should find the security node for all alternate components
     Then I should find the CVE-2010-3492 security issue for the dependency six
 
-  @requires_s3_access
-  Scenario: Check the package and component tests by using mocked data
+  Scenario: Check the package tests by using mocked data
     Given System is running
     When I mock S3 data by content of data/clojure_py_package/github_details.json file
     Then I should find the correct GitHub details metadata for package clojure_py from ecosystem pypi
@@ -83,11 +82,11 @@ Feature: Check the implementation of test steps
      and I should find 0 dependent repositories for this package
      and I should find 0 dependent projects for this package
 
-  @requires_s3_access
   Scenario: Check the component tests by using mocked data
     Given System is running
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4.json file
     Then I should find the correct component core data for package clojure_py version 0.2.4 from ecosystem pypi
+     and I should find that the latest component version is 0.2.4
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/dependency_snapshot.json file
     Then I should find the correct dependency snapshot data for package clojure_py version 0.2.4 from ecosystem pypi
      and I should find 0 runtime details in dependency snapshot
@@ -101,11 +100,27 @@ Feature: Check the implementation of test steps
      and I should find digest metadata ssdeep set to 1536:nu4FNqGJWw7fFh2qI6c3o2TXYgpLCnnBlh3ZlsspxBJ9BZbbOzb1MjRY8Hh0YEyw:uaUw7fP2HfLIgYqijJ9Xeb1MjLhIXIm
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/keywords_tagging.json file
     Then I should find the correct keywords tagging data for package clojure_py version 0.2.4 from ecosystem pypi
+     and I should find the weight for the word clojure in the description
+     and I should find the weight for the word implementation in the description
+     and I should find the weight for the word python in the description
+     and I should find the weight for the word top in the description
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/metadata.json file
     Then I should find the correct metadata for package clojure_py version 0.2.4 from ecosystem pypi
+     and I should find that author of this project is Timothy Baldridge
+     and I should find that the project use GIT as a version control system
+     and I should find that the repository can be found at https://github.com/halgari/clojure-py
+     and I should find that the package description is Clojure implemented on top of Python
+     and I should find that the project homepage can be found at https://github.com/halgari/clojure-py
+     and I should find that the package name is clojure-py and version is 0.2.4
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/redhat_downstream.json file
     Then I should find the correct Red Hat downstream data for package clojure_py version 0.2.4 from ecosystem pypi
+     and I should not find the package in Brew
+     and I should not find the package in CDN
+     and I should find the package in Red Hat Anitya
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/security_issues.json file
     Then I should find the correct security issues data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/source_licenses.json file
     Then I should find the correct source licenses data for package clojure_py version 0.2.4 from ecosystem pypi
+     and I should find that the package uses EPL 1.0 license
+     and I should find that the package uses LGPL 2.1 or later license
+     and I should find that the package uses MIT License license
