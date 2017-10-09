@@ -294,6 +294,7 @@ services:
       AWS_S3_IS_LOCAL: 1
       AWS_S3_ACCESS_KEY_ID: "GNV3SAHAHA3DOT99GQII"
       AWS_S3_SECRET_ACCESS_KEY: "ZmvMwngonaDK5ymlCd6ptaalDdJsCn3aSSxASPaZ"
+      LOCAL_MINIO_ENDPOINT: "coreapi-s3:33000"
       DEPLOYMENT_PREFIX: "${USER}"
       AWS_EPV_BUCKET: "${USER}-bayesian-core-data"
       AWS_PKG_BUCKET: "${USER}-bayesian-core-package-data"
