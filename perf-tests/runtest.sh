@@ -6,4 +6,4 @@ function prepare_venv() {
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
-python3 -B src/perf-tests.py
+python3 -B src/perf-tests.py $@
