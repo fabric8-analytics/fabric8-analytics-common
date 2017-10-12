@@ -19,6 +19,7 @@ class MockedResponse():
         """
         return self.content
 
+    @staticmethod
     def json_load(filename):
         """Load and parse JSON file."""
         with open(filename) as data_file:
