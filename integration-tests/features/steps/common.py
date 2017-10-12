@@ -16,6 +16,7 @@ from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
 import botocore
 from botocore.exceptions import ClientError
+from src.attribute_checks import *
 
 # Do not remove - kept for debugging
 import logging
@@ -820,35 +821,6 @@ def check_audit_metadata(data):
     check_timestamp(audit["ended_at"])
 
 
-def check_timestamp(timestamp):
-    """Check if the string contains proper timestamp value."""
-    assert timestamp is not None
-    assert isinstance(timestamp, str)
-
-    # some attributes contains timestamp without the millisecond part
-    # so we need to take care of it
-    if len(timestamp) == len("YYYY-mm-dd HH:MM:SS") and '.' not in timestamp:
-        timestamp += '.0'
-
-    assert len(timestamp) >= len("YYYY-mm-dd HH:MM:SS.")
-
-    # we have to support the following formats:
-    #    2017-07-19 13:05:25.041688
-    #    2017-07-17T09:05:29.101780
-    # -> it is needed to distinguish the 'T' separator
-    #
-    # (please see https://www.tutorialspoint.com/python/time_strptime.htm for
-    #  an explanation how timeformat should look like)
-
-    timeformat = "%Y-%m-%d %H:%M:%S.%f"
-    if timestamp[10] == "T":
-        timeformat = "%Y-%m-%dT%H:%M:%S.%f"
-
-    # just try to parse the string to check whether
-    # the ValueError exception is raised or not
-    datetime.datetime.strptime(timestamp, timeformat)
-
-
 @then('I should receive JSON response with the correct timestamp in attribute {attribute}')
 def check_timestamp_in_json_response(context, attribute):
     """Check the timestamp stored in the JSON response.
@@ -982,7 +954,7 @@ def check_stack_analyses_response(context, url):
 
 
 def get_value_using_path(obj, path):
-    """Get the attribute value using the XMLpath-like path specification.
+    '''Get the attribute value using the XMLpath-like path specification.
     Return any attribute stored in the nested object and list hierarchy using
     the 'path' where path consists of:
         keys (selectors)
@@ -998,7 +970,7 @@ def get_value_using_path(obj, path):
                           "key2" : ["a", "b", "c", "d"]}, "key1/1")) -> "y"
     get_value_using_path({"key1" : ["x", "y", "z"],
                           "key2" : ["a", "b", "c", "d"]}, "key2/1")) -> "b"
-    """
+    '''
 
     keys = path.split("/")
     for key in keys:
@@ -1351,29 +1323,6 @@ def get_alternate_components(json_data):
     return get_value_using_path(json_data, path)
 
 
-def check_attribute_presence(node, attribute_name):
-    '''Check the attribute presence in the dictionary. To be used for deserialized JSON data etc.'''
-    assert attribute_name in node, \
-        "'%s' attribute is expected in the node, " \
-        "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
-
-
-def check_attributes_presence(node, attribute_names):
-    '''Check the presence of all attributes in the dictionary.
-    To be used for deserialized JSON data etc.'''
-
-    for attribute_name in attribute_names:
-        assert attribute_name in node, \
-            "'%s' attribute is expected in the node, " \
-            "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
-
-
-def check_and_get_attribute(node, attribute_name):
-    '''Check the attribute presence and if the attribute is found, return its value.'''
-    check_attribute_presence(node, attribute_name)
-    return node[attribute_name]
-
-
 def perform_alternate_components_validation(json_data):
     user_components = get_user_components(json_data)
 
@@ -1486,13 +1435,6 @@ def check_security_issue_existence(context, cve, package):
     else:
         raise Exception('Could not find the analyzed package {p}'
                         .format(p=package))
-
-
-def check_job_token_attributes(token):
-    attribs = ["limit", "remaining", "reset"]
-    for attr in attribs:
-        assert attr in token
-        assert int(token[attr]) >= 0
 
 
 @then('I should see proper information about job API tokens')
@@ -1626,40 +1568,6 @@ def check_package_toplevel_file(context, package, ecosystem):
 
     check_attribute_presence(data, 'finished_at')
     check_timestamp(data['finished_at'])
-
-
-def check_status_attribute(data):
-    check_attribute_presence(data, "status")
-    assert data["status"] in ["success", "error"]
-
-
-def check_summary_attribute(data):
-    '''Basic check for the summary attribute that can be found all generated metadata.'''
-    summary = check_and_get_attribute(data, "summary")
-    assert type(summary) is list or type(summary) is dict
-
-
-def release_string(ecosystem, package, version=None):
-    return "{e}:{p}:{v}".format(e=ecosystem, p=package, v=version)
-
-
-def check_release_attribute(data, ecosystem, package, version=None):
-    check_attribute_presence(data, "_release")
-    assert data["_release"] == release_string(ecosystem, package, version)
-
-
-def check_schema_attribute(data, expected_schema_name, expected_schema_version):
-    check_attribute_presence(data, "schema")
-
-    schema = data["schema"]
-    name = check_and_get_attribute(schema, "name")
-    version = check_and_get_attribute(schema, "version")
-
-    assert name == expected_schema_name, "Schema name '{n1}' is different from " \
-        "expected name '{n2}'".format(n1=name, n2=expected_schema_name)
-
-    assert version == expected_schema_version, "Schema version {v1} is different from expected " \
-        "version {v2}".format(v1=version, v2=expected_schema_version)
 
 
 @then('I should find the correct GitHub details metadata for package {package} '
