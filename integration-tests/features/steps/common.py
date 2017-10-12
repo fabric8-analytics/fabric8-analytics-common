@@ -17,6 +17,7 @@ from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 import botocore
 from botocore.exceptions import ClientError
 from src.attribute_checks import *
+from src.MockedResponse import *
 
 # Do not remove - kept for debugging
 import logging
@@ -2098,21 +2099,11 @@ def generate_job_id_prefix(context):
     context.job_id_prefix = uuid.uuid1()
 
 
-class MockedResponse():
-    def __init__(self, filename):
-        with open(filename) as data_file:
-            self.content = json.load(data_file)
-
-    def json(self):
-        return self.content
-
-
 @when('I mock API response by {filename} file')
 def read_json_file(context, filename):
     context.response = MockedResponse(filename)
 
 
 @when('I mock S3 data by content of {filename} file')
-def read_json_file(context, filename):
-    with open(filename) as data_file:
-        context.s3_data = json.load(data_file)
+def read_json_file_for_s3(context, filename):
+    context.s3_data = MockedResponse.json_load(filename)
