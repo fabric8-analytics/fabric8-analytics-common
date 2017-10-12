@@ -1,17 +1,19 @@
+"""Utility functions to check attributes returned in API responses and read from the AWS S3."""
 import datetime
 
 
 def check_attribute_presence(node, attribute_name):
-    '''Check the attribute presence in the dictionary. To be used for deserialized JSON data etc.'''
+    """Check the attribute presence in the dictionary. To be used for deserialized JSON data etc."""
     assert attribute_name in node, \
         "'%s' attribute is expected in the node, " \
         "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
 
 
 def check_attributes_presence(node, attribute_names):
-    '''Check the presence of all attributes in the dictionary.
-    To be used for deserialized JSON data etc.'''
+    """Check the presence of all attributes in the dictionary.
 
+    To be used for deserialized JSON data etc.
+    """
     for attribute_name in attribute_names:
         assert attribute_name in node, \
             "'%s' attribute is expected in the node, " \
@@ -19,13 +21,13 @@ def check_attributes_presence(node, attribute_names):
 
 
 def check_and_get_attribute(node, attribute_name):
-    '''Check the attribute presence and if the attribute is found, return its value.'''
+    """Check the attribute presence and if the attribute is found, return its value."""
     check_attribute_presence(node, attribute_name)
     return node[attribute_name]
 
 
 def check_timestamp(timestamp):
-    '''Check if the string contains proper timestamp value.'''
+    """Check if the string contains proper timestamp value."""
     assert timestamp is not None
     assert isinstance(timestamp, str)
 
@@ -54,7 +56,7 @@ def check_timestamp(timestamp):
 
 
 def check_job_token_attributes(token):
-    '''Check that the given JOB token contains all required attributes.'''
+    """Check that the given JOB token contains all required attributes."""
     attribs = ["limit", "remaining", "reset"]
     for attr in attribs:
         assert attr in token
@@ -62,32 +64,37 @@ def check_job_token_attributes(token):
 
 
 def check_status_attribute(data):
-    '''Check the value of the status attribute, that should contain just two allowed values.'''
+    """Check the value of the status attribute, that should contain just two allowed values."""
     check_attribute_presence(data, "status")
     assert data["status"] in ["success", "error"]
 
 
 def check_summary_attribute(data):
-    '''Basic check for the summary attribute that can be found all generated metadata.'''
+    """Check the summary attribute that can be found all generated metadata."""
     summary = check_and_get_attribute(data, "summary")
     assert type(summary) is list or type(summary) is dict
 
 
 def release_string(ecosystem, package, version=None):
-    '''Construct a string with ecosystem:package or ecosystem:package:version tuple.'''
+    """Construct a string with ecosystem:package or ecosystem:package:version tuple."""
     return "{e}:{p}:{v}".format(e=ecosystem, p=package, v=version)
 
 
 def check_release_attribute(data, ecosystem, package, version=None):
-    '''Check that the attribute _release contains proper release string for given ecosystem
-    and package.'''
+    """Check the content of _release attribute.
+
+    Check that the attribute _release contains proper release string for given ecosystem
+    and package.
+    """
     check_attribute_presence(data, "_release")
     assert data["_release"] == release_string(ecosystem, package, version)
 
 
 def check_schema_attribute(data, expected_schema_name, expected_schema_version):
-    '''Check the content of the schema attribute. This attribute should contains dictionary
-    with name and version that are checked as well.'''
+    """Check the content of the schema attribute.
+
+    This attribute should contains dictionary with name and version that are checked as well.
+    """
     check_attribute_presence(data, "schema")
 
     schema = data["schema"]
