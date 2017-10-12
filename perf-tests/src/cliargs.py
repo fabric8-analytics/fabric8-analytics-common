@@ -49,3 +49,7 @@ cli_parser.add_argument('-g', '--generate-graph',
 cli_parser.add_argument('-c', '--generate-csv',
                         help='generate CSV file(s) as output',
                         action='store_true')
+
+cli_parser.add_argument('-H', '--generate-html',
+                        help='generate HTML file(s) as output',
+                        action='store_true')
