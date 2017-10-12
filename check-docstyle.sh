@@ -1,4 +1,5 @@
 directories="integration-tests ui-tests perf-tests"
+pass=0
 fail=0
 
 function prepare_venv() {
@@ -32,6 +33,7 @@ do
         if [ $? -eq 0 ]
         then
             echo "    Pass"
+            let "pass++"
         elif [ $? -eq 2 ]
         then
             echo "    Illegal usage (should not happen)"
@@ -46,9 +48,10 @@ done
 
 if [ $fail -eq 0 ]
 then
-    echo "All checks passed"
+    echo "All checks passed for $pass source files"
 else
-    echo "Documentation strings should be added and/or fixed in $fail source files"
+    let total=$pass+$fail
+    echo "Documentation strings should be added and/or fixed in $fail source files out of $total files"
     exit 1
 fi
 
