@@ -18,6 +18,7 @@ import botocore
 from botocore.exceptions import ClientError
 from src.attribute_checks import *
 from src.MockedResponse import *
+from src.s3interface import *
 
 # Do not remove - kept for debugging
 import logging
@@ -1512,10 +1513,6 @@ def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
     context.s3_data = s3_data
 
 
-def selector_to_key(selector):
-    return selector.lower().replace(" ", "_")
-
-
 @when('I read {selector} metadata for the package {package} in ecosystem '
       '{ecosystem} from the AWS S3 database bucket {bucket}')
 def read_core_package_data_from_bucket(context, selector, package, ecosystem, bucket):
@@ -1527,7 +1524,7 @@ def read_core_package_data_from_bucket(context, selector, package, ecosystem, bu
     if selector == "package toplevel":
         key = package_key_into_s3(ecosystem, package)
     else:
-        metadata = selector_to_key(selector)
+        metadata = S3Interface.selector_to_key(selector)
         key = package_data_key_into_s3(ecosystem, package, metadata)
 
     s3_data = context.s3interface.read_object(bucket, key)
