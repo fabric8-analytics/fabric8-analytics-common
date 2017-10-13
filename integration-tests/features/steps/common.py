@@ -806,22 +806,6 @@ def check_id_in_json_response(context):
     check_id_value(context, "id")
 
 
-def check_audit_metadata(data):
-    """Check if all common attributes can be found in the audit node
-    in the component or package metadata."""
-    assert "_audit" in data
-    audit = data["_audit"]
-
-    assert "version" in audit
-    assert audit["version"] == "v1"
-
-    assert "started_at" in audit
-    check_timestamp(audit["started_at"])
-
-    assert "ended_at" in audit
-    check_timestamp(audit["ended_at"])
-
-
 @then('I should receive JSON response with the correct timestamp in attribute {attribute}')
 def check_timestamp_in_json_response(context, attribute):
     """Check the timestamp stored in the JSON response.
