@@ -9,7 +9,36 @@ from src.s3interface import *
 @then('I should find the correct component toplevel metadata for package {package} '
       'version {version} ecosystem {ecosystem} with latest version {version}')
 def check_component_core_data(context, package, version, ecosystem):
-    """Check the component core data read from the AWS S3 database."""
+    """Check the component core data read from the AWS S3 database.
+
+    Expected format (with an example data):
+        {
+          "analyses": [
+            "security_issues",
+            "metadata",
+            "keywords_tagging",
+            "redhat_downstream",
+            "digests",
+            "source_licenses",
+            "dependency_snapshot"
+          ],
+          "audit": null,
+          "dependents_count": -1,
+          "ecosystem": "pypi",
+          "finished_at": "2017-10-06T13:41:43.450021",
+          "id": 1,
+          "latest_version": "0.2.4",
+          "package": "clojure_py",
+          "package_info": {
+            "dependents_count": -1,
+            "relative_usage": "not used"
+          },
+          "release": "pypi:clojure_py:0.2.4",
+          "started_at": "2017-10-06T13:39:30.134801",
+          "subtasks": null,
+          "version": "0.2.4"
+        }
+    """
     data = context.s3_data
 
     started_at = check_and_get_attribute(data, "started_at")
@@ -35,10 +64,12 @@ def check_component_core_data(context, package, version, ecosystem):
     assert actual_release == release, "Release string {r1} differs from expected " \
         "value {r2}".format(r1=actual_release, r2=release)
 
+    # the following attributes are expected to be presented for all component toplevel metadata
     attributes_to_check = ["id", "analyses", "audit", "dependents_count", "latest_version",
                            "package_info", "subtasks"]
     check_attributes_presence(data, attributes_to_check)
 
+    # check the attributes for the 'analyses' subnode
     analyses = data["analyses"]
     attributes_to_check = ["security_issues", "metadata", "keywords_tagging",
                            "redhat_downstream", "digests", "source_licenses",
@@ -49,7 +80,7 @@ def check_component_core_data(context, package, version, ecosystem):
 
 @then('I should find that the latest component version is {version}')
 def check_component_latest_version(context, version):
-    """Check the attribute 'latest_version' used in component metadata."""
+    """Check the value of attribute 'latest_version' stored in component metadata."""
     data = context.s3_data
 
     latest_version = check_and_get_attribute(data, "latest_version")
@@ -218,7 +249,7 @@ def check_package_name_and_version(context, name, version):
 @then('I should find the correct Red Hat downstream data for package {package} version {version} '
       'from ecosystem {ecosystem}')
 def check_component_redhat_downstream_data(context, package, version, ecosystem):
-    """Check the basic Red Hat downstream metadata."""
+    """Check the basic Red Hat downstream metadata for the selected component."""
     data = context.s3_data
 
     check_audit_metadata(data)
@@ -230,7 +261,7 @@ def check_component_redhat_downstream_data(context, package, version, ecosystem)
 
 @then('I should not find the package in Brew')
 def check_package_not_in_brew(context):
-    """Check that the package can not be found in the Brew."""
+    """Check that the given package can not be found in the Brew."""
     details = get_details_node(context)
     brew = check_and_get_attribute(details, "brew")
     assert not brew, "Expecting that the brew attrbute is empty list"
@@ -238,7 +269,7 @@ def check_package_not_in_brew(context):
 
 @then('I should not find the package in CDN')
 def check_package_not_in_cdn(context):
-    """Check that the package can not be found in the CDN."""
+    """Check that the given package can not be found in the CDN."""
     details = get_details_node(context)
     cdn = check_and_get_attribute(details, "pulp_cdn")
     assert not cdn, "Expecting that the pupl_cdm attrbute is empty list"
@@ -246,7 +277,7 @@ def check_package_not_in_cdn(context):
 
 @then('I should not find the package in Red Hat Anitya')
 def check_package_not_in_cdn(context):
-    """Check that the package can not be found in the Red Hat Anitya."""
+    """Check that the given package can not be found in the Red Hat Anitya."""
     details = get_details_node(context)
     cdn = check_and_get_attribute(details, "redhat_anitya")
     assert not cdn, "Expecting that the redhat_anitya attrbute is empty list"
