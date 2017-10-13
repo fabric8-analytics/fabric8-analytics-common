@@ -125,3 +125,10 @@ def check_audit_metadata(data):
 
     assert "ended_at" in audit
     check_timestamp(audit["ended_at"])
+
+
+def get_details_node(context):
+    """Get content of details node, given it exists."""
+    data = context.s3_data
+
+    return check_and_get_attribute(data, 'details')
