@@ -87,6 +87,7 @@ Feature: Check the implementation of test steps
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4.json file
     Then I should find the correct component core data for package clojure_py version 0.2.4 from ecosystem pypi
      and I should find that the latest component version is 0.2.4
+     and I should find the correct component toplevel metadata for package clojure_py version 0.2.4 ecosystem pypi with latest version 0.2.4
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/dependency_snapshot.json file
     Then I should find the correct dependency snapshot data for package clojure_py version 0.2.4 from ecosystem pypi
      and I should find 0 runtime details in dependency snapshot
