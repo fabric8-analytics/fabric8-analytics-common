@@ -106,3 +106,29 @@ def check_schema_attribute(data, expected_schema_name, expected_schema_version):
 
     assert version == expected_schema_version, "Schema version {v1} is different from expected " \
         "version {v2}".format(v1=version, v2=expected_schema_version)
+
+
+def check_audit_metadata(data):
+    """Check the metadata stored in the _audit attribute.
+
+    Check if all common attributes can be found in the audit node
+    in the component or package metadata.
+    """
+    assert "_audit" in data
+    audit = data["_audit"]
+
+    assert "version" in audit
+    assert audit["version"] == "v1"
+
+    assert "started_at" in audit
+    check_timestamp(audit["started_at"])
+
+    assert "ended_at" in audit
+    check_timestamp(audit["ended_at"])
+
+
+def get_details_node(context):
+    """Get content of details node, given it exists."""
+    data = context.s3_data
+
+    return check_and_get_attribute(data, 'details')

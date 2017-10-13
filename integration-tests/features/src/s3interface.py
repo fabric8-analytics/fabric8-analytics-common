@@ -95,3 +95,7 @@ class S3Interface():
         assert s3 is not None
         data = s3.Object(self.full_bucket_name(bucket_name), key).get()[attribute]
         return data
+
+    @staticmethod
+    def selector_to_key(selector):
+        return selector.lower().replace(" ", "_")
