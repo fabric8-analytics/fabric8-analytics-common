@@ -6,6 +6,8 @@ from src.s3interface import *
 
 @then('I should find the correct component core data for package {package} version {version} '
       'from ecosystem {ecosystem}')
+@then('I should find the correct component toplevel metadata for package {package} '
+      'version {version} ecosystem {ecosystem} with latest version {version}')
 def check_component_core_data(context, package, version, ecosystem):
     """Check the component core data read from the AWS S3 database."""
     data = context.s3_data

@@ -1552,36 +1552,6 @@ def check_package_toplevel_file(context, package, ecosystem):
     check_timestamp(data['finished_at'])
 
 
-@then('I should find the correct component toplevel metadata for package {package} '
-      'version {version} ecosystem {ecosystem} with latest version {latest}')
-def check_component_toplevel_file(context, package, version, ecosystem, latest):
-    data = context.s3_data
-
-    check_attribute_presence(data, 'ecosystem')
-    assert data['ecosystem'] == ecosystem
-
-    check_attribute_presence(data, 'package')
-    assert data['package'] == package
-
-    check_attribute_presence(data, 'version')
-    assert data['version'] == version
-
-    check_attribute_presence(data, 'latest_version')
-    assert data['latest_version'] == latest
-
-    release = "{ecosystem}:{package}:{version}".format(ecosystem=ecosystem,
-                                                       package=package,
-                                                       version=version)
-    check_attribute_presence(data, 'release')
-    assert data['release'] == release
-
-    check_attribute_presence(data, 'started_at')
-    check_timestamp(data['started_at'])
-
-    check_attribute_presence(data, 'finished_at')
-    check_timestamp(data['finished_at'])
-
-
 @when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
       '{ecosystem} in the AWS S3 database bucket {bucket}')
 def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
