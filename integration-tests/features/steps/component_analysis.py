@@ -6,6 +6,7 @@ from urllib.parse import urljoin
 
 from src.parsing import *
 from src.utils import *
+from src.authorization_tokens import *
 
 
 @given('Component search service is running')

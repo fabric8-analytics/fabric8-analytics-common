@@ -22,6 +22,7 @@ from src.s3interface import *
 from src.utils import *
 from src.json_utils import *
 from src.parsing import *
+from src.authorization_tokens import *
 
 
 # Do not remove - kept for debugging
@@ -92,14 +93,6 @@ def perform_kerberized_request(context, method, url):
     context.kerb_request = \
         context.exec_command_in_container(context.client, context.container,
                                           command)
-
-
-def jobs_api_authorization(context):
-    return {'auth-token': '{token}'.format(token=context.jobs_api_token)}
-
-
-def authorization(context):
-    return {'Authorization': 'Bearer {token}'.format(token=context.token)}
 
 
 def contains_alternate_node(json_resp):
@@ -564,8 +557,6 @@ def should_not_find_job_by_id(context, job_id):
     job_id = get_unique_job_id(context, job_id)
     job_ids = [job["job_id"] for job in jobs]
     assert job_id not in job_ids
-
-
 
 
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
