@@ -1,5 +1,6 @@
 """Tests for API endpoints that performs stack analysis."""
 import requests
+import time
 import os
 
 from behave import given, then, when
