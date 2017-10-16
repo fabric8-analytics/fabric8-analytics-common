@@ -61,13 +61,6 @@ def running_jobs_debug_api(context):
         context.wait_for_jobs_debug_api_service(context, 60)
 
 
-@given('Component search service is running')
-def running_component_search_api(context):
-    """Wait for the component search REST API to be available."""
-    if not context.is_component_search_service_running(context):
-        context.wait_for_component_search_service(context, 60)
-
-
 @when("I obtain TGT in {service} service")
 def get_tgt_in_service(context, service):
     """Obtain TGT in specified container via `docker exec` and returns
@@ -107,110 +100,6 @@ def jobs_api_authorization(context):
 
 def authorization(context):
     return {'Authorization': 'Bearer {token}'.format(token=context.token)}
-
-
-def perform_component_search(context, component, use_token):
-    path = "api/v1/component-search/{component}".format(component=component)
-    url = urljoin(context.coreapi_url, path)
-    if use_token:
-        context.response = requests.get(url, headers=authorization(context))
-    else:
-        context.response = requests.get(url)
-
-
-@when("I search for component {component} without authorization token")
-def search_for_component_without_token(context, component):
-    """Search for given component via the component search REST API call."""
-    perform_component_search(context, component, False)
-
-
-@when("I search for component {component} with authorization token")
-def search_for_component_with_token(context, component):
-    """Search for given component via the component search REST API call."""
-    perform_component_search(context, component, True)
-
-
-@when("I read {ecosystem}/{component}/{version} component analysis")
-@when("I read {ecosystem}/{component}/{version} component analysis "
-      "{token} authorization token")
-def read_analysis_for_component(context, ecosystem, component, version, token='without'):
-    """Read component analysis (or an error message) for the selected
-    ecosystem."""
-    url = component_analysis_url(context, ecosystem, component, version)
-
-    use_token = parse_token_clause(token)
-
-    if use_token:
-        context.response = requests.get(url, headers=authorization(context))
-    else:
-        context.response = requests.get(url)
-
-
-def component_analysis_url(context, ecosystem, component, version):
-    """Construct URL for the component analyses REST API call."""
-    return urljoin(context.coreapi_url,
-                   'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
-                                                                  c=component,
-                                                                  v=version))
-
-
-@when("I start analysis for component {ecosystem}/{component}/{version}")
-def start_analysis_for_component(context, ecosystem, component, version):
-    """Start the component analysis.
-    Start the analysis for given component and version in selected ecosystem.
-    Current API implementation returns just two HTTP codes:
-    200 OK : analysis is already finished
-    401 UNAUTHORIZED : missing or inproper authorization token
-    404 NOT FOUND : analysis is started or is in progress
-    It means that this test step should check if 200 OK is NOT returned
-    """
-
-    url = component_analysis_url(context, ecosystem, component, version)
-
-    # first check that the analysis is really new
-    response = requests.get(url)
-
-    # remember the response for further test steps
-    context.response = response
-
-    if response.status_code == 200:
-        raise Exception('Bad state: the analysis for component has been '
-                        'finished already')
-    elif response.status_code not in (401, 404):
-        raise Exception('Improper response: expected HTTP status code 401 or 404, '
-                        'received {c}'.format(c=response.status_code))
-
-
-@when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
-@when("I wait for {ecosystem}/{component}/{version} component analysis to finish "
-      "{token} authorization token")
-def finish_analysis_for_component(context, ecosystem, component, version, token='without'):
-    """Try to wait for the component analysis to be finished.
-
-    Current API implementation returns just two HTTP codes:
-    200 OK : analysis is already finished
-    404 NOT FOUND: analysis is started or is in progress
-    """
-
-    timeout = context.component_analysis_timeout  # in seconds
-    sleep_amount = 10  # we don't have to overload the API with too many calls
-
-    use_token = parse_token_clause(token)
-
-    url = component_analysis_url(context, ecosystem, component, version)
-
-    for _ in range(timeout // sleep_amount):
-        if use_token:
-            status_code = requests.get(url, headers=authorization(context)).status_code
-        else:
-            status_code = requests.get(url).status_code
-        if status_code == 200:
-            break
-        elif status_code != 404:
-            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
-        time.sleep(sleep_amount)
-    else:
-        raise Exception('Timeout waiting for the component analysis results')
 
 
 def contains_alternate_node(json_resp):
@@ -677,54 +566,6 @@ def should_not_find_job_by_id(context, job_id):
     assert job_id not in job_ids
 
 
-@then('I should see 0 components')
-@then('I should see {num:d} components ({components}), all from {ecosystem} ecosystem')
-def check_components(context, num=0, components='', ecosystem=''):
-    components = split_comma_separated_list(components)
-
-    json_data = context.response.json()
-
-    search_results = json_data['result']
-    assert len(search_results) == num
-    for search_result in search_results:
-        assert search_result['ecosystem'] == ecosystem
-        assert search_result['name'] in components
-
-
-def print_search_results(search_results):
-    print("\n\n\n")
-    print("The following components can be found")
-    for r in search_results:
-        print(r)
-    print("\n\n\n")
-
-
-@then('I should find the analysis for the component {component} from ecosystem {ecosystem}')
-def check_component_analysis_existence(context, component, ecosystem):
-    json_data = context.response.json()
-    search_results = json_data['result']
-
-    for search_result in search_results:
-        if search_result['ecosystem'] == ecosystem and \
-           search_result['name'] == component:
-            return
-
-    # print_search_results(search_results)
-
-    raise Exception('Component {component} for ecosystem {ecosystem} could not be found'.
-                    format(component=component, ecosystem=ecosystem))
-
-
-@then('I should not find the analysis for the {component} from ecosystem {ecosystem}')
-def check_component_analysis_nonexistence(context, component, ecosystem):
-    json_data = context.response.json()
-    search_results = json_data['result']
-
-    for search_result in search_results:
-        if search_result['ecosystem'] == ecosystem and \
-           search_result['name'] == component:
-            raise Exception('Component {component} for ecosystem {ecosystem} was found'.
-                            format(component=component, ecosystem=ecosystem))
 
 
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
@@ -767,18 +608,17 @@ def check_id_in_json_response(context):
     Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    check_id_value(context, "id")
+    check_id_value_in_json_response(context, "id")
 
 
 @then('I should receive JSON response with the correct timestamp in attribute {attribute}')
-def check_timestamp_in_json_response(context, attribute):
+def check_timestamp_in_json_attribute(context, attribute):
     """Check the timestamp stored in the JSON response.
 
     Check if the attribute in the JSON response object contains
     proper timestamp value
     """
-    timestamp = context.response.json().get(attribute)
-    check_timestamp(timestamp)
+    check_timestamp_in_json_response(context, attribute)
 
 
 @then('I should find proper timestamp under the path {path}')
@@ -851,7 +691,7 @@ def check_stack_analyses_request_id(context):
     Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    check_id_value(context, "request_id")
+    check_id_value_in_json_response(context, "request_id")
 
 
 @then("I should find the status attribute set to success")
@@ -877,7 +717,7 @@ def check_stack_analyses_response(context, url):
                 endpoint=url, request_id=request_id)
     get_resp = requests.get(url)
     if get_resp.status_code == 202:  # in progress
-        # Allowing enough retries for component analyses to complete
+        # Allowing enough retries for stack analyses to complete
         retry_count = 30
         retry_interval = 20
         iter = 0
