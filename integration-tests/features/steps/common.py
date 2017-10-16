@@ -19,26 +19,20 @@ from botocore.exceptions import ClientError
 from src.attribute_checks import *
 from src.MockedResponse import *
 from src.s3interface import *
+from src.utils import *
+from src.json_utils import *
+from src.parsing import *
+from src.authorization_tokens import *
+
 
 # Do not remove - kept for debugging
 import logging
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
-STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
-    "fabric8-analytics/fabric8-analytics-stack-analysis/master/" \
-    "analytics_platform/kronos/pgm/src/pgm_constants.py"
-
-STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
-    "KRONOS_OUTLIER_PROBABILITY_THRESHOLD_VALUE"
-
 DEFAULT_AUTHORIZATION_TOKEN_FILENAME = "private_key.pem"
 
 jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
-
-
-def split_comma_separated_list(l):
-    return [i.strip() for i in l.split(',')]
 
 
 @given('System is in initial state')
@@ -59,13 +53,6 @@ def running_jobs_debug_api(context):
     """Wait for the job debug REST API to be available."""
     if not context.is_jobs_debug_api_running(context):
         context.wait_for_jobs_debug_api_service(context, 60)
-
-
-@given('Component search service is running')
-def running_component_search_api(context):
-    """Wait for the component search REST API to be available."""
-    if not context.is_component_search_service_running(context):
-        context.wait_for_component_search_service(context, 60)
 
 
 @when("I obtain TGT in {service} service")
@@ -99,177 +86,6 @@ def perform_kerberized_request(context, method, url):
     context.kerb_request = \
         context.exec_command_in_container(context.client, context.container,
                                           command)
-
-
-def jobs_api_authorization(context):
-    return {'auth-token': '{token}'.format(token=context.jobs_api_token)}
-
-
-def authorization(context):
-    return {'Authorization': 'Bearer {token}'.format(token=context.token)}
-
-
-def perform_component_search(context, component, use_token):
-    path = "api/v1/component-search/{component}".format(component=component)
-    url = urljoin(context.coreapi_url, path)
-    if use_token:
-        context.response = requests.get(url, headers=authorization(context))
-    else:
-        context.response = requests.get(url)
-
-
-@when("I search for component {component} without authorization token")
-def search_for_component_without_token(context, component):
-    """Search for given component via the component search REST API call."""
-    perform_component_search(context, component, False)
-
-
-@when("I search for component {component} with authorization token")
-def search_for_component_with_token(context, component):
-    """Search for given component via the component search REST API call."""
-    perform_component_search(context, component, True)
-
-
-@when("I read {ecosystem}/{component}/{version} component analysis")
-@when("I read {ecosystem}/{component}/{version} component analysis "
-      "{token} authorization token")
-def read_analysis_for_component(context, ecosystem, component, version, token='without'):
-    """Read component analysis (or an error message) for the selected
-    ecosystem."""
-    url = component_analysis_url(context, ecosystem, component, version)
-
-    use_token = parse_token_clause(token)
-
-    if use_token:
-        context.response = requests.get(url, headers=authorization(context))
-    else:
-        context.response = requests.get(url)
-
-
-def component_analysis_url(context, ecosystem, component, version):
-    """Construct URL for the component analyses REST API call."""
-    return urljoin(context.coreapi_url,
-                   'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
-                                                                  c=component,
-                                                                  v=version))
-
-
-@when("I start analysis for component {ecosystem}/{component}/{version}")
-def start_analysis_for_component(context, ecosystem, component, version):
-    """Start the component analysis.
-    Start the analysis for given component and version in selected ecosystem.
-    Current API implementation returns just two HTTP codes:
-    200 OK : analysis is already finished
-    401 UNAUTHORIZED : missing or inproper authorization token
-    404 NOT FOUND : analysis is started or is in progress
-    It means that this test step should check if 200 OK is NOT returned
-    """
-
-    url = component_analysis_url(context, ecosystem, component, version)
-
-    # first check that the analysis is really new
-    response = requests.get(url)
-
-    # remember the response for further test steps
-    context.response = response
-
-    if response.status_code == 200:
-        raise Exception('Bad state: the analysis for component has been '
-                        'finished already')
-    elif response.status_code not in (401, 404):
-        raise Exception('Improper response: expected HTTP status code 401 or 404, '
-                        'received {c}'.format(c=response.status_code))
-
-
-@when("I wait for {ecosystem}/{component}/{version} component analysis to finish")
-@when("I wait for {ecosystem}/{component}/{version} component analysis to finish "
-      "{token} authorization token")
-def finish_analysis_for_component(context, ecosystem, component, version, token='without'):
-    """Try to wait for the component analysis to be finished.
-
-    Current API implementation returns just two HTTP codes:
-    200 OK : analysis is already finished
-    404 NOT FOUND: analysis is started or is in progress
-    """
-
-    timeout = context.component_analysis_timeout  # in seconds
-    sleep_amount = 10  # we don't have to overload the API with too many calls
-
-    use_token = parse_token_clause(token)
-
-    url = component_analysis_url(context, ecosystem, component, version)
-
-    for _ in range(timeout // sleep_amount):
-        if use_token:
-            status_code = requests.get(url, headers=authorization(context)).status_code
-        else:
-            status_code = requests.get(url).status_code
-        if status_code == 200:
-            break
-        elif status_code != 404:
-            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
-        time.sleep(sleep_amount)
-    else:
-        raise Exception('Timeout waiting for the component analysis results')
-
-
-def parse_timestamp(string):
-    timeformat = '%Y-%m-%dT%H:%M:%S.%f'
-    return datetime.datetime.strptime(string, timeformat)
-
-
-def contains_alternate_node(json_resp):
-    """Check for the existence of alternate node in the stack analysis."""
-    result = json_resp.get('result')
-    return bool(result) and isinstance(result, list) \
-        and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
-
-
-@when("I wait for stack analysis to finish")
-@when("I wait for stack analysis to finish {token} authorization token")
-@when("I wait for stack analysis version {version} to finish {token} authorization token")
-def wait_for_stack_analysis_completion(context, version="2", token="without"):
-    """Try to wait for the stack analysis to be finished.
-
-    This step assumes that stack analysis has been started previously and
-    thus that the job ID is known
-
-    Current API implementation returns just three HTTP codes:
-    200 OK : analysis is already finished
-    202 Accepted: analysis is started or is in progress (or other state!)
-    401 UNAUTHORIZED : missing or inproper authorization token
-    """
-
-    timeout = context.stack_analysis_timeout  # in seconds
-    sleep_amount = 10  # we don't have to overload the API with too many calls
-    use_token = parse_token_clause(token)
-
-    id = context.response.json().get("id")
-    context.stack_analysis_id = id
-    # log.info("REQUEST ID: {}\n\n".format(context.stack_analysis_id))
-    url = urljoin(stack_analysis_endpoint(context, version), id)
-    # log.info("RECOMMENDER API URL: {}\n\n".format(url))
-
-    for _ in range(timeout // sleep_amount):
-        if use_token:
-            context.response = requests.get(url, headers=authorization(context))
-        else:
-            context.response = requests.get(url)
-        status_code = context.response.status_code
-        # log.info("%r" % context.response.json())
-        if status_code == 200:
-            json_resp = context.response.json()
-            if contains_alternate_node(json_resp):
-                # log.info('Recommendation found')
-                break
-        # 401 code should be checked later
-        elif status_code == 401:
-            break
-        elif status_code != 202:
-            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
-        time.sleep(sleep_amount)
-    else:
-        raise Exception('Timeout waiting for the stack analysis results')
 
 
 @when('I access anitya {url}')
@@ -318,88 +134,6 @@ def access_url_with_authorization_token(context, url):
     """Access the service API using the HTTP GET method."""
     context.response = requests.get(context.coreapi_url + url,
                                     headers=authorization(context))
-
-
-@when("I post a valid {manifest} to {url}")
-def perform_valid_manifest_post(context, manifest, url):
-    """Post a manifest to selected core API endpont."""
-    filename = "data/{manifest}".format(manifest=manifest)
-    files = {'manifest[]': open(filename, 'rb')}
-    endpoint = "{coreapi_url}{url}".format(coreapi_url=context.coreapi_url, url=url)
-    response = requests.post(endpoint, files=files)
-    response.raise_for_status()
-    context.response = response.json()
-    print(response.json())
-
-
-def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token):
-    """Send the selected manifest file to stack analysis."""
-    filename = 'data/{manifest}'.format(manifest=manifest)
-    manifest_file_dir = os.path.dirname(filename)
-    path_to_manifest_file = os.path.abspath(manifest_file_dir)
-
-    # please note that the trick with (None, path_to_manifest_file) has to be
-    # used here so the REST API call would work properly. It is similar to use
-    # curl -F 'manifest[]=@filename' -F 'filePath[]=PATH_TO_FILE'
-    files = {'manifest[]': (name, open(filename, 'rb')),
-             'filePath[]': (None, path_to_manifest_file)}
-    if use_token:
-        response = requests.post(endpoint, files=files,
-                                 headers=authorization(context))
-    else:
-        response = requests.post(endpoint, files=files)
-    context.response = response
-
-
-def stack_analysis_endpoint(context, version):
-    # please note that the stack analysis v2 now becames the only available endpoint
-    endpoint = {"1": "/api/v1/stack-analyses-v1/",
-                "2": "/api/v1/stack-analyses/"}.get(version)
-    if endpoint is None:
-        raise Exception("Wrong version specified: {v}".format(v=version))
-    return urljoin(context.coreapi_url, endpoint)
-
-
-def parse_token_clause(token_clause):
-    use_token = {"with": True,
-                 "using": True,
-                 "without": False}.get(token_clause)
-    if use_token is None:
-        raise Exception("Wrong clause specified: {t}".format(t=token_clause))
-    return use_token
-
-
-@when("I send NPM package manifest {manifest} to stack analysis")
-@when("I send NPM package manifest {manifest} to stack analysis {token} authorization token")
-@when("I send NPM package manifest {manifest} to stack analysis version {version} {token} "
-      "authorization token")
-def npm_manifest_stack_analysis(context, manifest, version="2", token="without"):
-    endpoint = stack_analysis_endpoint(context, version)
-    use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, 'package.json',
-                                    endpoint, use_token)
-
-
-@when("I send Python package manifest {manifest} to stack analysis")
-@when("I send Python package manifest {manifest} to stack analysis {token} authorization token")
-@when("I send Python package manifest {manifest} to stack analysis version {version} {token} "
-      "authorization token")
-def python_manifest_stack_analysis(context, manifest, version="2", token="without"):
-    endpoint = stack_analysis_endpoint(context, version)
-    use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, 'requirements.txt',
-                                    endpoint, use_token)
-
-
-@when("I send Maven package manifest {manifest} to stack analysis")
-@when("I send Maven package manifest {manifest} to stack analysis {token} authorization token")
-@when("I send Maven package manifest {manifest} to stack analysis version {version} {token} "
-      "authorization token")
-def maven_manifest_stack_analysis(context, manifest, version="2", token="without"):
-    endpoint = stack_analysis_endpoint(context, version)
-    use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
-                                    endpoint, use_token)
 
 
 @when("I post {is_valid} input to the {endpoint} endpoint {token} authorization token")
@@ -691,56 +425,6 @@ def should_not_find_job_by_id(context, job_id):
     assert job_id not in job_ids
 
 
-@then('I should see 0 components')
-@then('I should see {num:d} components ({components}), all from {ecosystem} ecosystem')
-def check_components(context, num=0, components='', ecosystem=''):
-    components = split_comma_separated_list(components)
-
-    json_data = context.response.json()
-
-    search_results = json_data['result']
-    assert len(search_results) == num
-    for search_result in search_results:
-        assert search_result['ecosystem'] == ecosystem
-        assert search_result['name'] in components
-
-
-def print_search_results(search_results):
-    print("\n\n\n")
-    print("The following components can be found")
-    for r in search_results:
-        print(r)
-    print("\n\n\n")
-
-
-@then('I should find the analysis for the component {component} from ecosystem {ecosystem}')
-def check_component_analysis_existence(context, component, ecosystem):
-    json_data = context.response.json()
-    search_results = json_data['result']
-
-    for search_result in search_results:
-        if search_result['ecosystem'] == ecosystem and \
-           search_result['name'] == component:
-            return
-
-    # print_search_results(search_results)
-
-    raise Exception('Component {component} for ecosystem {ecosystem} could not be found'.
-                    format(component=component, ecosystem=ecosystem))
-
-
-@then('I should not find the analysis for the {component} from ecosystem {ecosystem}')
-def check_component_analysis_nonexistence(context, component, ecosystem):
-    json_data = context.response.json()
-    search_results = json_data['result']
-
-    for search_result in search_results:
-        if search_result['ecosystem'] == ecosystem and \
-           search_result['name'] == component:
-            raise Exception('Component {component} for ecosystem {ecosystem} was found'.
-                            format(component=component, ecosystem=ecosystem))
-
-
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
 def check_versions(context, num=0, versions='', ecosystem='', package=''):
     versions = split_comma_separated_list(versions)
@@ -752,14 +436,10 @@ def check_versions(context, num=0, versions='', ecosystem='', package=''):
         assert v['version'] in versions
 
 
-def _is_empty_json_response(context):
-    return context.response.json() == {}
-
-
 @then('I should receive empty JSON response')
 @then('I should see empty analysis')
 def check_json(context):
-    assert _is_empty_json_response(context)
+    assert is_empty_json_response(context)
 
 
 @then('I should get {status:d} status code')
@@ -778,25 +458,6 @@ def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
 
 
-def check_id_value(context, id_attribute_name):
-    """Check the ID attribute in the JSON response.
-
-    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
-    ie. it is a string with 32 characters containing 32 hexadecimal digits
-    """
-    response = context.response
-    json_data = response.json()
-
-    assert json_data is not None
-
-    check_attribute_presence(json_data, id_attribute_name)
-    id = json_data[id_attribute_name]
-
-    assert id is not None
-    assert isinstance(id, str) and len(id) == 32
-    assert all(char in string.hexdigits for char in id)
-
-
 @then('I should receive JSON response with the correct id')
 def check_id_in_json_response(context):
     """Check the ID attribute in the JSON response.
@@ -804,18 +465,17 @@ def check_id_in_json_response(context):
     Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    check_id_value(context, "id")
+    check_id_value_in_json_response(context, "id")
 
 
 @then('I should receive JSON response with the correct timestamp in attribute {attribute}')
-def check_timestamp_in_json_response(context, attribute):
+def check_timestamp_in_json_attribute(context, attribute):
     """Check the timestamp stored in the JSON response.
 
     Check if the attribute in the JSON response object contains
     proper timestamp value
     """
-    timestamp = context.response.json().get(attribute)
-    check_timestamp(timestamp)
+    check_timestamp_in_json_response(context, attribute)
 
 
 @then('I should find proper timestamp under the path {path}')
@@ -888,7 +548,7 @@ def check_stack_analyses_request_id(context):
     Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    check_id_value(context, "request_id")
+    check_id_value_in_json_response(context, "request_id")
 
 
 @then("I should find the status attribute set to success")
@@ -899,72 +559,6 @@ def check_stack_analyses_request_id(context):
     check_attribute_presence(json_data, 'status')
 
     assert json_data['status'] == "success"
-
-
-@then("stack analyses response is available via {url}")
-def check_stack_analyses_response(context, url):
-    """Check the stack analyses response available on the given URL."""
-    response = context.response
-    resp = response.json()
-
-    assert len(resp["results"]) >= 1
-    request_id = resp["results"][0]["id"]
-    url = "{base_url}{endpoint}{request_id}".format(
-                base_url=context.coreapi_url,
-                endpoint=url, request_id=request_id)
-    get_resp = requests.get(url)
-    if get_resp.status_code == 202:  # in progress
-        # Allowing enough retries for component analyses to complete
-        retry_count = 30
-        retry_interval = 20
-        iter = 0
-        while iter < retry_count:
-            iter += 1
-            get_resp = requests.get(url)
-            if get_resp.status_code != 202:  # not in progress
-                break
-            time.sleep(retry_interval)
-
-    if iter == retry_count:
-        err = "Stack analyses could not be completed within {t} seconds".format(
-            t=iter * retry_interval)
-
-    resp_json = get_resp.json()
-
-    # ensure that the stack analyses result has been asserted in the loop
-    assert resp_json.get("status") == "success", err
-
-    # ensure that the response is in accordance to the Stack Analyses schema
-    schema = requests.get(resp_json["schema"]["url"]).json()
-    jsonschema.validate(resp_json, schema)
-
-
-def get_value_using_path(obj, path):
-    '''Get the attribute value using the XMLpath-like path specification.
-    Return any attribute stored in the nested object and list hierarchy using
-    the 'path' where path consists of:
-        keys (selectors)
-        indexes (in case of arrays)
-    separated by slash, ie. "key1/0/key_x".
-
-    Usage:
-    get_value_using_path({"x" : {"y" : "z"}}, "x"))   -> {"y" : "z"}
-    get_value_using_path({"x" : {"y" : "z"}}, "x/y")) -> "z"
-    get_value_using_path(["x", "y", "z"], "0"))       -> "x"
-    get_value_using_path(["x", "y", "z"], "1"))       -> "y"
-    get_value_using_path({"key1" : ["x", "y", "z"],
-                          "key2" : ["a", "b", "c", "d"]}, "key1/1")) -> "y"
-    get_value_using_path({"key1" : ["x", "y", "z"],
-                          "key2" : ["a", "b", "c", "d"]}, "key2/1")) -> "b"
-    '''
-
-    keys = path.split("/")
-    for key in keys:
-        if key.isdigit():
-            obj = obj[int(key)]
-        else:
-            obj = obj[key]
-    return obj
 
 
 @then('I should find the value {value} under the path {path} in the JSON response')
@@ -1093,334 +687,6 @@ def acquire_authorization_token(context):
 def acquire_jobs_api_authorization_token(context):
     context.jobs_api_token = os.environ.get("JOB_API_TOKEN")
     # TODO: authorization via GitHub?
-
-
-def download_file_from_url(url):
-    """Download file from the given URL and do basic check of response."""
-    response = requests.get(url)
-    assert response.status_code == 200
-    assert response.text is not None
-    return response.text
-
-
-def parse_float_value_from_text_stream(text, key):
-    """Go through all lines of the text file, find the line with given key
-    and parse float value specified here"""
-    regexp = key + "\s*=\s*(\d.\d*)"
-    for line in text.split("\n"):
-        if line.startswith(key):
-            match = re.fullmatch(regexp, line)
-            assert match is not None
-            assert match.lastindex == 1
-            return float(match.group(1))
-
-
-@when('I download and parse outlier probability threshold value')
-def download_and_parse_outlier_probability_threshold_value(context):
-    """Special step that is needed to get the stack analysis outlier
-    probability threshold."""
-    content = download_file_from_url(STACK_ANALYSIS_CONSTANT_FILE_URL)
-    context.outlier_probability_threshold = parse_float_value_from_text_stream(
-        content, STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME)
-
-
-@then('I should have outlier probability threshold value between {min:f} and {max:f}')
-def check_outlier_probability_threshold_value(context, min, max):
-    v = context.outlier_probability_threshold
-    assert v is not None
-    assert v >= min
-    assert v <= max
-
-
-def check_outlier_probability(usage_outliers, package_name, threshold_value):
-    """Try to find outlier probability for given package is found and that
-    its probability is within permitted range."""
-
-    # NOTE: there's a typo in the attribute name (issue #73)
-    # the following line should be updated after the issue ^^^ will be fixed
-    outlier_probability_attribute = "outlier_prbability"
-
-    for usage_outlier in usage_outliers:
-        if usage_outlier["package_name"] == package_name:
-            assert outlier_probability_attribute in usage_outlier, \
-                "'%s' attribute is expected in the node, " \
-                "found: %s attributes " % (outlier_probability_attribute,
-                                           ", ".join(usage_outlier.keys()))
-            probability = usage_outlier[outlier_probability_attribute]
-            assert probability is not None
-            v = float(probability)
-            assert v >= threshold_value and v <= 1.0, \
-                "outlier_prbability value should fall within %f..1.0 range, "\
-                "found %f value instead" % (threshold_value, v)
-            return
-    raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
-
-
-@then('I should find the proper outlier record for the {component} component')
-def stack_analysis_check_outliers(context, component):
-    json_data = context.response.json()
-    threshold = context.outlier_probability_threshold
-    # log.info('Usage outlier threshold: %r' % threshold)
-    path = "result/0/recommendation/usage_outliers"
-    usage_outliers = get_value_using_path(json_data, path)
-    check_outlier_probability(usage_outliers, component, threshold)
-
-
-@then('I should find that total {count} outliers are reported')
-def check_outlier_count(context, count=2):
-    json_data = context.response.json()
-    path = "result/0/recommendation/usage_outliers"
-    usage_outliers = get_value_using_path(json_data, path)
-    assert len(usage_outliers) == int(count)
-
-
-@then('I should find that valid outliers are reported')
-def check_outlier_validity(context):
-    json_data = context.response.json()
-    threshold = 0.9
-    path = "result/0/recommendation/usage_outliers"
-    usage_outliers = get_value_using_path(json_data, path)
-    for usage_outlier in usage_outliers:
-        # log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
-        check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
-
-
-def check_licenses(node, expected_licenses):
-    for item in node:
-        licenses = item["licenses"]
-        assert licenses is not None
-        for license in licenses:
-            if license not in expected_licenses:
-                raise Exception("Unexpected license found: {license}".format(
-                                license=license))
-
-
-@then('I should find the following licenses ({licenses}) under the path {path}')
-def stack_analysis_check_licenses(context, licenses, path):
-    licenses = split_comma_separated_list(licenses)
-    json_data = context.response.json()
-    node = get_value_using_path(json_data, path)
-    assert node is not None
-    check_licenses(node, licenses)
-
-
-def get_attribute_values(list, attribute_name):
-    return [item[attribute_name] for item in list]
-
-
-def get_analyzed_packages(json_data):
-    """Get names of all analyzed packages."""
-    path = "result/0/user_stack_info/analyzed_dependencies"
-    analyzed_packages = get_value_using_path(json_data, path)
-    return get_attribute_values(analyzed_packages, "package")
-
-
-def get_companion_packages(json_data):
-    """Get names of all packages in companion list."""
-    path = "result/0/recommendation/companion"
-    companion = get_value_using_path(json_data, path)
-    return get_attribute_values(companion, "name")
-
-
-@then('I should find that none analyzed package can be found in companion packages as well')
-def stack_analysis_check_companion_packages(context):
-
-    json_data = context.response.json()
-
-    # those two lists should have no element in common
-    analyzed_packages = get_analyzed_packages(json_data)
-    companion_packages = get_companion_packages(json_data)
-
-    for companion_package in companion_packages:
-        assert companion_package not in analyzed_packages, \
-            "The analyzed package '%s' is found in companion packages as well" \
-            % companion_package
-
-
-@then('I should get {field_name} field in stack report')
-def verify_stack_level_license_info(context, field_name):
-    json_data = context.response.json()
-    path = 'result/0/user_stack_info'
-    user_stack_info = get_value_using_path(json_data, path)
-    assert user_stack_info.get(field_name, None) is not None
-
-
-def replaces_component(replacement, component, version):
-    assert "replaces" in replacement
-    replaces = replacement["replaces"]
-    for replace in replaces:
-        assert "name" in replace
-        assert "version" in replace
-        if replace["name"] == component and replace["version"] == version:
-            return True
-    return False
-
-
-def find_replacements(alternates, component, version):
-    return [replacement
-            for replacement in alternates
-            if replaces_component(replacement, component, version)]
-
-
-@then('I should find that the component {component} version {version} can be replaced by '
-      'component {replaced_by} version {replacement_version}')
-def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
-    """Check that the component is replaced by the given package
-       and version."""
-    json_data = context.response.json()
-    path = "result/0/recommendation/alternate"
-    alternates = get_value_using_path(json_data, path)
-    replacements = find_replacements(alternates, component, version)
-
-    for replacement in replacements:
-        if replacement["name"] == replaced_by and \
-           replacement["version"] == replacement_version:
-            break
-    else:
-        raise Exception("Can not found expected replacement for the component"
-                        " {component} {version}".format(component=component,
-                                                        version=version))
-
-
-@then('I should find that the component {component} version {version} has only one replacement')
-@then('I should find that the component {component} version {version} has '
-      '{expected_replacements:d} replacements')
-def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
-    """Check that the component is replaced only once in the alternate
-       analysis."""
-    json_data = context.response.json()
-    path = "result/0/recommendation/alternate"
-    alternates = get_value_using_path(json_data, path)
-    replacements = find_replacements(alternates, component, version)
-    replacements_count = len(replacements)
-
-    assert replacements_count == expected_replacements, \
-        "there must be just %d replacement(s), " \
-        "but %d replacements have been found" % (expected_replacements, replacements_count)
-
-
-def get_user_components(json_data):
-    path = "result/0/user_stack_info/analyzed_dependencies"
-    return get_value_using_path(json_data, path)
-
-
-def get_alternate_components(json_data):
-    path = "result/0/recommendation/alternate"
-    return get_value_using_path(json_data, path)
-
-
-def perform_alternate_components_validation(json_data):
-    user_components = get_user_components(json_data)
-
-    # in order to use the 'in' operator later we need to have a sequence
-    # of dictionaries with 'name' and 'version' keys
-    user_components = [{"name": c["package"],
-                        "version": c["version"]} for c in user_components]
-    alternate_components = get_alternate_components(json_data)
-
-    for alternate_component in alternate_components:
-
-        check_attribute_presence(alternate_component, "name")
-
-        check_attribute_presence(alternate_component, "replaces")
-        replaces = alternate_component["replaces"]
-
-        for replace in replaces:
-            check_attribute_presence(replace, "name")
-            r_name = replace["name"]
-
-            check_attribute_presence(replace, "version")
-            r_version = replace["version"]
-
-            assert replace in user_components,  \
-                "The component %s version %s does not replace any user " \
-                "component" % (r_name, r_version)
-
-
-@then('I should find that alternate components replace user components')
-def stack_analysis_validate_alternate_components(context):
-    json_data = context.response.json()
-    assert json_data is not None, \
-        "JSON response from the previous request does not exist"
-    perform_alternate_components_validation(json_data)
-
-
-def check_cve_value(cve):
-    pattern = "CVE-([0-9]{4})-[0-9]{4,}"
-
-    match = re.fullmatch(pattern, cve)
-    assert match is not None, "Improper CVE number %s" % cve
-
-    year = int(re.fullmatch(pattern, cve).group(1))
-    current_year = datetime.datetime.now().year
-
-    # well the lower limit is a bit arbitrary
-    # (according to SRT guys it should be 1999)
-    assert year >= 1999 and year <= current_year
-
-
-def check_cvss_value(cvss):
-    score = float(cvss)
-    # TODO: check the specificaion how to calculate the maximum possible value
-    # https://www.first.org/cvss/specification-document
-    assert score >= 0.0, "CVSS score must be >= 0.0"
-    assert score <= 10.0, "CVSS score must be <= 10.0"
-
-
-def check_security_node(context, path):
-    json_data = context.response.json()
-    assert json_data is not None
-
-    components = get_value_using_path(json_data, path)
-    assert components is not None
-
-    for component in components:
-        check_attribute_presence(component, "security")
-        cve_items = component["security"]
-        for cve_item in cve_items:
-            check_attribute_presence(cve_item, "CVE")
-            check_attribute_presence(cve_item, "CVSS")
-            cve = cve_item["CVE"]
-            cvss = cve_item["CVSS"]
-            check_cve_value(cve)
-            check_cvss_value(cvss)
-
-
-@then('I should find the security node for all dependencies')
-def stack_analysis_check_security_node_for_dependencies(context):
-    check_security_node(context, "result/0/user_stack_info/dependencies")
-
-
-@then('I should find the security node for all alternate components')
-def stack_analysis_check_security_node_for_alternate_components(context):
-    check_security_node(context, "result/0/recommendation/alternate")
-
-
-@then('I should find the {cve} security issue for the dependency {package}')
-def check_security_issue_existence(context, cve, package):
-    '''Check if the security issue CVE-yyyy-xxxx can be found for the given
-    analyzed package.'''
-    json_data = context.response.json()
-    assert json_data is not None
-
-    path = "result/0/user_stack_info/dependencies"
-    components = get_value_using_path(json_data, path)
-    assert components is not None
-
-    for component in components:
-        if component["name"] == package:
-            check_attribute_presence(component, "security")
-            cve_items = component["security"]
-            for cve_item in cve_items:
-                check_attribute_presence(cve_item, "CVE")
-                if cve_item["CVE"] == cve:
-                    return
-            else:
-                raise Exception('Could not find the CVE {c} for the '
-                                'package {p}'.format(c=cve, p=package))
-    else:
-        raise Exception('Could not find the analyzed package {p}'
-                        .format(p=package))
 
 
 @then('I should see proper information about job API tokens')
