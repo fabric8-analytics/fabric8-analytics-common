@@ -214,11 +214,6 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
         raise Exception('Timeout waiting for the component analysis results')
 
 
-def parse_timestamp(string):
-    timeformat = '%Y-%m-%dT%H:%M:%S.%f'
-    return datetime.datetime.strptime(string, timeformat)
-
-
 def contains_alternate_node(json_resp):
     """Check for the existence of alternate node in the stack analysis."""
     result = json_resp.get('result')
@@ -359,15 +354,6 @@ def stack_analysis_endpoint(context, version):
     if endpoint is None:
         raise Exception("Wrong version specified: {v}".format(v=version))
     return urljoin(context.coreapi_url, endpoint)
-
-
-def parse_token_clause(token_clause):
-    use_token = {"with": True,
-                 "using": True,
-                 "without": False}.get(token_clause)
-    if use_token is None:
-        raise Exception("Wrong clause specified: {t}".format(t=token_clause))
-    return use_token
 
 
 @when("I send NPM package manifest {manifest} to stack analysis")
@@ -1053,16 +1039,6 @@ def download_file_from_url(url):
     return response.text
 
 
-def parse_float_value_from_text_stream(text, key):
-    """Go through all lines of the text file, find the line with given key
-    and parse float value specified here"""
-    regexp = key + "\s*=\s*(\d.\d*)"
-    for line in text.split("\n"):
-        if line.startswith(key):
-            match = re.fullmatch(regexp, line)
-            assert match is not None
-            assert match.lastindex == 1
-            return float(match.group(1))
 
 
 @when('I download and parse outlier probability threshold value')
