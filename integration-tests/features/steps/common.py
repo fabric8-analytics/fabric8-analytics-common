@@ -88,13 +88,6 @@ def perform_kerberized_request(context, method, url):
                                           command)
 
 
-def contains_alternate_node(json_resp):
-    """Check for the existence of alternate node in the stack analysis."""
-    result = json_resp.get('result')
-    return bool(result) and isinstance(result, list) \
-        and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
-
-
 @when('I access anitya {url}')
 def anitya_url(context, url):
     """Access the Anitya service API using the HTTP GET method."""

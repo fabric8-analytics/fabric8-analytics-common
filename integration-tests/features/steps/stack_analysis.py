@@ -22,6 +22,13 @@ STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
     "KRONOS_OUTLIER_PROBABILITY_THRESHOLD_VALUE"
 
 
+def contains_alternate_node(json_resp):
+    """Check for the existence of alternate node in the stack analysis."""
+    result = json_resp.get('result')
+    return bool(result) and isinstance(result, list) \
+        and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
+
+
 @when("I wait for stack analysis to finish")
 @when("I wait for stack analysis to finish {token} authorization token")
 @when("I wait for stack analysis version {version} to finish {token} authorization token")
