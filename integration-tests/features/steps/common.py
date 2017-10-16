@@ -19,6 +19,7 @@ from botocore.exceptions import ClientError
 from src.attribute_checks import *
 from src.MockedResponse import *
 from src.s3interface import *
+from src.json_utils import *
 
 # Do not remove - kept for debugging
 import logging
@@ -752,14 +753,10 @@ def check_versions(context, num=0, versions='', ecosystem='', package=''):
         assert v['version'] in versions
 
 
-def _is_empty_json_response(context):
-    return context.response.json() == {}
-
-
 @then('I should receive empty JSON response')
 @then('I should see empty analysis')
 def check_json(context):
-    assert _is_empty_json_response(context)
+    assert is_empty_json_response(context)
 
 
 @then('I should get {status:d} status code')
@@ -776,25 +773,6 @@ def check_json_response(context, key):
 @then('I should receive JSON response with the {key} key set to {value}')
 def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
-
-
-def check_id_value(context, id_attribute_name):
-    """Check the ID attribute in the JSON response.
-
-    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
-    ie. it is a string with 32 characters containing 32 hexadecimal digits
-    """
-    response = context.response
-    json_data = response.json()
-
-    assert json_data is not None
-
-    check_attribute_presence(json_data, id_attribute_name)
-    id = json_data[id_attribute_name]
-
-    assert id is not None
-    assert isinstance(id, str) and len(id) == 32
-    assert all(char in string.hexdigits for char in id)
 
 
 @then('I should receive JSON response with the correct id')
@@ -937,34 +915,6 @@ def check_stack_analyses_response(context, url):
     # ensure that the response is in accordance to the Stack Analyses schema
     schema = requests.get(resp_json["schema"]["url"]).json()
     jsonschema.validate(resp_json, schema)
-
-
-def get_value_using_path(obj, path):
-    '''Get the attribute value using the XMLpath-like path specification.
-    Return any attribute stored in the nested object and list hierarchy using
-    the 'path' where path consists of:
-        keys (selectors)
-        indexes (in case of arrays)
-    separated by slash, ie. "key1/0/key_x".
-
-    Usage:
-    get_value_using_path({"x" : {"y" : "z"}}, "x"))   -> {"y" : "z"}
-    get_value_using_path({"x" : {"y" : "z"}}, "x/y")) -> "z"
-    get_value_using_path(["x", "y", "z"], "0"))       -> "x"
-    get_value_using_path(["x", "y", "z"], "1"))       -> "y"
-    get_value_using_path({"key1" : ["x", "y", "z"],
-                          "key2" : ["a", "b", "c", "d"]}, "key1/1")) -> "y"
-    get_value_using_path({"key1" : ["x", "y", "z"],
-                          "key2" : ["a", "b", "c", "d"]}, "key2/1")) -> "b"
-    '''
-
-    keys = path.split("/")
-    for key in keys:
-        if key.isdigit():
-            obj = obj[int(key)]
-        else:
-            obj = obj[key]
-    return obj
 
 
 @then('I should find the value {value} under the path {path} in the JSON response')
