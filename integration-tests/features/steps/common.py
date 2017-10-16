@@ -19,7 +19,10 @@ from botocore.exceptions import ClientError
 from src.attribute_checks import *
 from src.MockedResponse import *
 from src.s3interface import *
+from src.utils import *
 from src.json_utils import *
+from src.parsing import *
+
 
 # Do not remove - kept for debugging
 import logging
@@ -36,10 +39,6 @@ STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
 DEFAULT_AUTHORIZATION_TOKEN_FILENAME = "private_key.pem"
 
 jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
-
-
-def split_comma_separated_list(l):
-    return [i.strip() for i in l.split(',')]
 
 
 @given('System is in initial state')
@@ -1029,16 +1028,6 @@ def acquire_authorization_token(context):
 def acquire_jobs_api_authorization_token(context):
     context.jobs_api_token = os.environ.get("JOB_API_TOKEN")
     # TODO: authorization via GitHub?
-
-
-def download_file_from_url(url):
-    """Download file from the given URL and do basic check of response."""
-    response = requests.get(url)
-    assert response.status_code == 200
-    assert response.text is not None
-    return response.text
-
-
 
 
 @when('I download and parse outlier probability threshold value')
