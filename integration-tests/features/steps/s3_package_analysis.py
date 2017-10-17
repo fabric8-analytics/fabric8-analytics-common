@@ -151,3 +151,111 @@ def check_dependents_count(context, expected_dependents_count):
     assert int(dependents_count) == expected_dependents_count, \
         "Expected {e} dependents, but found {f} instead".format(e=expected_dependents_count,
                                                                 f=dependents_count)
+
+
+@when('I read {selector} metadata for the package {package} in ecosystem '
+      '{ecosystem} from the AWS S3 database bucket {bucket}')
+def read_core_package_data_from_bucket(context, selector, package, ecosystem, bucket):
+    """Read the selected metadata for the package."""
+    # At this moment, the following selectors can be used:
+    # package toplevel
+    # GitHub details
+    # keywords tagging
+    # libraries io
+    if selector == "package toplevel":
+        key = S3Interface.package_key(ecosystem, package)
+    else:
+        metadata = S3Interface.selector_to_key(selector)
+        key = S3.package_analysis_key(ecosystem, package, metadata)
+
+    s3_data = context.s3interface.read_object(bucket, key)
+    assert s3_data is not None
+    context.s3_data = s3_data
+
+
+@then('I should find the correct package toplevel metadata for package {package} '
+      'from ecosystem {ecosystem}')
+def check_package_toplevel_file(context, package, ecosystem):
+    """Check the content of package toplevel file."""
+    data = context.s3_data
+
+    check_attribute_presence(data, 'id')
+    assert int(data['id'])
+
+    check_attribute_presence(data, 'package_id')
+    assert int(data['package_id'])
+
+    check_attribute_presence(data, 'analyses')
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+
+@when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} in the AWS S3 database bucket {bucket}')
+def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
+    """Wait for the package analysis to finish."""
+    timeout = 300 * 60
+    sleep_amount = 10
+
+    key = S3Interface.component_key(ecosystem, package, version)
+
+    start_time = datetime.datetime.now(datetime.timezone.utc)
+
+    for _ in range(timeout // sleep_amount):
+        current_date = datetime.datetime.now(datetime.timezone.utc)
+        try:
+            last_modified = context.s3interface.read_object_metadata(bucket, key,
+                                                                     "LastModified")
+            delta = current_date - last_modified
+            # print(current_date, "   ", last_modified, "   ", delta)
+            if delta.days == 0 and delta.seconds < sleep_amount * 2:
+                # print("done!")
+                read_core_data_from_bucket(context, package, version, ecosystem, bucket)
+                return
+        except ClientError as e:
+            print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the job metadata in S3!')
+
+
+@when('I remember timestamps from the last component toplevel metadata')
+def remember_timestamps_from_job_toplevel_data(context):
+    """Remember the timestamps for the package analysis."""
+    data = context.s3_data
+    context.job_timestamp_started_at = data['started_at']
+    context.job_timestamp_finished_at = data['finished_at']
+
+    # print("\n\nRemember")
+    # print(context.job_timestamp_started_at)
+    # print(context.job_timestamp_finished_at)
+
+
+@then('I should find that timestamps from current toplevel metadata are newer than '
+      'remembered timestamps')
+def check_new_timestamps(context):
+    """Check the timestamps for the package analysis."""
+    data = context.s3_data
+
+    # print("\n\nCurrent")
+    # print(data['started_at'])
+    # print(data['finished_at'])
+
+    check_attribute_presence(data, 'started_at')
+    check_timestamp(data['started_at'])
+
+    check_attribute_presence(data, 'finished_at')
+    check_timestamp(data['finished_at'])
+
+    remembered_started_at = parse_timestamp(context.job_timestamp_started_at)
+    remembered_finished_at = parse_timestamp(context.job_timestamp_finished_at)
+    current_started_at = parse_timestamp(data['started_at'])
+    current_finished_at = parse_timestamp(data['finished_at'])
+
+    assert current_started_at > remembered_started_at, \
+        "Current metadata are not newer: failed on started_at attributes comparison"
+    assert current_finished_at > remembered_finished_at, \
+        "Current metadata are not newer: failed on finished_at attributes comparison"

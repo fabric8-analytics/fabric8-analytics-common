@@ -342,3 +342,13 @@ def check_package_license(context, license):
     details = get_details_node(context)
     licenses = check_and_get_attribute(details, "licenses")
     assert license in licenses, "Can not find license {lic}".format(lic=license)
+
+
+@when('I read component toplevel metadata for the package {package} version {version} in ecosystem '
+      '{ecosystem} from the AWS S3 database bucket {bucket}')
+def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
+    """Read the component toplevel metadata."""
+    key = S3Interface.component_key(ecosystem, package, version)
+    s3_data = context.s3interface.read_object(bucket, key)
+    assert s3_data is not None
+    context.s3_data = s3_data

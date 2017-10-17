@@ -56,6 +56,17 @@ class S3Interface():
         """Insert deployment prefix to the given bucket name."""
         return "{p}-{b}".format(p=self.deployment_prefix, b=bucket_name)
 
+    def package_key(ecosystem, package):
+        """Construct a key to the selected package."""
+        return "{ecosystem}/{package}.json".format(ecosystem=ecosystem,
+                                                   package=package)
+
+    def package_analysis_key(ecosystem, package, metadata):
+        """Construct a key to the selected package analysis in the given ecosystem."""
+        return "{ecosystem}/{package}/{metadata}.json".format(ecosystem=ecosystem,
+                                                              package=package,
+                                                              metadata=metadata)
+
     def component_key(self, ecosystem, package, version):
         """Construct a key to the selected component in the given ecosystem."""
         return "{ecosystem}/{package}/{version}.json".format(ecosystem=ecosystem,
