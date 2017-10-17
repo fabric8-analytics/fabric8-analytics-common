@@ -517,3 +517,56 @@ def check_security_issue_existence(context, cve, package):
     else:
         raise Exception('Could not find the analyzed package {p}'
                         .format(p=package))
+
+
+@then('I should find analyzed dependency named {package} with version {version} in the stack '
+      'analysis')
+def check_analyzed_dependency(context, package, version):
+    """Check for the existence of analyzed dependency for given package."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    analyzed_dependencies = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies is not None
+    for analyzed_dependency in analyzed_dependencies:
+        if analyzed_dependency["package"] == package \
+           and analyzed_dependency["version"] == version:
+            break
+    else:
+        raise Exception('Package {package} with version {version} not found'.
+                        format(package=package, version=version))
+
+
+@then('I should find the following analyzed dependencies ({packages}) in the stack analysis')
+def check_all_analyzed_dependency(context, packages):
+    """Check all analyzed dependencies in the stack analysis."""
+    packages = split_comma_separated_list(packages)
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    analyzed_dependencies = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies is not None
+    dependencies = get_attribute_values(analyzed_dependencies, "package")
+    for package in packages:
+        if package not in dependencies:
+            raise Exception('Package {package} not found'.format(package=package))
+
+
+@then("I should get a valid request ID")
+def check_stack_analyses_request_id(context):
+    """Check the ID attribute in the JSON response.
+
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    check_id_value_in_json_response(context, "request_id")
+
+
+@then("I should find the status attribute set to success")
+def check_stack_analyses_request_id(context):
+    response = context.response
+    json_data = response.json()
+
+    check_attribute_presence(json_data, 'status')
+
+    assert json_data['status'] == "success"
