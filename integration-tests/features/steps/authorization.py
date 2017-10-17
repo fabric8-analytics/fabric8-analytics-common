@@ -11,13 +11,13 @@ jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
 
 
 @then('I should get the proper authorization token')
-def is_proper_authorization_token(context):
+def is_proper_authorization_token_for_server_api(context):
     """Check if the test has any authorization token for server API."""
     assert context.token is not None
 
 
 @then('I should get the proper job API authorization token')
-def is_proper_authorization_token(context):
+def is_proper_authorization_token_for_jobs_api(context):
     """Check if the test has any authorization token for the Jobs API."""
     assert context.jobs_api_token is not None
 
