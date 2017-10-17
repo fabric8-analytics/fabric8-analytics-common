@@ -88,9 +88,11 @@ def job_endpoint(context, job_id=None):
 
 
 def send_json_file_to_job_api(context, endpoint, filename, use_token):
-    """Send the given file to the selected job API endpoints. If the use_token
-    is set, send the 'auth-token' header with the token taken from the
-    context environment."""
+    """Send the given file to the selected job API endpoints.
+
+    If the use_token is set, send the 'auth-token' header with the token taken
+    from the context environment.
+    """
     if use_token:
         headers = jobs_api_authorization(context)
         context.response = context.send_json_file(endpoint, filename, headers)
@@ -101,7 +103,7 @@ def send_json_file_to_job_api(context, endpoint, filename, use_token):
 @when("I post a job metadata {metadata} with state {state}")
 @when("I post a job metadata {metadata} with state {state} {token} authorization token")
 def perform_post_job(context, metadata, state, token="without"):
-    """API call to create a new job using the provided metadata.
+    """Perform API call to create a new job using the provided metadata.
 
     The token parameter can be set to 'with', 'without', or 'using'.
     """
@@ -112,6 +114,7 @@ def perform_post_job(context, metadata, state, token="without"):
 
 
 def get_unique_job_id(context, job_id):
+    """Return unique job ID consisting of generated UUID and actual ID."""
     if 'job_id_prefix' in context:
         return "{uuid}_{job_id}".format(uuid=context.job_id_prefix, job_id=job_id)
     else:
@@ -122,9 +125,12 @@ def get_unique_job_id(context, job_id):
 @when("I post a job metadata {metadata} with job id {job_id} and state {state} {token} "
       "authorization token")
 def perform_post_job_with_state(context, metadata, job_id, state, token="without"):
-    """API call to create a new job using the provided metadata and set a job
+    """Perform API call to create a new job.
+
+    The new job is created using the provided metadata and set a job
     to given state. The token parameter can be set to 'with', 'without', or
-    'using'."""
+    'using'.
+    """
     filename = job_metadata_filename(metadata)
     job_id = get_unique_job_id(context, job_id)
     endpoint = flow_sheduling_endpoint(context, state, job_id)
@@ -137,7 +143,7 @@ def perform_post_job_with_state(context, metadata, job_id, state, token="without
 @when("I delete job with id {job_id}")
 @when("I delete job with id {job_id} {token} authorization token")
 def delete_job(context, job_id=None, token="without"):
-    """API call to delete a job with given ID."""
+    """Perform API call to delete a job with given ID."""
     job_id = get_unique_job_id(context, job_id)
     endpoint = job_endpoint(context, job_id)
     use_token = parse_token_clause(token)
@@ -150,7 +156,7 @@ def delete_job(context, job_id=None, token="without"):
 @when("I set status for job with id {job_id} to {status}")
 @when("I set status for job with id {job_id} to {status} {token} authorization token")
 def set_job_status(context, job_id, status, token="without"):
-    """API call to set job status."""
+    """Perform API call to set job status."""
     endpoint = job_endpoint(context, job_id)
     url = "{endpoint}?state={status}".format(endpoint=endpoint, status=status)
     use_token = parse_token_clause(token)
@@ -164,7 +170,7 @@ def set_job_status(context, job_id, status, token="without"):
 @when("I set status for job service to {status}")
 @when("I set status for job service to {status} {token} authorization token")
 def set_job_service_status(context, status=None, token="without"):
-    """API call to set or reset job service status."""
+    """Perform API call to set or reset job service status."""
     url = "{jobs_api_url}api/v1/service/state".format(
             jobs_api_url=context.jobs_api_url)
     use_token = parse_token_clause(token)
@@ -179,7 +185,7 @@ def set_job_service_status(context, status=None, token="without"):
 @when("I clean all failed jobs")
 @when("I clean all failed jobs {token} authorization token")
 def clean_all_failed_jobs(context, token="without"):
-    """API call to clean up all failed jobs."""
+    """Perform API call to clean up all failed jobs."""
     url = "{url}api/v1/jobs/clean-failed".format(url=context.jobs_api_url)
     use_token = parse_token_clause(token)
     if use_token:
@@ -191,6 +197,7 @@ def clean_all_failed_jobs(context, token="without"):
 @when('I logout from the job service')
 @when('I logout from the job service {token} authorization token')
 def logout_from_the_jobs_service(context, token='without'):
+    """Call API to logout from the job service."""
     url = "{jobs_api_url}api/v1/logout".format(
             jobs_api_url=context.jobs_api_url)
     use_token = parse_token_clause(token)
@@ -203,6 +210,7 @@ def logout_from_the_jobs_service(context, token='without'):
 
 @when('I access the job service endpoint to generate token')
 def job_service_generate_token(context):
+    """Generate token for the job service."""
     url = "{jobs_api_url}api/v1/generate-token".format(
             jobs_api_url=context.jobs_api_url)
     context.response = requests.get(url)
@@ -210,6 +218,7 @@ def job_service_generate_token(context):
 
 @then('I should be redirected to {url}')
 def check_redirection(context, url):
+    """Check the response with redirection."""
     assert context.response is not None
     assert context.response.history is not None
     assert context.response.url is not None
@@ -225,7 +234,7 @@ def check_redirection(context, url):
 @when("I ask for analyses report for ecosystem {ecosystem} between dates {from_date} {to_date} "
       "{token} authorization token")
 def access_analyses_report(context, ecosystem, from_date=None, to_date=None, token="without"):
-    """API call to get analyses report for selected ecosystem."""
+    """Perform API call to get analyses report for selected ecosystem."""
     use_token = parse_token_clause(token)
     url = "{url}api/v1/debug/analyses-report?ecosystem={ecosystem}".format(
            url=context.jobs_api_url, ecosystem=ecosystem)
@@ -241,6 +250,7 @@ def access_analyses_report(context, ecosystem, from_date=None, to_date=None, tok
 
 
 def get_jobs_count(context):
+    """Return job count read from the JSON response."""
     jsondata = context.response.json()
     jobs = jsondata['jobs']
     return jsondata['jobs_count']
@@ -248,9 +258,7 @@ def get_jobs_count(context):
 
 @then('I should see {num:d} jobs')
 def check_jobs(context, num):
-    """
-    check the number of jobs
-    """
+    """Check the number of jobs."""
     jobs_count = get_jobs_count(context)
     assert len(jobs) == num
     assert jobs_count == num
@@ -266,7 +274,6 @@ def check_jobs(context):
 @then('I should see N+{num:d} jobs')
 def check_jobs(context, num):
     """Check the relative jobs count and remember the number of jobs."""
-
     assert context.jobs_count is not None, \
         "Please use 'I should see N jobs' test step first"
 
@@ -282,15 +289,17 @@ def check_jobs(context, num):
 
 
 def get_job_by_id(jobs, job_id):
+    """Find the job by its ID."""
     return next((job for job in jobs if job["job_id"] == job_id), None)
 
 
 @then('I should find job with ID {job_id}')
 @then('I should find job with ID {job_id} and state {state}')
 def find_job(context, job_id, state=None):
-    """
-    check if job with given ID is returned from the service and optionally if
-    the job status has expected value
+    """Check the job ID existence.
+
+    Check if job with given ID is returned from the service and optionally if
+    the job status has expected value.
     """
     jsondata = context.response.json()
     jobs = jsondata['jobs']
@@ -306,13 +315,9 @@ def find_job(context, job_id, state=None):
 
 @then('I should not find job with ID {job_id}')
 def should_not_find_job_by_id(context, job_id):
-    """
-    check if job with given ID does not exist
-    """
+    """Check if job with given ID does not exist."""
     jsondata = context.response.json()
     jobs = jsondata['jobs']
     job_id = get_unique_job_id(context, job_id)
     job_ids = [job["job_id"] for job in jobs]
     assert job_id not in job_ids
-
-
