@@ -564,9 +564,26 @@ def check_stack_analyses_request_id(context):
 
 @then("I should find the status attribute set to success")
 def check_stack_analyses_request_id(context):
+    """Check if the status is set to success in the JSON response."""
     response = context.response
     json_data = response.json()
 
     check_attribute_presence(json_data, 'status')
 
     assert json_data['status'] == "success"
+
+
+@then('I should find the attribute request_id equals to id returned by stack analysis request')
+def check_stack_analysis_id(context):
+    """Check the ID of stack analysis."""
+    previous_id = context.stack_analysis_id
+
+    json_data = context.response.json()
+    assert json_data is not None
+
+    check_attribute_presence(json_data, "request_id")
+    request_id = json_data["request_id"]
+
+    assert previous_id is not None
+    assert request_id is not None
+    assert previous_id == request_id
