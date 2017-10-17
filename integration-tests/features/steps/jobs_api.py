@@ -9,6 +9,26 @@ from src.utils import *
 from src.authorization_tokens import *
 
 
+@given('Jobs debug API is running')
+def running_jobs_debug_api(context):
+    """Wait for the job debug REST API to be available."""
+    if not context.is_jobs_debug_api_running(context):
+        context.wait_for_jobs_debug_api_service(context, 60)
+
+
+@when('I access jobs API {url:S}')
+def jobs_api_url(context, url):
+    """Access the jobs service API using the HTTP GET method."""
+    context.response = requests.get(context.jobs_api_url + url)
+
+
+@when('I access jobs API {url:S} with authorization token')
+def jobs_api_url_with_authorization_token(context, url):
+    """Access the jobs service API using the HTTP GET method."""
+    context.response = requests.get(context.jobs_api_url + url,
+                                    headers=jobs_api_authorization(context))
+
+
 @when('I read list of jobs')
 @when('I read list of jobs with type {type}')
 @when('I read list of jobs {token} authorization token')
@@ -321,3 +341,54 @@ def should_not_find_job_by_id(context, job_id):
     job_id = get_unique_job_id(context, job_id)
     job_ids = [job["job_id"] for job in jobs]
     assert job_id not in job_ids
+
+
+@when('I acquire job API authorization token')
+def acquire_jobs_api_authorization_token(context):
+    """Acquite the job API authorization token from the environment variable."""
+    context.jobs_api_token = os.environ.get("JOB_API_TOKEN")
+    # TODO: authorization via GitHub?
+
+
+@then('I should see proper information about job API tokens')
+def check_job_api_tokens_information(context):
+    """Check the tokens information returned by job API."""
+    json_data = context.response.json()
+    assert json_data is not None
+
+    assert "tokens" in json_data
+    tokens = json_data["tokens"]
+
+    assert len(tokens) > 0
+
+    for token in tokens:
+        assert "token" in token
+        assert "rate" in token
+        assert "resources" in token
+
+        rate_token = token["rate"]
+        check_job_token_attributes(rate_token)
+
+        resources = token["resources"]
+
+        token_names = ["core", "graphql", "search"]
+
+        for token_name in token_names:
+            assert token_name in resources
+            check_job_token_attributes(resources[token_name])
+
+
+@when('I generate unique job ID prefix')
+def generate_job_id_prefix(context):
+    """Generate unique job ID prefix."""
+    context.job_id_prefix = uuid.uuid1()
+
+
+@when("I perform kerberized {method} request to {url}")
+def perform_kerberized_request(context, method, url):
+    """Call REST API on coreapi-server."""
+    command = "curl -s -X {method} --negotiate -u : " + \
+              "http://coreapi-server:5000{url}".format(method=method, url=url)
+    context.kerb_request = \
+        context.exec_command_in_container(context.client, context.container,
+                                          command)
