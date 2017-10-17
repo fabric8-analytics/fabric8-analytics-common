@@ -517,3 +517,36 @@ def check_security_issue_existence(context, cve, package):
     else:
         raise Exception('Could not find the analyzed package {p}'
                         .format(p=package))
+
+
+@then('I should find analyzed dependency named {package} with version {version} in the stack '
+      'analysis')
+def check_analyzed_dependency(context, package, version):
+    """Check for the existence of analyzed dependency for given package."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    analyzed_dependencies = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies is not None
+    for analyzed_dependency in analyzed_dependencies:
+        if analyzed_dependency["package"] == package \
+           and analyzed_dependency["version"] == version:
+            break
+    else:
+        raise Exception('Package {package} with version {version} not found'.
+                        format(package=package, version=version))
+
+
+@then('I should find the following analyzed dependencies ({packages}) in the stack analysis')
+def check_all_analyzed_dependency(context, packages):
+    """Check all analyzed dependencies in the stack analysis."""
+    packages = split_comma_separated_list(packages)
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    analyzed_dependencies = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies is not None
+    dependencies = get_attribute_values(analyzed_dependencies, "package")
+    for package in packages:
+        if package not in dependencies:
+            raise Exception('Package {package} not found'.format(package=package))
