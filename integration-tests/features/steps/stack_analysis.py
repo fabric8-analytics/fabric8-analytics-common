@@ -550,3 +550,23 @@ def check_all_analyzed_dependency(context, packages):
     for package in packages:
         if package not in dependencies:
             raise Exception('Package {package} not found'.format(package=package))
+
+
+@then("I should get a valid request ID")
+def check_stack_analyses_request_id(context):
+    """Check the ID attribute in the JSON response.
+
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    check_id_value_in_json_response(context, "request_id")
+
+
+@then("I should find the status attribute set to success")
+def check_stack_analyses_request_id(context):
+    response = context.response
+    json_data = response.json()
+
+    check_attribute_presence(json_data, 'status')
+
+    assert json_data['status'] == "success"

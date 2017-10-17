@@ -541,26 +541,6 @@ def validate_analysis_result(context, ecosystem, package, version):
         jsonschema.validate(struct, schema)
 
 
-@then("I should get a valid request ID")
-def check_stack_analyses_request_id(context):
-    """Check the ID attribute in the JSON response.
-
-    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
-    ie. it is a string with 32 characters containing 32 hexadecimal digits
-    """
-    check_id_value_in_json_response(context, "request_id")
-
-
-@then("I should find the status attribute set to success")
-def check_stack_analyses_request_id(context):
-    response = context.response
-    json_data = response.json()
-
-    check_attribute_presence(json_data, 'status')
-
-    assert json_data['status'] == "success"
-
-
 @then('I should find the value {value} under the path {path} in the JSON response')
 def find_value_under_the_path(context, value, path):
     """Check if the value (attribute) can be found in the JSON output."""
