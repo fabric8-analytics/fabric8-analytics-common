@@ -1,33 +1,49 @@
-# Deploying fabric8-analytics services
+# Openshift green field deployment of fabric8-analytics services
 
-## Create a new project
+Config map and secrets are generated from the configuration stored in environment variables.
 
-`oc login` to your favorite OpenShift cluster and create a new project there:
+## Configure fabric8-analytics services
+All configuration for the deployment script resides in env.sh.
+Create file env.sh inside this directory with following contents.
+This script is ignored by git so feel free to change it locally.
 
-```
-oc new-project fabric8-analytics
-```
+`export OC_URI='dev.rdu2c.fabric8.io:8443'`
+
+`export OC_USERNAME='Not set'`
+
+`export OC_PASSWD='Not set'`
+
+`export OC_PROJECT=$(whoami)'-greenfield-test'`
+
+`export AWS_ACCESS_KEY_ID='Not set'`
+
+`export AWS_SECRET_ACCESS_KEY='Not set'`
+
+`export GITHUB_API_TOKENS='Not set'`
+
+`export GITHUB_OAUTH_CONSUMER_KEY='Not set'`
+
+`export GITHUB_OAUTH_CONSUMER_SECRET='Not set'`
+
+`export FLASK_APP_SECRET_KEY='Not set'`
+
+`export RDS_ENDPOINT=''`
+
+`export RDS_INSTANCE_NAME="$OC_USERNAME-bayesiandb"`
+
+`export RDS_INSTANCE_CLASS='db.t2.micro'`
+
+`export RDS_DBNAME='postgres'`
+
+`export RDS_DBADMIN='coreapi'`
+
+`export RDS_STORAGE=5`
+
+`export RDS_PASSWORD='somethingclever'`
+
+`export RDS_SUBNET_GROUP_NAME='dv peering az'`
 
 ## Deploy fabric8-analytics services
+Just run the deploy script and enjoy!
 
-Generate and deploy [config map](./README-ConfigMap.md) first:
-
-```
-./generate-config.sh  # will create config.yaml file
-oc apply -f config.yaml
-```
-
-Deploy secrets:
-
-```
-oc process -f secrets-template.yaml -v AWS_ACCESS_KEY_ID='..' -v AWS_SECRET_ACCESS_KEY='...' -v GITHUB_API_TOKENS='...' -v GITHUB_OAUTH_CONSUMER_KEY='...' -v GITHUB_OAUTH_CONSUMER_SECRET='...' -v FLASK_APP_SECRET_KEY='...' RDS_ENDPOINT='...' RDS_PASSWORD='...' | oc apply -f -
-```
-
-Note all secrets need to be base64 encoded:
-
-```
-echo -n 'my-secret-key' | base64 -w 0
-```
-
-See also:
-* [how to allocate AWS resources](aws/README.md)
+`$./deploy.sh`
