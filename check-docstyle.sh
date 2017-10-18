@@ -1,4 +1,4 @@
-directories="integration-tests ui-tests perf-tests"
+directories="integration-tests ui-tests perf-tests dashboard"
 pass=0
 fail=0
 
