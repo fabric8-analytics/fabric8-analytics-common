@@ -119,36 +119,41 @@ def parse_linter_results(filename):
     files = {}
     passed = 0
     failed = 0
+    total = 0
 
     with open(filename) as fin:
         for line in fin:
-            if line.endswith(".py\n"):
+            line = line.rstrip()
+            if line.endswith(".py"):
                 source = line.strip()
-            if line.endswith("    Pass\n"):
+            if line.endswith("    Pass"):
                 if source:
                     passed += 1
+                    total += 1
                     files[source] = True
-            if line.endswith("    Fail\n"):
+            if line.endswith("    Fail"):
                 if source:
                     failed += 1
+                    total += 1
                     files[source] = False
     return {"files": files,
+            "total": total,
             "passed": passed,
             "failed": failed,
             "failed%": percentage(passed, failed)}
 
 
-def parse_pylint_results(results, repository):
-    results.repo_linter_checks[repository] = parse_linter_results(repository + ".linter")
+def parse_pylint_results(repository):
+    return parse_linter_results(repository + ".linter")
 
 
-def parse_docstyle_results(results, repository):
-    results.repo_docstyle_checks[repository] = parse_linter_results(repository + ".pydocstyle")
+def parse_docstyle_results(repository):
+    return parse_linter_results(repository + ".pydocstyle")
 
 
-def get_source_files(results, repository):
-    command = "pushd {repo}; wc -l `find . -name '*.py' -print` | head -n -1 " + \
-              "> ../{repo}.count;popd".format(repo=repository)
+def get_source_files(repository):
+    command = ("pushd {repo}; wc -l `find . -name '*.py' -print` | head -n -1 " +
+               "> ../{repo}.count;popd").format(repo=repository)
     os.system(command)
     files = {}
     count = 0
@@ -157,7 +162,14 @@ def get_source_files(results, repository):
         for line in fin:
             count += 1
 
-    results.source_files[repository] = {"count": count}
+    return {"count": count}
+
+
+def delete_work_files(repository):
+    """Cleanup the CWD from the work files used to analyze given repository."""
+    os.remove("{repo}.count".format(repo=repository))
+    os.remove("{repo}.linter".format(repo=repository))
+    os.remove("{repo}.pydocstyle".format(repo=repository))
 
 
 def main():
@@ -174,8 +186,6 @@ def main():
     jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
     results.production = check_system(core_api, jobs_api)
 
-    check_system(core_api, jobs_api)
-
     results.repositories = repositories
 
     # clone repositories + run pylint + run docstyle script + accumulate results
@@ -183,9 +193,11 @@ def main():
         clone_repository(repository)
         run_pylint(repository)
         run_docstyle_check(repository)
-        get_source_files(results, repository)
-        parse_pylint_results(results, repository)
-        parse_docstyle_results(results, repository)
+        results.source_files[repository] = get_source_files(repository)
+        results.repo_linter_checks[repository] = parse_pylint_results(repository)
+        results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
+
+        delete_work_files(repository)
 
     generate_dashboard(results)
 
