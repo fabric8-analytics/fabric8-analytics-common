@@ -152,8 +152,8 @@ def parse_docstyle_results(repository):
 
 
 def get_source_files(repository):
-    command = ("pushd {repo}; wc -l `find . -name '*.py' -print` | head -n -1 " +
-               "> ../{repo}.count;popd").format(repo=repository)
+    command = ("pushd {repo}; wc -l `find . -path ./venv -prune -o -name '*.py' -print` " +
+               "| head -n -1 > ../{repo}.count;popd").format(repo=repository)
     os.system(command)
     files = {}
     count = 0
