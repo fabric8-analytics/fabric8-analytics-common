@@ -14,6 +14,8 @@ class Results():
         self.repo_docstyle_checks = {}
         self.repo_prefix = "https://github.com/fabric8-analytics/"
         self.source_files = {}
+        self.overall_status = {}
+        self.remarks = {}
 
     def __repr__(self):
         """Return textual representation of all results."""

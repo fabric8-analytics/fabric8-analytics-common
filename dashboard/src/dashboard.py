@@ -165,6 +165,25 @@ def get_source_files(repository):
     return {"count": count}
 
 
+def update_overall_status(results, repository):
+    remarks = ""
+    status = False
+
+    source_files = results.source_files[repository]["count"]
+    linter_checks = results.repo_linter_checks[repository]
+    docstyle_checks = results.repo_docstyle_checks[repository]
+
+    if source_files == linter_checks["total"] and \
+       source_files == docstyle_checks["total"]:
+        if linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0:
+            status = True
+    else:
+        remarks = "not all source files are checked"
+
+    results.overall_status[repository] = status
+    results.remarks[repository] = remarks
+
+
 def delete_work_files(repository):
     """Cleanup the CWD from the work files used to analyze given repository."""
     os.remove("{repo}.count".format(repo=repository))
@@ -193,11 +212,13 @@ def main():
         clone_repository(repository)
         run_pylint(repository)
         run_docstyle_check(repository)
+
         results.source_files[repository] = get_source_files(repository)
         results.repo_linter_checks[repository] = parse_pylint_results(repository)
         results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
 
         delete_work_files(repository)
+        update_overall_status(results, repository)
 
     generate_dashboard(results)
 
