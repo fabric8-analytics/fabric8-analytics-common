@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Fabric8-analytics QA dashboard</title>
+        <meta name="Author" content="Pavel Tisnovsky" />
+        <meta name="Generator" content="Vim" />
+        <meta http-equiv="Content-type"  content="text/html; charset=utf-8"/>
+	<link href="bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script src="bootstrap.min.js" type="text/javascript"></script>
+	<link href="dashboard.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body style="padding-top:70px">
+        <div class="container" style="width:90%">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container-fluid"><div class="row">
+                    <div class="col-md-2">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="/">Fabric8-analytics QA dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Services liveness and readiness</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr><th>System</th><th>Core API</th><th>Jobs API</th><th>Auth.token<br />to core API</th><th>Auth.token<br />to jobs API</th></tr>
+                    <tr><td>Stage</td>
+                        % if stage["core_api_available"]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                        % if stage["jobs_api_available"]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                        % if stage["core_api_auth_token"]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                        % if stage["jobs_api_auth_token"]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                    </tr>
+                </table>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">SLA</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                </table>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Code quality</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="3">Linter results</th><th colspan="3">Pydocstyle results</th><th>Overall status</th><th>Remark</th></tr>
+                    <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>% fail</th><th>Pass</th><th>Fail</th><th>% fail</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+                % for repo in repositories:
+                    <tr>
+                        <td><a href="${repo_prefix}${repo}">${repo}</a></td>
+                        <td class="numeric" style="width:10ex">${source_files[repo]["count"]}</td>
+                        <td class="numeric" style="width:10ex">?</td>
+                        <td class="numeric ok" style="width:10ex">${repo_linter_checks[repo]["passed"]}</td>
+                        <td class="numeric error" style="width:10ex">${repo_linter_checks[repo]["failed"]}</td>
+                        <td class="numeric" style="width:10ex">${repo_linter_checks[repo]["failed%"]}%</td>
+                        <td class="numeric ok" style="width:10ex">${repo_docstyle_checks[repo]["passed"]}</td>
+                        <td class="numeric error" style="width:10ex">${repo_docstyle_checks[repo]["failed"]}</td>
+                        <td class="numeric" style="width:10ex">${repo_docstyle_checks[repo]["failed%"]}%</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                % endfor
+                </table>
+            </div>
+            <div style='height:100px'></div>
+            <div>Author: Pavel Tisnovsky &lt;<a href="mailto:ptisnovs@redhat.com">ptisnovs@redhat.com</a>&gt;</div>
+        </div>
+    </body>
+</html>
+
+
+
+

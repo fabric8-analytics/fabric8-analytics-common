@@ -9,6 +9,7 @@ from coreapi import *
 from jobsapi import *
 from configuration import *
 from results import *
+from html_generator import *
 
 
 def check_environment_variable(env_var_name):
@@ -39,32 +40,39 @@ def check_environment_variables():
         check_environment_variable(environment_variable)
 
 
-def check_system(results, core_api, jobs_api):
+def check_system(core_api, jobs_api):
     # try to access system endpoints
     print("Checking: core API and JOBS API endpoints")
-    results.core_api = core_api.is_api_running()
-    results.jobs_api = jobs_api.is_api_running()
+    core_api_available = core_api.is_api_running()
+    jobs_api_available = jobs_api.is_api_running()
 
-    if results.core_api and results.jobs_api:
+    if core_api_available and jobs_api_available:
         print("    ok")
     else:
         print("    Fatal: tested system is not available")
 
     # check the authorization token for the core API
     print("Checking: authorization token for the core API")
-    results.core_api_auth_token = core_api.check_auth_token_validity()
-    if results.core_api_auth_token:
+    core_api_auth_token = core_api.check_auth_token_validity()
+
+    if core_api_auth_token:
         print("    ok")
     else:
         print("    error")
 
     # check the authorization token for the jobs API
     print("Checking: authorization token for the jobs API")
-    results.jobs_api_auth_token = jobs_api.check_auth_token_validity()
-    if results.jobs_api_auth_token:
+    jobs_api_auth_token = jobs_api.check_auth_token_validity()
+
+    if jobs_api_auth_token:
         print("    ok")
     else:
         print("    error")
+
+    return {"core_api_available": core_api_available,
+            "jobs_api_available": jobs_api_available,
+            "core_api_auth_token": core_api_auth_token,
+            "jobs_api_auth_token": jobs_api_auth_token}
 
 
 repositories = [
@@ -97,22 +105,101 @@ def run_docstyle_check(repository):
     os.system(command)
 
 
+def percentage(passed, failed):
+    total = passed + failed
+    if total == 0:
+        return "0"
+    perc = 100.0 * failed / total
+    return "{:.0f}".format(perc)
+
+
+def parse_linter_results(filename):
+    source = None
+
+    files = {}
+    passed = 0
+    failed = 0
+    total = 0
+
+    with open(filename) as fin:
+        for line in fin:
+            line = line.rstrip()
+            if line.endswith(".py"):
+                source = line.strip()
+            if line.endswith("    Pass"):
+                if source:
+                    passed += 1
+                    total += 1
+                    files[source] = True
+            if line.endswith("    Fail"):
+                if source:
+                    failed += 1
+                    total += 1
+                    files[source] = False
+    return {"files": files,
+            "total": total,
+            "passed": passed,
+            "failed": failed,
+            "failed%": percentage(passed, failed)}
+
+
+def parse_pylint_results(repository):
+    return parse_linter_results(repository + ".linter")
+
+
+def parse_docstyle_results(repository):
+    return parse_linter_results(repository + ".pydocstyle")
+
+
+def get_source_files(repository):
+    command = ("pushd {repo}; wc -l `find . -name '*.py' -print` | head -n -1 " +
+               "> ../{repo}.count;popd").format(repo=repository)
+    os.system(command)
+    files = {}
+    count = 0
+
+    with open("{repo}.count".format(repo=repository)) as fin:
+        for line in fin:
+            count += 1
+
+    return {"count": count}
+
+
+def delete_work_files(repository):
+    """Cleanup the CWD from the work files used to analyze given repository."""
+    os.remove("{repo}.count".format(repo=repository))
+    os.remove("{repo}.linter".format(repo=repository))
+    os.remove("{repo}.pydocstyle".format(repo=repository))
+
+
 def main():
     check_environment_variables()
     results = Results()
 
     cfg = Configuration()
+
     core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
     jobs_api = JobsApi(cfg.stage.jobs_api_url, cfg.stage.jobs_api_token)
-    check_system(results, core_api, jobs_api)
+    results.stage = check_system(core_api, jobs_api)
+
+    core_api = CoreApi(cfg.prod.core_api_url, cfg.prod.core_api_token)
+    jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
+    results.production = check_system(core_api, jobs_api)
+
+    results.repositories = repositories
 
     # clone repositories + run pylint + run docstyle script + accumulate results
     for repository in repositories:
-        # clone_repository(repository)
-        # run_pylint(repository)
-        # run_docstyle_check(repository)
-        pass
-    print(results)
+        clone_repository(repository)
+        run_pylint(repository)
+        run_docstyle_check(repository)
+        results.source_files[repository] = get_source_files(repository)
+        results.repo_linter_checks[repository] = parse_pylint_results(repository)
+        results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
+
+        delete_work_files(repository)
+
+    generate_dashboard(results)
 
 
 if __name__ == "__main__":
