@@ -13,6 +13,8 @@ docutils==0.14            # via botocore
 idna==2.6                 # via requests
 jmespath==0.9.3           # via boto3, botocore
 jsonschema==2.6.0
+mako==1.0.7
+markupsafe==1.0           # via mako
 matplotlib==2.0.2
 numpy==1.13.1             # via matplotlib
 pyparsing==2.2.0          # via matplotlib
