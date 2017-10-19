@@ -37,8 +37,11 @@ class Api:
     def print_error_response(self, response, message_key):
         """Print error message if anything goes wrong."""
         print("    Server returned HTTP code {c}".format(c=response.status_code))
+        error_message = None
         try:
             error_message = response.json().get(message_key, "Server did not sent error message")
-            print("    Error message: {m}".format(m=error_message))
         except Exception:
             pass   # no error message
+
+        if error_message:
+            print("    Error message: {m}".format(m=error_message))
