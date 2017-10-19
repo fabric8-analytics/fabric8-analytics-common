@@ -14,7 +14,7 @@ from results import *
 def check_environment_variable(env_var_name):
     print("Checking: {e} environment variable existence".format(
         e=env_var_name))
-    if os.environ.get(env_var_name) is None:
+    if env_var_name not in os.environ:
         print("Fatal: {e} environment variable has to be specified"
               .format(e=env_var_name))
         sys.exit(1)
