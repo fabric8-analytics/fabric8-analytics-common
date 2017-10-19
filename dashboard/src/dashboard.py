@@ -9,6 +9,7 @@ from coreapi import *
 from jobsapi import *
 from configuration import *
 from results import *
+from html_generator import *
 
 
 def check_environment_variable(env_var_name):
@@ -39,32 +40,39 @@ def check_environment_variables():
         check_environment_variable(environment_variable)
 
 
-def check_system(results, core_api, jobs_api):
+def check_system(core_api, jobs_api):
     # try to access system endpoints
     print("Checking: core API and JOBS API endpoints")
-    results.core_api = core_api.is_api_running()
-    results.jobs_api = jobs_api.is_api_running()
+    core_api_available = core_api.is_api_running()
+    jobs_api_available = jobs_api.is_api_running()
 
-    if results.core_api and results.jobs_api:
+    if core_api_available and jobs_api_available:
         print("    ok")
     else:
         print("    Fatal: tested system is not available")
 
     # check the authorization token for the core API
     print("Checking: authorization token for the core API")
-    results.core_api_auth_token = core_api.check_auth_token_validity()
-    if results.core_api_auth_token:
+    core_api_auth_token = core_api.check_auth_token_validity()
+
+    if core_api_auth_token:
         print("    ok")
     else:
         print("    error")
 
     # check the authorization token for the jobs API
     print("Checking: authorization token for the jobs API")
-    results.jobs_api_auth_token = jobs_api.check_auth_token_validity()
-    if results.jobs_api_auth_token:
+    jobs_api_auth_token = jobs_api.check_auth_token_validity()
+
+    if jobs_api_auth_token:
         print("    ok")
     else:
         print("    error")
+
+    return {"core_api_available": core_api_available,
+            "jobs_api_available": jobs_api_available,
+            "core_api_auth_token": core_api_auth_token,
+            "jobs_api_auth_token": jobs_api_auth_token}
 
 
 repositories = [
