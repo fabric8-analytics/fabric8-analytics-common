@@ -152,8 +152,8 @@ def parse_docstyle_results(repository):
 
 
 def get_source_files(repository):
-    command = ("pushd {repo}; wc -l `find . -name '*.py' -print` | head -n -1 " +
-               "> ../{repo}.count;popd").format(repo=repository)
+    command = ("pushd {repo}; wc -l `find . -path ./venv -prune -o -name '*.py' -print` " +
+               "| head -n -1 > ../{repo}.count;popd").format(repo=repository)
     os.system(command)
     files = {}
     count = 0
@@ -163,6 +163,25 @@ def get_source_files(repository):
             count += 1
 
     return {"count": count}
+
+
+def update_overall_status(results, repository):
+    remarks = ""
+    status = False
+
+    source_files = results.source_files[repository]["count"]
+    linter_checks = results.repo_linter_checks[repository]
+    docstyle_checks = results.repo_docstyle_checks[repository]
+
+    if source_files == linter_checks["total"] and \
+       source_files == docstyle_checks["total"]:
+        if linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0:
+            status = True
+    else:
+        remarks = "not all source files are checked"
+
+    results.overall_status[repository] = status
+    results.remarks[repository] = remarks
 
 
 def delete_work_files(repository):
@@ -193,11 +212,13 @@ def main():
         clone_repository(repository)
         run_pylint(repository)
         run_docstyle_check(repository)
+
         results.source_files[repository] = get_source_files(repository)
         results.repo_linter_checks[repository] = parse_pylint_results(repository)
         results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
 
         delete_work_files(repository)
+        update_overall_status(results, repository)
 
     generate_dashboard(results)
 

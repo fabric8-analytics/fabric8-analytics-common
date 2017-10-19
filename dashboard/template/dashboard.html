@@ -47,6 +47,28 @@
                             <td class="boolean error">&times;</td>
                         % endif
                     </tr>
+                    <tr><td>Production</td>
+                        % if production["core_api_available"]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                        % if production["jobs_api_available"]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                        % if production["core_api_auth_token"]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                        % if production["jobs_api_auth_token"]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                    </tr>
                 </table>
             </div>
             <div class="panel panel-primary">
@@ -70,8 +92,12 @@
                         <td class="numeric ok" style="width:10ex">${repo_docstyle_checks[repo]["passed"]}</td>
                         <td class="numeric error" style="width:10ex">${repo_docstyle_checks[repo]["failed"]}</td>
                         <td class="numeric" style="width:10ex">${repo_docstyle_checks[repo]["failed%"]}%</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+                        % if overall_status[repo]:
+                            <td class="boolean ok">&#x2713;</td>
+                        % else:
+                            <td class="boolean error">&times;</td>
+                        % endif
+                        <td style="width:30ex">${remarks[repo]}</td>
                 % endfor
                 </table>
             </div>
