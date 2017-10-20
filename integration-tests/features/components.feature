@@ -21,6 +21,16 @@ Feature: Components API V1
     When I search for component foobar with authorization token
     Then I should get 200 status code
 
+  @requires_authorization_token
+  Scenario: Check the component search API entry point for the component that does not exist
+    Given System is running
+    Given Component search service is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I search for component the_strange_component_that_does_not_exist with authorization token
+    Then I should get 200 status code
+     And I should not find the analysis for the the_strange_component_that_does_not_exist in any ecosystem
+
   Scenario: Check that the component search API entry point requires component name
     Given System is running
     Given Component search service is running

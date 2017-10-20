@@ -171,3 +171,16 @@ def check_component_analysis_nonexistence(context, component, ecosystem):
            search_result['name'] == component:
             raise Exception('Component {component} for ecosystem {ecosystem} was found'.
                             format(component=component, ecosystem=ecosystem))
+
+
+@then('I should not find the analysis for the {component} in any ecosystem')
+def check_component_analysis_nonexistence(context, component):
+    """Check that the given component can not be found in any ecosystem."""
+    json_data = context.response.json()
+    search_results = json_data['result']
+
+    for search_result in search_results:
+        if search_result['name'] == component:
+            ecosystem = search_result['ecosystem']
+            raise Exception('Component {component} for ecosystem {ecosystem} was found'.
+                            format(component=component, ecosystem=ecosystem))
