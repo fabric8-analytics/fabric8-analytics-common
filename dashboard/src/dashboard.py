@@ -173,12 +173,18 @@ def update_overall_status(results, repository):
     linter_checks = results.repo_linter_checks[repository]
     docstyle_checks = results.repo_docstyle_checks[repository]
 
-    if source_files == linter_checks["total"] and \
-       source_files == docstyle_checks["total"]:
+    linter_checks_total = linter_checks["total"]
+    docstyle_checks_total = docstyle_checks["total"]
+
+    if source_files == linter_checks_total and \
+       source_files == docstyle_checks_total:
         if linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0:
             status = True
     else:
         remarks = "not all source files are checked"
+        if linter_checks_total != docstyle_checks_total:
+            remarks += ", linter checked {n1} files, but pydocstyle checked {n2} files".format(
+                n1=linter_checks_total, n2=docstyle_checks_total)
 
     results.overall_status[repository] = status
     results.remarks[repository] = remarks
