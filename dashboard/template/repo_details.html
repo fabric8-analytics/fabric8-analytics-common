@@ -26,7 +26,7 @@
                     <tr><th>Source file</th><th>Line count</th><th>Linter</th><th>Docstyle</th></tr>
                     % for file in files:
                     <tr>
-                        <td>${file}</td>
+                        <td><a href="https://github.com/fabric8-analytics/${repository}/blob/master/${file}">${file}</a></td>
                         <td>${line_counts[file]}</td>
                         % if file in linter_checks:
                             % if linter_checks[file]:
