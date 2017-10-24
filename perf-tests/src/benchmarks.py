@@ -11,7 +11,11 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
             retval = function_to_call(i, s3)
 
         print("Return value: ", retval)
-        assert check_function(retval)
+
+        # let's ignore retval for concurrent calls (ATM)
+        if thread_id is None:
+            assert check_function(retval)
+
         t2 = time.time()
         delta = t2 - t1
         if thread_id is not None:
@@ -39,7 +43,7 @@ def jobs_api_benchmark(jobs_api, measurement_count, pause_time, thread_id=None):
 
 
 def stack_analysis_benchmark(core_api, measurement_count, pause_time, thread_id=None):
-    return measure(lambda i: core_api.stack_analysis(),
+    return measure(lambda i: core_api.stack_analysis(thread_id, i),
                    lambda retval: retval.status_code == 200, measurement_count, pause_time,
                    thread_id)
 
