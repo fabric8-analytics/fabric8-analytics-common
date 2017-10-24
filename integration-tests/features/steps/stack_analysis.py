@@ -519,6 +519,24 @@ def check_security_issue_existence(context, cve, package):
                         .format(p=package))
 
 
+@then('I should find dependency named {package} with version {version} in the stack '
+      'analysis')
+def check_dependency(context, package, version):
+    """Check for the existence of dependency for given package."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/dependencies"
+    dependencies = get_value_using_path(jsondata, path)
+    assert dependencies is not None
+    for dependency in dependencies:
+        if dependency["package"] == package \
+           and dependency["version"] == version:
+            break
+    else:
+        raise Exception('Package {package} with version {version} not found'.
+                        format(package=package, version=version))
+
+
 @then('I should find analyzed dependency named {package} with version {version} in the stack '
       'analysis')
 def check_analyzed_dependency(context, package, version):
@@ -529,7 +547,7 @@ def check_analyzed_dependency(context, package, version):
     analyzed_dependencies = get_value_using_path(jsondata, path)
     assert analyzed_dependencies is not None
     for analyzed_dependency in analyzed_dependencies:
-        if analyzed_dependency["package"] == package \
+        if analyzed_dependency["name"] == package \
            and analyzed_dependency["version"] == version:
             break
     else:
