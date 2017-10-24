@@ -48,6 +48,17 @@ def stack_analysis_benchmark(core_api, measurement_count, pause_time, thread_id=
                    thread_id)
 
 
+def component_analysis(core_api, s3, measurement_count, pause_time,
+                       should_exist,
+                       thread_id=None,
+                       ecosystem=None, component=None, version=None):
+    expected_code = 200 if should_exist else 404
+    return measure(lambda i, s3: core_api.component_analysis(thread_id, i,
+                                                             ecosystem, component, version),
+                   lambda retval: retval == expected_code, measurement_count, pause_time,
+                   thread_id, s3)
+
+
 def component_analysis_flow_scheduling(jobs_api, s3, measurement_count, pause_time,
                                        thread_id=None,
                                        ecosystem=None, component=None, version=None):
@@ -62,7 +73,27 @@ def core_api_benchmark_thread(core_api, measurement_count, pause_time, q, thread
     q.put(measurements)
 
 
+def component_analysis_read_thread_known_component(core_api, s3, measurement_count, pause_time, q,
+                                                   thread_id):
+    measurements = component_analysis(core_api, s3, measurement_count, pause_time, True,
+                                      thread_id, "pypi", "clojure_py", "0.2.4")
+    q.put(measurements)
+
+
+def component_analysis_read_thread_unknown_component(core_api, s3, measurement_count, pause_time, q,
+                                                     thread_id):
+    measurements = component_analysis(core_api, s3, measurement_count, pause_time, False,
+                                      thread_id, "pypi", "non_existing_component", "9.8.7")
+    q.put(measurements)
+
+
 def component_analysis_thread(jobs_api, s3, measurement_count, pause_time, q, thread_id):
     measurements = component_analysis_flow_scheduling(jobs_api, s3, measurement_count,
                                                       pause_time, thread_id)
+    q.put(measurements)
+
+
+def stack_analysis_thread(core_api, s3, measurement_count, pause_time, q, thread_id):
+    measurements = stack_analysis_benchmark(core_api, measurement_count,
+                                            pause_time, thread_id)
     q.put(measurements)
