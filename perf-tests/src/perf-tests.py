@@ -13,6 +13,8 @@ import benchmarks
 import graph
 from s3interface import *
 
+from cliargs import *
+
 
 def check_environment_variable(env_var_name):
     print("Checking: {e} environment variable existence".format(
@@ -253,6 +255,7 @@ def generate_statistic_graph(thread_count, pauses, min_times, max_times, avg_tim
 
 
 def main():
+    cli_arguments = cli_parser.parse_args()
     check_environment_variables()
 
     coreapi_url = os.environ.get('F8A_API_URL', None)
@@ -273,7 +276,6 @@ def main():
     check_system(core_api, jobs_api, s3)
 
     run_benchmarks(core_api, jobs_api, s3)
-    pass
 
 
 if __name__ == "__main__":
