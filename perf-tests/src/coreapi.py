@@ -26,7 +26,6 @@ class CoreApi(Api):
         files = {'manifest[]': ("requirements.txt", open(filename, 'rb')),
                  'filePath[]': (None, path_to_manifest_file)}
         endpoint = self.url + 'api/v1/stack-analyses'
-        print(endpoint)
         response = requests.post(endpoint, files=files, headers=self.authorization())
         response.raise_for_status()
         print(response.json())
@@ -36,7 +35,6 @@ class CoreApi(Api):
 
     def wait_for_stack_analysis(self, job_id, thread_id="", i=0):
         endpoint = self.url + 'api/v1/stack-analyses/' + job_id
-        print(endpoint)
         timeout = 5000
         sleep_amount = 5
 
@@ -75,9 +73,6 @@ class CoreApi(Api):
     def component_analysis(self, thread_id=None, i=0,
                            ecosystem=None, component=None, version=None):
         url = self.component_analysis_url(ecosystem, component, version)
-        print(url)
         response = requests.get(url, headers=self.authorization())
         status_code = response.status_code
-        print(response)
-        print(status_code)
         return status_code
