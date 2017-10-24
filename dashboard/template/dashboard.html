@@ -85,7 +85,7 @@
                     <tr>
                         <td style="width:40ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
                         <td class="numeric" style="width:10ex"><a href="repository_${repository}.html">${source_files[repository]["count"]}</a></td>
-                        <td class="numeric" style="width:10ex">?</td>
+                        <td class="numeric" style="width:10ex">${source_files[repository]["total_lines"]}</td>
                         <td class="numeric ok" style="width:10ex">${repo_linter_checks[repository]["passed"]}</td>
                         <td class="numeric error" style="width:10ex">${repo_linter_checks[repository]["failed"]}</td>
                         <td class="numeric" style="width:10ex">${repo_linter_checks[repository]["failed%"]}%</td>
