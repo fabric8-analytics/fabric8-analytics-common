@@ -57,3 +57,20 @@ class CoreApi(Api):
     def stack_analysis(self):
         job_id = self.start_stack_analysis()
         return self.wait_for_stack_analysis(job_id)
+
+    def component_analysis_url(self, ecosystem, component, version):
+        """Construct URL for the component analyses REST API call."""
+        return urljoin(self.url,
+                       'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
+                                                                      c=component,
+                                                                      v=version))
+
+    def component_analysis(self, thread_id=None, i=0,
+                           ecosystem=None, component=None, version=None):
+        url = self.component_analysis_url(ecosystem, component, version)
+        print(url)
+        response = requests.get(url, headers=self.authorization())
+        status_code = response.status_code
+        print(response)
+        print(status_code)
+        return status_code
