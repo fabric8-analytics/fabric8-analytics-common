@@ -53,3 +53,7 @@ cli_parser.add_argument('-c', '--generate-csv',
 cli_parser.add_argument('-H', '--generate-html',
                         help='generate HTML file(s) as output',
                         action='store_true')
+
+cli_parser.add_argument('--sla',
+                        help='run only benchmarks that are needed for SLA acceptance',
+                        action='store_true')
