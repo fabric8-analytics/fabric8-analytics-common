@@ -216,6 +216,15 @@ def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, a
     plt.close(fig)
 
 
+def generate_timing_threads_statistic_graph(title, name, threads, min_times, max_times,
+                                            avg_times):
+    labels = range(1, 1 + len(threads))
+    fig = create_statistic_graph(title, "seconds", threads, min_times, max_times, avg_times,
+                                 "# concurrent analysis")
+    save_graph(fig, name + ".png")
+    plt.close(fig)
+
+
 def generate_component_analysis_timing_graph(durations):
     fig = create_component_analysis_timing_graph(durations)
     save_graph(fig, "test.png")
