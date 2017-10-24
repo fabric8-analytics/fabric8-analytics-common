@@ -27,7 +27,7 @@
                     % for file in files:
                     <tr>
                         <td><a href="https://github.com/fabric8-analytics/${repository}/blob/master/${file}">${file}</a></td>
-                        <td>${line_counts[file]}</td>
+                        <td class="numeric">${line_counts[file]}</td>
                         % if file in linter_checks:
                             % if linter_checks[file]:
                             <td class="boolean ok">&#x2713;</td>
