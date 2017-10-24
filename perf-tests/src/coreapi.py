@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+
 from api import *
 import time
 
