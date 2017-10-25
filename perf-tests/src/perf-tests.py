@@ -423,12 +423,13 @@ def run_benchmarks(core_api, jobs_api, s3):
     run_component_analysis_concurrent_calls_benchmark(jobs_api, s3)
 
 
-def generate_statistic_graph(thread_count, pauses, min_times, max_times, avg_times):
+def generate_statistic_graph(name_prefix, thread_count, x_axis_labels, min_times, max_times,
+                             avg_times):
     title = "core API endpoint: min, max, and avg times for {t} concurrent threads".format(
         t=thread_count)
-    name = "core_api_concurrent_{t}_threads_min_max_avg_times".format(t=thread_count)
-    graph.generate_timing_statistic_graph(title, name, pauses, min_times, max_times, avg_times)
-    pass
+    name = "{p}_concurrent_{t}_threads_min_max_avg_times".format(p=name_prefix, t=thread_count)
+    graph.generate_timing_statistic_graph(title, name, x_axis_labels,
+                                          min_times, max_times, avg_times, 640, 480)
 
 
 def main():
