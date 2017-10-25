@@ -6,12 +6,16 @@ import os.path
 import sys
 import queue
 import threading
+import pprint
+import csv
 
 from coreapi import *
 from jobsapi import *
 import benchmarks
 import graph
 from s3interface import *
+import measurements
+from duration import *
 
 from cliargs import *
 
@@ -85,7 +89,41 @@ def run_core_api_sequenced_calls_benchmark(core_api, s3):
                             "Core API endpoint",
                             "core_api_sequenced_calls",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.core_api_benchmark(api, measurement_count, pause_time))
+                                benchmarks.core_api_benchmark(api, measurement_count, pause_time),
+                            [5, 2, 1.5, 1.0, 0.5, 0.0], 20)
+
+
+def run_stack_analysis_sequenced_calls_benchmark(core_api, s3):
+    print("Stack analysis sequenced calls benchmark")
+    run_sequenced_benchmark(core_api, s3,
+                            "Stack analysis API endpoint",
+                            "stack_analysis_sequenced_calls",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.stack_analysis_benchmark(api, measurement_count,
+                                                                    pause_time),
+                            [1], 30)
+
+
+def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
+    print("Component analysis sequenced calls benchmark")
+    run_sequenced_benchmark(core_api, s3,
+                            "Component analysis for known component",
+                            "component_analysis_sequenced_calls_known_component",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.component_analysis(api, s3,
+                                                              measurement_count,
+                                                              0, True, None, "pypi",
+                                                              "clojure_py", "0.2.4"),
+                            [1], 30)
+    run_sequenced_benchmark(core_api, s3,
+                            "Component analysis for unknown component",
+                            "component_analysis_sequenced_calls_unknown_component",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.component_analysis(api, s3,
+                                                              measurement_count,
+                                                              0, False, None, "pypi",
+                                                              "non_existing_component", "9.8.7"),
+                            [1], 30)
 
 
 def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
@@ -108,11 +146,93 @@ def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
                                                                               pause_time))
 
 
+def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to_call,
+                                      thread_counts=[1, 2, 3, 4]):
+    print(message + " concurrent benchmark")
+    measurement_count = 1
+
+    summary_min_times = []
+    summary_max_times = []
+    summary_avg_times = []
+
+    for thread_count in thread_counts:
+        print("Concurrent threads: {c}".format(c=thread_count))
+        min_times = []
+        max_times = []
+        avg_times = []
+
+        threads = []
+        q = queue.Queue()
+
+        for thread_id in range(0, thread_count):
+            t = threading.Thread(target=lambda api, s3, measurement_count, pause_time, q,
+                                 thread_id:
+                                 function_to_call(api, s3, measurement_count,
+                                                  pause_time, q, thread_id),
+                                 args=(api, s3, measurement_count, 0, q, thread_id))
+            t.start()
+            threads.append(t)
+
+        print("---------------------------------")
+        print("Waiting for all threads to finish")
+        wait_for_all_threads(threads)
+        print("Done")
+
+        values = sum([q.get() for t in threads], [])
+        print("values")
+        print(len(values))
+        print(values)
+        print("----")
+        title = "{n}, {t} concurrent threads".format(n=message,
+                                                     t=thread_count)
+        name = "{n}_{t}_threads".format(n=name_prefix, t=thread_count)
+        graph.generate_wait_times_graph(title, name, values)
+
+        min_times.append(min(values))
+        max_times.append(max(values))
+        avg_times.append(sum(values) / len(values))
+
+        print("min_times:", min_times)
+        print("max_times:", max_times)
+        print("avg_times:", avg_times)
+
+        summary_min_times.append(min(values))
+        summary_max_times.append(max(values))
+        summary_avg_times.append(sum(values) / len(values))
+
+        generate_statistic_graph(name, thread_count, ["min/avg/max"],
+                                 min_times, max_times, avg_times)
+        print("Breathe (statistic graph)...")
+        time.sleep(20)
+
+    print(summary_min_times)
+    print(summary_max_times)
+    print(summary_avg_times)
+
+    t = thread_counts
+    graph.generate_timing_threads_statistic_graph("Duration for " + message,
+                                                  "{p}".format(p=name_prefix),
+                                                  t,
+                                                  summary_min_times,
+                                                  summary_max_times,
+                                                  summary_avg_times)
+
+    with open(name_prefix + ".csv", "w") as csvfile:
+        csv_writer = csv.writer(csvfile)
+        for i in range(0, len(thread_counts)):
+            csv_writer.writerow([i, thread_counts[i],
+                                 summary_min_times[i], summary_max_times[i], summary_avg_times[i]])
+
+
 def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
     print("Component analysis concurrent benchmark")
     measurement_count = 1
-    min_thread_count = 2
-    max_thread_count = 5
+    min_thread_count = 1
+    max_thread_count = 100
+
+    summary_min_times = []
+    summary_max_times = []
+    summary_avg_times = []
 
     for thread_count in range(min_thread_count, 1 + max_thread_count):
         min_times = []
@@ -138,6 +258,10 @@ def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
         print("Done")
 
         values = sum([q.get() for t in threads], [])
+        print("values")
+        print(len(values))
+        print(values)
+        print("----")
         title = "Component analysis, {t} concurrent threads".format(
             t=thread_count)
         name = "jobs_flow_scheduling_{t}_threads".format(t=thread_count)
@@ -147,12 +271,28 @@ def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
         max_times.append(max(values))
         avg_times.append(sum(values) / len(values))
 
-        print(min_times)
-        print(max_times)
-        print(avg_times)
-        generate_statistic_graph(thread_count, [10], min_times, max_times, avg_times)
+        print("min_times:", min_times)
+        print("max_times:", max_times)
+        print("avg_times:", avg_times)
+
+        summary_min_times.append(min(values))
+        summary_max_times.append(max(values))
+        summary_avg_times.append(sum(values) / len(values))
+
+        generate_statistic_graph("component_analysis", thread_count, [10],
+                                 min_times, max_times, avg_times)
         print("Breathe (statistic graph)...")
         time.sleep(20)
+
+    print(summary_min_times)
+    print(summary_max_times)
+    print(summary_avg_times)
+    t = range(min_thread_count, 1 + thread_count)
+    graph.generate_timing_threads_statistic_graph("Duration for concurrent analysis",
+                                                  "durations_{i}".format(i=thread_count), t,
+                                                  summary_min_times,
+                                                  summary_max_times,
+                                                  summary_avg_times)
 
 
 def wait_for_all_threads(threads):
@@ -163,38 +303,55 @@ def wait_for_all_threads(threads):
 def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
                             pauses=[10], measurement_count=10):
 
+    print("pauses:")
+    print(pauses)
+    measurements = []
     min_times = []
     max_times = []
     avg_times = []
 
     for pause in pauses:
-        title = "{t}, {s} seconds between calls".format(t=title_prefix, s=pause)
+        if len(pauses) > 1:
+            title = "{t}, {s} seconds between calls".format(t=title_prefix, s=pause)
+            name = "{n}_{s}_pause_time".format(n=name_prefix, s=pause)
+        else:
+            title = "{t}".format(t=title_prefix)
+            name = "{n}".format(n=name_prefix)
         print("  " + title)
-        name = "{n}_{s}_pause_time".format(n=name_prefix, s=pause)
         values = function(api, s3, measurement_count, pause)
         graph.generate_wait_times_graph(title, name, values)
-        time.sleep(30)
+        print("Breathe (statistic graph)...")
+        time.sleep(20)
 
         min_times.append(min(values))
         max_times.append(max(values))
         avg_times.append(sum(values) / len(values))
+        measurements.extend(values)
 
     print(min_times)
     print(max_times)
     print(avg_times)
     title = "{t}: min. max. and avg times".format(t=title_prefix)
-    name = "{n}_min_max_avg_times".format(n=name_prefix)
-    graph.generate_timing_statistic_graph(title, name,
+    min_max_avg_name = "{n}_min_max_avg_times".format(n=name_prefix)
+    graph.generate_timing_statistic_graph(title, min_max_avg_name,
                                           pauses, min_times, max_times, avg_times)
-    pass
+
+    with open(name + ".csv", "w") as csvfile:
+        csv_writer = csv.writer(csvfile)
+        for m in measurements:
+            csv_writer.writerow([m])
 
 
-def run_concurrent_benchmark(core_api, function_to_call):
-    measurement_count = 10
-    min_thread_count = 5
-    max_thread_count = 10
+def run_api_concurrent_benchmark(core_api, function_to_call, name_prefix):
+    measurement_count = 1
+    min_thread_count = 1
+    max_thread_count = 2
     pauses = [2.0, 1.5, 1.0, 0.5, 0]  # 2, 1, 0.5, 0]
-    pauses = [2, 0.5, 0, ]
+    pauses = [0.0, ]
+
+    summary_min_times = []
+    summary_max_times = []
+    summary_avg_times = []
 
     for thread_count in range(min_thread_count, 1 + max_thread_count):
         min_times = []
@@ -216,7 +373,9 @@ def run_concurrent_benchmark(core_api, function_to_call):
             values = sum([q.get() for t in threads], [])
             title = "core API endpoint, {t} concurrent threads, {s} seconds between calls".format(
                 t=thread_count, s=pause)
-            name = "core_api_concurrent_{t}_threads_{s}_pause_time".format(t=thread_count, s=pause)
+            name = "{p}_concurrent_{t}_threads_{s}_pause_time".format(p=name_prefix,
+                                                                      t=thread_count,
+                                                                      s=pause)
             graph.generate_wait_times_graph(title, name, values)
 
             min_times.append(min(values))
@@ -229,14 +388,31 @@ def run_concurrent_benchmark(core_api, function_to_call):
         print(min_times)
         print(max_times)
         print(avg_times)
-        generate_statistic_graph(thread_count, pauses, min_times, max_times, avg_times)
+
+        summary_min_times.append(min(values))
+        summary_max_times.append(max(values))
+        summary_avg_times.append(sum(values) / len(values))
+
+        generate_statistic_graph(name_prefix, thread_count, pauses,
+                                 min_times, max_times, avg_times)
         print("Breathe (statistic graph)...")
-        time.sleep(20)
+        time.sleep(10)
+
+    print(summary_min_times)
+    print(summary_max_times)
+    print(summary_avg_times)
+    t = range(min_thread_count, 1 + thread_count)
+    graph.generate_timing_threads_statistic_graph("Duration for concurrent API calls",
+                                                  "{p}_{t}".format(p=name_prefix, t=thread_count),
+                                                  t,
+                                                  summary_min_times,
+                                                  summary_max_times,
+                                                  summary_avg_times)
 
 
 def run_core_api_concurrent_benchmark(core_api):
     print("Core API concurrent benchmark")
-    run_concurrent_benchmark(core_api, benchmarks.core_api_benchmark_thread)
+    run_api_concurrent_benchmark(core_api, benchmarks.core_api_benchmark_thread, "core_api")
 
 
 def run_benchmarks(core_api, jobs_api, s3):
@@ -246,12 +422,31 @@ def run_benchmarks(core_api, jobs_api, s3):
     run_component_analysis_concurrent_calls_benchmark(jobs_api, s3)
 
 
-def generate_statistic_graph(thread_count, pauses, min_times, max_times, avg_times):
+def run_benchmarks_sla(core_api, jobs_api, s3):
+    run_read_component_analysis_sequenced_calls_benchmark(core_api, s3)
+    run_stack_analysis_sequenced_calls_benchmark(core_api, s3)
+
+    run_analysis_concurrent_benchmark(core_api, s3, "Component analysis known component",
+                                      "component_analysis_parallel_calls_known_component",
+                                      benchmarks.component_analysis_read_thread_known_component,
+                                      range(1, 5))
+
+    run_analysis_concurrent_benchmark(core_api, s3, "Component analysis unknown component",
+                                      "component_analysis_parallel_calls_unknown_component",
+                                      benchmarks.component_analysis_read_thread_unknown_component,
+                                      range(1, 5))
+
+    run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis", "stack_analysis",
+                                      benchmarks.stack_analysis_thread)
+
+
+def generate_statistic_graph(name_prefix, thread_count, x_axis_labels, min_times, max_times,
+                             avg_times):
     title = "core API endpoint: min, max, and avg times for {t} concurrent threads".format(
         t=thread_count)
-    name = "core_api_concurrent_{t}_threads_min_max_avg_times".format(t=thread_count)
-    graph.generate_timing_statistic_graph(title, name, pauses, min_times, max_times, avg_times)
-    pass
+    name = "{p}_concurrent_{t}_threads_min_max_avg_times".format(p=name_prefix, t=thread_count)
+    graph.generate_timing_statistic_graph(title, name, x_axis_labels,
+                                          min_times, max_times, avg_times, 640, 480)
 
 
 def main():
@@ -275,7 +470,12 @@ def main():
 
     check_system(core_api, jobs_api, s3)
 
-    run_benchmarks(core_api, jobs_api, s3)
+    print(cli_arguments.sla)
+
+    if cli_arguments.sla:
+        run_benchmarks_sla(core_api, jobs_api, s3)
+    else:
+        run_benchmarks(core_api, jobs_api, s3)
 
 
 if __name__ == "__main__":
