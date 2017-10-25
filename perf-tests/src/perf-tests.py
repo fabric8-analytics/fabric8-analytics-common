@@ -6,12 +6,16 @@ import os.path
 import sys
 import queue
 import threading
+import pprint
+import csv
 
 from coreapi import *
 from jobsapi import *
 import benchmarks
 import graph
 from s3interface import *
+import measurements
+from duration import *
 
 from cliargs import *
 
@@ -106,6 +110,84 @@ def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
                                 benchmarks.component_analysis_flow_scheduling(api, s3,
                                                                               measurement_count,
                                                                               pause_time))
+
+
+def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to_call,
+                                      thread_counts=[1,2,3,4]):
+    print(message + " concurrent benchmark")
+    measurement_count = 1
+
+    summary_min_times = []
+    summary_max_times = []
+    summary_avg_times = []
+
+    for thread_count in thread_counts:
+        print("Concurrent threads: {c}".format(c=thread_count))
+        min_times = []
+        max_times = []
+        avg_times = []
+
+        threads = []
+        q = queue.Queue()
+
+        for thread_id in range(0, thread_count):
+            t = threading.Thread(target=lambda api, s3, measurement_count, pause_time, q,
+                                 thread_id:
+                                 function_to_call(api, s3, measurement_count,
+                                                  pause_time, q, thread_id),
+                                 args=(api, s3, measurement_count, 0, q, thread_id))
+            t.start()
+            threads.append(t)
+
+        print("---------------------------------")
+        print("Waiting for all threads to finish")
+        wait_for_all_threads(threads)
+        print("Done")
+
+        values = sum([q.get() for t in threads], [])
+        print("values")
+        print(len(values))
+        print(values)
+        print("----")
+        title = "{n}, {t} concurrent threads".format(n=message,
+                                                     t=thread_count)
+        name = "{n}_{t}_threads".format(n=name_prefix, t=thread_count)
+        graph.generate_wait_times_graph(title, name, values)
+
+        min_times.append(min(values))
+        max_times.append(max(values))
+        avg_times.append(sum(values) / len(values))
+
+        print("min_times:", min_times)
+        print("max_times:", max_times)
+        print("avg_times:", avg_times)
+
+        summary_min_times.append(min(values))
+        summary_max_times.append(max(values))
+        summary_avg_times.append(sum(values) / len(values))
+
+        generate_statistic_graph(name, thread_count, ["min/avg/max"],
+                                 min_times, max_times, avg_times)
+        print("Breathe (statistic graph)...")
+        time.sleep(20)
+
+    print(summary_min_times)
+    print(summary_max_times)
+    print(summary_avg_times)
+
+    t = thread_counts
+    graph.generate_timing_threads_statistic_graph("Duration for " + message,
+                                                  "{p}".format(p=name_prefix),
+                                                  t,
+                                                  summary_min_times,
+                                                  summary_max_times,
+                                                  summary_avg_times)
+    
+    with open(name_prefix + ".csv", "w") as csvfile:
+        csv_writer = csv.writer(csvfile)
+        for i in range(0, len(thread_counts)):
+            csv_writer.writerow([i, thread_counts[i],
+                                 summary_min_times[i], summary_max_times[i], summary_avg_times[i]])
 
 
 def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
