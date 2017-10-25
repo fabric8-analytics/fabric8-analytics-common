@@ -102,7 +102,6 @@ def run_stack_analysis_sequenced_calls_benchmark(core_api, s3):
                                 benchmarks.stack_analysis_benchmark(api, measurement_count,
                                                                     pause_time),
                             [1], 30)
-                            # 2, 1.5, 1.0, 0.5, 0.0])
 
 
 def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
@@ -148,7 +147,7 @@ def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
 
 
 def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to_call,
-                                      thread_counts=[1,2,3,4]):
+                                      thread_counts=[1, 2, 3, 4]):
     print(message + " concurrent benchmark")
     measurement_count = 1
 
@@ -217,7 +216,7 @@ def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to
                                                   summary_min_times,
                                                   summary_max_times,
                                                   summary_avg_times)
-    
+
     with open(name_prefix + ".csv", "w") as csvfile:
         csv_writer = csv.writer(csvfile)
         for i in range(0, len(thread_counts)):
@@ -430,12 +429,12 @@ def run_benchmarks_sla(core_api, jobs_api, s3):
     run_analysis_concurrent_benchmark(core_api, s3, "Component analysis known component",
                                       "component_analysis_parallel_calls_known_component",
                                       benchmarks.component_analysis_read_thread_known_component,
-                                      range(1,5))
+                                      range(1, 5))
 
     run_analysis_concurrent_benchmark(core_api, s3, "Component analysis unknown component",
                                       "component_analysis_parallel_calls_unknown_component",
                                       benchmarks.component_analysis_read_thread_unknown_component,
-                                      range(1,5))
+                                      range(1, 5))
 
     run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis", "stack_analysis",
                                       benchmarks.stack_analysis_thread)
