@@ -89,7 +89,42 @@ def run_core_api_sequenced_calls_benchmark(core_api, s3):
                             "Core API endpoint",
                             "core_api_sequenced_calls",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.core_api_benchmark(api, measurement_count, pause_time))
+                                benchmarks.core_api_benchmark(api, measurement_count, pause_time),
+                            [5, 2, 1.5, 1.0, 0.5, 0.0], 20)
+
+
+def run_stack_analysis_sequenced_calls_benchmark(core_api, s3):
+    print("Stack analysis sequenced calls benchmark")
+    run_sequenced_benchmark(core_api, s3,
+                            "Stack analysis API endpoint",
+                            "stack_analysis_sequenced_calls",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.stack_analysis_benchmark(api, measurement_count,
+                                                                    pause_time),
+                            [1], 30)
+                            # 2, 1.5, 1.0, 0.5, 0.0])
+
+
+def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
+    print("Component analysis sequenced calls benchmark")
+    run_sequenced_benchmark(core_api, s3,
+                            "Component analysis for known component",
+                            "component_analysis_sequenced_calls_known_component",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.component_analysis(api, s3,
+                                                              measurement_count,
+                                                              0, True, None, "pypi",
+                                                              "clojure_py", "0.2.4"),
+                            [1], 30)
+    run_sequenced_benchmark(core_api, s3,
+                            "Component analysis for unknown component",
+                            "component_analysis_sequenced_calls_unknown_component",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.component_analysis(api, s3,
+                                                              measurement_count,
+                                                              0, False, None, "pypi",
+                                                              "non_existing_component", "9.8.7"),
+                            [1], 30)
 
 
 def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
