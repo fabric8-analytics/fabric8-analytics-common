@@ -423,6 +423,24 @@ def run_benchmarks(core_api, jobs_api, s3):
     run_component_analysis_concurrent_calls_benchmark(jobs_api, s3)
 
 
+def run_benchmarks_sla(core_api, jobs_api, s3):
+    run_read_component_analysis_sequenced_calls_benchmark(core_api, s3)
+    run_stack_analysis_sequenced_calls_benchmark(core_api, s3)
+
+    run_analysis_concurrent_benchmark(core_api, s3, "Component analysis known component",
+                                      "component_analysis_parallel_calls_known_component",
+                                      benchmarks.component_analysis_read_thread_known_component,
+                                      range(1,5))
+
+    run_analysis_concurrent_benchmark(core_api, s3, "Component analysis unknown component",
+                                      "component_analysis_parallel_calls_unknown_component",
+                                      benchmarks.component_analysis_read_thread_unknown_component,
+                                      range(1,5))
+
+    run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis", "stack_analysis",
+                                      benchmarks.stack_analysis_thread)
+
+
 def generate_statistic_graph(name_prefix, thread_count, x_axis_labels, min_times, max_times,
                              avg_times):
     title = "core API endpoint: min, max, and avg times for {t} concurrent threads".format(
@@ -453,7 +471,12 @@ def main():
 
     check_system(core_api, jobs_api, s3)
 
-    run_benchmarks(core_api, jobs_api, s3)
+    print(cli_arguments.sla)
+
+    if cli_arguments.sla:
+        run_benchmarks_sla(core_api, jobs_api, s3)
+    else:
+        run_benchmarks(core_api, jobs_api, s3)
 
 
 if __name__ == "__main__":
