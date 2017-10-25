@@ -304,30 +304,43 @@ def wait_for_all_threads(threads):
 def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
                             pauses=[10], measurement_count=10):
 
+    print("pauses:")
+    print(pauses)
+    measurements = []
     min_times = []
     max_times = []
     avg_times = []
 
     for pause in pauses:
-        title = "{t}, {s} seconds between calls".format(t=title_prefix, s=pause)
+        if len(pauses) > 1:
+            title = "{t}, {s} seconds between calls".format(t=title_prefix, s=pause)
+            name = "{n}_{s}_pause_time".format(n=name_prefix, s=pause)
+        else:
+            title = "{t}".format(t=title_prefix)
+            name = "{n}".format(n=name_prefix)
         print("  " + title)
-        name = "{n}_{s}_pause_time".format(n=name_prefix, s=pause)
         values = function(api, s3, measurement_count, pause)
         graph.generate_wait_times_graph(title, name, values)
-        time.sleep(30)
+        print("Breathe (statistic graph)...")
+        time.sleep(20)
 
         min_times.append(min(values))
         max_times.append(max(values))
         avg_times.append(sum(values) / len(values))
+        measurements.extend(values)
 
     print(min_times)
     print(max_times)
     print(avg_times)
     title = "{t}: min. max. and avg times".format(t=title_prefix)
-    name = "{n}_min_max_avg_times".format(n=name_prefix)
-    graph.generate_timing_statistic_graph(title, name,
+    min_max_avg_name = "{n}_min_max_avg_times".format(n=name_prefix)
+    graph.generate_timing_statistic_graph(title, min_max_avg_name,
                                           pauses, min_times, max_times, avg_times)
-    pass
+
+    with open(name + ".csv", "w") as csvfile:
+        csv_writer = csv.writer(csvfile)
+        for m in measurements:
+            csv_writer.writerow([m])
 
 
 def run_concurrent_benchmark(core_api, function_to_call):
