@@ -228,8 +228,12 @@ def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to
 def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
     print("Component analysis concurrent benchmark")
     measurement_count = 1
-    min_thread_count = 2
-    max_thread_count = 5
+    min_thread_count = 1
+    max_thread_count = 100
+
+    summary_min_times = []
+    summary_max_times = []
+    summary_avg_times = []
 
     for thread_count in range(min_thread_count, 1 + max_thread_count):
         min_times = []
@@ -255,6 +259,10 @@ def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
         print("Done")
 
         values = sum([q.get() for t in threads], [])
+        print("values")
+        print(len(values))
+        print(values)
+        print("----")
         title = "Component analysis, {t} concurrent threads".format(
             t=thread_count)
         name = "jobs_flow_scheduling_{t}_threads".format(t=thread_count)
@@ -264,12 +272,28 @@ def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
         max_times.append(max(values))
         avg_times.append(sum(values) / len(values))
 
-        print(min_times)
-        print(max_times)
-        print(avg_times)
-        generate_statistic_graph(thread_count, [10], min_times, max_times, avg_times)
+        print("min_times:", min_times)
+        print("max_times:", max_times)
+        print("avg_times:", avg_times)
+
+        summary_min_times.append(min(values))
+        summary_max_times.append(max(values))
+        summary_avg_times.append(sum(values) / len(values))
+
+        generate_statistic_graph("component_analysis", thread_count, [10],
+                                 min_times, max_times, avg_times)
         print("Breathe (statistic graph)...")
         time.sleep(20)
+
+    print(summary_min_times)
+    print(summary_max_times)
+    print(summary_avg_times)
+    t = range(min_thread_count, 1 + thread_count)
+    graph.generate_timing_threads_statistic_graph("Duration for concurrent analysis",
+                                                  "durations_{i}".format(i=thread_count), t,
+                                                  summary_min_times,
+                                                  summary_max_times,
+                                                  summary_avg_times)
 
 
 def wait_for_all_threads(threads):
