@@ -106,11 +106,12 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
     return fig
 
 
-def create_graph(title, y_axis_label, labels, values):
+def create_graph(title, y_axis_label, labels, values,
+                 width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT, dpi=DPI):
     N = len(values)
     indexes = np.arange(N)
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(1.0 * width / dpi, 1.0 * height / dpi), dpi=dpi)
     ax = fig.add_subplot(1, 1, 1)
 
     # major ticks every 20, minor ticks every 5
