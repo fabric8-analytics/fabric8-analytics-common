@@ -169,12 +169,14 @@ def create_summary_graph(title, y_axis_label, labels, values):
     return fig
 
 
-def create_statistic_graph(title, y_axis_label, labels, min_values, max_values, avg_values):
+def create_statistic_graph(title, y_axis_label, labels, min_values, max_values, avg_values,
+                           x_axis_label="pause time (seconds)", width=DEFAULT_WIDTH,
+                           height=DEFAULT_HEIGHT, dpi=DPI):
     N = len(labels)
     indexes = np.arange(N)
 
-    fig = plt.figure()
-    plt.xlabel("pause time (seconds)")
+    fig = plt.figure(figsize=(1.0 * width / dpi, 1.0 * height / dpi), dpi=dpi)
+    plt.xlabel(x_axis_label)
     plt.ylabel(y_axis_label)
     plt.grid(True)
     plt.xticks(indexes, labels)
@@ -209,9 +211,11 @@ def generate_wait_times_graph(title, name, values):
     plt.close(fig)
 
 
-def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, avg_times):
+def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, avg_times,
+                                    width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT):
     labels = range(1, 1 + len(pauses))
-    fig = create_statistic_graph(title, "seconds", pauses, min_times, max_times, avg_times)
+    fig = create_statistic_graph(title, "seconds", pauses, min_times, max_times, avg_times,
+                                 "#", width, height)
     save_graph(fig, name + ".png")
     plt.close(fig)
 
