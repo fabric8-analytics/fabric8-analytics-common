@@ -246,11 +246,11 @@ def main():
         delete_work_files(repository)
         update_overall_status(results, repository)
 
-    perfTests = PerfTests()
-    perfTests.read_results()
-    perfTests.compute_statistic()
-    results.perf_tests_results = perfTests.get_results()
-    results.perf_tests_statistic = perfTests.get_statistic()
+    perf_tests = PerfTests()
+    perf_tests.read_results()
+    perf_tests.compute_statistic()
+    results.perf_tests_results = perf_tests.results
+    results.perf_tests_statistic = perf_tests.statistic
 
     results.sla_thresholds = SLA
 
