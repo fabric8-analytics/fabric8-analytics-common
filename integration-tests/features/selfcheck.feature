@@ -1,6 +1,25 @@
 Feature: Check the implementation of test steps
 
   @selfcheck
+  Scenario: Check the updated stack analysis response
+    Given System is running
+    When I download and parse outlier probability threshold value
+    Then I should have outlier probability threshold value between 0.0 and 1.0
+    When I mock API response by data/updated_stack_analysis_v2.json file
+    Then I should get a valid request ID
+     And I should find that valid outliers are reported
+     And I should get license_analysis field in stack report
+     And I should find dependency named io.vertx:vertx-core with version 3.4.2 in the stack analysis
+     And I should find dependency named io.vertx:vertx-web with version 3.4.2 in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-core with version 3.4.2 in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-web with version 3.4.2 in the stack analysis
+     And I should find that alternate components replace user components
+     And I should find the security node for all dependencies
+     And I should find the security node for all alternate components
+     And I should find that none analyzed package can be found in companion packages as well
+     And I should find the following analyzed dependencies (io.vertx:vertx-core,io.vertx:vertx-web) in the stack analysis
+
+  @selfcheck
   Scenario: Check that the stack analysis response for the pom.xml that contains only one component
     Given System is running
     When I mock API response by data/mock_stack_analysis_v2_junit.json file
