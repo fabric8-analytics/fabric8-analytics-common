@@ -10,6 +10,8 @@ from jobsapi import *
 from configuration import *
 from results import *
 from html_generator import *
+from perf_tests import *
+from sla import *
 
 
 def check_environment_variable(env_var_name):
@@ -243,6 +245,14 @@ def main():
 
         delete_work_files(repository)
         update_overall_status(results, repository)
+
+    perfTests = PerfTests()
+    perfTests.read_results()
+    perfTests.compute_statistic()
+    results.perf_tests_results = perfTests.get_results()
+    results.perf_tests_statistic = perfTests.get_statistic()
+
+    results.sla_thresholds = SLA
 
     generate_dashboard(results)
 
