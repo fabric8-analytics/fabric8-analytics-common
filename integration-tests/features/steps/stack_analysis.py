@@ -543,7 +543,7 @@ def check_analyzed_dependency(context, package, version):
     """Check for the existence of analyzed dependency for given package."""
     jsondata = context.response.json()
     assert jsondata is not None
-    path = "result/0/user_stack_info/dependencies"
+    path = "result/0/user_stack_info/analyzed_dependencies"
     analyzed_dependencies = get_value_using_path(jsondata, path)
     assert analyzed_dependencies is not None
     for analyzed_dependency in analyzed_dependencies:
@@ -561,10 +561,10 @@ def check_all_analyzed_dependency(context, packages):
     packages = split_comma_separated_list(packages)
     jsondata = context.response.json()
     assert jsondata is not None
-    path = "result/0/user_stack_info/dependencies"
+    path = "result/0/user_stack_info/analyzed_dependencies"
     analyzed_dependencies = get_value_using_path(jsondata, path)
     assert analyzed_dependencies is not None
-    dependencies = get_attribute_values(analyzed_dependencies, "package")
+    dependencies = get_attribute_values(analyzed_dependencies, "name")
     for package in packages:
         if package not in dependencies:
             raise Exception('Package {package} not found'.format(package=package))
