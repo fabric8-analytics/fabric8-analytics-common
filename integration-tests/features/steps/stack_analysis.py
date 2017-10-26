@@ -297,7 +297,7 @@ def get_attribute_values(list, attribute_name):
 
 def get_analyzed_packages(json_data):
     """Get names of all analyzed packages."""
-    path = "result/0/user_stack_info/analyzed_dependencies"
+    path = "result/0/user_stack_info/dependencies"
     analyzed_packages = get_value_using_path(json_data, path)
     return get_attribute_values(analyzed_packages, "package")
 
@@ -389,7 +389,7 @@ def stack_analysis_check_replaces_count(json_data, component, version, expected_
 
 def get_user_components(json_data):
     """Get user components from the stack analysis."""
-    path = "result/0/user_stack_info/analyzed_dependencies"
+    path = "result/0/user_stack_info/dependencies"
     return get_value_using_path(json_data, path)
 
 
@@ -484,7 +484,7 @@ def check_security_node(context, path):
 @then('I should find the security node for all dependencies')
 def stack_analysis_check_security_node_for_dependencies(context):
     """Check security node presense for all user dependencies."""
-    check_security_node(context, "result/0/user_stack_info/dependencies")
+    check_security_node(context, "result/0/user_stack_info/analyzed_dependencies")
 
 
 @then('I should find the security node for all alternate components')
@@ -499,7 +499,7 @@ def check_security_issue_existence(context, cve, package):
     json_data = context.response.json()
     assert json_data is not None
 
-    path = "result/0/user_stack_info/dependencies"
+    path = "result/0/user_stack_info/analyzed_dependencies"
     components = get_value_using_path(json_data, path)
     assert components is not None
 
@@ -564,7 +564,7 @@ def check_all_analyzed_dependency(context, packages):
     path = "result/0/user_stack_info/analyzed_dependencies"
     analyzed_dependencies = get_value_using_path(jsondata, path)
     assert analyzed_dependencies is not None
-    dependencies = get_attribute_values(analyzed_dependencies, "package")
+    dependencies = get_attribute_values(analyzed_dependencies, "name")
     for package in packages:
         if package not in dependencies:
             raise Exception('Package {package} not found'.format(package=package))
