@@ -74,6 +74,46 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">SLA</div>
                 <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr><th>Benchmark</th>
+                        <th colspan="6">Stack analysis</th>
+                        <th colspan="6">Component analysis for known component</th>
+                        <th colspan="6">Component analysis for unknown component</th></tr>
+                    <tr><th>Test type</th><th colspan="3">Sequential</th><th colspan="3">Parallel</th>
+                                          <th colspan="3">Sequential</th><th colspan="3">Parallel</th>
+                                          <th colspan="3">Sequential</th><th colspan="3">Parallel</th></tr>
+                    <tr><th>Results</th>
+                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th></tr>
+
+                    % for row_title, statistic_value in zip(perf_tests_measurement_titles, perf_tests_measurement_selectors):
+                    <tr><td>${row_title}</td>
+                        % for measurement_type in ["sequenced_calls", "parallel_calls"]:
+                            <td class="numeric">${f(perf_tests_statistic["stack analysis"][measurement_type][statistic_value])}</td>
+                            <td class="numeric">${f(sla_thresholds["stack analysis"][measurement_type][statistic_value])}</td>
+                            % if perf_tests_statistic["stack analysis"][measurement_type][statistic_value] <= sla_thresholds["stack analysis"][measurement_type][statistic_value]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                        % endfor
+
+                        <!-- this part will be very likely moved into other place, so don't glue it with previous loop right now -->
+                        % for measurement_type in ["sequenced_calls_known_component", "parallel_calls_known_component", "sequenced_calls_unknown_component", "parallel_calls_unknown_component"]:
+                            <td class="numeric">${f(perf_tests_statistic["component analysis"][measurement_type][statistic_value])}</td>
+                            <td class="numeric">${f(sla_thresholds["component analysis"][measurement_type][statistic_value])}</td>
+                            % if perf_tests_statistic["component analysis"][measurement_type][statistic_value] <= sla_thresholds["component analysis"][measurement_type][statistic_value]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                        % endfor
+                    </tr>
+                    % endfor
+
                 </table>
             </div>
             <div class="panel panel-primary">
@@ -106,7 +146,4 @@
         </div>
     </body>
 </html>
-
-
-
 

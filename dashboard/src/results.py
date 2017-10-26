@@ -16,6 +16,12 @@ class Results():
         self.source_files = {}
         self.overall_status = {}
         self.remarks = {}
+        self.perf_tests_results = {}
+        self.perf_tests_statistic = {}
+        self.perf_tests_measurement_selectors = ["max", "avg", "sum"]
+        self.perf_tests_measurement_titles = ["Max.time", "Avg.time", "Total time"]
+        self.f = lambda number: '{0:.2f}'.format(number)  # function to format floating point number
+        self.sla = {}
 
     def __repr__(self):
         """Return textual representation of all results."""
