@@ -22,6 +22,7 @@ class Results():
         self.perf_tests_measurement_titles = ["Max.time", "Avg.time", "Total time"]
         self.f = lambda number: '{0:.2f}'.format(number)  # function to format floating point number
         self.sla = {}
+        self.smoke_tests_results = {}
 
     def __repr__(self):
         """Return textual representation of all results."""

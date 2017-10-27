@@ -11,6 +11,7 @@ from configuration import *
 from results import *
 from html_generator import *
 from perf_tests import *
+from smoke_tests import *
 from sla import *
 
 
@@ -253,6 +254,9 @@ def main():
     results.perf_tests_statistic = perf_tests.statistic
 
     results.sla_thresholds = SLA
+
+    smoke_tests = SmokeTests()
+    results.smoke_tests_results = smoke_tests.results
 
     generate_dashboard(results)
 
