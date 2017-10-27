@@ -38,19 +38,21 @@ class SmokeTests:
     @property
     def results(self):
         """Getter for the 'results' attribute."""
+        if not self._results:
+            self.read_results()
         return self._results
 
     @property
     def logs(self):
         """Getter for the 'logs' attribute."""
+        if not self._logs:
+            self.read_logs()
         return self._logs
 
 
 if __name__ == "__main__":
     # execute only if run as a script
     smoke_tests = SmokeTests()
-    smoke_tests.read_results()
-    smoke_tests.read_logs()
     print("Results:")
     print(smoke_tests.results)
     print("Logs:")

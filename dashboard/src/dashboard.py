@@ -256,7 +256,6 @@ def main():
     results.sla_thresholds = SLA
 
     smoke_tests = SmokeTests()
-    smoke_tests.read_results()
     results.smoke_tests_results = smoke_tests.results
 
     generate_dashboard(results)
