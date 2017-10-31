@@ -315,7 +315,7 @@ def check_component_security_issues_data(context, package, version, ecosystem):
 
     check_audit_metadata(data)
     check_release_attribute(data, ecosystem, package, version)
-    check_schema_attribute(data, "security_issues", "3-0-0")
+    check_schema_attribute(data, "security_issues", "3-0-1")
     check_status_attribute(data)
     check_summary_attribute(data)
 
