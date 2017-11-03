@@ -41,20 +41,21 @@ def check_timestamp_in_json_response(context, attribute):
 def check_id_value_in_json_response(context, id_attribute_name):
     """Check the ID attribute in the JSON response.
 
-    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    Check if ID is stored in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
     response = context.response
-    json_data = response.json()
+    assert response is not None
 
+    json_data = response.json()
     assert json_data is not None
 
     check_attribute_presence(json_data, id_attribute_name)
-    id = json_data[id_attribute_name]
+    id_attribute = json_data[id_attribute_name]
 
-    assert id is not None
-    assert isinstance(id, str) and len(id) == 32
-    assert all(char in string.hexdigits for char in id)
+    assert id_attribute is not None
+    assert isinstance(id_attribute, str) and len(id_attribute) == 32
+    assert all(char in string.hexdigits for char in id_attribute)
 
 
 def is_empty_json_response(context):

@@ -19,6 +19,7 @@ class S3Interface():
         self.s3_region_name = s3_region_name
         self.deployment_prefix = deployment_prefix
 
+        # to be set up by the connect() method
         self.s3_resource = None
         self.s3_session = None
 
@@ -28,9 +29,12 @@ class S3Interface():
         assert self.aws_secret_access_key is not None
         assert self.s3_region_name is not None
 
+        # we are already connected -> let's use this connection
         if self.s3_resource is not None:
             return
 
+        # create the session used to communicate with the S3 database
+        # and check if the operation was successful
         self.s3_session = boto3.session.Session(
             aws_access_key_id=self.aws_access_key_id,
             aws_secret_access_key=self.aws_secret_access_key,
@@ -41,6 +45,7 @@ class S3Interface():
         use_ssl = True
         endpoint_url = None
 
+        # retrieve the bucket resource and check if the operation was successful
         self.s3_resource = self.s3_session.resource(
             's3',
             config=botocore.client.Config(signature_version='s3v4'),
@@ -57,7 +62,7 @@ class S3Interface():
         return "{p}-{b}".format(p=self.deployment_prefix, b=bucket_name)
 
     def package_key(ecosystem, package):
-        """Construct a key to the selected package."""
+        """Construct a key to the selected package in the given ecosystem."""
         return "{ecosystem}/{package}.json".format(ecosystem=ecosystem,
                                                    package=package)
 
@@ -92,7 +97,7 @@ class S3Interface():
                                                               analysis=analysis)
 
     def does_bucket_exist(self, bucket_name):
-        """Check if the given bucket exists in the database.
+        """Check if the given bucket exists in the S3 database.
 
         Return True only when bucket with given name exist and can be read
         by current AWS S3 database user.
@@ -106,14 +111,14 @@ class S3Interface():
             return False
 
     def read_object(self, bucket_name, key):
-        """Read byte stream from S3, decode it into string, and parse as JSON."""
+        """Read byte stream from the S3 database, decode it into string, and parse as JSON."""
         s3 = self.s3_resource
         assert s3 is not None
         data = s3.Object(self.full_bucket_name(bucket_name), key).get()['Body'].read().decode()
         return json.loads(data)
 
     def read_object_metadata(self, bucket_name, key, attribute):
-        """Read byte stream from S3, decode it into string, and parse as JSON."""
+        """Read byte stream from the S3 database, decode it into string, and parse as JSON."""
         s3 = self.s3_resource
         assert s3 is not None
         data = s3.Object(self.full_bucket_name(bucket_name), key).get()[attribute]
