@@ -1,4 +1,9 @@
+"""Module with class that generates component specifications for the component analysis."""
+
+
 class ComponentGenerator:
+    """Class that generates component specifications for the component analysis."""
+
     components = {
         "pypi": {
             "clojure_py": ["0.1.0g", "0.2.0", "0.2.1", "0.2.2", "0.2.3",
@@ -23,6 +28,7 @@ class ComponentGenerator:
     }
 
     def generator_for_ecosystem(ecosystem='pypi'):
+        """Provide generator for component specifications for selected ecosystem."""
         components_for_ecosystem = ComponentGenerator.components[ecosystem]
         while True:
             for component, versions in components_for_ecosystem.items():

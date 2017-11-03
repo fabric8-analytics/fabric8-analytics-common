@@ -1,3 +1,4 @@
+"""Module with class representing jobs API."""
 from api import *
 import time
 import datetime
@@ -8,15 +9,19 @@ from componentgenerator import *
 
 
 class JobsApi(Api):
+    """Class representing jobs API."""
 
     def __init__(self, url, token):
+        """Set the API endpoint and store the authorization token if provided."""
         super().__init__(url, token)
         self.componentGeneratorForPypi = ComponentGenerator.generator_for_ecosystem('pypi')
 
     def authorization(self):
+        """Return a HTTP header with authorization token."""
         return {'auth-token': '{token}'.format(token=self.token)}
 
     def send_json_file(self, endpoint, filename):
+        """Send the content of file to the selected API endpoint as JSON."""
         headers = {'Content-Type': 'application/json',
                    'Accept': 'application/json'}
 
@@ -26,6 +31,10 @@ class JobsApi(Api):
         return response
 
     def send_data_as_json(self, endpoint, data):
+        """Send the JSON data to the selected API endpoint.
+
+        Data (any Python structure) is converted to JSON first.
+        """
         headers = {'Content-Type': 'application/json',
                    'Accept': 'application/json'}
 
@@ -36,6 +45,7 @@ class JobsApi(Api):
         return response
 
     def check_auth_token_validity(self):
+        """Check that the authorization token is valid by calling the API and check HTTP code."""
         endpoint = self.url + 'api/v1/jobs'
         response = requests.get(endpoint, headers=self.authorization())
         if response.status_code != 200:
@@ -43,6 +53,7 @@ class JobsApi(Api):
         return response.status_code == 200
 
     def prepare_jobs_data(self, ecosystem, package, version):
+        """Prepare data structure that specify new job attributes."""
         return \
             {
                 "flow_arguments": [
@@ -59,6 +70,7 @@ class JobsApi(Api):
             }
 
     def start_component_analysis(self, ecosystem, package, version, thread_id):
+        """Start the component analysis."""
         jobs_data = self.prepare_jobs_data(ecosystem, package, version)
         endpoint = "{jobs_api_url}api/v1/jobs/flow-scheduling?state=running".\
             format(jobs_api_url=self.url)
@@ -70,6 +82,7 @@ class JobsApi(Api):
         print(response.json())
 
     def wait_for_component_analysis(self, s3, ecosystem, package, version, thread_id=""):
+        """Wait for the component analysis by looking at metadata stored in the S3 database."""
         timeout = 300 * 60
         sleep_amount = 10
 
@@ -104,6 +117,7 @@ class JobsApi(Api):
 
     def component_analysis(self, i, s3, thread_id=None,
                            ecosystem=None, component=None, version=None):
+        """Start the component analysis and wait for its finish."""
         if ecosystem is None or component is None or version is None:
             ecosystem, component, version = next(self.componentGeneratorForPypi)
         s3.connect()

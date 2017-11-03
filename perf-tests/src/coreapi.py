@@ -1,3 +1,4 @@
+"""Module with class representing core (server) API."""
 from urllib.parse import urljoin
 
 from api import *
@@ -5,14 +6,18 @@ import time
 
 
 class CoreApi(Api):
+    """Class representing core (server) API."""
 
     def __init__(self, url, token):
+        """Set the API endpoint and store the authorization token if provided."""
         super().__init__(url, token)
 
     def authorization(self):
+        """Return a HTTP header with authorization token."""
         return {'Authorization': 'Bearer {token}'.format(token=self.token)}
 
     def check_auth_token_validity(self):
+        """Check that the authorization token is valid by calling the API and check HTTP code."""
         endpoint = self.url + 'api/v1/component-search/foobar'
         response = requests.get(endpoint, headers=self.authorization())
         if response.status_code != 200:
@@ -20,6 +25,7 @@ class CoreApi(Api):
         return response.status_code == 200
 
     def start_stack_analysis(self):
+        """Start the stack analysis, sending the manifest file."""
         filename = 'data/requirements_click_6_star.txt'
         manifest_file_dir = os.path.dirname(filename)
         path_to_manifest_file = os.path.abspath(manifest_file_dir)
@@ -34,6 +40,7 @@ class CoreApi(Api):
         return job_id
 
     def wait_for_stack_analysis(self, job_id, thread_id="", i=0):
+        """Wait for the stack analysis to finish."""
         endpoint = self.url + 'api/v1/stack-analyses/' + job_id
         timeout = 5000
         sleep_amount = 5
@@ -60,6 +67,7 @@ class CoreApi(Api):
             raise Exception('Timeout waiting for the stack analysis results')
 
     def stack_analysis(self, thread_id=None, i=0):
+        """Start the stack analysis and wait for its finish."""
         job_id = self.start_stack_analysis()
         return self.wait_for_stack_analysis(job_id, thread_id, i)
 
@@ -72,6 +80,7 @@ class CoreApi(Api):
 
     def component_analysis(self, thread_id=None, i=0,
                            ecosystem=None, component=None, version=None):
+        """Start the component analysis and check the status code."""
         url = self.component_analysis_url(ecosystem, component, version)
         response = requests.get(url, headers=self.authorization())
         status_code = response.status_code
