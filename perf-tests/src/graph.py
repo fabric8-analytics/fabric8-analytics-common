@@ -1,3 +1,5 @@
+"""Functions used to generate graphs from measured data."""
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -9,6 +11,7 @@ DPI = 100
 
 
 def seconds_for_analysis(duration, measurement_type, selector):
+    """Get duration for specified measurement type and selector."""
     if measurement_type in duration:
         data = duration[measurement_type]
         if selector in data:
@@ -18,6 +21,7 @@ def seconds_for_analysis(duration, measurement_type, selector):
 
 def add_legend(ax, columns, component_selectors, component_colors,
                package_selectors, package_colors):
+    """Add a legend with package names to the graph."""
     legend_labels = []
     legend_labels.append("component: overall")
 
@@ -44,6 +48,7 @@ def add_legend(ax, columns, component_selectors, component_colors,
 
 
 def stacked_column(measurements, ind, ax, columndata, colors, width, offset):
+    """Construct list of stacked columns that could be added into the graph."""
     bottom = np.zeros(measurements)
     column = []
     for elem, color in zip(columndata, colors):
@@ -54,6 +59,7 @@ def stacked_column(measurements, ind, ax, columndata, colors, width, offset):
 
 def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
                                            height=DEFAULT_HEIGHT, dpi=DPI):
+    """Create graph with component analysis timings."""
     N = len(durations)
 
     component_selectors = ["security_issues", "source_licenses",
@@ -108,6 +114,7 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
 
 def create_graph(title, y_axis_label, labels, values,
                  width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT, dpi=DPI):
+    """Create simple column graph for any measurement."""
     N = len(values)
     indexes = np.arange(N)
 
@@ -140,6 +147,7 @@ def create_graph(title, y_axis_label, labels, values,
 
 
 def create_summary_graph(title, y_axis_label, labels, values):
+    """Create summary (column) graph for any measurement."""
     N = len(values)
     indexes = np.arange(N)
 
@@ -173,6 +181,7 @@ def create_summary_graph(title, y_axis_label, labels, values):
 def create_statistic_graph(title, y_axis_label, labels, min_values, max_values, avg_values,
                            x_axis_label="pause time (seconds)", width=DEFAULT_WIDTH,
                            height=DEFAULT_HEIGHT, dpi=DPI):
+    """Create summary (column) graph with min, average, and max values."""
     N = len(labels)
     indexes = np.arange(N)
 
@@ -202,10 +211,12 @@ def create_statistic_graph(title, y_axis_label, labels, min_values, max_values, 
 
 
 def save_graph(fig, imageFile, dpi=DPI):
+    """Save graph into the raster or vector file."""
     plt.savefig(imageFile, facecolor=fig.get_facecolor(), dpi=dpi)
 
 
 def generate_wait_times_graph(title, name, values):
+    """Generate graph with durations of any measurement(s)."""
     labels = range(1, 1 + len(values))
     fig = create_graph(title, "seconds", labels, values)
     save_graph(fig, name + ".png")
@@ -214,6 +225,7 @@ def generate_wait_times_graph(title, name, values):
 
 def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, avg_times,
                                     width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT):
+    """Generate graph with timings of any measurement(s)."""
     labels = range(1, 1 + len(pauses))
     fig = create_statistic_graph(title, "seconds", pauses, min_times, max_times, avg_times,
                                  "#", width, height)
@@ -223,6 +235,7 @@ def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, a
 
 def generate_timing_threads_statistic_graph(title, name, threads, min_times, max_times,
                                             avg_times):
+    """Generate graph with timings per thread of any measurement(s)."""
     labels = range(1, 1 + len(threads))
     fig = create_statistic_graph(title, "seconds", threads, min_times, max_times, avg_times,
                                  "# concurrent analysis")
@@ -231,6 +244,7 @@ def generate_timing_threads_statistic_graph(title, name, threads, min_times, max
 
 
 def generate_component_analysis_timing_graph(durations):
+    """Generate graph with timings of the component analysis."""
     fig = create_component_analysis_timing_graph(durations)
     save_graph(fig, "test.png")
     plt.close(fig)

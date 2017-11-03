@@ -1,3 +1,5 @@
+"""Main module with performance tests interface."""
+
 import json
 import time
 import datetime
@@ -21,6 +23,7 @@ from cliargs import *
 
 
 def check_environment_variable(env_var_name):
+    """Check if the given environment variable exists."""
     print("Checking: {e} environment variable existence".format(
         e=env_var_name))
     if os.environ.get(env_var_name) is None:
@@ -32,6 +35,7 @@ def check_environment_variable(env_var_name):
 
 
 def check_environment_variables():
+    """Check if all required environment variables exist."""
     environment_variables = [
         "F8A_API_URL",
         "F8A_JOB_API_URL",
@@ -45,11 +49,13 @@ def check_environment_variables():
 
 
 def is_system_running(core_api, jobs_api):
-    return core_api.is_api_running() and \
-           jobs_api.is_api_running()
+    """Check the server and jobs API availability."""
+    return (core_api.is_api_running() and
+            jobs_api.is_api_running())
 
 
 def check_system(core_api, jobs_api, s3):
+    """Check if all system endpoints are available and that tokens are valid."""
     # try to access system endpoints
     print("Checking: core API and JOBS API endpoints")
     if not is_system_running(core_api, jobs_api):
@@ -84,6 +90,7 @@ def check_system(core_api, jobs_api, s3):
 
 
 def run_core_api_sequenced_calls_benchmark(core_api, s3):
+    """Start the benchmarks for the core API."""
     print("Core API sequenced calls benchmark")
     run_sequenced_benchmark(core_api, s3,
                             "Core API endpoint",
@@ -94,6 +101,7 @@ def run_core_api_sequenced_calls_benchmark(core_api, s3):
 
 
 def run_stack_analysis_sequenced_calls_benchmark(core_api, s3):
+    """Start the benchmarks for stack analysis."""
     print("Stack analysis sequenced calls benchmark")
     run_sequenced_benchmark(core_api, s3,
                             "Stack analysis API endpoint",
@@ -105,6 +113,7 @@ def run_stack_analysis_sequenced_calls_benchmark(core_api, s3):
 
 
 def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
+    """Start the benchmarks for component analysis (server API)."""
     print("Component analysis sequenced calls benchmark")
     run_sequenced_benchmark(core_api, s3,
                             "Component analysis for known component",
@@ -127,6 +136,7 @@ def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
 
 
 def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
+    """Start the benchmarks for component analysis (jobs API)."""
     print("Component analysis sequenced calls benchmark")
     run_sequenced_benchmark(jobs_api, s3,
                             "Component analysis flow scheduling, same component",
@@ -148,6 +158,7 @@ def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
 
 def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to_call,
                                       thread_counts=[1, 2, 3, 4]):
+    """Universal function to call any callback function in more threads and collect results."""
     print(message + " concurrent benchmark")
     measurement_count = 1
 
@@ -225,6 +236,7 @@ def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to
 
 
 def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
+    """Call component analysis in more threads and collect results."""
     print("Component analysis concurrent benchmark")
     measurement_count = 1
     min_thread_count = 1
@@ -296,13 +308,14 @@ def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
 
 
 def wait_for_all_threads(threads):
+    """Wait for all threads from given collection."""
     for t in threads:
         t.join()
 
 
 def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
                             pauses=[10], measurement_count=10):
-
+    """Start benchmarks by calling selected function sequentially."""
     print("pauses:")
     print(pauses)
     measurements = []
@@ -343,6 +356,7 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
 
 
 def run_api_concurrent_benchmark(core_api, function_to_call, name_prefix):
+    """Call given API endpoint concurrently."""
     measurement_count = 1
     min_thread_count = 1
     max_thread_count = 2
@@ -411,6 +425,7 @@ def run_api_concurrent_benchmark(core_api, function_to_call, name_prefix):
 
 
 def run_core_api_concurrent_benchmark(core_api):
+    """Start the benchmarks for the core API."""
     print("Core API concurrent benchmark")
     run_api_concurrent_benchmark(core_api, benchmarks.core_api_benchmark_thread, "core_api")
 
@@ -443,6 +458,7 @@ def run_benchmarks(core_api, jobs_api, s3, run_stack_analysis, run_component_ana
 
 
 def run_benchmarks_sla(core_api, jobs_api, s3):
+    """Run all benchmarks required for SLA."""
     run_read_component_analysis_sequenced_calls_benchmark(core_api, s3)
     run_stack_analysis_sequenced_calls_benchmark(core_api, s3)
 
@@ -462,6 +478,7 @@ def run_benchmarks_sla(core_api, jobs_api, s3):
 
 def generate_statistic_graph(name_prefix, thread_count, x_axis_labels, min_times, max_times,
                              avg_times):
+    """Generate statistic graph with min, average, and max times."""
     title = "core API endpoint: min, max, and avg times for {t} concurrent threads".format(
         t=thread_count)
     name = "{p}_concurrent_{t}_threads_min_max_avg_times".format(p=name_prefix, t=thread_count)
@@ -470,6 +487,7 @@ def generate_statistic_graph(name_prefix, thread_count, x_axis_labels, min_times
 
 
 def main():
+    """Entry point to the performance tests."""
     cli_arguments = cli_parser.parse_args()
     check_environment_variables()
 

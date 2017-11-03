@@ -1,9 +1,12 @@
+"""Module with functions that read data and metadata from the S3 and retrieve durations."""
+
 from s3interface import *
 from duration import *
 from botocore.exceptions import *
 
 
 def read_component_analysis_from_core_data(s3, ecosystem, component, version):
+    """Read component analysis from the core data and retrieve duration info from it."""
     bucket = "bayesian-core-data"
 
     durations = {}
@@ -32,6 +35,7 @@ def read_component_analysis_from_core_data(s3, ecosystem, component, version):
 
 
 def read_component_analysis_from_core_package(s3, ecosystem, component):
+    """Read component analysis from core package data and retrieve duration info from it."""
     bucket = "bayesian-core-package-data"
 
     durations = {}
@@ -56,6 +60,7 @@ def read_component_analysis_from_core_package(s3, ecosystem, component):
 
 
 def read_component_analysis_audit_duration(s3, ecosystem, component, version):
+    """Read durations for the core data and core package data as well."""
     return {"core-data":
             read_component_analysis_from_core_data(s3, ecosystem, component, version),
             "core-package-data":
