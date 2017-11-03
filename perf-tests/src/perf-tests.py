@@ -415,11 +415,31 @@ def run_core_api_concurrent_benchmark(core_api):
     run_api_concurrent_benchmark(core_api, benchmarks.core_api_benchmark_thread, "core_api")
 
 
-def run_benchmarks(core_api, jobs_api, s3):
-    run_core_api_sequenced_calls_benchmark(core_api, s3)
-    run_core_api_concurrent_benchmark(core_api)
-    run_component_analysis_sequenced_calls_benchmark(jobs_api, s3)
-    run_component_analysis_concurrent_calls_benchmark(jobs_api, s3)
+def run_benchmarks(core_api, jobs_api, s3, run_stack_analysis, run_component_analysis,
+                   run_parallel_tests):
+    """Start the selected benchmarks."""
+    if run_stack_analysis:
+        run_stack_analysis_sequenced_calls_benchmark(core_api, s3)
+    if run_component_analysis:
+        run_read_component_analysis_sequenced_calls_benchmark(core_api, s3)
+    if run_parallel_tests:
+        if run_stack_analysis:
+            run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis",
+                                              "stack_analysis_parallel_calls",
+                                              benchmarks.stack_analysis_thread,
+                                              [1, 2, 5, 10, 15, 20])
+        if run_component_analysis:
+            run_analysis_concurrent_benchmark(core_api, s3, "Component analysis known component",
+                                              "component_analysis_parallel_calls_known_component",
+                                              benchmarks.
+                                              component_analysis_read_thread_known_component,
+                                              [1, 2, 5, 10, 15, 20])
+
+            run_analysis_concurrent_benchmark(core_api, s3, "Component analysis unknown component",
+                                              "component_analysis_parallel_calls_unknown_component",
+                                              benchmarks.
+                                              component_analysis_read_thread_unknown_component,
+                                              [1, 2, 5, 10, 15, 20])
 
 
 def run_benchmarks_sla(core_api, jobs_api, s3):
@@ -470,12 +490,13 @@ def main():
 
     check_system(core_api, jobs_api, s3)
 
-    print(cli_arguments.sla)
-
     if cli_arguments.sla:
         run_benchmarks_sla(core_api, jobs_api, s3)
     else:
-        run_benchmarks(core_api, jobs_api, s3)
+        run_benchmarks(core_api, jobs_api, s3,
+                       cli_arguments.stack_analysis_benchmark,
+                       cli_arguments.component_analysis_benchmark,
+                       cli_arguments.parallel)
 
 
 if __name__ == "__main__":
