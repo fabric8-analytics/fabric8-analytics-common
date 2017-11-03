@@ -3,7 +3,10 @@ import datetime
 
 
 def check_attribute_presence(node, attribute_name):
-    """Check the attribute presence in the dictionary. To be used for deserialized JSON data etc."""
+    """Check the attribute presence in the given dictionary.
+
+    To be used to check the deserialized JSON data etc.
+    """
     assert attribute_name in node, \
         "'%s' attribute is expected in the node, " \
         "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
@@ -12,7 +15,7 @@ def check_attribute_presence(node, attribute_name):
 def check_attributes_presence(node, attribute_names):
     """Check the presence of all attributes in the dictionary.
 
-    To be used for deserialized JSON data etc.
+    To be used to check the deserialized JSON data etc.
     """
     for attribute_name in attribute_names:
         assert attribute_name in node, \
@@ -27,7 +30,14 @@ def check_and_get_attribute(node, attribute_name):
 
 
 def check_timestamp(timestamp):
-    """Check if the string contains proper timestamp value."""
+    """Check if the string contains proper timestamp value.
+
+    The following four formats are supported:
+    2017-07-19 13:05:25.041688
+    2017-07-17T09:05:29.101780
+    2017-07-19 13:05:25
+    2017-07-17T09:05:29
+    """
     assert timestamp is not None
     assert isinstance(timestamp, str)
 
@@ -65,8 +75,8 @@ def check_job_token_attributes(token):
 
 def check_status_attribute(data):
     """Check the value of the status attribute, that should contain just two allowed values."""
-    check_attribute_presence(data, "status")
-    assert data["status"] in ["success", "error"]
+    status = check_and_get_attribute(data, "status")
+    assert status in ["success", "error"]
 
 
 def check_summary_attribute(data):
@@ -95,15 +105,18 @@ def check_schema_attribute(data, expected_schema_name, expected_schema_version):
 
     This attribute should contains dictionary with name and version that are checked as well.
     """
-    check_attribute_presence(data, "schema")
+    # read the toplevel attribute 'schema'
+    schema = check_and_get_attribute(data, "schema")
 
-    schema = data["schema"]
+    # read attributes from the 'schema' node
     name = check_and_get_attribute(schema, "name")
     version = check_and_get_attribute(schema, "version")
 
+    # check the schema name
     assert name == expected_schema_name, "Schema name '{n1}' is different from " \
         "expected name '{n2}'".format(n1=name, n2=expected_schema_name)
 
+    # check the schema version (ATM we are able to check just one fixed version)
     assert version == expected_schema_version, "Schema version {v1} is different from expected " \
         "version {v2}".format(v1=version, v2=expected_schema_version)
 
@@ -114,16 +127,16 @@ def check_audit_metadata(data):
     Check if all common attributes can be found in the audit node
     in the component or package metadata.
     """
-    assert "_audit" in data
+    check_attribute_presence(data, "_audit")
     audit = data["_audit"]
 
-    assert "version" in audit
+    check_attribute_presence(audit, "version")
     assert audit["version"] == "v1"
 
-    assert "started_at" in audit
+    check_attribute_presence(audit, "started_at")
     check_timestamp(audit["started_at"])
 
-    assert "ended_at" in audit
+    check_attribute_presence(audit, "ended_at")
     check_timestamp(audit["ended_at"])
 
 

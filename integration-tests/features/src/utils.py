@@ -1,9 +1,10 @@
-"""Unsorted utility functions."""
+"""Unsorted utility functions used in integration tests."""
 import requests
 
 
 def download_file_from_url(url):
     """Download file from the given URL and do basic check of response."""
+    assert url
     response = requests.get(url)
     assert response.status_code == 200
     assert response.text is not None

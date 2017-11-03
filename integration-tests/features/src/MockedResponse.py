@@ -1,11 +1,12 @@
-"""Supports for mocking data for tests."""
+"""Supports for mocking data for integration tests."""
 import json
 
 
 class MockedResponse():
-    """Class that provides mocked data used by tests.
+    """Class that provides mocked data used by integration tests.
 
-    The json() method allow us to use this class to mock HTTP responses.
+    The json() method allow us to use this class to mock HTTP responses
+    handled by the 'requests; library.
     """
 
     def __init__(self, filename):

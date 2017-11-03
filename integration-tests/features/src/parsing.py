@@ -3,7 +3,7 @@ import re
 
 
 def parse_timestamp(string):
-    """Parse the timestamp that should be written in standard format."""
+    """Parse the timestamp that should be written in the standard format."""
     timeformat = '%Y-%m-%dT%H:%M:%S.%f'
     return datetime.datetime.strptime(string, timeformat)
 
@@ -17,6 +17,7 @@ def parse_float_value_from_text_stream(text, key):
     regexp = key + "\s*=\s*(\d.\d*)"
     for line in text.split("\n"):
         if line.startswith(key):
+            # the key was found, now try to find and parse the float value
             match = re.fullmatch(regexp, line)
             assert match is not None
             assert match.lastindex == 1
