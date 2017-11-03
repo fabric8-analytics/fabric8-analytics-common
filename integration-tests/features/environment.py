@@ -1,3 +1,4 @@
+"""Module with code to be run before and after certain events during the testing."""
 import json
 import datetime
 import subprocess
@@ -56,6 +57,7 @@ import behave.runner
 
 
 def exec_file(filename, globals=None, locals=None):
+    """Execute the specified file, optionaly setup its context by using globals and locals."""
     if globals is None:
         globals = {}
     if locals is None:
@@ -106,8 +108,10 @@ def _make_compose_teardown_callback(context, services):
 
 
 def _run_command_in_service(context, service, command):
-    """
-    run command in specified service via `docker-compose run`; command is list of strs
+    """Start the specified service.
+
+    Service is started via `docker-compose run`;
+    command is list of strs
     """
     if context.docker_compose_path:
         cmd = _make_compose_command(context, 'run', '--rm', '-d', service)
@@ -126,7 +130,8 @@ def _run_command_in_service(context, service, command):
 
 
 def _exec_command_in_container(client, container, command):
-    """
+    """Run the specified command in container.
+
     equiv of `docker exec`, command is str
     """
     exec_id = client.exec_create(container, command)
@@ -290,8 +295,10 @@ def _get_api_url(context, attribute, port):
 
 
 def _send_json_file(endpoint, filename, custom_headers=None):
-    """Send the JSON file to the selected API endpoint using optional custom
-    headers (if provided)."""
+    """Send the JSON file to the selected API endpoint.
+
+    The optional custom header is used (given it is provided).
+    """
     headers = {'Content-Type': 'application/json',
                'Accept': 'application/json'}
     if custom_headers is not None:
@@ -326,8 +333,11 @@ def _check_api_tokens_presence():
 
 
 def _check_env_var_presence_s3_db(env_var_name):
-    '''Check the existence of environment variable needed to connect to the
-    AWS S3 database.'''
+    """Check if given environment variable exist.
+
+    Check the existence of environment variable needed to connect to the
+    AWS S3 database.
+    """
     if os.environ.get(env_var_name) is None:
         print("Warning: the {name} environment variable is not set.\n"
               "All tests that access AWS S3 database will fail\n".format(
@@ -343,6 +353,7 @@ def _parse_int_env_var(env_var_name):
 
 
 def before_all(context):
+    """Perform the setup before the first event."""
     context.config.setup_logging()
     context.start_system = _start_system
     context.teardown_system = _teardown_system
@@ -479,11 +490,13 @@ def before_all(context):
 
 @capture
 def before_scenario(context, scenario):
+    """Perform the setup before each scenario is run."""
     context.resource_manager = contextlib.ExitStack()
 
 
 @capture
 def after_scenario(context, scenario):
+    """Perform the cleanup after each scenario is run."""
     if context.running_locally:
         if context.dump_logs or context.dump_errors and scenario.status == "failed":
             try:
@@ -498,6 +511,7 @@ def after_scenario(context, scenario):
 
 @capture
 def after_all(context):
+    """Perform the cleanup after the last event."""
     if context.running_locally:
         try:
             _teardown_system(context)
