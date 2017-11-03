@@ -1,3 +1,4 @@
+"""Basic UI test that checks if the stack analysis is visible for the newly created project."""
 from splinter import Browser
 import time
 import os
@@ -9,7 +10,10 @@ SLEEP_BEFORE_CLICK = 15
 
 
 class Context:
+    """Class that holds context for the UI tests."""
+
     def __init__(self, server, username, password):
+        """Initialize the attributes holding server URL, user name, and password."""
         self.browser = None
         self.space_name = None
         self.server = server
@@ -18,19 +22,21 @@ class Context:
 
 
 def check_env_variable(env_var_name):
+    """Check if the given environment variable is present."""
     assert os.environ.get(env_var_name), \
         'The environment variable {v} should be set properly'.format(
             v=env_var_name)
 
 
 def check_setup():
+    """Check if all required environment variables are present."""
     check_env_variable('TARGET_SERVER')
     check_env_variable('OPENSHIFT_USERNAME')
     check_env_variable('OPENSHIFT_PASSWORD')
 
 
 def front_page(context):
-    '''Go to the Openshift.io front page and click the Login button.'''
+    """Go to the Openshift.io front page and click the Login button."""
     print("Front page")
     url = context.server
     context.browser.visit(url)
@@ -44,8 +50,7 @@ def front_page(context):
 
 
 def login_page(context):
-    '''Login into the Openshift.io using the provided username and
-    password.'''
+    """Login into the Openshift.io using the provided username and password."""
     print("Login page")
     username_input = context.browser.find_by_id('username').first
     password_input = context.browser.find_by_id('password').first
@@ -61,7 +66,7 @@ def login_page(context):
 
 
 def get_all_existing_space_names(browser):
-    '''Returns list of names of Spaces.'''
+    """Return list of names of Spaces."""
     spaces = browser.find_by_xpath("//div[@class='space-item']/h2/a")
     assert spaces is not None
     names = [space.value for space in spaces]
@@ -71,22 +76,31 @@ def get_all_existing_space_names(browser):
 
 
 def generate_space_prefix():
+    """Generate prefix for the new Space.
+
+    The prefix is based on the current local time, so very probably it will be
+    unique for given user (if not, the index will be updated).
+    """
     localtime = time.localtime()
     return time.strftime("test%Y-%m-%d-")
 
 
 def space_name(prefix, index):
+    """Construct name of space from the prefix and its index."""
     return "{p}{i}".format(p=prefix, i=index)
 
 
 def is_space_name_unique(prefix, index, space_names):
+    """Check if the name of the Space is unique."""
     name = space_name(prefix, index)
     return name not in space_names
 
 
 def generate_unique_space_name(space_names):
-    '''Generate a name for a Space. The name is based on current date
-    and is unique (by adding a small index to the date.'''
+    """Generate a name for a Space.
+
+    The name is based on current date and is unique (by adding a small index to the date).
+    """
     prefix = generate_space_prefix()
 
     index = 1
@@ -96,6 +110,7 @@ def generate_unique_space_name(space_names):
 
 
 def create_new_space_step_1(context):
+    """Perform the first step to create new Space."""
     print('Create new Space: step 1')
     new_space_button = context.browser.find_by_text('New').first
     assert new_space_button is not None
@@ -112,6 +127,7 @@ def create_new_space_step_1(context):
 
 
 def create_new_space_step_2(context):
+    """Perform the second step to create new Space."""
     print('Create new Space: step 2')
     time.sleep(15)
     quick_start_button = context.browser.find_by_text('Quickstart').first
@@ -124,6 +140,7 @@ def create_new_space_step_2(context):
 
 
 def create_new_space_step_3(context):
+    """Perform third step to create new Space."""
     print('Create new Space: step 3')
     time.sleep(15)
     next_button = context.browser.find_by_id('forge-next-button').first
@@ -135,6 +152,7 @@ def create_new_space_step_3(context):
 
 
 def create_new_space_step_4(context):
+    """Perform fourth step to create new Space."""
     print('Create new Space: step 4')
     release_radio = context.browser.find_by_value('Release').first
     assert release_radio is not None
@@ -149,6 +167,7 @@ def create_new_space_step_4(context):
 
 
 def create_new_space_step_5(context):
+    """Perform fifth step to create new Space."""
     print('Create new Space: step 5')
     next_button = context.browser.find_by_id('forge-next-button').first
     assert next_button is not None
@@ -159,6 +178,7 @@ def create_new_space_step_5(context):
 
 
 def create_new_space_step_6(context):
+    """Perform sixth step to create new Space."""
     print('Create new Space: step 6')
     finish_button = context.browser.find_by_id('forge-finish-button').first
     assert finish_button is not None
@@ -169,8 +189,11 @@ def create_new_space_step_6(context):
 
 
 def create_new_space_step_7(context):
-    '''Click in the OK button on the last past of the forge wizard.
-    This step is needed so the repo will be shown on the Space page!'''
+    """Perform the last step to create new Space.
+
+    Click in the OK button on the last past of the forge wizard.
+    This step is needed so the repo will be shown on the Space page!
+    """
     print('Create new Space: step 7')
     finish_button = context.browser.find_by_id('forge-ok-button').first
     assert finish_button is not None
@@ -181,9 +204,9 @@ def create_new_space_step_7(context):
 
 
 def spaces_page(context):
-    '''Go to the Spaces page with list of available Spaces.'''
+    """Go to the Spaces page with list of available Spaces."""
     print("Spaces page")
-    url = urljoin(context.server, context.username+"/_spaces")
+    url = urljoin(context.server, context.username + "/_spaces")
     context.browser.visit(url)
     space_names = get_all_existing_space_names(context.browser)
     new_space_name = generate_unique_space_name(space_names)
@@ -199,13 +222,15 @@ def spaces_page(context):
 
 
 def check_text_presence(context, text):
+    """Check if the given text is present on the current web page."""
     tag = context.browser.find_by_text(text).first
     assert tag is not None
     print("    The text '{t}' is found on the page".format(t=text))
 
 
 def stack_recommendation_on_space_page(context):
-    url = urljoin(context.server, context.username+"/" + context.space_name)
+    """Check the presence of stack recommendation on the Space page."""
+    url = urljoin(context.server, context.username + "/" + context.space_name)
     print("Going to the Space {s}".format(s=context.space_name))
     context.browser.visit(url)
     time.sleep(SLEEP_BEFORE_CLICK)
@@ -219,8 +244,9 @@ def stack_recommendation_on_space_page(context):
 
 
 def stack_reccomendation_on_pipepines_page(context):
-    url = urljoin(context.server, context.username + "/" + context.space_name
-                  + "/create/pipelines")
+    """Check the presence of stack recommendation on the Pipelines page."""
+    url = urljoin(context.server, context.username + "/" + context.space_name +
+                  "/create/pipelines")
     print("Going to the pipeline page for the Space {s}".format(
         s=context.space_name))
     context.browser.visit(url)
@@ -240,11 +266,13 @@ def stack_reccomendation_on_pipepines_page(context):
 
 
 def stack_recommendation(context):
+    """Check the presence of stack recommendation on all relevant pages on OpenShift.io."""
     stack_recommendation_on_space_page(context)
     stack_reccomendation_on_pipepines_page(context)
 
 
 def run_tests(engine, server, username, password):
+    """Start all UI tests."""
     context = Context(server, username, password)
     with Browser(engine) as browser:
         context.browser = browser
@@ -252,11 +280,12 @@ def run_tests(engine, server, username, password):
         login_page(context)
         spaces_page(context)
         # it is really needed to wait for > 10 minutes here
-        time.sleep(60*10)
+        time.sleep(60 * 10)
         stack_recommendation(context)
 
 
 def main():
+    """Start all UI tests by using the provided environment variables."""
     check_setup()
     server = os.environ.get('TARGET_SERVER')
     username = os.environ.get('OPENSHIFT_USERNAME')
