@@ -473,7 +473,8 @@ def run_benchmarks_sla(core_api, jobs_api, s3):
                                       range(1, 5))
 
     run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis", "stack_analysis",
-                                      benchmarks.stack_analysis_thread)
+                                      "stack_analysis_parallel_calls",
+                                      benchmarks.stack_analysis_thread, range(1, 5))
 
 
 def generate_statistic_graph(name_prefix, thread_count, x_axis_labels, min_times, max_times,
