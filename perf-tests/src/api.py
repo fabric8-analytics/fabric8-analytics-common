@@ -23,6 +23,7 @@ class Api:
             pass
         return False
 
+    @staticmethod
     def add_slash(url):
         """Add a slash at end of URL, if the slash is not provided."""
         if url and not url.endswith('/'):
