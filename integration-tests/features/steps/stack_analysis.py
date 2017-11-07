@@ -269,15 +269,20 @@ def check_outlier_validity(context):
         check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
 
 
-def check_licenses(node, expected_licenses):
-    """Check that the expected license can be found in the list of licenses."""
-    for item in node:
-        licenses = item["licenses"]
-        assert licenses is not None
-        for license in licenses:
-            if license not in expected_licenses:
-                raise Exception("Unexpected license found: {license}".format(
-                                license=license))
+def check_licenses(licenses, expected_licenses):
+    """Compare list of read licenses with list of expected licenses.
+
+    Check that all expected licenses and only such licenses can be found in the list of licenses.
+    """
+    assert licenses is not None
+    for license in licenses:
+        if license not in expected_licenses:
+            raise Exception("Unexpected license found: {license}".format(
+                            license=license))
+    for expected_license in expected_licenses:
+        if expected_license not in licenses:
+            raise Exception("Required license could not be found: {license}".format(
+                            license=expected_license))
 
 
 @then('I should find the following licenses ({licenses}) under the path {path}')
@@ -493,15 +498,22 @@ def stack_analysis_check_security_node_for_alternate_components(context):
     check_security_node(context, "result/0/recommendation/alternate")
 
 
-@then('I should find the {cve} security issue for the dependency {package}')
-def check_security_issue_existence(context, cve, package):
-    """Check if the security issue CVE-yyyy-xxxx can be found for the given analyzed package."""
+def get_analyzed_components(context):
+    """Return all analyzed components from the deserialized JSON file."""
     json_data = context.response.json()
     assert json_data is not None
 
     path = "result/0/user_stack_info/analyzed_dependencies"
     components = get_value_using_path(json_data, path)
     assert components is not None
+
+    return components
+
+
+@then('I should find the {cve} security issue for the dependency {package}')
+def check_security_issue_existence(context, cve, package):
+    """Check if the security issue CVE-yyyy-xxxx can be found for the given analyzed package."""
+    components = get_analyzed_components(context)
 
     for component in components:
         if component["name"] == package:
@@ -514,6 +526,23 @@ def check_security_issue_existence(context, cve, package):
             else:
                 raise Exception('Could not find the CVE {c} for the '
                                 'package {p}'.format(c=cve, p=package))
+    else:
+        raise Exception('Could not find the analyzed package {p}'
+                        .format(p=package))
+
+
+@then('I should not find any security issue for the dependency {package}')
+def check_security_issue_nonexistence(context, package):
+    """Check than none security issue can be found for the given analyzed package."""
+    components = get_analyzed_components(context)
+
+    for component in components:
+        if component["name"] == package:
+            check_attribute_presence(component, "security")
+            cve_items = component["security"]
+            if cve_items:
+                raise Exception('Found security issue(s) for the package {p}'.format(p=package))
+            break
     else:
         raise Exception('Could not find the analyzed package {p}'
                         .format(p=package))
