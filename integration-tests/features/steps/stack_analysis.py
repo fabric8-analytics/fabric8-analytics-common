@@ -519,6 +519,28 @@ def check_security_issue_existence(context, cve, package):
                         .format(p=package))
 
 
+@then('I should not find any security issue for the dependency {package}')
+def check_security_issue_nonexistence(context, package):
+    """Check than none security issue can be found for the given analyzed package."""
+    json_data = context.response.json()
+    assert json_data is not None
+
+    path = "result/0/user_stack_info/analyzed_dependencies"
+    components = get_value_using_path(json_data, path)
+    assert components is not None
+
+    for component in components:
+        if component["name"] == package:
+            check_attribute_presence(component, "security")
+            cve_items = component["security"]
+            if cve_items:
+                raise Exception('Found security issue(s) for the package {p}'.format(p=package))
+            return
+    else:
+        raise Exception('Could not find the analyzed package {p}'
+                        .format(p=package))
+
+
 @then('I should find dependency named {package} with version {version} in the stack '
       'analysis')
 def check_dependency(context, package, version):
