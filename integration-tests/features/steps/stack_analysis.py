@@ -542,7 +542,7 @@ def check_security_issue_nonexistence(context, package):
             cve_items = component["security"]
             if cve_items:
                 raise Exception('Found security issue(s) for the package {p}'.format(p=package))
-            return
+            break
     else:
         raise Exception('Could not find the analyzed package {p}'
                         .format(p=package))
