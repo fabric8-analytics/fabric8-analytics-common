@@ -157,8 +157,9 @@ def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
 
 
 def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to_call,
-                                      thread_counts=[1, 2, 3, 4]):
+                                      thread_counts=None):
     """Universal function to call any callback function in more threads and collect results."""
+    thread_counts = thread_counts or [1, 2, 3, 4]
     print(message + " concurrent benchmark")
     measurement_count = 1
 
@@ -314,8 +315,9 @@ def wait_for_all_threads(threads):
 
 
 def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
-                            pauses=[10], measurement_count=10):
+                            pauses=None, measurement_count=10):
     """Start benchmarks by calling selected function sequentially."""
+    pauses = pauses or [10]
     print("pauses:")
     print(pauses)
     measurements = []
