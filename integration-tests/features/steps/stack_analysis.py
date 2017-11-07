@@ -493,15 +493,22 @@ def stack_analysis_check_security_node_for_alternate_components(context):
     check_security_node(context, "result/0/recommendation/alternate")
 
 
-@then('I should find the {cve} security issue for the dependency {package}')
-def check_security_issue_existence(context, cve, package):
-    """Check if the security issue CVE-yyyy-xxxx can be found for the given analyzed package."""
+def get_analyzed_components(context):
+    """Return all analyzed components from the deserialized JSON file."""
     json_data = context.response.json()
     assert json_data is not None
 
     path = "result/0/user_stack_info/analyzed_dependencies"
     components = get_value_using_path(json_data, path)
     assert components is not None
+
+    return components
+
+
+@then('I should find the {cve} security issue for the dependency {package}')
+def check_security_issue_existence(context, cve, package):
+    """Check if the security issue CVE-yyyy-xxxx can be found for the given analyzed package."""
+    components = get_analyzed_components(context)
 
     for component in components:
         if component["name"] == package:
@@ -522,12 +529,7 @@ def check_security_issue_existence(context, cve, package):
 @then('I should not find any security issue for the dependency {package}')
 def check_security_issue_nonexistence(context, package):
     """Check than none security issue can be found for the given analyzed package."""
-    json_data = context.response.json()
-    assert json_data is not None
-
-    path = "result/0/user_stack_info/analyzed_dependencies"
-    components = get_value_using_path(json_data, path)
-    assert components is not None
+    components = get_analyzed_components(context)
 
     for component in components:
         if component["name"] == package:
