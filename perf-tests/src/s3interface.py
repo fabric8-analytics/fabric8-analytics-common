@@ -9,24 +9,32 @@ class S3Interface():
 
     def __init__(self, aws_access_key_id, aws_secret_access_key, s3_region_name,
                  deployment_prefix):
-        """Create a new interface to the AWS S3."""
-        assert aws_access_key_id is not None
-        assert aws_secret_access_key is not None
-        assert s3_region_name is not None
+        """Create a new interface to the AWS S3.
 
+        Remember the access key, secret access key, region, and deployment
+        prefix that will be used later to connect to the AWS S3.
+        """
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
         self.s3_region_name = s3_region_name
         self.deployment_prefix = deployment_prefix
 
+        # to be set up by the connect() method
         self.s3_resource = None
         self.s3_session = None
 
     def connect(self):
         """Connect to the AWS S3 database."""
+        assert self.aws_access_key_id is not None
+        assert self.aws_secret_access_key is not None
+        assert self.s3_region_name is not None
+
+        # we are already connected -> let's use this connection
         if self.s3_resource is not None:
             return
 
+        # create the session used to communicate with the S3 database
+        # and check if the operation was successful
         self.s3_session = boto3.session.Session(
             aws_access_key_id=self.aws_access_key_id,
             aws_secret_access_key=self.aws_secret_access_key,
@@ -37,6 +45,7 @@ class S3Interface():
         use_ssl = True
         endpoint_url = None
 
+        # retrieve the bucket resource and check if the operation was successful
         self.s3_resource = self.s3_session.resource(
             's3',
             config=botocore.client.Config(signature_version='s3v4'),
@@ -51,6 +60,17 @@ class S3Interface():
     def full_bucket_name(self, bucket_name):
         """Insert deployment prefix to the given bucket name."""
         return "{p}-{b}".format(p=self.deployment_prefix, b=bucket_name)
+
+    def package_key(ecosystem, package):
+        """Construct a key to the selected package in the given ecosystem."""
+        return "{ecosystem}/{package}.json".format(ecosystem=ecosystem,
+                                                   package=package)
+
+    def package_analysis_key(ecosystem, package, metadata):
+        """Construct a key to the selected package analysis in the given ecosystem."""
+        return "{ecosystem}/{package}/{metadata}.json".format(ecosystem=ecosystem,
+                                                              package=package,
+                                                              metadata=metadata)
 
     def component_key(self, ecosystem, package, version):
         """Construct a key to the selected component in the given ecosystem."""
