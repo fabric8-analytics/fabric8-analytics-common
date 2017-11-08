@@ -71,6 +71,30 @@ Feature: Check the implementation of test steps
     Then I should find the security node for all dependencies
     Then I should find the security node for all alternate components
     Then I should find the CVE-2010-3492 security issue for the dependency six
+    Then I should find the CVE-2002-1119 security issue for the dependency six
+    Then I should find the CVE-2006-1542 security issue for the dependency six
+    Then I should find the CVE-2007-4559 security issue for the dependency six
+    Then I should find the CVE-2008-1679 security issue for the dependency six
+    Then I should find the CVE-2008-1721 security issue for the dependency six
+    Then I should find the CVE-2008-1887 security issue for the dependency six
+    Then I should find the CVE-2008-2315 security issue for the dependency six
+    Then I should find the CVE-2008-3142 security issue for the dependency six
+    Then I should find the CVE-2008-3143 security issue for the dependency six
+    Then I should find the CVE-2008-5983 security issue for the dependency six
+    Then I should find the CVE-2011-4940 security issue for the dependency six
+    Then I should find the CVE-2012-0845 security issue for the dependency six
+    Then I should find the CVE-2012-1150 security issue for the dependency six
+    Then I should find the CVE-2013-7338 security issue for the dependency six
+    Then I should find the CVE-2013-7440 security issue for the dependency six
+    Then I should find the CVE-2014-7185 security issue for the dependency six
+    Then I should find the CVE-2015-5652 security issue for the dependency six
+    Then I should find the CVE-2016-0772 security issue for the dependency six
+    Then I should find the CVE-2016-1494 security issue for the dependency six
+    Then I should find the CVE-2016-5636 security issue for the dependency six
+    Then I should find the CVE-2016-5699 security issue for the dependency six
+    Then I should not find any security issue for the dependency clojure_py
+    Then I should not find any security issue for the dependency setuptools
+    Then I should not find any security issue for the dependency parsimonious
 
   @selfcheck
   Scenario: Check the package tests by using mocked data
