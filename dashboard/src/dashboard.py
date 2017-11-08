@@ -115,12 +115,29 @@ def run_docstyle_check(repository):
     os.system(command)
 
 
-def percentage(passed, failed):
+def progress_bar_class(p):
+    """Decide which class to use for progress bar."""
+    p = int(p)
+    if p < 10:
+        return "progress-bar-danger"
+    elif p > 90:
+        return "progress-bar-success"
+    else:
+        return "progress-bar-warning"
+
+
+def progress_bar_width(p):
+    """Compute progress bar width."""
+    p = int(p)
+    return 15.0 + p * 0.85
+
+
+def percentage(part1, part2):
     """Compute percentage of failed tests."""
-    total = passed + failed
+    total = part1 + part2
     if total == 0:
         return "0"
-    perc = 100.0 * failed / total
+    perc = 100.0 * part2 / total
     return "{:.0f}".format(perc)
 
 
@@ -153,7 +170,10 @@ def parse_linter_results(filename):
             "total": total,
             "passed": passed,
             "failed": failed,
-            "failed%": percentage(passed, failed)}
+            "passed%": percentage(failed, passed),
+            "failed%": percentage(passed, failed),
+            "progress_bar_class": progress_bar_class(percentage(failed, passed)),
+            "progress_bar_width": progress_bar_width(percentage(failed, passed))}
 
 
 def parse_pylint_results(repository):
