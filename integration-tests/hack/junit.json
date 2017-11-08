@@ -1,0 +1,7 @@
+[
+    {
+        "version": "3.8.1",
+        "name": "junit:junit",
+        "ecosystem": "maven"
+    }
+]
