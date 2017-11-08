@@ -1,147 +1,229 @@
 {
-    "finished_at": "2017-08-03T12:48:36.483281",
-    "request_id": "c1184f32687e4ca195f4451e2061ec95",
+    "finished_at": "2017-11-06T13:03:07.096216",
+    "release": "None:None:None",
+    "request_id": "62ddfd332f31475bb28a3f32f4cc74f4",
     "result": [
         {
-            "_audit": {
-                "ended_at": "2017-08-03T12:48:36.483281",
-                "started_at": "2017-08-03T12:48:36.230189",
-                "version": "v1"
-            },
-            "_release": "None:None:None",
+            "manifest_file_path": "/home/ptisnovs/bayesian",
             "manifest_name": "pom.xml",
-            "recommendation": {},
+            "recommendation": null,
             "user_stack_info": {
                 "analyzed_dependencies": [
                     {
-                        "package": "io.vertx:vertx-core",
-                        "version": "3.4.1"
-                    },
-                    {
-                        "package": "io.vertx:vertx-web-templ-freemarker",
-                        "version": "3.4.1"
-                    },
-                    {
-                        "package": "io.vertx:vertx-jdbc-client",
-                        "version": "3.4.1"
-                    },
-                    {
-                        "package": "io.vertx:vertx-web",
-                        "version": "3.4.1"
-                    },
-                    {
-                        "package": "io.vertx:vertx-web-templ-handlebars",
-                        "version": "3.4.1"
-                    },
-                    {
-                        "package": "io.vertx:vertx-rx-java",
-                        "version": "3.4.1"
-                    },
-                    {
-                        "package": "io.vertx:vertx-web-client",
-                        "version": "3.4.1"
-                    }
-                ],
-                "analyzed_dependencies_count": 7,
-                "dependencies": [
-                    {
                         "code_metrics": {
-                            "average_cyclomatic_complexity": 1.34,
-                            "code_lines": 80586,
-                            "total_files": 441
+                            "average_cyclomatic_complexity": -1.0,
+                            "code_lines": 20316,
+                            "total_files": 69
                         },
                         "ecosystem": "maven",
                         "github": {
                             "contributors": 132,
-                            "dependent_projects": "125",
-                            "dependent_repos": "2.6K",
+                            "dependent_projects": "11",
+                            "dependent_repos": "251",
                             "first_release_date": "Apr 16, 2010",
-                            "forks_count": 1095,
+                            "forks_count": -1,
                             "issues": {
                                 "month": {
-                                    "closed": 41,
-                                    "opened": 32
+                                    "closed": -1,
+                                    "opened": -1
                                 },
                                 "year": {
-                                    "closed": 219,
-                                    "opened": 282
+                                    "closed": -1,
+                                    "opened": -1
                                 }
                             },
-                            "latest_release_duration": "2017-05-14 10:58:30",
+                            "latest_release_duration": "2017-08-07 00:00:00",
                             "pull_requests": {
                                 "month": {
-                                    "closed": 37,
-                                    "opened": 33
+                                    "closed": -1,
+                                    "opened": -1
                                 },
                                 "year": {
-                                    "closed": 243,
-                                    "opened": 254
+                                    "closed": -1,
+                                    "opened": -1
                                 }
                             },
                             "size": "4MB",
-                            "stargazers_count": 5802,
-                            "total_releases": "47",
+                            "stargazers_count": -1,
+                            "total_releases": "21",
                             "used_by": [
                                 {
-                                    "name": "TechEmpower/FrameworkBenchmarks",
-                                    "stars": 2737
+                                    "name": "pac4j/vertx-pac4j",
+                                    "stars": 68
                                 },
                                 {
-                                    "name": "apiman/apiman",
-                                    "stars": 314
+                                    "name": "swagger-api/swagger-codegen",
+                                    "stars": 4905
                                 },
                                 {
-                                    "name": "boonproject/boon",
-                                    "stars": 472
+                                    "name": "vert-x3/vertx-auth",
+                                    "stars": 38
                                 },
                                 {
-                                    "name": "isaiah/jubilee",
-                                    "stars": 341
+                                    "name": "vert-x3/vertx-dropwizard-metrics",
+                                    "stars": 19
                                 },
                                 {
-                                    "name": "jbosstm/narayana",
-                                    "stars": 71
+                                    "name": "vert-x3/vertx-ignite",
+                                    "stars": 15
                                 },
                                 {
-                                    "name": "jhalterman/failsafe",
-                                    "stars": 1748
+                                    "name": "vert-x3/vertx-rx",
+                                    "stars": 63
                                 },
                                 {
-                                    "name": "nodyn/nodyn",
-                                    "stars": 708
+                                    "name": "vert-x3/vertx-service-discovery",
+                                    "stars": 40
+                                },
+                                {
+                                    "name": "vert-x3/vertx-sql-common",
+                                    "stars": 14
                                 },
                                 {
                                     "name": "vert-x3/vertx-stack",
-                                    "stars": 70
+                                    "stars": 72
                                 },
                                 {
-                                    "name": "wildfly-swarm/wildfly-swarm",
-                                    "stars": 156
-                                },
-                                {
-                                    "name": "wisdom-framework/wisdom",
-                                    "stars": 70
+                                    "name": "vert-x3/vertx-web",
+                                    "stars": 291
                                 }
                             ],
                             "watchers": 1673
                         },
-                        "latest_version": "3.4.0",
+                        "latest_version": "3.5.0.Beta1",
+                        "license_analysis": {
+                            "_message": "Some unknown licenses found",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Unknown",
+                            "synonyms": {
+                                "ASL 2.0": "apache 2.0",
+                                "Free Art": "Free Art"
+                            },
+                            "unknown_licenses": [
+                                "Free Art"
+                            ]
+                        },
                         "licenses": [
                             "ASL 2.0",
-                            "Forbidden Phrase",
-                            "Free Art",
-                            "MITNFA"
+                            "Free Art"
                         ],
-                        "name": "io.vertx:vertx-core",
+                        "name": "io.vertx:vertx-rx-java",
                         "osio_user_count": [
                             1
                         ],
                         "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
+                        "version": "3.4.1"
+                    },
+                    {
+                        "code_metrics": {
+                            "average_cyclomatic_complexity": 1.22,
+                            "code_lines": 37699,
+                            "total_files": 239
                         },
+                        "ecosystem": "maven",
+                        "github": {
+                            "contributors": 132,
+                            "dependent_projects": "14",
+                            "dependent_repos": "737",
+                            "first_release_date": "Apr 16, 2010",
+                            "forks_count": -1,
+                            "issues": {
+                                "month": {
+                                    "closed": -1,
+                                    "opened": -1
+                                },
+                                "year": {
+                                    "closed": -1,
+                                    "opened": -1
+                                }
+                            },
+                            "latest_release_duration": "2017-06-14 00:00:00",
+                            "pull_requests": {
+                                "month": {
+                                    "closed": -1,
+                                    "opened": -1
+                                },
+                                "year": {
+                                    "closed": -1,
+                                    "opened": -1
+                                }
+                            },
+                            "size": "4MB",
+                            "stargazers_count": -1,
+                            "total_releases": "15",
+                            "used_by": [
+                                {
+                                    "name": "ServiceComb/java-chassis",
+                                    "stars": 68
+                                },
+                                {
+                                    "name": "TechEmpower/FrameworkBenchmarks",
+                                    "stars": 2755
+                                },
+                                {
+                                    "name": "amoAHCP/vxms",
+                                    "stars": 14
+                                },
+                                {
+                                    "name": "apiman/apiman",
+                                    "stars": 316
+                                },
+                                {
+                                    "name": "mariomac/jeasse",
+                                    "stars": 22
+                                },
+                                {
+                                    "name": "outofcoffee/imposter",
+                                    "stars": 22
+                                },
+                                {
+                                    "name": "pac4j/vertx-pac4j",
+                                    "stars": 68
+                                },
+                                {
+                                    "name": "prometheus/client_java",
+                                    "stars": 237
+                                },
+                                {
+                                    "name": "vert-x3/vertx-guide-for-java-devs",
+                                    "stars": 55
+                                },
+                                {
+                                    "name": "vert-x3/vertx-stack",
+                                    "stars": 71
+                                }
+                            ],
+                            "watchers": 1673
+                        },
+                        "latest_version": "3.4.2",
+                        "license_analysis": {
+                            "_message": "Some unknown licenses found",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Unknown",
+                            "synonyms": {
+                                "ASL 2.0": "apache 2.0",
+                                "Free Art": "Free Art",
+                                "Rsfs": "Rsfs"
+                            },
+                            "unknown_licenses": [
+                                "Free Art",
+                                "Rsfs"
+                            ]
+                        },
+                        "licenses": [
+                            "ASL 2.0",
+                            "Free Art",
+                            "Rsfs"
+                        ],
+                        "name": "io.vertx:vertx-web",
+                        "osio_user_count": [
+                            1
+                        ],
+                        "security": [],
                         "version": "3.4.1"
                     },
                     {
@@ -185,17 +267,19 @@
                             "watchers": 1673
                         },
                         "latest_version": "3.4.0",
-                        "licenses": [],
-                        "name": "io.vertx:vertx-web-templ-freemarker",
-                        "osio_user_count": [
-                            1
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
+                        "license_analysis": {
+                            "_message": "Input is invalid",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Failure",
+                            "synonyms": {},
+                            "unknown_licenses": []
                         },
+                        "licenses": [],
+                        "name": "io.vertx:vertx-web-templ-handlebars",
+                        "osio_user_count": 0,
+                        "security": [],
                         "version": "3.4.1"
                     },
                     {
@@ -239,35 +323,42 @@
                             "watchers": 1673
                         },
                         "latest_version": "3.4.0",
+                        "license_analysis": {
+                            "_message": "Some unknown licenses found",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Unknown",
+                            "synonyms": {
+                                "ASL 2.0": "apache 2.0",
+                                "Free Art": "Free Art"
+                            },
+                            "unknown_licenses": [
+                                "Free Art"
+                            ]
+                        },
                         "licenses": [
                             "ASL 2.0",
                             "Free Art"
                         ],
                         "name": "io.vertx:vertx-jdbc-client",
-                        "osio_user_count": [
-                            1
-                        ],
+                        "osio_user_count": 0,
                         "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
-                        },
                         "version": "3.4.1"
                     },
                     {
                         "code_metrics": {
-                            "average_cyclomatic_complexity": 1.22,
-                            "code_lines": 37699,
-                            "total_files": 239
+                            "average_cyclomatic_complexity": 1.34,
+                            "code_lines": 80586,
+                            "total_files": 441
                         },
                         "ecosystem": "maven",
                         "github": {
                             "contributors": 132,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
+                            "dependent_projects": "126",
+                            "dependent_repos": "3.57K",
                             "first_release_date": "Apr 16, 2010",
-                            "forks_count": -1,
+                            "forks_count": 1258,
                             "issues": {
                                 "month": {
                                     "closed": -1,
@@ -278,7 +369,7 @@
                                     "opened": -1
                                 }
                             },
-                            "latest_release_duration": "2017-06-01 07:34:46",
+                            "latest_release_duration": "2017-08-07 00:00:00",
                             "pull_requests": {
                                 "month": {
                                     "closed": -1,
@@ -290,27 +381,114 @@
                                 }
                             },
                             "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
+                            "stargazers_count": 6825,
+                            "total_releases": "48",
+                            "used_by": [
+                                {
+                                    "name": "TechEmpower/FrameworkBenchmarks",
+                                    "stars": 2737
+                                },
+                                {
+                                    "name": "TechEmpower/FrameworkBenchmarks",
+                                    "stars": 2787
+                                },
+                                {
+                                    "name": "apiman/apiman",
+                                    "stars": 314
+                                },
+                                {
+                                    "name": "apiman/apiman",
+                                    "stars": 320
+                                },
+                                {
+                                    "name": "boonproject/boon",
+                                    "stars": 472
+                                },
+                                {
+                                    "name": "boonproject/boon",
+                                    "stars": 473
+                                },
+                                {
+                                    "name": "isaiah/jubilee",
+                                    "stars": 341
+                                },
+                                {
+                                    "name": "isaiah/jubilee",
+                                    "stars": 342
+                                },
+                                {
+                                    "name": "jbosstm/narayana",
+                                    "stars": 71
+                                },
+                                {
+                                    "name": "jbosstm/narayana",
+                                    "stars": 73
+                                },
+                                {
+                                    "name": "jhalterman/failsafe",
+                                    "stars": 1748
+                                },
+                                {
+                                    "name": "jhalterman/failsafe",
+                                    "stars": 1784
+                                },
+                                {
+                                    "name": "nodyn/nodyn",
+                                    "stars": 708
+                                },
+                                {
+                                    "name": "nodyn/nodyn",
+                                    "stars": 709
+                                },
+                                {
+                                    "name": "vert-x3/vertx-stack",
+                                    "stars": 70
+                                },
+                                {
+                                    "name": "vert-x3/vertx-stack",
+                                    "stars": 72
+                                },
+                                {
+                                    "name": "wildfly-swarm/wildfly-swarm",
+                                    "stars": 156
+                                },
+                                {
+                                    "name": "wildfly-swarm/wildfly-swarm",
+                                    "stars": 177
+                                },
+                                {
+                                    "name": "wisdom-framework/wisdom",
+                                    "stars": 70
+                                }
+                            ],
                             "watchers": 1673
                         },
-                        "latest_version": "3.4.0",
+                        "latest_version": "3.5.0.Beta1",
+                        "license_analysis": {
+                            "_message": "Some unknown licenses found",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Unknown",
+                            "synonyms": {
+                                "Apache 2.0": "apache 2.0",
+                                "EPL 1.0": "EPL 1.0",
+                                "MIT License": "mit"
+                            },
+                            "unknown_licenses": [
+                                "EPL 1.0"
+                            ]
+                        },
                         "licenses": [
-                            "ASL 2.0",
-                            "Free Art",
-                            "Rsfs"
+                            "Apache 2.0",
+                            "EPL 1.0",
+                            "MIT License"
                         ],
-                        "name": "io.vertx:vertx-web",
+                        "name": "io.vertx:vertx-core",
                         "osio_user_count": [
                             1
                         ],
                         "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
-                        },
                         "version": "3.4.1"
                     },
                     {
@@ -354,74 +532,19 @@
                             "watchers": 1673
                         },
                         "latest_version": "3.4.0",
+                        "license_analysis": {
+                            "_message": "Input is invalid",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Failure",
+                            "synonyms": {},
+                            "unknown_licenses": []
+                        },
                         "licenses": [],
-                        "name": "io.vertx:vertx-web-templ-handlebars",
-                        "osio_user_count": [
-                            1
-                        ],
+                        "name": "io.vertx:vertx-web-templ-freemarker",
+                        "osio_user_count": 0,
                         "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
-                        },
-                        "version": "3.4.1"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 20316,
-                            "total_files": 69
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": 132,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16, 2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 1673
-                        },
-                        "latest_version": "3.4.0",
-                        "licenses": [
-                            "ASL 2.0",
-                            "Free Art"
-                        ],
-                        "name": "io.vertx:vertx-rx-java",
-                        "osio_user_count": [
-                            2
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
-                        },
                         "version": "3.4.1"
                     },
                     {
@@ -465,39 +588,108 @@
                             "watchers": 1673
                         },
                         "latest_version": "3.4.0",
+                        "license_analysis": {
+                            "_message": "Input is invalid",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Failure",
+                            "synonyms": {},
+                            "unknown_licenses": []
+                        },
                         "licenses": [],
                         "name": "io.vertx:vertx-web-client",
-                        "osio_user_count": [
-                            1
-                        ],
+                        "osio_user_count": 0,
                         "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
-                        },
+                        "version": "3.4.1"
+                    }
+                ],
+                "analyzed_dependencies_count": 7,
+                "dependencies": [
+                    {
+                        "package": "io.vertx:vertx-rx-java",
+                        "topic_list": [],
+                        "version": "3.4.1"
+                    },
+                    {
+                        "package": "io.vertx:vertx-web",
+                        "topic_list": [],
+                        "version": "3.4.1"
+                    },
+                    {
+                        "package": "io.vertx:vertx-web-templ-handlebars",
+                        "topic_list": [],
+                        "version": "3.4.1"
+                    },
+                    {
+                        "package": "io.vertx:vertx-jdbc-client",
+                        "topic_list": [],
+                        "version": "3.4.1"
+                    },
+                    {
+                        "package": "io.vertx:vertx-core",
+                        "topic_list": [],
+                        "version": "3.4.1"
+                    },
+                    {
+                        "package": "io.vertx:vertx-web-templ-freemarker",
+                        "topic_list": [],
+                        "version": "3.4.1"
+                    },
+                    {
+                        "package": "io.vertx:vertx-web-client",
+                        "topic_list": [],
                         "version": "3.4.1"
                     }
                 ],
                 "distinct_licenses": [
-                    "MITNFA",
-                    "Rsfs",
-                    "Forbidden Phrase",
                     "Free Art",
-                    "ASL 2.0"
+                    "Apache 2.0",
+                    "ASL 2.0",
+                    "Rsfs",
+                    "EPL 1.0",
+                    "MIT License"
                 ],
                 "ecosystem": "maven",
+                "license_analysis": {
+                    "conflict_packages": [],
+                    "f8a_stack_licenses": [],
+                    "outlier_packages": [],
+                    "status": "Unknown",
+                    "unknown_licenses": {
+                        "component_conflict": [],
+                        "really_unknown": [
+                            {
+                                "license": "Free Art",
+                                "package": "io.vertx:vertx-rx-java"
+                            },
+                            {
+                                "license": "Free Art",
+                                "package": "io.vertx:vertx-web"
+                            },
+                            {
+                                "license": "Rsfs",
+                                "package": "io.vertx:vertx-web"
+                            },
+                            {
+                                "license": "Free Art",
+                                "package": "io.vertx:vertx-jdbc-client"
+                            },
+                            {
+                                "license": "EPL 1.0",
+                                "package": "io.vertx:vertx-core"
+                            }
+                        ]
+                    }
+                },
                 "recommendation_ready": true,
-                "recommended_stack_licenses": [
-                    null
-                ],
                 "stack_license_conflict": true,
-                "total_licenses": 5,
+                "total_licenses": 6,
                 "unknown_dependencies": [],
                 "unknown_dependencies_count": 0
             }
         }
     ],
-    "started_at": "2017-08-03T12:48:36.230189"
+    "started_at": "2017-11-06T13:03:06.771726",
+    "version": "v1"
 }
-

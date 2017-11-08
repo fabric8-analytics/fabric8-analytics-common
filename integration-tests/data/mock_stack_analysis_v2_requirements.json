@@ -1,930 +1,67 @@
 {
-    "finished_at": "2017-07-31T16:18:26.020981",
-    "request_id": "8f2243b2ec09445c96354a2e25f41a42",
+    "finished_at": "2017-11-06T13:08:59.285326",
+    "release": "None:None:None",
+    "request_id": "b4994997928f4e35b0331e0e2fff421e",
     "result": [
         {
-            "_audit": {
-                "ended_at": "2017-07-31T16:18:26.020981",
-                "started_at": "2017-07-31T16:18:25.787609",
-                "version": "v1"
-            },
-            "_release": "None:None:None",
+            "manifest_file_path": "/home/ptisnovs/bayesian",
             "manifest_name": "requirements.txt",
             "recommendation": {
-                "alternate": [
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 12524,
-                            "total_files": 64
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "1.5.2",
-                        "licenses": [
-                            "GPLv2",
-                            "LGPLv2"
-                        ],
-                        "name": "astroid",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "pygments",
-                                "version": "2.2.0"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {},
-                        "version": "1.1.1"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 17705,
-                            "total_files": 90
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "1.5.2",
-                        "licenses": [
-                            "Forbidden Phrase",
-                            "Free Art",
-                            "GPLv2",
-                            "LGPLv2"
-                        ],
-                        "name": "astroid",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "pygments",
-                                "version": "2.2.0"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {},
-                        "version": "1.3.8"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 17554,
-                            "total_files": 90
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "1.5.2",
-                        "licenses": [
-                            "Forbidden Phrase",
-                            "Free Art",
-                            "GPLv2",
-                            "LGPLv2"
-                        ],
-                        "name": "astroid",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "pygments",
-                                "version": "2.2.0"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {},
-                        "version": "1.3.6"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 358,
-                            "total_files": 3
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": 3,
-                            "issues": {
-                                "month": {
-                                    "closed": 0,
-                                    "opened": 0
-                                },
-                                "year": {
-                                    "closed": 0,
-                                    "opened": 0
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": 0,
-                                    "opened": 0
-                                },
-                                "year": {
-                                    "closed": 0,
-                                    "opened": 0
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "bottlenose",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "parsimonious",
-                                "version": "0.7.0"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {"latest_comment": "Ff", "overall_score": 0.0, "magnitude": 0},
-                        "version": "0.6.2"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 160,
-                            "total_files": 3
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": 3,
-                            "issues": {
-                                "month": {
-                                    "closed": 0,
-                                    "opened": 0
-                                },
-                                "year": {
-                                    "closed": 0,
-                                    "opened": 0
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": 0,
-                                    "opened": 0
-                                },
-                                "year": {
-                                    "closed": 0,
-                                    "opened": 0
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "bottlenose",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "parsimonious",
-                                "version": "0.7.0"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {},
-                        "version": "0.4.0"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 15797,
-                            "total_files": 137
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "Forbidden Phrase",
-                            "Free Art",
-                            "MITNFA",
-                            "Rsfs"
-                        ],
-                        "name": "doit",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "setuptools",
-                                "version": "36.0.1"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {},
-                        "version": "0.29.0"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 14814,
-                            "total_files": 133
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "Forbidden Phrase",
-                            "Free Art",
-                            "MITNFA",
-                            "Rsfs"
-                        ],
-                        "name": "doit",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "setuptools",
-                                "version": "36.0.1"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {},
-                        "version": "0.28.0"
-                    }
-                ],
-                "companion": [
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 1070,
-                            "total_files": 19
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "0.6.2",
-                        "licenses": [
-                            "Forbidden Phrase"
-                        ],
-                        "name": "docopt",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "0.6.1"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 482,
-                            "total_files": 2
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "0.6.2",
-                        "licenses": [],
-                        "name": "docopt",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "0.4.0"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 484,
-                            "total_files": 2
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "0.6.2",
-                        "licenses": [],
-                        "name": "docopt",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "0.4.1"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": 2.0,
-                            "code_lines": 3821,
-                            "total_files": 10
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "2017.2",
-                        "licenses": [
-                            "MITNFA"
-                        ],
-                        "name": "pytz",
-                        "osio_user_count": 2,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "2017.2"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 3793,
-                            "total_files": 10
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "2017.2",
-                        "licenses": [
-                            "MITNFA"
-                        ],
-                        "name": "pytz",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "2014.10"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 3772,
-                            "total_files": 10
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "2017.2",
-                        "licenses": [
-                            "MITNFA"
-                        ],
-                        "name": "pytz",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "2014.3"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 3803,
-                            "total_files": 10
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "2017.2",
-                        "licenses": [
-                            "MITNFA"
-                        ],
-                        "name": "pytz",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "2016.4"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 3772,
-                            "total_files": 10
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "2017.2",
-                        "licenses": [
-                            "MITNFA"
-                        ],
-                        "name": "pytz",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "2014.4"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 3819,
-                            "total_files": 10
-                        },
-                        "ecosystem": "pypi",
-                        "github": {
-                            "contributors": 12,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "Apr 16,2010",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": 100
-                        },
-                        "latest_version": "2017.2",
-                        "licenses": [
-                            "MITNFA"
-                        ],
-                        "name": "pytz",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {},
-                        "version": "2016.10"
-                    }
-                ],
+                "alternate": [],
+                "companion": [],
+                "input_stack_topics": {
+                    "click": [
+                        "utilities"
+                    ],
+                    "httpie": [
+                        "http",
+                        "web"
+                    ],
+                    "parsimonious": [
+                        "language",
+                        "parser"
+                    ],
+                    "pygments": [
+                        "highlight-syntax",
+                        "highlight",
+                        "syntax"
+                    ],
+                    "setuptools": [
+                        "build"
+                    ],
+                    "six": [
+                        "utilities"
+                    ],
+                    "wheel": [
+                        "format",
+                        "setuptools"
+                    ]
+                },
+                "manifest_file_path": "/home/ptisnovs/bayesian",
                 "usage_outliers": [
                     {
-                        "outlier_prbability": 0.999720290590987,
-                        "package_name": "httpie"
+                        "outlier_prbability": 0.9973132776431288,
+                        "package_name": "parsimonious",
+                        "topic_list": [
+                            "language",
+                            "parser"
+                        ]
                     },
                     {
-                        "outlier_prbability": 0.9995383643197628,
-                        "package_name": "parsimonious"
-                    },
-                    {
-                        "outlier_prbability": 0.9830381394296056,
-                        "package_name": "wheel"
-                    },
-                    {
-                        "outlier_prbability": 0.9805341783612491,
-                        "package_name": "pygments"
-                    },
-                    {
-                        "outlier_prbability": 0.9627659574468205,
-                        "package_name": "setuptools"
-                    },
-                    {
-                        "outlier_prbability": 0.7802197802199999,
-                        "package_name": "click"
+                        "outlier_prbability": 0.9967029256794977,
+                        "package_name": "httpie",
+                        "topic_list": [
+                            "http",
+                            "web"
+                        ]
                     }
                 ]
             },
             "user_stack_info": {
                 "analyzed_dependencies": [
                     {
-                        "package": "six",
-                        "version": "1.10.0"
-                    },
-                    {
-                        "package": "click",
-                        "version": "6.7"
-                    },
-                    {
-                        "package": "wheel",
-                        "version": "0.30.0a0"
-                    },
-                    {
-                        "package": "httpie",
-                        "version": "0.9.9"
-                    },
-                    {
-                        "package": "pygments",
-                        "version": "2.2.0"
-                    },
-                    {
-                        "package": "parsimonious",
-                        "version": "0.7.0"
-                    },
-                    {
-                        "package": "setuptools",
-                        "version": "36.0.1"
-                    }
-                ],
-                "analyzed_dependencies_count": 3,
-                "dependencies": [
-                    {
                         "code_metrics": {
-                            "average_cyclomatic_complexity": 2.8,
+                            "average_cyclomatic_complexity": -1.0,
                             "code_lines": 2119,
                             "total_files": 5
                         },
@@ -932,7 +69,7 @@
                         "github": {
                             "contributors": 132,
                             "dependent_projects": "464",
-                            "dependent_repos": "54K",
+                            "dependent_repos": "60K",
                             "first_release_date": "Apr 16, 2010",
                             "forks_count": -1,
                             "issues": {
@@ -945,7 +82,7 @@
                                     "opened": -1
                                 }
                             },
-                            "latest_release_duration": "2015-10-06 21:47:20",
+                            "latest_release_duration": "2017-09-17 00:00:00",
                             "pull_requests": {
                                 "month": {
                                     "closed": -1,
@@ -958,43 +95,151 @@
                             },
                             "size": "4MB",
                             "stargazers_count": -1,
-                            "total_releases": "22",
+                            "total_releases": "23",
                             "used_by": [
+                                {
+                                    "name": "apache/thrift",
+                                    "stars": 3827
+                                },
+                                {
+                                    "name": "apache/thrift",
+                                    "stars": 3887
+                                },
+                                {
+                                    "name": "apache/thrift",
+                                    "stars": 3891
+                                },
                                 {
                                     "name": "beautify-web/js-beautify",
                                     "stars": 4732
+                                },
+                                {
+                                    "name": "beautify-web/js-beautify",
+                                    "stars": 4782
+                                },
+                                {
+                                    "name": "beautify-web/js-beautify",
+                                    "stars": 4935
+                                },
+                                {
+                                    "name": "beautify-web/js-beautify",
+                                    "stars": 4937
                                 },
                                 {
                                     "name": "certbot/certbot",
                                     "stars": 18961
                                 },
                                 {
+                                    "name": "dateutil/dateutil",
+                                    "stars": 412
+                                },
+                                {
+                                    "name": "dateutil/dateutil",
+                                    "stars": 430
+                                },
+                                {
                                     "name": "django-extensions/django-extensions",
                                     "stars": 3192
+                                },
+                                {
+                                    "name": "django-extensions/django-extensions",
+                                    "stars": 3213
+                                },
+                                {
+                                    "name": "django-extensions/django-extensions",
+                                    "stars": 3285
                                 },
                                 {
                                     "name": "fchollet/keras",
                                     "stars": 17363
                                 },
                                 {
+                                    "name": "fchollet/keras",
+                                    "stars": 18024
+                                },
+                                {
+                                    "name": "fchollet/keras",
+                                    "stars": 19174
+                                },
+                                {
+                                    "name": "fchollet/keras",
+                                    "stars": 19224
+                                },
+                                {
                                     "name": "google/protobuf",
                                     "stars": 18350
+                                },
+                                {
+                                    "name": "google/protobuf",
+                                    "stars": 19206
+                                },
+                                {
+                                    "name": "google/protobuf",
+                                    "stars": 19822
+                                },
+                                {
+                                    "name": "google/protobuf",
+                                    "stars": 19933
                                 },
                                 {
                                     "name": "grpc/grpc",
                                     "stars": 10364
                                 },
                                 {
+                                    "name": "grpc/grpc",
+                                    "stars": 10827
+                                },
+                                {
+                                    "name": "grpc/grpc",
+                                    "stars": 11195
+                                },
+                                {
+                                    "name": "grpc/grpc",
+                                    "stars": 11209
+                                },
+                                {
                                     "name": "pyca/pyopenssl",
                                     "stars": 433
+                                },
+                                {
+                                    "name": "pyca/pyopenssl",
+                                    "stars": 435
+                                },
+                                {
+                                    "name": "pyca/pyopenssl",
+                                    "stars": 438
+                                },
+                                {
+                                    "name": "pyca/pyopenssl",
+                                    "stars": 439
                                 },
                                 {
                                     "name": "python-pillow/Pillow",
                                     "stars": 3715
                                 },
                                 {
+                                    "name": "python-pillow/Pillow",
+                                    "stars": 3764
+                                },
+                                {
+                                    "name": "python-pillow/Pillow",
+                                    "stars": 3824
+                                },
+                                {
+                                    "name": "python-pillow/Pillow",
+                                    "stars": 3830
+                                },
+                                {
                                     "name": "testing-cabal/mock",
                                     "stars": 244
+                                },
+                                {
+                                    "name": "testing-cabal/mock",
+                                    "stars": 247
+                                },
+                                {
+                                    "name": "testing-cabal/mock",
+                                    "stars": 252
                                 },
                                 {
                                     "name": "twilio/twilio-php",
@@ -1003,16 +248,66 @@
                             ],
                             "watchers": 1673
                         },
-                        "latest_version": "1.10.0",
+                        "latest_version": "1.11.0",
+                        "license_analysis": {
+                            "_message": "Representative license found",
+                            "_representative_licenses": "mit",
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Successful",
+                            "synonyms": {
+                                "MIT License": "mit"
+                            },
+                            "unknown_licenses": []
+                        },
                         "licenses": [
-                            "Forbidden Phrase",
-                            "MITNFA"
+                            "MIT License"
                         ],
                         "name": "six",
                         "osio_user_count": [
-                            3
+                            1
                         ],
                         "security": [
+                            {
+                                "CVE": "CVE-2002-1119",
+                                "CVSS": "4.6"
+                            },
+                            {
+                                "CVE": "CVE-2006-1542",
+                                "CVSS": "3.7"
+                            },
+                            {
+                                "CVE": "CVE-2007-4559",
+                                "CVSS": "6.8"
+                            },
+                            {
+                                "CVE": "CVE-2008-1679",
+                                "CVSS": "6.8"
+                            },
+                            {
+                                "CVE": "CVE-2008-1721",
+                                "CVSS": "7.5"
+                            },
+                            {
+                                "CVE": "CVE-2008-1887",
+                                "CVSS": "9.3"
+                            },
+                            {
+                                "CVE": "CVE-2008-2315",
+                                "CVSS": "7.5"
+                            },
+                            {
+                                "CVE": "CVE-2008-3142",
+                                "CVSS": "7.5"
+                            },
+                            {
+                                "CVE": "CVE-2008-3143",
+                                "CVSS": "7.5"
+                            },
+                            {
+                                "CVE": "CVE-2008-5983",
+                                "CVSS": "6.9"
+                            },
                             {
                                 "CVE": "CVE-2010-3492",
                                 "CVSS": "5.0"
@@ -1062,7 +357,6 @@
                                 "CVSS": "4.3"
                             }
                         ],
-                        "sentiment": {},
                         "version": "1.10.0"
                     },
                     {
@@ -1077,30 +371,30 @@
                             "dependent_projects": "3",
                             "dependent_repos": "95",
                             "first_release_date": "Apr 16, 2010",
-                            "forks_count": 65,
+                            "forks_count": 71,
                             "issues": {
                                 "month": {
-                                    "closed": 1,
-                                    "opened": 3
+                                    "closed": -1,
+                                    "opened": -1
                                 },
                                 "year": {
-                                    "closed": 11,
-                                    "opened": 19
+                                    "closed": -1,
+                                    "opened": -1
                                 }
                             },
                             "latest_release_duration": "2016-09-09 11:41:12",
                             "pull_requests": {
                                 "month": {
-                                    "closed": 0,
-                                    "opened": 1
+                                    "closed": -1,
+                                    "opened": -1
                                 },
                                 "year": {
-                                    "closed": 9,
-                                    "opened": 8
+                                    "closed": -1,
+                                    "opened": -1
                                 }
                             },
                             "size": "4MB",
-                            "stargazers_count": -1,
+                            "stargazers_count": 847,
                             "total_releases": "9",
                             "used_by": [
                                 {
@@ -1147,16 +441,94 @@
                             "watchers": 1673
                         },
                         "latest_version": "0.7.0",
+                        "license_analysis": {
+                            "_message": "Representative license found",
+                            "_representative_licenses": "mit",
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Successful",
+                            "synonyms": {
+                                "MIT License": "mit"
+                            },
+                            "unknown_licenses": []
+                        },
                         "licenses": [
                             "MIT License"
                         ],
                         "name": "parsimonious",
                         "osio_user_count": [
-                            3
+                            1
                         ],
                         "security": [],
-                        "sentiment": {},
                         "version": "0.7.0"
+                    },
+                    {
+                        "code_metrics": {
+                            "average_cyclomatic_complexity": -1.0,
+                            "code_lines": 13473,
+                            "total_files": 80
+                        },
+                        "ecosystem": "pypi",
+                        "github": {
+                            "contributors": 132,
+                            "dependent_projects": "0",
+                            "dependent_repos": "0",
+                            "first_release_date": "Apr 16, 2010",
+                            "forks_count": -1,
+                            "issues": {
+                                "month": {
+                                    "closed": -1,
+                                    "opened": -1
+                                },
+                                "year": {
+                                    "closed": -1,
+                                    "opened": -1
+                                }
+                            },
+                            "latest_release_duration": "2012-04-10 00:00:00",
+                            "pull_requests": {
+                                "month": {
+                                    "closed": -1,
+                                    "opened": -1
+                                },
+                                "year": {
+                                    "closed": -1,
+                                    "opened": -1
+                                }
+                            },
+                            "size": "4MB",
+                            "stargazers_count": -1,
+                            "total_releases": "6",
+                            "used_by": [],
+                            "watchers": 1673
+                        },
+                        "latest_version": "0.2.4",
+                        "license_analysis": {
+                            "_message": "Some unknown licenses found",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Unknown",
+                            "synonyms": {
+                                "EPL 1.0": "EPL 1.0",
+                                "LGPL 2.1 or later": "lgplv2.1+",
+                                "MIT License": "mit"
+                            },
+                            "unknown_licenses": [
+                                "EPL 1.0"
+                            ]
+                        },
+                        "licenses": [
+                            "EPL 1.0",
+                            "LGPL 2.1 or later",
+                            "MIT License"
+                        ],
+                        "name": "clojure_py",
+                        "osio_user_count": [
+                            1
+                        ],
+                        "security": [],
+                        "version": "0.2.4"
                     },
                     {
                         "code_metrics": {
@@ -1170,7 +542,7 @@
                             "dependent_projects": "190",
                             "dependent_repos": "17.6K",
                             "first_release_date": "Apr 16, 2010",
-                            "forks_count": -1,
+                            "forks_count": 256,
                             "issues": {
                                 "month": {
                                     "closed": -1,
@@ -1193,7 +565,7 @@
                                 }
                             },
                             "size": "4MB",
-                            "stargazers_count": -1,
+                            "stargazers_count": 382,
                             "total_releases": "285",
                             "used_by": [
                                 {
@@ -1240,6 +612,21 @@
                             "watchers": 1673
                         },
                         "latest_version": "34.3.2",
+                        "license_analysis": {
+                            "_message": "Some unknown licenses found",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Unknown",
+                            "synonyms": {
+                                "Apache 2.0": "apache 2.0",
+                                "BSD-Modified": "BSD-Modified",
+                                "MIT License": "mit"
+                            },
+                            "unknown_licenses": [
+                                "BSD-Modified"
+                            ]
+                        },
                         "licenses": [
                             "Apache 2.0",
                             "BSD-Modified",
@@ -1247,32 +634,107 @@
                         ],
                         "name": "setuptools",
                         "osio_user_count": [
-                            3
+                            1
                         ],
                         "security": [],
-                        "sentiment": {},
+                        "version": "36.0.1"
+                    }
+                ],
+                "analyzed_dependencies_count": 4,
+                "dependencies": [
+                    {
+                        "package": "six",
+                        "topic_list": [],
+                        "version": "1.10.0"
+                    },
+                    {
+                        "package": "httpie",
+                        "topic_list": [],
+                        "version": "0.9.9"
+                    },
+                    {
+                        "package": "click",
+                        "topic_list": [],
+                        "version": "6.7"
+                    },
+                    {
+                        "package": "wheel",
+                        "topic_list": [],
+                        "version": "0.30.0a0"
+                    },
+                    {
+                        "package": "parsimonious",
+                        "topic_list": [],
+                        "version": "0.7.0"
+                    },
+                    {
+                        "package": "clojure_py",
+                        "topic_list": [],
+                        "version": "0.2.4"
+                    },
+                    {
+                        "package": "pygments",
+                        "topic_list": [],
+                        "version": "2.2.0"
+                    },
+                    {
+                        "package": "setuptools",
+                        "topic_list": [],
                         "version": "36.0.1"
                     }
                 ],
                 "distinct_licenses": [
-                    "BSD-Modified",
                     "MIT License",
-                    "Apache 2.0",
-                    "MITNFA",
-                    "Forbidden Phrase"
+                    "LGPL 2.1 or later",
+                    "BSD-Modified",
+                    "EPL 1.0",
+                    "Apache 2.0"
                 ],
                 "ecosystem": "pypi",
+                "license_analysis": {
+                    "conflict_packages": [],
+                    "f8a_stack_licenses": [],
+                    "outlier_packages": [],
+                    "status": "Unknown",
+                    "unknown_licenses": {
+                        "component_conflict": [],
+                        "really_unknown": [
+                            {
+                                "license": "EPL 1.0",
+                                "package": "clojure_py"
+                            },
+                            {
+                                "license": "BSD-Modified",
+                                "package": "setuptools"
+                            }
+                        ]
+                    }
+                },
                 "recommendation_ready": true,
-                "recommended_stack_licenses": [
-                    "MIT License"
-                ],
-                "stack_license_conflict": false,
+                "stack_license_conflict": true,
                 "total_licenses": 5,
-                "unknown_dependencies": [],
-                "unknown_dependencies_count": 0
+                "unknown_dependencies": [
+                    {
+                        "name": "wheel",
+                        "version": "0.30.0a0"
+                    },
+                    {
+                        "name": "pygments",
+                        "version": "2.2.0"
+                    },
+                    {
+                        "name": "httpie",
+                        "version": "0.9.9"
+                    },
+                    {
+                        "name": "click",
+                        "version": "6.7"
+                    }
+                ],
+                "unknown_dependencies_count": 4
             }
         }
     ],
-    "started_at": "2017-07-31T16:18:25.787609"
+    "started_at": "2017-11-06T13:08:59.073091",
+    "version": "v1"
 }
-
