@@ -89,7 +89,11 @@ class CoreApi(Api):
     def stack_analysis(self, thread_id=None, i=0):
         """Start the stack analysis and wait for its finish."""
         job_id = self.start_stack_analysis()
-        return self.wait_for_stack_analysis(job_id, thread_id, i)
+        result = self.wait_for_stack_analysis(job_id, thread_id, i)
+        debug = self.read_stack_analysis_debug_data(job_id, thread_id, i)
+        # return both stack analysis results and debug data (durations) as well
+        return {"result": result,
+                "debug": debug}
 
     def component_analysis_url(self, ecosystem, component, version):
         """Construct URL for the component analyses REST API call."""
