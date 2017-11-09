@@ -73,7 +73,7 @@ def component_analysis(core_api, s3, measurement_count, pause_time,
     expected_code = 200 if should_exist else 404
     return measure(lambda i, s3: core_api.component_analysis(thread_id, i,
                                                              ecosystem, component, version),
-                   lambda retval: retval == expected_code, measurement_count, pause_time,
+                   lambda retval: retval["result"] == expected_code, measurement_count, pause_time,
                    thread_id, s3)
 
 

@@ -108,4 +108,4 @@ class CoreApi(Api):
         url = self.component_analysis_url(ecosystem, component, version)
         response = requests.get(url, headers=self.authorization())
         status_code = response.status_code
-        return status_code
+        return {"result": status_code}
