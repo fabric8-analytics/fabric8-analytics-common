@@ -5,6 +5,7 @@ import datetime
 import os
 import sys
 import requests
+import csv
 
 from coreapi import *
 from jobsapi import *
@@ -253,6 +254,35 @@ def delete_work_files(repository):
     os.remove("{repo}.pydocstyle".format(repo=repository))
 
 
+def export_into_csv(results):
+    """Export the results into CSV file."""
+    record = [
+        datetime.date.today().strftime("%Y-%m-%d"),
+        int(results.stage["core_api_available"]),
+        int(results.stage["jobs_api_available"]),
+        int(results.stage["core_api_auth_token"]),
+        int(results.stage["jobs_api_auth_token"]),
+        int(results.production["core_api_available"]),
+        int(results.production["jobs_api_available"]),
+        int(results.production["core_api_auth_token"]),
+        int(results.production["jobs_api_auth_token"])
+    ]
+
+    for repository in repositories:
+        record.append(results.source_files[repository]["count"])
+        record.append(results.source_files[repository]["total_lines"])
+        record.append(results.repo_linter_checks[repository]["total"])
+        record.append(results.repo_linter_checks[repository]["passed"])
+        record.append(results.repo_linter_checks[repository]["failed"])
+        record.append(results.repo_docstyle_checks[repository]["total"])
+        record.append(results.repo_docstyle_checks[repository]["passed"])
+        record.append(results.repo_docstyle_checks[repository]["failed"])
+
+    with open('dashboard.csv', 'a') as fout:
+        writer = csv.writer(fout)
+        writer.writerow(record)
+
+
 def main():
     """Entry point to the QA Dashboard."""
     check_environment_variables()
@@ -294,6 +324,7 @@ def main():
     smoke_tests = SmokeTests()
     results.smoke_tests_results = smoke_tests.results
 
+    export_into_csv(results)
     generate_dashboard(results)
 
 
