@@ -75,10 +75,25 @@ class CoreApi(Api):
         else:
             raise Exception('Timeout waiting for the stack analysis results')
 
+    def read_stack_analysis_debug_data(self, job_id, thread_id="", i=0):
+        """Read the stack analysis debug data via API."""
+        endpoint = self.url + 'api/v1/stack-analyses/' + job_id + "/_debug"
+        response = requests.get(endpoint, headers=self.authorization())
+        status_code = response.status_code
+        if status_code == 200:
+            return response
+        else:
+            raise Exception('Bad HTTP status code {s} returned by the call {c}'.format(
+                s=status_code, c=endpoint))
+
     def stack_analysis(self, thread_id=None, i=0):
         """Start the stack analysis and wait for its finish."""
         job_id = self.start_stack_analysis()
-        return self.wait_for_stack_analysis(job_id, thread_id, i)
+        result = self.wait_for_stack_analysis(job_id, thread_id, i)
+        debug = self.read_stack_analysis_debug_data(job_id, thread_id, i)
+        # return both stack analysis results and debug data (durations) as well
+        return {"result": result,
+                "debug": debug}
 
     def component_analysis_url(self, ecosystem, component, version):
         """Construct URL for the component analyses REST API call."""
@@ -93,4 +108,4 @@ class CoreApi(Api):
         url = self.component_analysis_url(ecosystem, component, version)
         response = requests.get(url, headers=self.authorization())
         status_code = response.status_code
-        return status_code
+        return {"result": status_code}
