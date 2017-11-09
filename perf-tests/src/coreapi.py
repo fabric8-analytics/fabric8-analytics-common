@@ -75,6 +75,17 @@ class CoreApi(Api):
         else:
             raise Exception('Timeout waiting for the stack analysis results')
 
+    def read_stack_analysis_debug_data(self, job_id, thread_id="", i=0):
+        """Read the stack analysis debug data via API."""
+        endpoint = self.url + 'api/v1/stack-analyses/' + job_id + "/_debug"
+        response = requests.get(endpoint, headers=self.authorization())
+        status_code = response.status_code
+        if status_code == 200:
+            return response
+        else:
+            raise Exception('Bad HTTP status code {s} returned by the call {c}'.format(
+                s=status_code, c=endpoint))
+
     def stack_analysis(self, thread_id=None, i=0):
         """Start the stack analysis and wait for its finish."""
         job_id = self.start_stack_analysis()
