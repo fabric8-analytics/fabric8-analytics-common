@@ -24,6 +24,13 @@ class CoreApi(Api):
             self.print_error_response(response, "error")
         return response.status_code == 200
 
+    @staticmethod
+    def contains_alternate_node(json_resp):
+        """Check for the existence of alternate node in the stack analysis."""
+        result = json_resp.get('result')
+        return bool(result) and isinstance(result, list) \
+            and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
+
     def start_stack_analysis(self):
         """Start the stack analysis, sending the manifest file."""
         filename = 'data/requirements_click_6_star.txt'
@@ -52,7 +59,9 @@ class CoreApi(Api):
                 t=thread_id, r=i, j=job_id,
                 s=status_code))
             if status_code == 200:
-                return response
+                json_resp = response.json()
+                if CoreApi.contains_alternate_node(json_resp):
+                    return response
             # 401 code should be checked later
             elif status_code == 401:
                 print("WARNING: got 401")
