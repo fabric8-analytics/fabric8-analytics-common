@@ -21,6 +21,12 @@ from duration import *
 
 from cliargs import *
 
+STACK_ANALYSIS_JOB_NAMES = [
+    'recommendation_v2',
+    'stack_aggregator_v2',
+    'GraphAggregatorTask'
+]
+
 
 def check_environment_variable(env_var_name):
     """Check if the given environment variable exists."""
@@ -109,7 +115,8 @@ def run_stack_analysis_sequenced_calls_benchmark(core_api, s3):
                             lambda api, s3, measurement_count, pause_time:
                                 benchmarks.stack_analysis_benchmark(api, measurement_count,
                                                                     pause_time),
-                            [1], 30)
+                            [1], 30,
+                            compute_stack_analysis_jobs_durations=True)
 
 
 def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
@@ -314,12 +321,50 @@ def wait_for_all_threads(threads):
         t.join()
 
 
+def find_job_debug_data(job_name, tasks):
+    """Find the stack analysis debug data for given job."""
+    for task in tasks:
+        if task["task_name"] == job_name:
+            return task
+    return None
+
+
+def job_duration(job_name, debug):
+    """Compute duration for given job."""
+    tasks = debug.json()["tasks"]
+    job_debug_data = find_job_debug_data(job_name, tasks)
+
+    assert job_debug_data
+    assert job_debug_data["error"] is False
+
+    started_at = job_debug_data["started_at"]
+    ended_at = job_debug_data["ended_at"]
+    return Duration(started_at, ended_at).duration_seconds
+
+
+def job_durations(job_name, debug_values):
+    """Compute duration for given job and all stack analysis."""
+    return [job_duration(job_name, debug_value) for debug_value in debug_values]
+
+
 def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
-                            pauses=None, measurement_count=10):
+                            pauses=None, measurement_count=10,
+                            compute_stack_analysis_jobs_durations=False):
     """Start benchmarks by calling selected function sequentially."""
     pauses = pauses or [10]
     print("pauses:")
     print(pauses)
+
+    # for the stack analysis we are able to compute statistic for each job
+    if compute_stack_analysis_jobs_durations:
+        stack_analysis_jobs_durations_min_times = {}
+        stack_analysis_jobs_durations_max_times = {}
+        stack_analysis_jobs_durations_avg_times = {}
+        for job_name in STACK_ANALYSIS_JOB_NAMES:
+            stack_analysis_jobs_durations_min_times[job_name] = []
+            stack_analysis_jobs_durations_max_times[job_name] = []
+            stack_analysis_jobs_durations_avg_times[job_name] = []
+
     measurements = []
     min_times = []
     max_times = []
@@ -333,7 +378,7 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
             title = "{t}".format(t=title_prefix)
             name = "{n}".format(n=name_prefix)
         print("  " + title)
-        values = function(api, s3, measurement_count, pause)
+        values, debug = function(api, s3, measurement_count, pause)
         graph.generate_wait_times_graph(title, name, values)
         print("Breathe (statistic graph)...")
         time.sleep(20)
@@ -343,9 +388,26 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
         avg_times.append(sum(values) / len(values))
         measurements.extend(values)
 
+        if compute_stack_analysis_jobs_durations:
+            for job_name in STACK_ANALYSIS_JOB_NAMES:
+                durations = job_durations(job_name, debug)
+                cnt = len(durations)
+                stack_analysis_jobs_durations_min_times[job_name].append(min(durations))
+                stack_analysis_jobs_durations_max_times[job_name].append(max(durations))
+                stack_analysis_jobs_durations_avg_times[job_name].append(sum(durations) / cnt)
+
     print(min_times)
     print(max_times)
     print(avg_times)
+
+    if compute_stack_analysis_jobs_durations:
+        print("stack analysis jobs")
+        for job_name in STACK_ANALYSIS_JOB_NAMES:
+            print(job_name)
+            print(stack_analysis_jobs_durations_min_times[job_name])
+            print(stack_analysis_jobs_durations_max_times[job_name])
+            print(stack_analysis_jobs_durations_avg_times[job_name])
+
     title = "{t}: min. max. and avg times".format(t=title_prefix)
     min_max_avg_name = "{n}_min_max_avg_times".format(n=name_prefix)
     graph.generate_timing_statistic_graph(title, min_max_avg_name,
