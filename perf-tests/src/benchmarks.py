@@ -10,6 +10,7 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
     accumulate results and return them.
     """
     measurements = []
+    debug = []
     for i in range(measurement_count):
         t1 = time.time()
         if s3 is None:
@@ -33,8 +34,14 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
         else:
             print("    #{i}    {delta}".format(i=i + 1, delta=delta))
         measurements.append(delta)
+
+        # we can store debug data taken from the stack analysis
+        if "debug" in retval:
+            debug.append(retval["debug"])
+
         time.sleep(pause_time)
-    return measurements
+
+    return measurements, debug
 
 
 def core_api_benchmark(core_api, measurement_count, pause_time, thread_id=None):
@@ -54,8 +61,8 @@ def jobs_api_benchmark(jobs_api, measurement_count, pause_time, thread_id=None):
 def stack_analysis_benchmark(core_api, measurement_count, pause_time, thread_id=None):
     """Measure server and worker modules by starting stack analysis."""
     return measure(lambda i: core_api.stack_analysis(thread_id, i),
-                   lambda retval: retval.status_code == 200, measurement_count, pause_time,
-                   thread_id)
+                   lambda retval: retval["result"].status_code == 200,
+                   measurement_count, pause_time, thread_id)
 
 
 def component_analysis(core_api, s3, measurement_count, pause_time,
