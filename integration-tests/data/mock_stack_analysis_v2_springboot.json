@@ -1,1887 +1,74 @@
 {
-    "finished_at": "2017-08-03T12:52:58.334017",
-    "request_id": "c84977598bae45b3b034927b92c6a5be",
+    "finished_at": "2017-11-06T12:50:15.049575",
+    "release": "None:None:None",
+    "request_id": "26dd2baaf1a946bb87355c3a180e0c04",
     "result": [
         {
-            "_audit": {
-                "ended_at": "2017-08-03T12:52:58.334017",
-                "started_at": "2017-08-03T12:52:58.018076",
-                "version": "v1"
-            },
-            "_release": "None:None:None",
+            "manifest_file_path": "/home/ptisnovs/bayesian",
             "manifest_name": "pom.xml",
             "recommendation": {
-                "alternate": [
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-security",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 39.9,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.1.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-security",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 39.9,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.3.5.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-security",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 39.9,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.4.1.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-security",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 39.9,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.2.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 37186,
-                            "total_files": 327
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.4.3.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 30494,
-                            "total_files": 263
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.3.5.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 22817,
-                            "total_files": 197
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.2.0.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 36879,
-                            "total_files": 314
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.0.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": 2.05,
-                            "code_lines": 37109,
-                            "total_files": 316
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.2.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 24300,
-                            "total_files": 210
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.2.5.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 36432,
-                            "total_files": 323
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.4.0.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 36879,
-                            "total_files": 314
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.1.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 24012,
-                            "total_files": 206
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.2.3.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 24442,
-                            "total_files": 210
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework.boot:spring-boot",
-                        "osio_user_count": 0,
-                        "replaces": [
-                            {
-                                "name": "org.springframework.boot:spring-boot-starter-web",
-                                "version": "1.5.2.RELEASE"
-                            }
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 147.6,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.2.7.RELEASE"
-                    }
-                ],
-                "companion": [
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.4.0.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.1.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.0.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.3.1.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.3.0.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.4.3.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.4.2.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.2.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.3.4.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.3.6.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-tomcat",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 155.7,
-                            "overall_score": -0.1
-                        },
-                        "version": "1.5.3.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-actuator",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 17.8,
-                            "overall_score": 0.0
-                        },
-                        "version": "1.4.1.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-actuator",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 17.8,
-                            "overall_score": 0.0
-                        },
-                        "version": "1.5.1.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-actuator",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 17.8,
-                            "overall_score": 0.0
-                        },
-                        "version": "1.3.5.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-actuator",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 17.8,
-                            "overall_score": 0.0
-                        },
-                        "version": "1.5.0.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-actuator",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 17.8,
-                            "overall_score": 0.0
-                        },
-                        "version": "1.5.2.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-actuator",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 17.8,
-                            "overall_score": 0.0
-                        },
-                        "version": "1.4.3.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-actuator",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 17.8,
-                            "overall_score": 0.0
-                        },
-                        "version": "1.4.0.RELEASE"
-                    },
-                    {
-                        "code_metrics": {
-                            "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
-                        },
-                        "ecosystem": "maven",
-                        "github": {
-                            "contributors": -1,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
-                            "first_release_date": "N/A",
-                            "forks_count": -1,
-                            "issues": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "latest_release_duration": "2017-06-01 07:34:46",
-                            "pull_requests": {
-                                "month": {
-                                    "closed": -1,
-                                    "opened": -1
-                                },
-                                "year": {
-                                    "closed": -1,
-                                    "opened": -1
-                                }
-                            },
-                            "size": "N/A",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
-                            "watchers": -1
-                        },
-                        "latest_version": "",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-amqp",
-                        "osio_user_count": 0,
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "N/A",
-                            "magnitude": 0,
-                            "overall_score": 0
-                        },
-                        "version": "1.3.5.RELEASE"
-                    }
-                ],
+                "alternate": [],
+                "companion": [],
+                "input_stack_topics": {
+                    "org.springframework.boot:spring-boot-starter": [
+                        "spring",
+                        "starter"
+                    ],
+                    "org.springframework.boot:spring-boot-starter-web": [
+                        "web",
+                        "spring",
+                        "starter"
+                    ],
+                    "org.springframework:spring-messaging": [
+                        "spring-messaging",
+                        "model",
+                        "spring",
+                        "messaging"
+                    ],
+                    "org.springframework:spring-websocket": [
+                        "spring-websocket",
+                        "websocket",
+                        "spring",
+                        "ide"
+                    ]
+                },
+                "manifest_file_path": "/home/ptisnovs/bayesian",
                 "usage_outliers": [
                     {
-                        "outlier_prbability": 0.9874999999999993,
-                        "package_name": "org.springframework:spring-messaging"
+                        "outlier_prbability": 0.9946994392096471,
+                        "package_name": "org.springframework:spring-websocket",
+                        "topic_list": [
+                            "spring-websocket",
+                            "websocket",
+                            "spring",
+                            "ide"
+                        ]
                     },
                     {
-                        "outlier_prbability": 0.9237971540657598,
-                        "package_name": "org.springframework.boot:spring-boot-starter"
-                    },
-                    {
-                        "outlier_prbability": 0.912202949797366,
-                        "package_name": "org.springframework.boot:spring-boot-starter-web"
+                        "outlier_prbability": 0.9943960372835428,
+                        "package_name": "org.springframework:spring-messaging",
+                        "topic_list": [
+                            "spring-messaging",
+                            "model",
+                            "spring",
+                            "messaging"
+                        ]
                     }
                 ]
             },
             "user_stack_info": {
                 "analyzed_dependencies": [
                     {
-                        "package": "org.springframework:spring-messaging",
-                        "version": "4.3.7.RELEASE"
-                    },
-                    {
-                        "package": "org.springframework.boot:spring-boot-starter-web",
-                        "version": "1.5.2.RELEASE"
-                    },
-                    {
-                        "package": "org.springframework:spring-websocket",
-                        "version": "4.3.7.RELEASE"
-                    },
-                    {
-                        "package": "org.springframework.boot:spring-boot-starter",
-                        "version": "1.5.2.RELEASE"
-                    }
-                ],
-                "analyzed_dependencies_count": 4,
-                "dependencies": [
-                    {
                         "code_metrics": {
                             "average_cyclomatic_complexity": -1.0,
-                            "code_lines": 23190,
-                            "total_files": 183
+                            "code_lines": -1,
+                            "total_files": -1
                         },
                         "ecosystem": "maven",
                         "github": {
                             "contributors": 132,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
+                            "dependent_projects": "103",
+                            "dependent_repos": "47K",
                             "first_release_date": "Apr 16, 2010",
                             "forks_count": -1,
                             "issues": {
@@ -1894,7 +81,7 @@
                                     "opened": -1
                                 }
                             },
-                            "latest_release_duration": "2017-06-01 07:34:46",
+                            "latest_release_duration": "2017-01-26 00:00:00",
                             "pull_requests": {
                                 "month": {
                                     "closed": -1,
@@ -1907,25 +94,25 @@
                             },
                             "size": "4MB",
                             "stargazers_count": -1,
-                            "total_releases": -1,
+                            "total_releases": "64",
                             "used_by": [],
                             "watchers": 1673
                         },
-                        "latest_version": "4.3.7.RELEASE",
-                        "licenses": [
-                            "ASL 2.0"
-                        ],
-                        "name": "org.springframework:spring-messaging",
-                        "osio_user_count": [
-                            1
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
+                        "latest_version": "1.5.2.RELEASE",
+                        "license_analysis": {
+                            "_message": "Input is invalid",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Failure",
+                            "synonyms": {},
+                            "unknown_licenses": []
                         },
-                        "version": "4.3.7.RELEASE"
+                        "licenses": [],
+                        "name": "org.springframework.boot:spring-boot-starter-web",
+                        "osio_user_count": 0,
+                        "security": [],
+                        "version": "1.5.2.RELEASE"
                     },
                     {
                         "code_metrics": {
@@ -1936,8 +123,8 @@
                         "ecosystem": "maven",
                         "github": {
                             "contributors": 132,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
+                            "dependent_projects": "33",
+                            "dependent_repos": "6.42K",
                             "first_release_date": "Apr 16, 2010",
                             "forks_count": -1,
                             "issues": {
@@ -1950,7 +137,7 @@
                                     "opened": -1
                                 }
                             },
-                            "latest_release_duration": "2017-06-01 07:34:46",
+                            "latest_release_duration": "2017-01-26 00:00:00",
                             "pull_requests": {
                                 "month": {
                                     "closed": -1,
@@ -1963,22 +150,65 @@
                             },
                             "size": "4MB",
                             "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
+                            "total_releases": "64",
+                            "used_by": [
+                                {
+                                    "name": "codecentric/spring-boot-admin",
+                                    "stars": 2698
+                                },
+                                {
+                                    "name": "infinispan/infinispan",
+                                    "stars": 583
+                                },
+                                {
+                                    "name": "jtmelton/appsensor",
+                                    "stars": 142
+                                },
+                                {
+                                    "name": "keycloak/keycloak",
+                                    "stars": 1457
+                                },
+                                {
+                                    "name": "mybatis/spring-boot-starter",
+                                    "stars": 1249
+                                },
+                                {
+                                    "name": "oehf/ipf",
+                                    "stars": 39
+                                },
+                                {
+                                    "name": "puniverse/comsat",
+                                    "stars": 422
+                                },
+                                {
+                                    "name": "spring-cloud/spring-cloud-commons",
+                                    "stars": 80
+                                },
+                                {
+                                    "name": "spring-projects/spring-boot",
+                                    "stars": 14543
+                                },
+                                {
+                                    "name": "stormpath/stormpath-sdk-java",
+                                    "stars": 201
+                                }
+                            ],
                             "watchers": 1673
                         },
                         "latest_version": "1.5.2.RELEASE",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter-web",
-                        "osio_user_count": [
-                            1
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
+                        "license_analysis": {
+                            "_message": "Input is invalid",
+                            "_representative_licenses": null,
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Failure",
+                            "synonyms": {},
+                            "unknown_licenses": []
                         },
+                        "licenses": [],
+                        "name": "org.springframework.boot:spring-boot-starter",
+                        "osio_user_count": 0,
+                        "security": [],
                         "version": "1.5.2.RELEASE"
                     },
                     {
@@ -1990,66 +220,111 @@
                         "ecosystem": "maven",
                         "github": {
                             "contributors": 132,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
+                            "dependent_projects": "9",
+                            "dependent_repos": "1.9K",
                             "first_release_date": "Apr 16, 2010",
-                            "forks_count": 10332,
+                            "forks_count": 11952,
                             "issues": {
                                 "month": {
-                                    "closed": 0,
-                                    "opened": 0
+                                    "closed": -1,
+                                    "opened": -1
                                 },
                                 "year": {
-                                    "closed": 0,
-                                    "opened": 0
+                                    "closed": -1,
+                                    "opened": -1
                                 }
                             },
-                            "latest_release_duration": "2017-06-01 07:34:46",
+                            "latest_release_duration": "2017-03-01 00:00:00",
                             "pull_requests": {
                                 "month": {
-                                    "closed": 27,
-                                    "opened": 38
+                                    "closed": -1,
+                                    "opened": -1
                                 },
                                 "year": {
-                                    "closed": 341,
-                                    "opened": 368
+                                    "closed": -1,
+                                    "opened": -1
                                 }
                             },
                             "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
+                            "stargazers_count": 17198,
+                            "total_releases": "50",
+                            "used_by": [
+                                {
+                                    "name": "Kurento/kurento-tutorial-java",
+                                    "stars": 77
+                                },
+                                {
+                                    "name": "SungardAS/enhanced-snapshots",
+                                    "stars": 35
+                                },
+                                {
+                                    "name": "alex-bretet/cloudstreetmarket.com",
+                                    "stars": 35
+                                },
+                                {
+                                    "name": "alibaba/fastjson",
+                                    "stars": 10457
+                                },
+                                {
+                                    "name": "digitalfondue/lavagna",
+                                    "stars": 335
+                                },
+                                {
+                                    "name": "jamesagnew/hapi-fhir",
+                                    "stars": 409
+                                },
+                                {
+                                    "name": "ngs-doo/revenj",
+                                    "stars": 105
+                                },
+                                {
+                                    "name": "rhiot/rhiot",
+                                    "stars": 95
+                                },
+                                {
+                                    "name": "spring-projects/spring-boot",
+                                    "stars": 14543
+                                },
+                                {
+                                    "name": "spring-projects/spring-security",
+                                    "stars": 1779
+                                }
+                            ],
                             "watchers": 1673
                         },
                         "latest_version": "4.3.7.RELEASE",
+                        "license_analysis": {
+                            "_message": "Representative license found",
+                            "_representative_licenses": "apache 2.0",
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Successful",
+                            "synonyms": {
+                                "ASL 2.0": "apache 2.0"
+                            },
+                            "unknown_licenses": []
+                        },
                         "licenses": [
                             "ASL 2.0"
                         ],
                         "name": "org.springframework:spring-websocket",
-                        "osio_user_count": [
-                            1
-                        ],
+                        "osio_user_count": 0,
                         "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
-                        },
                         "version": "4.3.7.RELEASE"
                     },
                     {
                         "code_metrics": {
                             "average_cyclomatic_complexity": -1.0,
-                            "code_lines": -1,
-                            "total_files": -1
+                            "code_lines": 23190,
+                            "total_files": 183
                         },
                         "ecosystem": "maven",
                         "github": {
                             "contributors": 132,
-                            "dependent_projects": -1,
-                            "dependent_repos": -1,
+                            "dependent_projects": "74",
+                            "dependent_repos": "2.1K",
                             "first_release_date": "Apr 16, 2010",
-                            "forks_count": -1,
+                            "forks_count": 11952,
                             "issues": {
                                 "month": {
                                     "closed": -1,
@@ -2060,7 +335,7 @@
                                     "opened": -1
                                 }
                             },
-                            "latest_release_duration": "2017-06-01 07:34:46",
+                            "latest_release_duration": "2017-01-25 00:00:00",
                             "pull_requests": {
                                 "month": {
                                     "closed": -1,
@@ -2072,34 +347,111 @@
                                 }
                             },
                             "size": "4MB",
-                            "stargazers_count": -1,
-                            "total_releases": -1,
-                            "used_by": [],
+                            "stargazers_count": 17198,
+                            "total_releases": "47",
+                            "used_by": [
+                                {
+                                    "name": "codecentric/spring-boot-starter-batch-web",
+                                    "stars": 130
+                                },
+                                {
+                                    "name": "digitalfondue/lavagna",
+                                    "stars": 335
+                                },
+                                {
+                                    "name": "jamesagnew/hapi-fhir",
+                                    "stars": 409
+                                },
+                                {
+                                    "name": "ngs-doo/revenj",
+                                    "stars": 105
+                                },
+                                {
+                                    "name": "openwms/org.openwms",
+                                    "stars": 43
+                                },
+                                {
+                                    "name": "spring-cloud/spring-cloud-aws",
+                                    "stars": 150
+                                },
+                                {
+                                    "name": "spring-cloud/spring-cloud-sleuth",
+                                    "stars": 351
+                                },
+                                {
+                                    "name": "spring-projects/spring-boot",
+                                    "stars": 14545
+                                },
+                                {
+                                    "name": "spring-projects/spring-security",
+                                    "stars": 1779
+                                },
+                                {
+                                    "name": "wymeditor/wymeditor",
+                                    "stars": 548
+                                }
+                            ],
                             "watchers": 1673
                         },
-                        "latest_version": "1.5.2.RELEASE",
-                        "licenses": [],
-                        "name": "org.springframework.boot:spring-boot-starter",
-                        "osio_user_count": [
-                            1
-                        ],
-                        "security": [],
-                        "sentiment": {
-                            "latest_comment": "",
-                            "magnitude": 0,
-                            "overall_score": 0
+                        "latest_version": "4.3.7.RELEASE",
+                        "license_analysis": {
+                            "_message": "Representative license found",
+                            "_representative_licenses": "apache 2.0",
+                            "conflict_licenses": [],
+                            "outlier_licenses": [],
+                            "status": "Successful",
+                            "synonyms": {
+                                "ASL 2.0": "apache 2.0"
+                            },
+                            "unknown_licenses": []
                         },
+                        "licenses": [
+                            "ASL 2.0"
+                        ],
+                        "name": "org.springframework:spring-messaging",
+                        "osio_user_count": 0,
+                        "security": [],
+                        "version": "4.3.7.RELEASE"
+                    }
+                ],
+                "analyzed_dependencies_count": 4,
+                "dependencies": [
+                    {
+                        "package": "org.springframework.boot:spring-boot-starter-web",
+                        "topic_list": [],
                         "version": "1.5.2.RELEASE"
+                    },
+                    {
+                        "package": "org.springframework.boot:spring-boot-starter",
+                        "topic_list": [],
+                        "version": "1.5.2.RELEASE"
+                    },
+                    {
+                        "package": "org.springframework:spring-websocket",
+                        "topic_list": [],
+                        "version": "4.3.7.RELEASE"
+                    },
+                    {
+                        "package": "org.springframework:spring-messaging",
+                        "topic_list": [],
+                        "version": "4.3.7.RELEASE"
                     }
                 ],
                 "distinct_licenses": [
                     "ASL 2.0"
                 ],
                 "ecosystem": "maven",
+                "license_analysis": {
+                    "conflict_packages": [],
+                    "f8a_stack_licenses": [],
+                    "outlier_packages": [],
+                    "status": null,
+                    "unknown_licenses": {
+                        "component_conflict": [],
+                        "really_unknown": []
+                    }
+                },
                 "recommendation_ready": true,
-                "recommended_stack_licenses": [
-                    null
-                ],
                 "stack_license_conflict": true,
                 "total_licenses": 1,
                 "unknown_dependencies": [],
@@ -2107,6 +459,6 @@
             }
         }
     ],
-    "started_at": "2017-08-03T12:52:58.018076"
+    "started_at": "2017-11-06T12:50:14.827316",
+    "version": "v1"
 }
-
