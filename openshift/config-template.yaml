@@ -13,6 +13,7 @@ objects:
     s3-bucket-for-package-analyses: "${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_PACKAGE_ANALYSES}"
     dynamodb-prefix: "${DEPLOYMENT_PREFIX}"
     keycloak-url: "${KEYCLOAK_URL}"
+    three-scale-api-host-url: "${THREE_SCALE_API_HOST_URL}"
 
 parameters:
 - description: Deployment prefix used for deployment-specific AWS resources
@@ -39,3 +40,8 @@ parameters:
   name: KEYCLOAK_URL
   value: ""
 
+- description: 3scale API host URL
+  displayName: 3scale API host URL
+  required: false
+  name: THREE_SCALE_API_HOST_URL
+  value: ""
