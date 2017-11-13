@@ -28,14 +28,14 @@ function generate_and_deploy_config() {
 
 function deploy_secrets() {
   #All secrets must be base64 encoded
-  oc process -f secrets-template.yaml -p AWS_ACCESS_KEY_ID=`echo $AWS_ACCESS_KEY_ID | base64` \
-                                      -p AWS_SECRET_ACCESS_KEY=`echo $AWS_SECRET_ACCESS_KEY | base64` \
-                                      -p GITHUB_API_TOKENS=`echo $GITHUB_API_TOKENS | base64` \
-                                      -p GITHUB_OAUTH_CONSUMER_KEY=`echo $GITHUB_OAUTH_CONSUMER_KEY | base64` \
-                                      -p GITHUB_OAUTH_CONSUMER_SECRET=`echo $GITHUB_OAUTH_CONSUMER_SECRET | base64` \
-                                      -p FLASK_APP_SECRET_KEY=`echo $FLASK_APP_SECRET_KEY | base64` \
-                                      -p RDS_ENDPOINT="`echo $RDS_ENDPOINT | base64`" \
-                                      -p RDS_PASSWORD=`echo $RDS_PASSWORD | base64` \
+  oc process -f secrets-template.yaml -p AWS_ACCESS_KEY_ID=`echo -n $AWS_ACCESS_KEY_ID | base64` \
+                                      -p AWS_SECRET_ACCESS_KEY=`echo -n $AWS_SECRET_ACCESS_KEY | base64` \
+                                      -p GITHUB_API_TOKENS=`echo -n $GITHUB_API_TOKENS | base64` \
+                                      -p GITHUB_OAUTH_CONSUMER_KEY=`echo -n $GITHUB_OAUTH_CONSUMER_KEY | base64` \
+                                      -p GITHUB_OAUTH_CONSUMER_SECRET=`echo -n $GITHUB_OAUTH_CONSUMER_SECRET | base64` \
+                                      -p FLASK_APP_SECRET_KEY=`echo -n $FLASK_APP_SECRET_KEY | base64` \
+                                      -p RDS_ENDPOINT="`echo -n $RDS_ENDPOINT | base64`" \
+                                      -p RDS_PASSWORD=`echo -n $RDS_PASSWORD | base64` \
                                       > ${here}/secrets.yaml
   oc apply -f secrets.yaml
 }
