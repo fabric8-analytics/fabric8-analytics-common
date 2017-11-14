@@ -21,6 +21,9 @@ from duration import *
 
 from cliargs import *
 
+SEQUENCED_BENCHMARKS_DEFAULT_COUNT = 30
+BREATHE_PAUSE = 5
+
 STACK_ANALYSIS_JOB_NAMES = [
     'recommendation_v2',
     'stack_aggregator_v2',
@@ -115,7 +118,7 @@ def run_stack_analysis_sequenced_calls_benchmark(core_api, s3):
                             lambda api, s3, measurement_count, pause_time:
                                 benchmarks.stack_analysis_benchmark(api, measurement_count,
                                                                     pause_time),
-                            [1], 30,
+                            [1], SEQUENCED_BENCHMARKS_DEFAULT_COUNT,
                             compute_stack_analysis_jobs_durations=True)
 
 
@@ -130,7 +133,7 @@ def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
                                                               measurement_count,
                                                               0, True, None, "pypi",
                                                               "clojure_py", "0.2.4"),
-                            [1], 30)
+                            [1], SEQUENCED_BENCHMARKS_DEFAULT_COUNT)
     run_sequenced_benchmark(core_api, s3,
                             "Component analysis for unknown component",
                             "component_analysis_sequenced_calls_unknown_component",
@@ -139,7 +142,7 @@ def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
                                                               measurement_count,
                                                               0, False, None, "pypi",
                                                               "non_existing_component", "9.8.7"),
-                            [1], 30)
+                            [1], SEQUENCED_BENCHMARKS_DEFAULT_COUNT)
 
 
 def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
@@ -222,7 +225,7 @@ def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to
         generate_statistic_graph(name, thread_count, ["min/avg/max"],
                                  min_times, max_times, avg_times)
         print("Breathe (statistic graph)...")
-        time.sleep(20)
+        time.sleep(BREATHE_PAUSE)
 
     print(summary_min_times)
     print(summary_max_times)
@@ -302,7 +305,7 @@ def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
         generate_statistic_graph("component_analysis", thread_count, [10],
                                  min_times, max_times, avg_times)
         print("Breathe (statistic graph)...")
-        time.sleep(20)
+        time.sleep(BREATHE_PAUSE)
 
     print(summary_min_times)
     print(summary_max_times)
@@ -348,12 +351,12 @@ def job_durations(job_name, debug_values):
 
 
 def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
-                            pauses=None, measurement_count=10,
+                            pauses=None, measurement_count=SEQUENCED_BENCHMARKS_DEFAULT_COUNT,
                             compute_stack_analysis_jobs_durations=False):
     """Start benchmarks by calling selected function sequentially."""
     pauses = pauses or [10]
-    print("pauses:")
-    print(pauses)
+    print("pauses: {p}".format(p=pauses))
+    print("measurement_count: {c}".format(c=measurement_count))
 
     # for the stack analysis we are able to compute statistic for each job
     if compute_stack_analysis_jobs_durations:
@@ -381,7 +384,7 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
         values, debug = function(api, s3, measurement_count, pause)
         graph.generate_wait_times_graph(title, name, values)
         print("Breathe (statistic graph)...")
-        time.sleep(20)
+        time.sleep(BREATHE_PAUSE)
 
         min_times.append(min(values))
         max_times.append(max(values))
@@ -461,7 +464,7 @@ def run_api_concurrent_benchmark(core_api, function_to_call, name_prefix):
             avg_times.append(sum(values) / len(values))
 
             print("Breathe...")
-            time.sleep(20)
+            time.sleep(BREATHE_PAUSE)
 
         print(min_times)
         print(max_times)
@@ -474,7 +477,7 @@ def run_api_concurrent_benchmark(core_api, function_to_call, name_prefix):
         generate_statistic_graph(name_prefix, thread_count, pauses,
                                  min_times, max_times, avg_times)
         print("Breathe (statistic graph)...")
-        time.sleep(10)
+        time.sleep(BREATHE_PAUSE)
 
     print(summary_min_times)
     print(summary_max_times)
