@@ -361,25 +361,37 @@ def print_job_durations(durations, durations_min_times, durations_max_times, dur
         print("        avg: {t}".format(t=durations_avg_times[job_name]))
 
 
+def export_measurements_into_csv(csv_writer, measuremens):
+    """Export just the durations for (any) API call, stack analysis, or component analysis."""
+    for m in measurements:
+        csv_writer.writerow([m])
+
+
+def export_measurements_and_job_durations_into_csv(csv_writer, measurements,
+                                                   stack_analysis_jobs_durations):
+    """Export the overall duration and also durations of each job for the stack analysis."""
+    first_row = ["Overall"]
+    first_row.extend(STACK_ANALYSIS_JOB_NAMES)
+    csv_writer.writerow(first_row)
+    for i in range(0, len(measurements)):
+        row = []
+        row.append(measurements[i])
+        s = stack_analysis_jobs_durations
+        for job_name in STACK_ANALYSIS_JOB_NAMES:
+            row.append(s[job_name][i])
+        csv_writer.writerow(row)
+
+
 def export_sequenced_benchmark_into_csv(name, measurements, compute_stack_analysis_jobs_durations,
                                         stack_analysis_jobs_durations):
     """Export results of sequenced benchmark into the CSV file."""
     with open(name + ".csv", "w") as csvfile:
         csv_writer = csv.writer(csvfile)
         if compute_stack_analysis_jobs_durations:
-            first_row = ["Overall"]
-            first_row.extend(STACK_ANALYSIS_JOB_NAMES)
-            csv_writer.writerow(first_row)
-            for i in range(0, len(measurements)):
-                row = []
-                row.append(measurements[i])
-                s = stack_analysis_jobs_durations
-                for job_name in STACK_ANALYSIS_JOB_NAMES:
-                    row.append(s[job_name][i])
-                csv_writer.writerow(row)
+            export_measurements_and_job_durations_into_csv(csv_writer, measurements,
+                                                           stack_analysis_jobs_durations)
         else:
-            for m in measurements:
-                csv_writer.writerow([m])
+            export_measurements_into_csv(csv_writer, measurements)
 
 
 def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
