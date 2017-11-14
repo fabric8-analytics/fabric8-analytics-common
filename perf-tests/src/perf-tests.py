@@ -620,6 +620,8 @@ def main():
 
     check_system(core_api, jobs_api, s3)
 
+    core_api.stack_analysis_manifest = cli_arguments.manifest
+
     if cli_arguments.sla:
         run_benchmarks_sla(core_api, jobs_api, s3)
     else:
