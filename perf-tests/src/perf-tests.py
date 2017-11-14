@@ -350,6 +350,38 @@ def job_durations(job_name, debug_values):
     return [job_duration(job_name, debug_value) for debug_value in debug_values]
 
 
+def print_job_durations(durations, durations_min_times, durations_max_times, durations_avg_times):
+    """Print durations for job that are run for the stack analysis."""
+    print("stack analysis jobs")
+    for job_name in STACK_ANALYSIS_JOB_NAMES:
+        print("    {j}".format(j=job_name))
+        print("        durations: {t}".format(t=durations[job_name]))
+        print("        min: {t}".format(t=durations_min_times[job_name]))
+        print("        max: {t}".format(t=durations_max_times[job_name]))
+        print("        avg: {t}".format(t=durations_avg_times[job_name]))
+
+
+def export_sequenced_benchmark_into_csv(name, measurements, compute_stack_analysis_jobs_durations,
+                                        stack_analysis_jobs_durations):
+    """Export results of sequenced benchmark into the CSV file."""
+    with open(name + ".csv", "w") as csvfile:
+        csv_writer = csv.writer(csvfile)
+        if compute_stack_analysis_jobs_durations:
+            first_row = ["Overall"]
+            first_row.extend(STACK_ANALYSIS_JOB_NAMES)
+            csv_writer.writerow(first_row)
+            for i in range(0, len(measurements)):
+                row = []
+                row.append(measurements[i])
+                s = stack_analysis_jobs_durations
+                for job_name in STACK_ANALYSIS_JOB_NAMES:
+                    row.append(s[job_name][i])
+                csv_writer.writerow(row)
+        else:
+            for m in measurements:
+                csv_writer.writerow([m])
+
+
 def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
                             pauses=None, measurement_count=SEQUENCED_BENCHMARKS_DEFAULT_COUNT,
                             compute_stack_analysis_jobs_durations=False):
@@ -409,35 +441,17 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
     print(avg_times)
 
     if compute_stack_analysis_jobs_durations:
-        print("stack analysis jobs")
-        for job_name in STACK_ANALYSIS_JOB_NAMES:
-            print("    {j}".format(j=job_name))
-            print("        durations: {t}".format(t=stack_analysis_jobs_durations[job_name]))
-            print("        min: {t}".format(t=stack_analysis_jobs_durations_min_times[job_name]))
-            print("        max: {t}".format(t=stack_analysis_jobs_durations_max_times[job_name]))
-            print("        avg: {t}".format(t=stack_analysis_jobs_durations_avg_times[job_name]))
+        print_job_durations(stack_analysis_jobs_durations, stack_analysis_jobs_durations_min_times,
+                            stack_analysis_jobs_durations_max_times,
+                            stack_analysis_jobs_durations_avg_times)
 
     title = "{t}: min. max. and avg times".format(t=title_prefix)
     min_max_avg_name = "{n}_min_max_avg_times".format(n=name_prefix)
     graph.generate_timing_statistic_graph(title, min_max_avg_name,
                                           pauses, min_times, max_times, avg_times)
 
-    with open(name + ".csv", "w") as csvfile:
-        csv_writer = csv.writer(csvfile)
-        if compute_stack_analysis_jobs_durations:
-            first_row = ["Overall"]
-            first_row.extend(STACK_ANALYSIS_JOB_NAMES)
-            csv_writer.writerow(first_row)
-            for i in range(0, len(measurements)):
-                row = []
-                row.append(measurements[i])
-                s = stack_analysis_jobs_durations
-                for job_name in STACK_ANALYSIS_JOB_NAMES:
-                    row.append(s[job_name][i])
-                csv_writer.writerow(row)
-        else:
-            for m in measurements:
-                csv_writer.writerow([m])
+    export_sequenced_benchmark_into_csv(name, measurements, compute_stack_analysis_jobs_durations,
+                                        stack_analysis_jobs_durations)
 
 
 def run_api_concurrent_benchmark(core_api, function_to_call, name_prefix):
