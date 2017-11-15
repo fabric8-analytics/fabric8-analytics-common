@@ -39,7 +39,7 @@ This script is ignored by git so feel free to change it locally.
 
 `export RDS_STORAGE=5`
 
-`export RDS_PASSWORD='somethingclever'`
+`export RDS_PASSWORD="$(date +%s | sha256sum | base64 | head -c 32 ;)"`
 
 `export RDS_SUBNET_GROUP_NAME='dv peering az'`
 

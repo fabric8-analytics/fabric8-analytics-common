@@ -19,6 +19,16 @@ if ! [ -x "$(command -v oc)" ]; then
   exit 1
 fi
 
+#Check required env variables
+if [ "${RDS_PASSWORD}" == "" ]; then
+  echo 'You have to change RDS_PASSWORD'
+fi
+
+if [ "${RDS_INSTANCE_NAME}" == "" ]; then
+  echo 'You have to change RDS_PASSWORD'
+fi
+
+
 function generate_and_deploy_config() {
   oc process -p DEPLOYMENT_PREFIX="${OC_PROJECT}" \
              -p KEYCLOAK_URL="${KEYCLOAK_URL}" \
@@ -34,7 +44,7 @@ function deploy_secrets() {
                                       -p GITHUB_OAUTH_CONSUMER_KEY=`echo -n $GITHUB_OAUTH_CONSUMER_KEY | base64` \
                                       -p GITHUB_OAUTH_CONSUMER_SECRET=`echo -n $GITHUB_OAUTH_CONSUMER_SECRET | base64` \
                                       -p FLASK_APP_SECRET_KEY=`echo -n $FLASK_APP_SECRET_KEY | base64` \
-                                      -p RDS_ENDPOINT="`echo -n $RDS_ENDPOINT | base64`" \
+                                      -p RDS_ENDPOINT="`echo -n $RDS_ENDPOINT | base64 -w 0`" \
                                       -p RDS_PASSWORD=`echo -n $RDS_PASSWORD | base64` \
                                       > ${here}/secrets.yaml
   oc apply -f secrets.yaml
@@ -78,8 +88,8 @@ function allocate_aws_rds() {
     echo "DB instance $RDS_INSTANCE_NAME already exists, recreating database"
     echo "DB password: $RDS_PASSWORD"
     get_rds_instance_info
-    #psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "drop database $RDS_DBNAME"
-    #psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "create database $RDS_DBNAME"
+    PGPASSWORD=$RDS_PASSWORD psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "drop database $RDS_DBNAME"
+    PGPASSWORD=$RDS_PASSWORD psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "create database $RDS_DBNAME"
   fi
 }
 
@@ -127,7 +137,7 @@ oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=a
 oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api -p WORKER_INCLUDE_QUEUES=GraphImporterTask -p WORKER_NAME_SUFFIX=-graph-import"
 oc_process_apply ${templates_dir}/server.yaml
 oc_process_apply ${templates_dir}/jobs.yaml
-oc_process_apply ${templates_dir}/scaler.yaml "-p DC_NAME=bayesian-worker-ingestion -p SQS_QUEUE_NAME=ingestion_bayesianFlow_v0 -p MAX_REPLICAS=8 -p DEFAULT_REPLICAS=4"
+oc_process_apply ${templates_dir}/scaler.yaml "-p DC_NAME=bayesian-worker-ingestion -p SQS_QUEUE_NAME=ingestion_bayesianFlow_v0 -p MAX_REPLICAS=8 -p DEFAULT_REPLICAS=2"
 oc_process_apply ${templates_dir}/scaler.yaml "-p DC_NAME=bayesian-worker-api -p SQS_QUEUE_NAME=api_bayesianFlow_v0 -p MAX_REPLICAS=4 -p DEFAULT_REPLICAS=2"
 oc_process_apply ${templates_dir}/firehose-fetcher.yaml
 oc_process_apply ${templates_dir}/stack-analysis.yaml "-p KRONOS_SCORING_REGION=maven"
