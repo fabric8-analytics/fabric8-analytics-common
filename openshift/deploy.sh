@@ -1,7 +1,8 @@
 #!/usr/bin/bash -e
+here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 #Check for configuration file
-if ! [ -f ./env.sh ]
+if ! [ -f $here/env.sh ]
 then
     echo 'Please create env.sh based on README.md'
     exit 1
@@ -136,7 +137,6 @@ function get_rds_instance_info() {
   done
 }
 
-here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 templates_dir="${here}/templates"
 templates="fabric8-analytics-jobs fabric8-analytics-server fabric8-analytics-data-model 
            fabric8-analytics-worker fabric8-analytics-pgbouncer fabric8-analytics-recommender 
