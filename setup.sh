@@ -37,8 +37,7 @@ done
 
 if [[ -z "$repos" ]]; then
   repos="worker server jobs pgbouncer data-model stack-analysis \
-         firehose-fetcher scaler recommender license-analysis \
-         tagger stack-report-ui worker-base"
+         firehose-fetcher"
 fi
 
 for repo in $repos; do
