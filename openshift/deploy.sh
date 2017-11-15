@@ -21,13 +21,34 @@ fi
 
 #Check required env variables
 if [ "${RDS_PASSWORD}" == "" ]; then
-  echo 'You have to change RDS_PASSWORD'
+  echo 'You have to set RDS_PASSWORD'
+  exit 1
 fi
 
 if [ "${RDS_INSTANCE_NAME}" == "" ]; then
-  echo 'You have to change RDS_PASSWORD'
+  echo 'You have to set RDS_INSTANCE_NAME'
+  exit 1
 fi
 
+if [ "${OC_USERNAME}" == "Not set" ]; then
+  echo 'You have to set RDS_PASSWORD'
+  exit 1
+fi
+
+if [ "${OC_PASSWD}" == "Not set" ]; then
+  echo 'You have to set RDS_PASSWORD'
+  exit 1
+fi
+
+if [ "${AWS_ACCESS_KEY_ID}" == "Not set" ]; then
+  echo 'You have to set RDS_PASSWORD'
+  exit 1
+fi
+
+if [ "${AWS_SECRET_ACCESS_KEY}" == "Not set" ]; then
+  echo 'You have to set RDS_PASSWORD'
+  exit 1
+fi
 
 function generate_and_deploy_config() {
   oc process -p DEPLOYMENT_PREFIX="${OC_PROJECT}" \
