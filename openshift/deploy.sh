@@ -39,22 +39,22 @@ if [ "${RDS_INSTANCE_NAME}" == "" ]; then
 fi
 
 if [ "${OC_USERNAME}" == "Not set" ]; then
-  echo 'You have to set RDS_PASSWORD'
+  echo 'You have to set OC_USERNAME'
   exit 1
 fi
 
 if [ "${OC_PASSWD}" == "Not set" ]; then
-  echo 'You have to set RDS_PASSWORD'
+  echo 'You have to set OC_PASSWD'
   exit 1
 fi
 
 if [ "${AWS_ACCESS_KEY_ID}" == "Not set" ]; then
-  echo 'You have to set RDS_PASSWORD'
+  echo 'You have to set AWS_ACCESS_KEY_ID'
   exit 1
 fi
 
 if [ "${AWS_SECRET_ACCESS_KEY}" == "Not set" ]; then
-  echo 'You have to set RDS_PASSWORD'
+  echo 'You have to set AWS_SECRET_ACCESS_KEY'
   exit 1
 fi
 
