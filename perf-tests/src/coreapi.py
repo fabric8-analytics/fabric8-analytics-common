@@ -11,6 +11,16 @@ class CoreApi(Api):
     def __init__(self, url, token):
         """Set the API endpoint and store the authorization token if provided."""
         super().__init__(url, token)
+        self._stack_analysis_manifest = None
+
+    @property
+    def stack_analysis_manifest(self):
+        """Getter to retrieve the stack analysis manifest name."""
+        return self._stack_analysis_manifest
+
+    @stack_analysis_manifest.setter
+    def stack_analysis_manifest(self, filename):
+        self._stack_analysis_manifest = filename
 
     def authorization(self):
         """Return a HTTP header with authorization token."""
@@ -31,13 +41,39 @@ class CoreApi(Api):
         return bool(result) and isinstance(result, list) \
             and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
 
-    def start_stack_analysis(self):
-        """Start the stack analysis, sending the manifest file."""
-        filename = 'data/requirements_click_6_star.txt'
+    @staticmethod
+    def get_manifest_name(filename):
+        """Get the standard manifest name for the given filename."""
+        manifests = {
+            ".txt": "requirements.txt",
+            ".xml": "pom.xml",
+            ".json": "package.json"}
+        for extension, manifest in manifests.items():
+            if filename.endswith(extension):
+                return manifest
+        raise "Unknown extension in filename: {f}".format(f=filename)
+
+    @staticmethod
+    def prepare_manifest_files(filename):
+        """Send the selected manifest file to stack analysis."""
+        # default variable substitutions
+        filename = filename or 'requirements_click_6_star.txt'
+        manifest_name = CoreApi.get_manifest_name(filename)
+
+        print("filename with manifest data: {f}".format(f=filename))
+        print("standard manifest name: {n}".format(n=manifest_name))
+
+        filename = 'data/{filename}'.format(filename=filename)
         manifest_file_dir = os.path.dirname(filename)
         path_to_manifest_file = os.path.abspath(manifest_file_dir)
-        files = {'manifest[]': ("requirements.txt", open(filename, 'rb')),
+
+        files = {'manifest[]': (manifest_name, open(filename, 'rb')),
                  'filePath[]': (None, path_to_manifest_file)}
+        return files
+
+    def start_stack_analysis(self):
+        """Start the stack analysis, sending the manifest file."""
+        files = CoreApi.prepare_manifest_files(self._stack_analysis_manifest)
         endpoint = self.url + 'api/v1/stack-analyses'
         response = requests.post(endpoint, files=files, headers=self.authorization())
         response.raise_for_status()

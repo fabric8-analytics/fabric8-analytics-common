@@ -59,3 +59,7 @@ cli_parser.add_argument('-H', '--generate-html',
 cli_parser.add_argument('--sla',
                         help='run only benchmarks that are needed for SLA acceptance',
                         action='store_true')
+
+cli_parser.add_argument('--manifest',
+                        help='manifest file (from the data directory) used for the stack analysis',
+                        type=str)
