@@ -1,5 +1,12 @@
 #!/usr/bin/bash -e
 
+#Check for configuration file
+if ! [ -f ./env.sh ]
+then
+    echo 'Please create env.sh based on README.md'
+    exit 1
+fi
+
 #Load configuration from env variables
 source env.sh
 
