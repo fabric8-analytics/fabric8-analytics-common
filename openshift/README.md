@@ -4,44 +4,11 @@ Config map and secrets are generated from the configuration stored in environmen
 
 ## Configure fabric8-analytics services
 All configuration for the deployment script resides in env.sh.
-Create file env.sh inside this directory with following contents.
-This script is ignored by git so feel free to change it locally.
+To configure your developemnt deployment copy env-template.sh
 
-`export OC_URI='dev.rdu2c.fabric8.io:8443'`
+`cp env-template.sh template.sh`
 
-`export OC_USERNAME='Not set'`
-
-`export OC_PASSWD='Not set'`
-
-`export OC_PROJECT=$(whoami)'-greenfield-test'`
-
-`export AWS_ACCESS_KEY_ID='Not set'`
-
-`export AWS_SECRET_ACCESS_KEY='Not set'`
-
-`export GITHUB_API_TOKENS='Not set'`
-
-`export GITHUB_OAUTH_CONSUMER_KEY='Not set'`
-
-`export GITHUB_OAUTH_CONSUMER_SECRET='Not set'`
-
-`export FLASK_APP_SECRET_KEY='Not set'`
-
-`export RDS_ENDPOINT=''`
-
-`export RDS_INSTANCE_NAME="$OC_USERNAME-bayesiandb"`
-
-`export RDS_INSTANCE_CLASS='db.t2.micro'`
-
-`export RDS_DBNAME='postgres'`
-
-`export RDS_DBADMIN='coreapi'`
-
-`export RDS_STORAGE=5`
-
-`export RDS_PASSWORD="$(date +%s | sha256sum | base64 | head -c 32 ;)"`
-
-`export RDS_SUBNET_GROUP_NAME='dv peering az'`
+Update variables with your AWS,Openshift and Github credentials.
 
 ## Deploy fabric8-analytics services
 Just run the deploy script and enjoy!
