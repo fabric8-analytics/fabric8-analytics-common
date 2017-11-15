@@ -60,7 +60,7 @@ class CoreApi(Api):
         filename = filename or 'requirements_click_6_star.txt'
         manifest_name = CoreApi.get_manifest_name(filename)
 
-        print("filename with manifest data: {m}".format(m=manifest_name))
+        print("filename with manifest data: {f}".format(f=filename))
         print("standard manifest name: {n}".format(n=manifest_name))
 
         filename = 'data/{filename}'.format(filename=filename)
