@@ -18,12 +18,7 @@ propose changes to this document in a pull request.
 
 Core Reviewers are:
 
-* Fridolin Pokorny <fridolin@redhat.com>
 * Jiri Popelka <jpopelka@redhat.com>
-* Michal Srb <msrb@redhat.com>
-* Pavel Odvody <podvody@redhat.com>
-* Slavek Kabrda <bkabrda@redhat.com>
-* Tomas Hrcka <thrcka@redhat.com>
 
 Before you submit your pull request consider the following guidelines:
 
