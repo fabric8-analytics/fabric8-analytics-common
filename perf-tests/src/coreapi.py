@@ -83,6 +83,24 @@ class CoreApi(Api):
                  'filePath[]': (None, path_to_manifest_file)}
         return files
 
+    @staticmethod
+    def dump_stack_analysis(job_id, json_response):
+        """Dump the stack analysis result into a file."""
+        filename = "stack_analysis_{j}.json".format(j=job_id)
+        with open(filename, 'w') as fout:
+            json.dump(json_response, fout)
+
+    @staticmethod
+    def dump_component_analysis(ecosystem, component, version, json_response):
+        """Dump the component analysis result into a file."""
+        timestamp_str = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")
+        filename = "component_analysis_{e}_{c}_{v}_{t}.json".format(e=ecosystem,
+                                                                    c=component,
+                                                                    v=version,
+                                                                    t=timestamp_str)
+        with open(filename, 'w') as fout:
+            json.dump(json_response, fout)
+
     def start_stack_analysis(self):
         """Start the stack analysis, sending the manifest file."""
         files = CoreApi.prepare_manifest_files(self._stack_analysis_manifest)
@@ -109,6 +127,8 @@ class CoreApi(Api):
             if status_code == 200:
                 json_resp = response.json()
                 if CoreApi.contains_alternate_node(json_resp):
+                    if self._dump_json_responses:
+                        CoreApi.dump_stack_analysis(job_id, json_resp)
                     return response
             # 401 code should be checked later
             elif status_code == 401:
@@ -155,5 +175,7 @@ class CoreApi(Api):
         """Start the component analysis and check the status code."""
         url = self.component_analysis_url(ecosystem, component, version)
         response = requests.get(url, headers=self.authorization())
+        if self._dump_json_responses:
+            CoreApi.dump_component_analysis(ecosystem, component, version, response.json())
         status_code = response.status_code
         return {"result": status_code}
