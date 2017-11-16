@@ -24,6 +24,10 @@ cli_parser.add_argument('-p', '--parallel',
                         help='enable making parallel calls',
                         action='store_true')
 
+cli_parser.add_argument('-d', '--dump',
+                        help='dump JSON responses to files for further investigation',
+                        action='store_true')
+
 cli_parser.add_argument('--thread-min',
                         help='minimum number of threads for parallel calls (defalt=1)',
                         type=int, default=1)

@@ -15,6 +15,16 @@ class JobsApi(Api):
         """Set the API endpoint and store the authorization token if provided."""
         super().__init__(url, token)
         self.componentGeneratorForPypi = ComponentGenerator.generator_for_ecosystem('pypi')
+        self._dump_json_responses = False
+
+    @property
+    def dump_json_responses(self):
+        """Getter to retrieve the flag if JSON responses dumps are enabled."""
+        return self._dump_json_responses
+
+    @dump_json_responses.setter
+    def dump_json_responses(self, settings):
+        self._dump_json_responses = settings
 
     def authorization(self):
         """Return a HTTP header with authorization token."""
@@ -69,6 +79,18 @@ class JobsApi(Api):
                 "flow_name": "bayesianApiFlow"
             }
 
+    @staticmethod
+    def dump_job_data(s3, bucket, key):
+        """Dump the job data read from the S3 database to a file."""
+        data = s3.read_object(bucket, key)
+        timestamp_str = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")
+        filename = "s3_data_{e}_{c}_{v}_{t}.json".format(e=ecosystem,
+                                                         c=component,
+                                                         v=version,
+                                                         t=timestamp_str)
+        with open(filename, 'w') as fout:
+            json.dump(data, fout)
+
     def start_component_analysis(self, ecosystem, package, version, thread_id):
         """Start the component analysis."""
         jobs_data = self.prepare_jobs_data(ecosystem, package, version)
@@ -103,7 +125,8 @@ class JobsApi(Api):
                       "    ", current_date - start_time)
                 if delta.days == 0 and delta.seconds < sleep_amount * 2:
                     print("done!", thread_id, "   ", key)
-                    # s3.read_core_data_from_bucket(context, package, version, ecosystem, bucket)
+                    if self._dump_json_responses:
+                        JobsApi.dump_job_data(s3, bucket, key)
                     return True
             except ClientError as e:
                 print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
