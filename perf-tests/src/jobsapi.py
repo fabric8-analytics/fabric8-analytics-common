@@ -15,6 +15,16 @@ class JobsApi(Api):
         """Set the API endpoint and store the authorization token if provided."""
         super().__init__(url, token)
         self.componentGeneratorForPypi = ComponentGenerator.generator_for_ecosystem('pypi')
+        self._dump_json_responses = False
+
+    @property
+    def dump_json_responses(self):
+        """Getter to retrieve the flag if JSON responses dumps are enabled."""
+        return self._dump_json_responses
+
+    @dump_json_responses.setter
+    def dump_json_responses(self, settings):
+        self._dump_json_responses = settings
 
     def authorization(self):
         """Return a HTTP header with authorization token."""
