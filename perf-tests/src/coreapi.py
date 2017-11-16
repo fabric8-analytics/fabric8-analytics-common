@@ -3,6 +3,8 @@ from urllib.parse import urljoin
 
 from api import *
 import time
+import datetime
+import json
 
 
 class CoreApi(Api):
@@ -12,6 +14,7 @@ class CoreApi(Api):
         """Set the API endpoint and store the authorization token if provided."""
         super().__init__(url, token)
         self._stack_analysis_manifest = None
+        self._dump_json_responses = False
 
     @property
     def stack_analysis_manifest(self):
@@ -21,6 +24,15 @@ class CoreApi(Api):
     @stack_analysis_manifest.setter
     def stack_analysis_manifest(self, filename):
         self._stack_analysis_manifest = filename
+
+    @property
+    def dump_json_responses(self):
+        """Getter to retrieve the flag if JSON responses dumps are enabled."""
+        return self._dump_json_responses
+
+    @dump_json_responses.setter
+    def dump_json_responses(self, settings):
+        self._dump_json_responses = settings
 
     def authorization(self):
         """Return a HTTP header with authorization token."""
