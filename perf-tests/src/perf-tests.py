@@ -402,6 +402,8 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
     print("pauses: {p}".format(p=pauses))
     print("measurement_count: {c}".format(c=measurement_count))
 
+    stack_analysis_jobs_durations = None
+
     # for the stack analysis we are able to compute statistic for each job
     if compute_stack_analysis_jobs_durations:
         stack_analysis_jobs_durations = {}
@@ -620,6 +622,13 @@ def main():
 
     check_system(core_api, jobs_api, s3)
 
+    # set the flag that enables dumping JSON responses into files
+    # that allow us to further analyze the data
+    core_api.dump_json_responses = cli_arguments.dump
+    jobs_api.dump_json_responses = cli_arguments.dump
+
+    # if user specifies the manifest file for the stack analysis, set
+    # the appropriate attribute
     core_api.stack_analysis_manifest = cli_arguments.manifest
 
     if cli_arguments.sla:
