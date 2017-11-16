@@ -361,7 +361,7 @@ def print_job_durations(durations, durations_min_times, durations_max_times, dur
         print("        avg: {t}".format(t=durations_avg_times[job_name]))
 
 
-def export_measurements_into_csv(csv_writer, measuremens):
+def export_measurements_into_csv(csv_writer, measurements):
     """Export just the durations for (any) API call, stack analysis, or component analysis."""
     for m in measurements:
         csv_writer.writerow([m])
