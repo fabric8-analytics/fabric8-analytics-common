@@ -236,6 +236,14 @@ def _wait_for_component_search_service(context, wait_for_service=60):
     _wait_for_api(context, wait_for_service, _is_component_search_service_running)
 
 
+def _wait_for_master_tag_list_service(context, wait_for_service=60):
+    _wait_for_api(context, wait_for_service, _is_master_tag_list_service_running)
+
+
+def _wait_for_get_untagged_component_service(context, wait_for_service=60):
+    _wait_for_api(context, wait_for_service, _is_get_untagged_component_service_running)
+
+
 def _restart_system(context, wait_for_server=60):
     # NOTE: it does make sense to restart the local system only
     if context.running_locally:
@@ -258,6 +266,16 @@ def _is_api_running(url):
     return False
 
 
+def _is_api_running_post(url):
+    try:
+        res = requests.post(url)
+        if res.status_code in {200, 401}:
+            return True
+    except requests.exceptions.ConnectionError:
+        pass
+    return False
+
+
 def _is_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT) and \
            _is_api_running(context.jobs_api_url + _API_ENDPOINT)
@@ -271,6 +289,16 @@ def _is_jobs_debug_api_running(context):
 def _is_component_search_service_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT +
                            "/component-search/any-component")
+
+
+def _is_master_tag_list_service_running(context):
+    return _is_api_running(context.coreapi_url + _API_ENDPOINT +
+                           "/master-tags/maven")
+
+
+def _is_get_untagged_component_service_running(context):
+    return _is_api_running_post(context.coreapi_url + _API_ENDPOINT +
+                                "/get-next-component/maven")
 
 
 def _read_boolean_setting(context, setting_name):
@@ -363,6 +391,10 @@ def before_all(context):
     context.is_running = _is_running
     context.is_jobs_debug_api_running = _is_jobs_debug_api_running
     context.is_component_search_service_running = _is_component_search_service_running
+    context.is_master_tag_list_service_running = _is_master_tag_list_service_running
+    context.wait_for_master_tag_list_service = _wait_for_master_tag_list_service
+    context.is_get_untagged_component_service_running = _is_get_untagged_component_service_running
+    context.wait_for_get_untagged_component_service = _wait_for_get_untagged_component_service
     context.send_json_file = _send_json_file
     context.wait_for_jobs_debug_api_service = _wait_for_jobs_debug_api_service
     context.wait_for_component_search_service = _wait_for_component_search_service
