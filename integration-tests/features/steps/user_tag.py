@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-"""Tests for API endpoints that for Crowdsourcing."""
+"""Tests For Crowdsourcing API end-points."""
 import requests
 
 from behave import given, then, when
@@ -24,7 +26,7 @@ def master_tag_list_url(context, ecosystem):
 
 
 def get_master_tag_list(context, ecosystem, use_token):
-    """Call API endpoint master tag list"""
+    """Call API endpoint master tag list."""
     if use_token:
         context.response = requests.get(master_tag_list_url(context, ecosystem),
                                         headers=authorization(context))
@@ -46,16 +48,16 @@ def fetch_master_tag_list_with_token(context, ecosystem):
 
 @then('I should get 401 status code as response for master tag list')
 def check_status_code_for_master_tag_list(context):
-    """Check master tag list require authorization tokens"""
+    """Check master tag list require authorization tokens."""
     assert context.response.status_code == 401
 
 
-@then('I should get json object contains tag_list which is a array of strings')
+@then('I should get json object contains tag_list which is an array of strings')
 def check_master_tag_list_response_json(context):
-    """Check that json response contains master tags"""
+    """Check that json response contains master tags."""
     json_data = context.response.json()
     assert 'ecosystem' in json_data
-    assert 'tag_list' is not any(json_data.get('tag_list', []))
+    assert any(json_data.get('tag_list', []))
 
 
 @given("get next untagged component api is running")
@@ -72,7 +74,7 @@ def get_next_untagged_component_url(context, ecosystem):
 
 
 def get_next_untagged_component(context, ecosystem, use_token):
-    """Call API endpoint get next untagged component"""
+    """Call API endpoint get next untagged component."""
     if use_token:
         context.response = requests.post(get_next_untagged_component_url(context, ecosystem),
                                          headers=authorization(context))
@@ -82,27 +84,27 @@ def get_next_untagged_component(context, ecosystem, use_token):
 
 @when("I access get next untagged component for ecosystem {ecosystem} without authorization token")
 def get_next_untagged_component_without_token(context, ecosystem):
-    """get next untagged component for given ecosystem REST API call."""
+    """Get next untagged component for given ecosystem REST API call."""
     get_next_untagged_component(context, ecosystem, False)
 
 
 @when("I access get next untagged component for ecosystem {ecosystem} with authorization token")
 def get_next_untagged_component_with_token(context, ecosystem):
-    """get next untagged component for given ecosystem REST API call."""
+    """Get next untagged component for given ecosystem REST API call."""
     get_next_untagged_component(context, ecosystem, True)
 
 
 @then("I should get 401 status code as response for next untagged component")
 def check_status_code_for_get_next_untagged_component(context):
-    """Check get next untagged component require authorization tokens"""
+    """Check get next untagged component require authorization tokens."""
     assert context.response.status_code == 401
 
 
 @then("I should get a 200 status code and component as {response} type")
 def check_get_next_untagged_component_response(context, response):
-    """Check that response contains the component"""
-    data = context.response.json()
+    """Check that response contains the component."""
     assert context.response.status_code == 200
+    data = context.response.json()
     assert data.__class__.__name__ == response
     if type(data) is str:  # for maven ecosystem
         assert len(data) != 0
@@ -114,17 +116,21 @@ def check_get_next_untagged_component_response(context, response):
 
 @when("I access set tags api endpoint without authorization token")
 def post_invalid_input_to_set_tags_without_token(context):
+    """Set tags REST API call."""
     input_json = {"ecosystem": "maven"}  # component and tags are missing.
     context.response = requests.post(context.coreapi_url + 'api/v1/set-tags',
                                      data=input_json)
 
 
 @then("I should get 401 status code as response for set tags api endpoint")
+def check_set_tags_api_response_without_token(context):
+    """Check set tags require authorization tokens."""
     assert context.response.status_code == 401
 
 
 @when("I post invalid json input to the set tags endpoint")
 def post_invalid_input_to_set_tags(context):
+    """Set tags REST API call with invalid json input."""
     input_json = {"ecosystem": "maven"}  # component and tags are missing.
     context.response = requests.post(context.coreapi_url + 'api/v1/set-tags',
                                      data=input_json,
@@ -133,4 +139,5 @@ def post_invalid_input_to_set_tags(context):
 
 @then("I should get a 400 status code as response")
 def check_response_for_invalid_input_to_set_tags(context):
+    """Set tags API call response status code."""
     assert context.response.status_code == 400

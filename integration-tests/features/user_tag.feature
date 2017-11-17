@@ -11,7 +11,7 @@ Feature: Crowdsourcing API
         When I acquire the authorization token
         Then I should get the proper authorization token
         When I access master tag list API point for ecosystem maven with authorization token
-        Then I should get json object contains tag_list which is a array of strings
+        Then I should get json object contains tag_list which is an array of strings
 
 
     Scenario: Check get next untagged component API entry point without authorization token
