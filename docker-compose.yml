@@ -121,6 +121,10 @@ services:
       POSTGRESQL_DATABASE: coreapi
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
       F8A_UNCLOUDED_MODE: 'true'
+      BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
+      BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
+      # Provide the number of end-users involved in tagging
+      CROWDSOURCE_USER_COUNT: 2
       #AWS_S3_ACCESS_KEY_ID: ''
       #AWS_S3_SECRET_ACCESS_KEY: ''
       # Provide credentials here if you want to run on Amazon SQS instead of RabbitMQ, don't forget to supply
