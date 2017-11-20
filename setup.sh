@@ -36,8 +36,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$repos" ]]; then
-  repos="worker server jobs pgbouncer data-model stack-analysis \
-         firehose-fetcher"
+  repos="worker server jobs pgbouncer data-model"
 fi
 
 for repo in $repos; do
