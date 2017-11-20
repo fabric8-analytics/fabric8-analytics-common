@@ -12,6 +12,7 @@ features/user_feedback.feature
 #features/stack_analyses_v2.feature
 features/selfcheck.feature
 #features/regression_tests.feature
+features/user_tag.feature
 
 # This is workaround to temporary disable integration tests
 #features/disabled.feature
