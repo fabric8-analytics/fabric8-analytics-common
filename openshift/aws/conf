@@ -1,4 +1,0 @@
-export PTH_ENV=`oc whoami`
-export EC2_URL=https://ec2.us-east-1.amazonaws.com
-export AWS_DEFAULT_REGION=us-east-1
-
