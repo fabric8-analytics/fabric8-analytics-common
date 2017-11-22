@@ -25,5 +25,5 @@ export RDS_INSTANCE_CLASS='db.t2.micro'
 export RDS_DBNAME='postgres'
 export RDS_DBADMIN='coreapi'
 export RDS_STORAGE=5
-export RDS_PASSWORD="$(date +%s | sha256sum | base64 | head -c 32 ;)"
+export RDS_PASSWORD=''
 export RDS_SUBNET_GROUP_NAME='dv peering az'

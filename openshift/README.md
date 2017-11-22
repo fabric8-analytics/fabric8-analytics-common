@@ -10,6 +10,13 @@ To configure your developemnt deployment copy env-template.sh
 
 Update variables with your AWS,Openshift and Github credentials.
 
+### Generate RDS pasword
+
+To generate password you will require tool named pwgen.
+`pwgen -1cs`
+
+Use generated password to update RDS_PASSWORD value
+
 ## Deploy fabric8-analytics services
 Just run the deploy script and enjoy!
 
