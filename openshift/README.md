@@ -13,7 +13,7 @@ Update variables with your AWS,Openshift and Github credentials.
 ### Generate RDS pasword
 
 To generate password you will require tool named pwgen.
-`pwgen -1cs`
+`pwgen -1cs 32`
 
 Use generated password to update RDS_PASSWORD value
 
