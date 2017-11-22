@@ -139,8 +139,8 @@ function get_rds_instance_info() {
 
 templates_dir="${here}/templates"
 templates="fabric8-analytics-jobs fabric8-analytics-server fabric8-analytics-data-model 
-           fabric8-analytics-worker fabric8-analytics-pgbouncer fabric8-analytics-recommender 
-           gremlin-docker anitya-docker fabric8-analytics-scaler fabric8-analytics-firehose-fetcher
+           fabric8-analytics-worker fabric8-analytics-pgbouncer gremlin-docker anitya-docker 
+           fabric8-analytics-scaler fabric8-analytics-firehose-fetcher 
            fabric8-analytics-license-analysis fabric8-analytics-stack-analysis"
 
 openshift_login
@@ -157,7 +157,6 @@ done
 oc_process_apply ${templates_dir}/pgbouncer.yaml
 oc_process_apply ${templates_dir}/gremlin-docker.yaml "-p CHANNELIZER=http -p REST_VALUE=1 -p IMAGE_TAG=latest"
 oc_process_apply ${templates_dir}/anitya-docker.yaml
-oc_process_apply ${templates_dir}/recommender.yaml
 oc_process_apply ${templates_dir}/data-model.yaml
 oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=ingestion -p WORKER_EXCLUDE_QUEUES=GraphImporterTask"
 oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=ingestion -p WORKER_INCLUDE_QUEUES=GraphImporterTask -p WORKER_NAME_SUFFIX=-graph-import"
