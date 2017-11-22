@@ -200,7 +200,7 @@ def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to
         wait_for_all_threads(threads)
         print("Done")
 
-        values = sum([q.get() for t in threads], [])
+        values = [q.get()[0][0]["delta"] for t in threads]
         print("values")
         print(len(values))
         print(values)
@@ -383,7 +383,7 @@ def export_measurements_and_job_durations_into_csv(csv_writer, measurements,
 
 
 def export_sequenced_benchmark_into_csv(name, measurements, compute_stack_analysis_jobs_durations,
-                                        stack_analysis_jobs_durations):
+                                        stack_analysis_jobs_durations=None):
     """Export results of sequenced benchmark into the CSV file."""
     with open(name + ".csv", "w") as csvfile:
         csv_writer = csv.writer(csvfile)
@@ -429,15 +429,18 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
             title = "{t}".format(t=title_prefix)
             name = "{n}".format(n=name_prefix)
         print("  " + title)
+
         values, debug = function(api, s3, measurement_count, pause)
-        graph.generate_wait_times_graph(title, name, values)
+        deltas = [value["delta"] for value in values]
+
+        graph.generate_wait_times_graph(title, name, deltas)
         print("Breathe (statistic graph)...")
         time.sleep(BREATHE_PAUSE)
 
-        min_times.append(min(values))
-        max_times.append(max(values))
-        avg_times.append(sum(values) / len(values))
-        measurements.extend(values)
+        min_times.append(min(deltas))
+        max_times.append(max(deltas))
+        avg_times.append(sum(deltas) / len(deltas))
+        measurements.extend(deltas)
 
         if compute_stack_analysis_jobs_durations:
             for job_name in STACK_ANALYSIS_JOB_NAMES:
@@ -464,7 +467,8 @@ def run_sequenced_benchmark(api, s3, title_prefix, name_prefix, function,
     graph.generate_timing_statistic_graph(title, min_max_avg_name,
                                           pauses, min_times, max_times, avg_times)
 
-    export_sequenced_benchmark_into_csv(name, measurements, compute_stack_analysis_jobs_durations,
+    export_sequenced_benchmark_into_csv(name, measurements,
+                                        compute_stack_analysis_jobs_durations,
                                         stack_analysis_jobs_durations)
 
 
