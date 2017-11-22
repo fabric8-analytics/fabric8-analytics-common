@@ -59,7 +59,7 @@ if [ "${AWS_SECRET_ACCESS_KEY}" == "Not set" ]; then
 fi
 
 function generate_and_deploy_config() {
-  oc process -p DEPLOYMENT_PREFIX="${OC_PROJECT}" \
+  oc process -p DEPLOYMENT_PREFIX="$(oc whoami)" \
              -p KEYCLOAK_URL="${KEYCLOAK_URL}" \
              -f ${here}/config-template.yaml > ${here}/config.yaml
   oc apply -f config.yaml
