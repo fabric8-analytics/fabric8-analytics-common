@@ -15,7 +15,7 @@ export GITHUB_API_TOKENS='Not set'
 export GITHUB_OAUTH_CONSUMER_KEY='Not set'
 export GITHUB_OAUTH_CONSUMER_SECRET='Not set'
 
-
+export KEYCLOAK_URL='https://sso.openshift.io'
 export FLASK_APP_SECRET_KEY='Not set'
 
 #AWS RDS configuration variables are use to provision RDS instance
