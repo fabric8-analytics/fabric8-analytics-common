@@ -1,6 +1,7 @@
 """Module with functions called to perform various benchmarks."""
 
 import time
+import datetime
 
 
 def measure(function_to_call, check_function, measurement_count, pause_time, thread_id, s3=None):
@@ -13,6 +14,8 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
     debug = []
     for i in range(measurement_count):
         t1 = time.time()
+        started_at = datetime.datetime.utcnow()
+
         if s3 is None:
             retval = function_to_call(i)
         else:
@@ -25,6 +28,8 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
             assert check_function(retval)
 
         t2 = time.time()
+        finished_at = datetime.datetime.utcnow()
+
         delta = t2 - t1
         if thread_id is not None:
             print("    thread: #{t}    call {i}/{m}    {delta}".format(t=thread_id,
@@ -33,7 +38,12 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
                                                                        m=measurement_count))
         else:
             print("    #{i}    {delta}".format(i=i + 1, delta=delta))
-        measurements.append(delta)
+
+        measurements.append({
+            "measurement_number": i,
+            "started_at": started_at,
+            "finished_at": finished_at,
+            "delta": delta})
 
         # we can store debug data taken from the stack analysis
         if "debug" in retval:
@@ -65,16 +75,16 @@ def stack_analysis_benchmark(core_api, measurement_count, pause_time, thread_id=
                    measurement_count, pause_time, thread_id)
 
 
-def component_analysis(core_api, s3, measurement_count, pause_time,
-                       should_exist,
-                       thread_id=None,
-                       ecosystem=None, component=None, version=None):
+def component_analysis_benchmark(core_api, s3, measurement_count, pause_time,
+                                 should_exist,
+                                 thread_id=None,
+                                 ecosystem=None, component=None, version=None):
     """Measure server and worker modules by starting component analysis."""
     expected_code = 200 if should_exist else 404
     return measure(lambda i, s3: core_api.component_analysis(thread_id, i,
                                                              ecosystem, component, version),
-                   lambda retval: retval["result"] == expected_code, measurement_count, pause_time,
-                   thread_id, s3)
+                   lambda retval: retval["result"] == expected_code,
+                   measurement_count, pause_time, thread_id, s3)
 
 
 def component_analysis_flow_scheduling(jobs_api, s3, measurement_count, pause_time,
@@ -93,25 +103,26 @@ def core_api_benchmark_thread(core_api, measurement_count, pause_time, q, thread
     q.put(measurements)
 
 
-def component_analysis_read_thread_known_component(core_api, s3, measurement_count, pause_time, q,
-                                                   thread_id):
+def component_analysis_read_thread_known_component(core_api, s3, measurement_count, pause_time,
+                                                   q, thread_id):
     """Perform component analysis read in current thread and put results into the provided queue.
 
     Component analysis is performed for known comnonent.
     """
-    measurements = component_analysis(core_api, s3, measurement_count, pause_time, True,
-                                      thread_id, "pypi", "clojure_py", "0.2.4")
+    measurements = component_analysis_benchmark(core_api, s3, measurement_count, pause_time, True,
+                                                thread_id, "pypi", "clojure_py", "0.2.4")
     q.put(measurements)
 
 
-def component_analysis_read_thread_unknown_component(core_api, s3, measurement_count, pause_time, q,
-                                                     thread_id):
+def component_analysis_read_thread_unknown_component(core_api, s3, measurement_count, pause_time,
+                                                     q, thread_id):
     """Perform component analysis read in current thread and put results into the provided queue.
 
     Component analysis is performed for unknown comnonent.
     """
-    measurements = component_analysis(core_api, s3, measurement_count, pause_time, False,
-                                      thread_id, "pypi", "non_existing_component", "9.8.7")
+    measurements = component_analysis_benchmark(core_api, s3, measurement_count, pause_time, False,
+                                                thread_id,
+                                                "pypi", "non_existing_component", "9.8.7")
     q.put(measurements)
 
 

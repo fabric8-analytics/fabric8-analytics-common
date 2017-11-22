@@ -170,6 +170,10 @@ class CoreApi(Api):
                                                                       c=component,
                                                                       v=version))
 
+    def read_component_analysis_debug_data(self, thread_id="", i=0):
+        """Read the stack analysis debug data via API."""
+        return []
+
     def component_analysis(self, thread_id=None, i=0,
                            ecosystem=None, component=None, version=None):
         """Start the component analysis and check the status code."""
@@ -178,4 +182,7 @@ class CoreApi(Api):
         if self._dump_json_responses:
             CoreApi.dump_component_analysis(ecosystem, component, version, response.json())
         status_code = response.status_code
-        return {"result": status_code}
+        debug = self.read_component_analysis_debug_data(thread_id, i)
+        # return both component analysis status and debug data (durations) as well
+        return {"result": status_code,
+                "debug": debug}
