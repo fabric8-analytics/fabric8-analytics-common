@@ -380,6 +380,10 @@ def _parse_int_env_var(env_var_name):
         return None
 
 
+def _read_url_from_env_var(env_var_name):
+    return _add_slash(os.environ.get(env_var_name, None))
+
+
 def before_all(context):
     """Perform the setup before the first event."""
     context.config.setup_logging()
@@ -426,9 +430,9 @@ def before_all(context):
         'coreapi_worker_image',
         'registry.devshift.net/bayesian/cucos-worker')
 
-    coreapi_url = _add_slash(os.environ.get('F8A_API_URL', None))
-    jobs_api_url = _add_slash(os.environ.get('F8A_JOB_API_URL', None))
-    anitya_url = _add_slash(os.environ.get('F8A_ANITYA_API_URL', None))
+    coreapi_url = _read_url_from_env_var('F8A_API_URL')
+    jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
+    anitya_url = _read_url_from_env_var('F8A_ANITYA_API_URL')
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
 
