@@ -23,6 +23,7 @@ _API_ENDPOINT = 'api/v1'
 _FABRIC8_ANALYTICS_SERVER = 32000
 _FABRIC8_ANALYTICS_JOBS = 34000
 _ANITYA_SERVICE = 31005
+_FABRIC8_GREMLIN_SERVICE = 80
 
 # Endpoint for jobs debug API
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
@@ -256,10 +257,11 @@ def _restart_system(context, wait_for_server=60):
                             format(c=' '.join(e.cmd), o=e.output))
 
 
-def _is_api_running(url):
+def _is_api_running(url, accepted_codes=None):
+    accepted_codes = accepted_codes or {200, 401}
     try:
         res = requests.get(url)
-        if res.status_code in {200, 401}:
+        if res.status_code in accepted_codes:
             return True
     except requests.exceptions.ConnectionError:
         pass
@@ -278,7 +280,8 @@ def _is_api_running_post(url):
 
 def _is_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT) and \
-           _is_api_running(context.jobs_api_url + _API_ENDPOINT)
+           _is_api_running(context.jobs_api_url + _API_ENDPOINT) and \
+           _is_api_running(context.gremlin_url, {400})
 
 
 def _is_jobs_debug_api_running(context):
@@ -380,6 +383,10 @@ def _parse_int_env_var(env_var_name):
         return None
 
 
+def _read_url_from_env_var(env_var_name):
+    return _add_slash(os.environ.get(env_var_name, None))
+
+
 def before_all(context):
     """Perform the setup before the first event."""
     context.config.setup_logging()
@@ -426,9 +433,10 @@ def before_all(context):
         'coreapi_worker_image',
         'registry.devshift.net/bayesian/cucos-worker')
 
-    coreapi_url = _add_slash(os.environ.get('F8A_API_URL', None))
-    jobs_api_url = _add_slash(os.environ.get('F8A_JOB_API_URL', None))
-    anitya_url = _add_slash(os.environ.get('F8A_ANITYA_API_URL', None))
+    coreapi_url = _read_url_from_env_var('F8A_API_URL')
+    jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
+    anitya_url = _read_url_from_env_var('F8A_ANITYA_API_URL')
+    gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
 
@@ -447,6 +455,9 @@ def before_all(context):
 
     context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url',
                                                         _FABRIC8_ANALYTICS_JOBS)
+
+    context.gremlin_url = gremlin_url or _get_api_url(context, 'gremlin_url',
+                                                      _FABRIC8_GREMLIN_SERVICE)
 
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
