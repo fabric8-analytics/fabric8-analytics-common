@@ -23,6 +23,7 @@ _API_ENDPOINT = 'api/v1'
 _FABRIC8_ANALYTICS_SERVER = 32000
 _FABRIC8_ANALYTICS_JOBS = 34000
 _ANITYA_SERVICE = 31005
+_GREMLIN_SERVICE = 80
 
 # Endpoint for jobs debug API
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
@@ -278,7 +279,8 @@ def _is_api_running_post(url):
 
 def _is_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT) and \
-           _is_api_running(context.jobs_api_url + _API_ENDPOINT)
+           _is_api_running(context.jobs_api_url + _API_ENDPOINT) and \
+           _is_api_running(context.gremlin_url)
 
 
 def _is_jobs_debug_api_running(context):
@@ -433,6 +435,7 @@ def before_all(context):
     coreapi_url = _read_url_from_env_var('F8A_API_URL')
     jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
     anitya_url = _read_url_from_env_var('F8A_ANITYA_API_URL')
+    gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
 
@@ -451,6 +454,9 @@ def before_all(context):
 
     context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url',
                                                         _FABRIC8_ANALYTICS_JOBS)
+
+    context.gremlin_url = gremlin_url or _get_api_url(context, 'gremlin_url',
+                                                      _FABRIC8_SERVICE)
 
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
