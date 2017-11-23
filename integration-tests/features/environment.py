@@ -23,7 +23,7 @@ _API_ENDPOINT = 'api/v1'
 _FABRIC8_ANALYTICS_SERVER = 32000
 _FABRIC8_ANALYTICS_JOBS = 34000
 _ANITYA_SERVICE = 31005
-_GREMLIN_SERVICE = 80
+_FABRIC8_GREMLIN_SERVICE = 80
 
 # Endpoint for jobs debug API
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
@@ -257,10 +257,11 @@ def _restart_system(context, wait_for_server=60):
                             format(c=' '.join(e.cmd), o=e.output))
 
 
-def _is_api_running(url):
+def _is_api_running(url, accepted_codes=None):
+    accepted_codes = accepted_codes or {200, 401}
     try:
         res = requests.get(url)
-        if res.status_code in {200, 401}:
+        if res.status_code in accepted_codes:
             return True
     except requests.exceptions.ConnectionError:
         pass
@@ -280,7 +281,7 @@ def _is_api_running_post(url):
 def _is_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT) and \
            _is_api_running(context.jobs_api_url + _API_ENDPOINT) and \
-           _is_api_running(context.gremlin_url)
+           _is_api_running(context.gremlin_url, {400})
 
 
 def _is_jobs_debug_api_running(context):
@@ -456,7 +457,7 @@ def before_all(context):
                                                         _FABRIC8_ANALYTICS_JOBS)
 
     context.gremlin_url = gremlin_url or _get_api_url(context, 'gremlin_url',
-                                                      _FABRIC8_SERVICE)
+                                                      _FABRIC8_GREMLIN_SERVICE)
 
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
