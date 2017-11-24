@@ -13,3 +13,22 @@ Feature: Check the Gremlin instance and its behaviour
      And I should get valid Gremlin response
      And I should get 0 vertexes
 
+  Scenario: Basic check for Gremlin ability to find vertexes for given ecosystems
+    Given System is running
+    When I ask Gremlin to find number of vertexes for the ecosystem npm
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find at least one such vertex
+    When I ask Gremlin to find number of vertexes for the ecosystem go
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find at least one such vertex
+    When I ask Gremlin to find number of vertexes for the ecosystem pypi
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find at least one such vertex
+    When I ask Gremlin to find number of vertexes for the ecosystem maven
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find at least one such vertex
+
