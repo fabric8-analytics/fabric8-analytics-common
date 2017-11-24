@@ -1,5 +1,6 @@
 """Utility functions to check attributes returned in API responses and read from the AWS S3."""
 import datetime
+import re
 
 
 def check_attribute_presence(node, attribute_name):
@@ -27,6 +28,17 @@ def check_and_get_attribute(node, attribute_name):
     """Check the attribute presence and if the attribute is found, return its value."""
     check_attribute_presence(node, attribute_name)
     return node[attribute_name]
+
+
+def check_uuid(uuid):
+    """Check if the string contains a proper UUID.
+
+    Supported format: 71769af6-0a39-4242-94be-1f84f04c8a56
+    """
+    regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}\Z',
+                       re.I)
+    match = regex.match(uuid)
+    return bool(match)
 
 
 def check_timestamp(timestamp):
