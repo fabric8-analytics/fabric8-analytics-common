@@ -38,6 +38,24 @@ def check_timestamp_in_json_response(context, attribute):
     check_timestamp(timestamp)
 
 
+def check_request_id_value_in_json_response(context, attribute_name):
+    """Check the request ID attribute in the JSON response.
+
+    Check if ID is stored in a format like: '71769af6-0a39-4242-94be-1f84f04c8a56'
+    """
+    response = context.response
+    assert response is not None
+
+    json_data = response.json()
+    assert json_data is not None
+
+    check_attribute_presence(json_data, attribute_name)
+    id_attribute = json_data[attribute_name]
+
+    assert id_attribute is not None
+    assert check_uuid(id_attribute)
+
+
 def check_id_value_in_json_response(context, id_attribute_name):
     """Check the ID attribute in the JSON response.
 
