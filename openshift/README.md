@@ -23,7 +23,7 @@ Just run the deploy script and enjoy!
 `$./deploy.sh
 
 ## Deploy your changes to dev-cluster
-To deploy your changes, open PR from your fork to the upstream repository. 
+To deploy your changes, open a PR from your fork to the upstream repository. 
 CentosCI will build your image and comment on the PR with an image name and tag.
 Your image is available in the registry: docker pull registry.devshift.net/fabric8-analytics/worker-scaler:SNAPSHOT-PR-25
 
