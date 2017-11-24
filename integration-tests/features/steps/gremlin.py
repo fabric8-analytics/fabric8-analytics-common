@@ -13,6 +13,13 @@ def gremlin_url_access(context):
     post_query(context, "")
 
 
+@when('I ask Gremlin to find all vertexes having property {name} set to {value}')
+def gremlin_search_vertexes(context, name, value):
+    """Perform simple query to the Gremlin for all vertexes having the specified property."""
+    query = 'g.V().has("{name}", "{value}")'.format(name=name, value=value)
+    post_query(context, query)
+
+
 def post_query(context, query):
     """Post the already constructed query to the Gremlin."""
     data = {"gremlin": query}
@@ -29,6 +36,24 @@ def valid_gremlin_response(context):
 
     check_gremlin_status_node(data)
     check_gremlin_result_node(data)
+
+
+@then('I should get zero vertexes')
+@then('I should get {num:d} vertexes')
+def check_vertexes_cound(context, num=0):
+    """Check the number of vertexes returned in Gremlin response."""
+    data, meta = get_results_from_gremlin(context)
+    vertexes = len(data)
+    assert vertexes == num, "Expected %d vertexes, but got %d instead" % (num, vertexes)
+
+
+def get_results_from_gremlin(context):
+    """Try to take the results from the Gremlin response."""
+    data = context.response.json()
+    result = check_and_get_attribute(data, "result")
+    data = check_and_get_attribute(result, "data")
+    meta = check_and_get_attribute(result, "meta")
+    return data, meta
 
 
 def check_gremlin_status_node(data):
