@@ -20,4 +20,11 @@ Use generated password to update RDS_PASSWORD value
 ## Deploy fabric8-analytics services
 Just run the deploy script and enjoy!
 
-`$./deploy.sh`
+`$./deploy.sh
+
+## Deploy your changes to dev-cluster
+To deploy your changes, open PR from your fork to upstream repository. 
+CentosCI will build you image and comment on the PR with image name and tag.
+Your image is available in the registry: docker pull registry.devshift.net/fabric8-analytics/worker-scaler:SNAPSHOT-PR-25
+
+To update you dev deployment use [oc edit](https://docs.openshift.com/container-platform/3.4/cli_reference/basic_cli_operations.html#edit) from commandline or editor in web interface.
