@@ -20,6 +20,13 @@ def gremlin_search_vertexes(context, name, value):
     post_query(context, query)
 
 
+@when('I ask Gremlin to find number of vertexes for the ecosystem {ecosystem}')
+def gremlin_search_vertexes_for_the_ecosystem(context, ecosystem):
+    """Perform simple query to the Gremlin for all vertexes having the specified property."""
+    query = 'g.V().has("pecosystem", "{ecosystem}").count()'.format(ecosystem=ecosystem)
+    post_query(context, query)
+
+
 def post_query(context, query):
     """Post the already constructed query to the Gremlin."""
     data = {"gremlin": query}
@@ -45,6 +52,14 @@ def check_vertexes_cound(context, num=0):
     data, meta = get_results_from_gremlin(context)
     vertexes = len(data)
     assert vertexes == num, "Expected %d vertexes, but got %d instead" % (num, vertexes)
+
+
+@then('I should find at least one such vertex')
+def check_vertexes_cound(context):
+    """Check the number of vertexes returned in Gremlin response."""
+    data, meta = get_results_from_gremlin(context)
+    vertexes = len(data)
+    assert vertexes > 0, "Expected at least one vertex, but got zero instead" % vertexes
 
 
 def get_results_from_gremlin(context):
