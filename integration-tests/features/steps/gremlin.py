@@ -28,6 +28,21 @@ def gremlin_search_vertexes_for_the_ecosystem(context, ecosystem):
     post_query(context, query)
 
 
+@when('I ask Gremlin to find the package {package:S} in the ecosystem {ecosystem}')
+def gremlin_find_package(context, package, ecosystem):
+    """Try to find the package in the selected ecosystem."""
+    query = Query().has("pecosystem", ecosystem).has("ppackage", package)
+    post_query(context, query)
+
+
+@when('I ask Gremlin to find the package {package:S} version {version} in the ecosystem '
+      '{ecosystem}')
+def gremlin_find_package_version(context, package, version, ecosystem):
+    """Try to find the package with version in the selected ecosystem."""
+    query = Query().has("pecosystem", ecosystem).has("ppackage", package).has("version", version)
+    post_query(context, query)
+
+
 def post_query(context, query):
     """Post the already constructed query to the Gremlin."""
     data = {"gremlin": str(query)}
