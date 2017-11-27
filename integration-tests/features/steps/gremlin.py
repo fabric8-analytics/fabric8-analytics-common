@@ -5,6 +5,7 @@ import requests
 from behave import given, then, when
 from urllib.parse import urljoin
 from src.json_utils import *
+from src.graph_db_query import Query
 
 
 @when('I access Gremlin API')
@@ -16,20 +17,35 @@ def gremlin_url_access(context):
 @when('I ask Gremlin to find all vertexes having property {name} set to {value}')
 def gremlin_search_vertexes(context, name, value):
     """Perform simple query to the Gremlin for all vertexes having the specified property."""
-    query = 'g.V().has("{name}", "{value}")'.format(name=name, value=value)
+    query = Query().has("name", value)
     post_query(context, query)
 
 
 @when('I ask Gremlin to find number of vertexes for the ecosystem {ecosystem}')
 def gremlin_search_vertexes_for_the_ecosystem(context, ecosystem):
     """Perform simple query to the Gremlin for all vertexes having the specified property."""
-    query = 'g.V().has("pecosystem", "{ecosystem}").count()'.format(ecosystem=ecosystem)
+    query = Query().has("pecosystem", ecosystem).count()
+    post_query(context, query)
+
+
+@when('I ask Gremlin to find the package {package:S} in the ecosystem {ecosystem}')
+def gremlin_find_package(context, package, ecosystem):
+    """Try to find the package in the selected ecosystem."""
+    query = Query().has("pecosystem", ecosystem).has("ppackage", package)
+    post_query(context, query)
+
+
+@when('I ask Gremlin to find the package {package:S} version {version} in the ecosystem '
+      '{ecosystem}')
+def gremlin_find_package_version(context, package, version, ecosystem):
+    """Try to find the package with version in the selected ecosystem."""
+    query = Query().has("pecosystem", ecosystem).has("ppackage", package).has("version", version)
     post_query(context, query)
 
 
 def post_query(context, query):
     """Post the already constructed query to the Gremlin."""
-    data = {"gremlin": query}
+    data = {"gremlin": str(query)}
     context.response = requests.post(context.gremlin_url, json=data)
 
 
