@@ -638,7 +638,7 @@ def check_stack_analysis_id(context):
 
 @then('I should find matching topic lists for all {key} components')
 def validate_topic_list(context, key):
-    """Verify topics' list for stack dependencies and recommended components."""
+    """Verify topics' list for stack dependencies with the input stack topics."""
     json_data = context.response.json()
     path = "result"
     manifest_results = get_value_using_path(json_data, path)
@@ -651,5 +651,5 @@ def validate_topic_list(context, key):
         deps = get_value_using_path(result, key)
 
         for dep in deps:
-            assert len(dep['topic_list']) == len(input_stack_topics[dep['name']])\
-                and sorted(dep['topic_list']) == sorted(input_stack_topics[dep['name']])
+            assert len(dep['topic_list']) == len(input_stack_topics[dep['name']])
+            assert sorted(dep['topic_list']) == sorted(input_stack_topics[dep['name']])
