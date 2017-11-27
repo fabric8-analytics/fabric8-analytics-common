@@ -34,6 +34,7 @@ Feature: Stack analysis v2 API Minimal
     Then I should find that alternate components replace user components
     Then I should find the security node for all dependencies
     Then I should find the security node for all alternate components
+    When I wait 40 seconds
     Then I should find matching topic lists for all user_stack_info/analyzed_dependencies components
     Then I should find matching topic lists for all recommendation/alternate components
     Then I should find matching topic lists for all recommendation/companion components

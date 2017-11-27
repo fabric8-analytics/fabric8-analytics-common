@@ -635,10 +635,10 @@ def check_stack_analysis_id(context):
     assert request_id is not None
     assert previous_id == request_id
 
+
 @then('I should find matching topic lists for all {key} components')
 def validate_topic_list(context, key):
-    """verify whether or not dependencies and recommended dependencies have
-    appropriate topic lists associated with those"""
+    """Verify topics' list for stack dependencies and recommended components."""
     json_data = context.response.json()
     path = "result"
     manifest_results = get_value_using_path(json_data, path)
@@ -653,5 +653,3 @@ def validate_topic_list(context, key):
         for dep in deps:
             assert len(dep['topic_list']) == len(input_stack_topics[dep['name']])\
                 and sorted(dep['topic_list']) == sorted(input_stack_topics[dep['name']])
-
-
