@@ -338,6 +338,15 @@ def verify_stack_level_field_presence(context, field_name):
     assert user_stack_info.get(field_name, None) is not None
 
 
+@then('I should find {field_name} field in recommendation')
+def verify_stack_level_field_presence(context, field_name):
+    """Check that the given field can be found in the recommendation."""
+    json_data = context.response.json()
+    path = 'result/0/recommendation'
+    recommendation = get_value_using_path(json_data, path)
+    assert recommendation.get(field_name, None) is not None
+
+
 def replaces_component(replacement, component, version):
     """Check the component replacement info in the stack analysis."""
     assert "replaces" in replacement
@@ -634,3 +643,22 @@ def check_stack_analysis_id(context):
     assert previous_id is not None
     assert request_id is not None
     assert previous_id == request_id
+
+
+@then('I should find matching topic lists for all {key} components')
+def validate_topic_list(context, key):
+    """Verify topics' list for stack dependencies with the input stack topics."""
+    json_data = context.response.json()
+    path = "result"
+    manifest_results = get_value_using_path(json_data, path)
+
+    # loop through results for each of the manifest files
+    for result in manifest_results:
+        path = "recommendation/input_stack_topics"
+        input_stack_topics = get_value_using_path(result, path)
+
+        deps = get_value_using_path(result, key)
+
+        for dep in deps:
+            assert len(dep['topic_list']) == len(input_stack_topics[dep['name']])
+            assert sorted(dep['topic_list']) == sorted(input_stack_topics[dep['name']])
