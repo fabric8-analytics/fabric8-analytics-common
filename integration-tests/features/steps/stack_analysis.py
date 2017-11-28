@@ -338,6 +338,15 @@ def verify_stack_level_field_presence(context, field_name):
     assert user_stack_info.get(field_name, None) is not None
 
 
+@then('I should find {field_name} field in recommendation')
+def verify_stack_level_field_presence(context, field_name):
+    """Check that the given field can be found in the recommendation."""
+    json_data = context.response.json()
+    path = 'result/0/recommendation'
+    recommendation = get_value_using_path(json_data, path)
+    assert recommendation.get(field_name, None) is not None
+
+
 def replaces_component(replacement, component, version):
     """Check the component replacement info in the stack analysis."""
     assert "replaces" in replacement

@@ -34,7 +34,7 @@ Feature: Stack analysis v2 API Minimal
     Then I should find that alternate components replace user components
     Then I should find the security node for all dependencies
     Then I should find the security node for all alternate components
-    When I wait 60 seconds
+    Then I should find input_stack_topics field in recommendation
     Then I should find matching topic lists for all user_stack_info/analyzed_dependencies components
 
   Scenario: Check that the stack-analyses returns a valid response for python ecosystem
