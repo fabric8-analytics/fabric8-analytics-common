@@ -114,3 +114,66 @@ def check_gremlin_result_node(data):
 
     assert type(data) is list
     assert type(meta) is dict
+
+
+@then('I should find the following properties ({properties}) in all found packages')
+def check_properties_in_results(context, properties):
+    """Check if all given properties can be found in all packages returned by Gremlin."""
+    data, meta = get_results_from_gremlin(context)
+
+    expected_properties = split_comma_separated_list(properties)
+
+    # we need to check if all expected properties are really returned by the Gremlin
+    for package in data:
+        check_attribute_presence(package, "properties")
+        properties = package["properties"].keys()
+
+        assert properties is not None
+
+        for expected_property in expected_properties:
+            if expected_property not in properties:
+                raise Exception("Required property could not be found: {prop}".format(
+                                prop=expected_property))
+
+
+@then('I should not find any property apart from ({properties}) in all found packages')
+def check_unexpected_properties_in_results(context, properties):
+    """Check if only given optional properties can be found in all packages returned by Gremlin."""
+    data, meta = get_results_from_gremlin(context)
+
+    expected_properties = split_comma_separated_list(properties)
+
+    for package in data:
+        check_attribute_presence(package, "properties")
+        properties = package["properties"].keys()
+
+        assert properties is not None
+
+        for prop in properties:
+            # check that the property is contained in a list of expected properties
+            if prop not in expected_properties:
+                raise Exception("Unexpected property has been found: {prop}".format(
+                                prop=prop))
+
+
+@then('I should find that the {property_name} property is set to {expected_value} in the package '
+      'properties')
+def check_property_value(context, property_name, expected_value):
+    """Check if the property is set to expected value for the first package returned by Gremlin."""
+    data, meta = get_results_from_gremlin(context)
+    package = data[0]
+    properties = check_and_get_attribute(package, "properties")
+
+    # try to retrieve list of id+value pairs
+    id_values = check_and_get_attribute(properties, property_name)
+
+    # we expect list with one value only
+    assert type(id_values) is list and len(id_values) == 1
+    id_value = id_values[0]
+
+    # check the content of 'value' attribute
+    value = check_and_get_attribute(id_value, "value")
+
+    assert value == expected_value, ("The property {p} value is set to '{value}', not to "
+                                     "'{expected_value}").format(p=property_name, value=value,
+                                                                 expected_value=expected_value)
