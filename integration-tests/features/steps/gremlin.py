@@ -5,7 +5,7 @@ import requests
 from behave import given, then, when
 from urllib.parse import urljoin
 from src.json_utils import *
-from src.utils import *
+from src.utils import split_comma_separated_list
 from src.graph_db_query import Query
 
 
@@ -47,7 +47,7 @@ def gremlin_find_package_version(context, package, version, ecosystem):
 @when('I ask Gremlin to find the package {package:S} in the ecosystem {ecosystem}')
 def gremlin_find_package(context, package, ecosystem):
     """Try to find the package in the selected ecosystem."""
-    query = Query().has("ecosystem", ecosystem).has("name", package).has("vertex_label", "Package")
+    query = Query().has("ecosystem", ecosystem).has("name", package)
     post_query(context, query)
 
 
