@@ -19,7 +19,7 @@ class Query:
         return self
 
     def valueMap(self):
-        """Append a 'valueMap() clause to the query."""
+        """Append a clause to retrieve map of values to the query."""
         self.query += '.valueMap()'
         return self
 
