@@ -129,19 +129,20 @@ def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
                             "Component analysis for known component",
                             "component_analysis_sequenced_calls_known_component",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.component_analysis(api, s3,
-                                                              measurement_count,
-                                                              0, True, None, "pypi",
-                                                              "clojure_py", "0.2.4"),
+                                benchmarks.component_analysis_benchmark(api, s3,
+                                                                        measurement_count,
+                                                                        0, True, None, "pypi",
+                                                                        "clojure_py", "0.2.4"),
                             [1], SEQUENCED_BENCHMARKS_DEFAULT_COUNT)
     run_sequenced_benchmark(core_api, s3,
                             "Component analysis for unknown component",
                             "component_analysis_sequenced_calls_unknown_component",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.component_analysis(api, s3,
-                                                              measurement_count,
-                                                              0, False, None, "pypi",
-                                                              "non_existing_component", "9.8.7"),
+                                benchmarks.component_analysis_benchmark(api, s3,
+                                                                        measurement_count,
+                                                                        0, False, None, "pypi",
+                                                                        "non_existing_component",
+                                                                        "9.8.7"),
                             [1], SEQUENCED_BENCHMARKS_DEFAULT_COUNT)
 
 
@@ -548,7 +549,7 @@ def run_core_api_concurrent_benchmark(core_api):
 
 
 def run_benchmarks(core_api, jobs_api, s3, run_stack_analysis, run_component_analysis,
-                   run_parallel_tests):
+                   run_parallel_tests, thread_max):
     """Start the selected benchmarks."""
     if run_stack_analysis:
         run_stack_analysis_sequenced_calls_benchmark(core_api, s3)
@@ -559,19 +560,19 @@ def run_benchmarks(core_api, jobs_api, s3, run_stack_analysis, run_component_ana
             run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis",
                                               "stack_analysis_parallel_calls",
                                               benchmarks.stack_analysis_thread,
-                                              [1, 2, 5, 10, 15, 20])
+                                              [thread_max])
         if run_component_analysis:
             run_analysis_concurrent_benchmark(core_api, s3, "Component analysis known component",
                                               "component_analysis_parallel_calls_known_component",
                                               benchmarks.
                                               component_analysis_read_thread_known_component,
-                                              [1, 2, 5, 10, 15, 20])
+                                              [thread_max])
 
             run_analysis_concurrent_benchmark(core_api, s3, "Component analysis unknown component",
                                               "component_analysis_parallel_calls_unknown_component",
                                               benchmarks.
                                               component_analysis_read_thread_unknown_component,
-                                              [1, 2, 5, 10, 15, 20])
+                                              [thread_max])
 
 
 def run_benchmarks_sla(core_api, jobs_api, s3):
@@ -641,7 +642,8 @@ def main():
         run_benchmarks(core_api, jobs_api, s3,
                        cli_arguments.stack_analysis_benchmark,
                        cli_arguments.component_analysis_benchmark,
-                       cli_arguments.parallel)
+                       cli_arguments.parallel,
+                       cli_arguments.thread_max)
 
 
 if __name__ == "__main__":
