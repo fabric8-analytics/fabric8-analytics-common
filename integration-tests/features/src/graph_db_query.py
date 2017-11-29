@@ -13,6 +13,16 @@ class Query:
         self.query += '.has("{name}", "{value}")'.format(name=name, value=value)
         return self
 
+    def out(self, name):
+        """Add an 'out' clause into the query."""
+        self.query += '.out("{name}")'.format(name=name)
+        return self
+
+    def valueMap(self):
+        """Append a 'valueMap() clause to the query."""
+        self.query += '.valueMap()'
+        return self
+
     def count(self):
         """Add a 'count' clause at the end of the query."""
         self.query += '.count()'
