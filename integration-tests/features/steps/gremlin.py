@@ -32,7 +32,7 @@ def gremlin_search_vertexes_for_the_ecosystem(context, ecosystem):
 @when('I ask Gremlin to find all versions of the package {package:S} in the ecosystem {ecosystem}')
 def gremlin_find_package(context, package, ecosystem):
     """Try to find all versions of the given package in the selected ecosystem."""
-    query = Query().has("pecosystem", ecosystem).has("pname", package)
+    query = Query().has("ecosystem", ecosystem).has("name", package).out("has_version")
     post_query(context, query)
 
 
