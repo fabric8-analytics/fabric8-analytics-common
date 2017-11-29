@@ -129,19 +129,20 @@ def run_read_component_analysis_sequenced_calls_benchmark(core_api, s3):
                             "Component analysis for known component",
                             "component_analysis_sequenced_calls_known_component",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.component_analysis(api, s3,
-                                                              measurement_count,
-                                                              0, True, None, "pypi",
-                                                              "clojure_py", "0.2.4"),
+                                benchmarks.component_analysis_benchmark(api, s3,
+                                                                        measurement_count,
+                                                                        0, True, None, "pypi",
+                                                                        "clojure_py", "0.2.4"),
                             [1], SEQUENCED_BENCHMARKS_DEFAULT_COUNT)
     run_sequenced_benchmark(core_api, s3,
                             "Component analysis for unknown component",
                             "component_analysis_sequenced_calls_unknown_component",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.component_analysis(api, s3,
-                                                              measurement_count,
-                                                              0, False, None, "pypi",
-                                                              "non_existing_component", "9.8.7"),
+                                benchmarks.component_analysis_benchmark(api, s3,
+                                                                        measurement_count,
+                                                                        0, False, None, "pypi",
+                                                                        "non_existing_component",
+                                                                        "9.8.7"),
                             [1], SEQUENCED_BENCHMARKS_DEFAULT_COUNT)
 
 
