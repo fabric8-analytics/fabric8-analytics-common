@@ -56,6 +56,15 @@ Feature: Check the Gremlin instance and its behaviour
      And I should find that all found packages have valid timestamp with the last update time
 
   @requires_access_to_graph_db
+  Scenario: Basic check for Gremlin ability to search for given package in any versions for the Pypi ecosystem
+    Given System is running
+    When I ask Gremlin to find all versions of the package clojure_py in the ecosystem pypi
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find the following properties (description, last_updated, pecosystem, pname, version, vertex_label) in all found packages
+     And I should find that all found packages have valid timestamp with the last update time
+
+  @requires_access_to_graph_db
   Scenario: Basic check for Gremlin ability to search for given package and version for the npm ecosystem
     Given System is running
     When I ask Gremlin to find the package sequence version 3.0.0 in the ecosystem npm
@@ -81,7 +90,19 @@ Feature: Check the Gremlin instance and its behaviour
      And I should find that the pname property is set to io.vertx:vertx-core in the package properties
      And I should find that the version property is set to 3.4.0 in the package properties
      And I should find that all found packages have valid timestamp with the last update time
- 
+
+  @requires_access_to_graph_db
+  Scenario: Basic check for Gremlin ability to search for given package and version for ecosystem Pypi
+    Given System is running
+    When I ask Gremlin to find the package clojure_py version 0.2.4 in the ecosystem pypi
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find the following properties (description, last_updated, pecosystem, pname, version, vertex_label) in all found packages
+     And I should find that the pecosystem property is set to pypi in the package properties
+     And I should find that the pname property is set to clojure_py in the package properties
+     And I should find that the version property is set to 0.2.4 in the package properties
+     And I should find that all found packages have valid timestamp with the last update time
+
   @requires_access_to_graph_db
   Scenario: Basic check for Gremlin ability to search for given package in the npm ecosystem
     Given System is running
@@ -89,14 +110,22 @@ Feature: Check the Gremlin instance and its behaviour
     Then I should get 200 status code
      And I should get valid Gremlin response
      And I should find that all found packages have valid timestamp with the last update time
- 
+
   @requires_access_to_graph_db
   Scenario: Basic check for Gremlin ability to search for given package in the Maven ecosystem
-   Given System is running
-   When I ask Gremlin to find the package io.vertx:vertx-core in the ecosystem maven
-   Then I should get 200 status code
-    And I should get valid Gremlin response
-    And I should find that all found packages have valid timestamp with the last update time
+    Given System is running
+    When I ask Gremlin to find the package io.vertx:vertx-core in the ecosystem maven
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find that all found packages have valid timestamp with the last update time
+
+  @requires_access_to_graph_db
+  Scenario: Basic check for Gremlin ability to search for given package in the Pypi ecosystem
+    Given System is running
+    When I ask Gremlin to find the package clojure_py in the ecosystem pypi
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find that all found packages have valid timestamp with the last update time
 
   @requires_access_to_graph_db
   Scenario: Basic check for Gremlin ability to search for given package
