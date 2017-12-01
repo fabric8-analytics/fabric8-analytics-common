@@ -13,6 +13,7 @@ features/user_feedback.feature
 features/selfcheck.feature
 #features/regression_tests.feature
 features/user_tag.feature
+features/gremlin.feature
 
 # This is workaround to temporary disable integration tests
 #features/disabled.feature
