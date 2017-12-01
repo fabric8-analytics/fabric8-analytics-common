@@ -9,6 +9,10 @@ from src.json_utils import *
 from src.utils import split_comma_separated_list
 from src.graph_db_query import Query
 
+# no data should have timestamp with earlier date than 2015-01-01, simply because
+# this project was started after this date
+BAYESSIAN_PROJECT_START_DATE = time.mktime(time.strptime("2015-01-01", "%Y-%m-%d"))
+
 
 @when('I access Gremlin API')
 def gremlin_url_access(context):
@@ -51,6 +55,7 @@ def gremlin_find_package(context, package, ecosystem):
     query = Query().has("ecosystem", ecosystem).has("name", package)
     post_query(context, query)
 
+
 @when('I remember the current time')
 def remember_current_time(context):
     """Remember the current time for further checks."""
@@ -92,6 +97,36 @@ def check_vertexes_cound(context):
     assert vertexes > 0, "Expected at least one vertex, but got zero instead" % vertexes
 
 
+@then('I should find that all found packages have valid timestamp with the last update time')
+def check_timestamp_for_all_packages_in_gremlin_response(context):
+    """Check if the last_updated attribute exists and if it contain proper timestamp."""
+    now = time.time()
+    data, meta = get_results_from_gremlin(context)
+
+    for package in data:
+        properties = check_and_get_attribute(package, "properties")
+        last_updated = check_and_get_attribute(properties, "last_updated")
+        value = check_and_get_attribute(last_updated[0], "value")
+        assert value >= BAYESSIAN_PROJECT_START_DATE
+        assert value <= now
+
+
+@then('I should find that the package data is {comparison} than remembered time')
+def package_data_older_than_remembered_time(context, comparison):
+    """Check if the last_updated attribute is older or newer than remembered time."""
+    remembered_time = context.current_time
+    data, meta = get_results_from_gremlin(context)
+
+    for package in data:
+        properties = check_and_get_attribute(package, "properties")
+        last_updated = check_and_get_attribute(properties, "last_updated")
+        value = check_and_get_attribute(last_updated[0], "value")
+        if comparison == "older":
+            assert value < remembered_time
+        elif comparison == "newer":
+            assert value > remembered_time
+
+
 def get_results_from_gremlin(context):
     """Try to take the results from the Gremlin response."""
     data = context.response.json()
@@ -110,6 +145,9 @@ def check_gremlin_status_node(data):
 
     assert message == ""
     assert code == 200
+
+    # this node should be empty
+    assert not attributes
 
 
 def check_gremlin_result_node(data):
