@@ -4,6 +4,7 @@ import requests
 
 from behave import given, then, when
 from urllib.parse import urljoin
+import time
 from src.json_utils import *
 from src.utils import split_comma_separated_list
 from src.graph_db_query import Query
@@ -49,6 +50,11 @@ def gremlin_find_package(context, package, ecosystem):
     """Try to find the package in the selected ecosystem."""
     query = Query().has("ecosystem", ecosystem).has("name", package)
     post_query(context, query)
+
+@when('I remember the current time')
+def remember_current_time(context):
+    """Remember the current time for further checks."""
+    context.current_time = time.time()
 
 
 def post_query(context, query):
