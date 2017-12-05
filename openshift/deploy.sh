@@ -1,4 +1,4 @@
-#!/usr/bin/bash -e
+#!/bin/bash -e
 here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 #Check for configuration file
@@ -141,7 +141,7 @@ templates_dir="${here}/templates"
 templates="fabric8-analytics-jobs fabric8-analytics-server fabric8-analytics-data-model 
            fabric8-analytics-worker fabric8-analytics-pgbouncer gremlin-docker anitya-docker 
            fabric8-analytics-scaler fabric8-analytics-firehose-fetcher 
-           fabric8-analytics-license-analysis fabric8-analytics-stack-analysis"
+           fabric8-analytics-license-analysis fabric8-analytics-stack-analysis fabric8-analytics-stack-report-ui"
 
 openshift_login
 allocate_aws_rds
@@ -163,10 +163,11 @@ oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=i
 oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api -p WORKER_RUN_DB_MIGRATIONS=1 -p WORKER_EXCLUDE_QUEUES=GraphImporterTask"
 oc_process_apply ${templates_dir}/worker.yaml "-p WORKER_ADMINISTRATION_REGION=api -p WORKER_INCLUDE_QUEUES=GraphImporterTask -p WORKER_NAME_SUFFIX=-graph-import"
 oc_process_apply ${templates_dir}/server.yaml
-oc_process_apply ${templates_dir}/jobs.yaml
+oc_process_apply ${templates_dir}/jobs.yaml "-p AUTH_ORGANIZATION=fabric8-analytics"
 oc_process_apply ${templates_dir}/scaler.yaml "-p DC_NAME=bayesian-worker-ingestion -p SQS_QUEUE_NAME=ingestion_bayesianFlow_v0 -p MAX_REPLICAS=8 -p DEFAULT_REPLICAS=2"
 oc_process_apply ${templates_dir}/scaler.yaml "-p DC_NAME=bayesian-worker-api -p SQS_QUEUE_NAME=api_bayesianFlow_v0 -p MAX_REPLICAS=4 -p DEFAULT_REPLICAS=2"
 oc_process_apply ${templates_dir}/firehose-fetcher.yaml
 oc_process_apply ${templates_dir}/stack-analysis.yaml "-p KRONOS_SCORING_REGION=maven"
 oc_process_apply ${templates_dir}/stack-analysis.yaml "-p KRONOS_SCORING_REGION=pypi"
 oc_process_apply ${templates_dir}/license-analysis.yaml
+oc_process_apply ${templates_dir}/stack-report-ui.yaml
