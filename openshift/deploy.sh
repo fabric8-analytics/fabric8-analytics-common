@@ -1,4 +1,4 @@
-#!/usr/bin/bash -e
+#!/bin/bash -e
 here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 #Check for configuration file
