@@ -28,6 +28,16 @@ class Query:
         self.query += '.count()'
         return self
 
+    def first(self):
+        """Append a clause to get the first result from a list."""
+        self.query += '[0]'
+        return self
+
+    def value(self, value):
+        """Append a clause to read the given value from the dictionary."""
+        self.query += '.value("{value}")'.format(value=value)
+        return self
+
     def __repr__(self):
         """Return an official represenation of the object, same as __str__ here."""
         return self.query
