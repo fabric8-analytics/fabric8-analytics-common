@@ -17,6 +17,11 @@ if ! [ -x "$(command -v aws)" ]; then
   exit 1
 fi
 
+if ! [ -x "$(command -v awk)" ]; then
+  echo 'Error: awk is not installed.' >&2
+  exit 1
+fi
+
 if ! [ -x "$(command -v psql)" ]; then
   echo 'Error: psql is not installed.' >&2
   exit 1

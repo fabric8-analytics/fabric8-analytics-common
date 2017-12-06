@@ -1,6 +1,8 @@
 # Openshift green field deployment of fabric8-analytics services
 
-Config map and secrets are generated from the configuration stored in environment variables.
+## Install required tools
+
+Use your preferred package manager to install awk, aws-cli, psql, origin-clients, pwgen
 
 ## Configure fabric8-analytics services
 All configuration for the deployment script resides in env.sh.
