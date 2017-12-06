@@ -62,6 +62,16 @@ def remember_current_time(context):
     context.current_time = time.time()
 
 
+@when('I read the last update time for the package {package:S} version {version} in the ecosystem'
+      ' {ecosystem}')
+def gremlin_read_last_update_time(context, package, version, ecosystem):
+    """Read the last update timestamp."""
+    query = Query().has("pecosystem", ecosystem).has("pname", package).has("version", version).\
+        first().value("last_updated")
+    print(query)
+    post_query(context, query)
+
+
 def post_query(context, query):
     """Post the already constructed query to the Gremlin."""
     data = {"gremlin": str(query)}
@@ -198,6 +208,15 @@ def check_unexpected_properties_in_results(context, properties):
             if prop not in expected_properties:
                 raise Exception("Unexpected property has been found: {prop}".format(
                                 prop=prop))
+
+
+@then('I should get a valid timestamp represented as UNIX time')
+def check_unix_timestamp(context):
+    """Check that only proper timestamp is returned in Gremlin response."""
+    data, meta = get_results_from_gremlin(context)
+    assert len(data) == 1
+    timestamp = data[0]
+    assert type(timestamp) is float
 
 
 @then('I should find that the {property_name} property is set to {expected_value} in the package '
