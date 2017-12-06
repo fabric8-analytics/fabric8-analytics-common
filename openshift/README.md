@@ -1,5 +1,19 @@
 # Openshift green field deployment of fabric8-analytics services
 
+## Install required tools
+
+Use your preferred package manager to install awk, aws-cli, psql, origin-clients, pwgen
+
+
+## Configure aws cli
+
+`aws configure`
+`AWS Access Key ID [****************OPLA]:` 
+`AWS Secret Access Key [****************eIOl]:` 
+`Default region name [us-east-1]:`
+
+Don't forget to set default region to us-east-1
+
 Config map and secrets are generated from the configuration stored in environment variables.
 
 ## Configure fabric8-analytics services
