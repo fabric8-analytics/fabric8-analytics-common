@@ -131,6 +131,9 @@ Feature: Check the Gremlin instance and its behaviour
   Scenario: Basic check for Gremlin ability to search for given package
     Given System is running
     When I ask Gremlin to find the package sequence in the ecosystem npm
+     And I remember the current time
     Then I should get 200 status code
      And I should get valid Gremlin response
+      And I should find that all found packages have valid timestamp with the last update time
+      And I should find that the package data is older than remembered time
 
