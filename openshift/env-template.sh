@@ -9,6 +9,7 @@ export OC_PROJECT=$(whoami)'-greenfield-test'
 #AWS credentials
 export AWS_ACCESS_KEY_ID='Not set'
 export AWS_SECRET_ACCESS_KEY='Not set'
+export AWS_DEFAULT_REGION='us-east-1'
 
 #Github
 export GITHUB_API_TOKENS='Not set'
