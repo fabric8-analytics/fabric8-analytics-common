@@ -68,7 +68,6 @@ def gremlin_read_last_update_time(context, package, version, ecosystem):
     """Read the last update timestamp."""
     query = Query().has("pecosystem", ecosystem).has("pname", package).has("version", version).\
         first().value("last_updated")
-    print(query)
     post_query(context, query)
 
 
