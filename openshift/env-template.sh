@@ -28,3 +28,9 @@ export RDS_DBADMIN='coreapi'
 export RDS_STORAGE=5
 export RDS_PASSWORD=''
 export RDS_SUBNET_GROUP_NAME='dv peering az'
+
+#Integration tests settings
+export F8A_API_URL='Not set'
+export F8A_JOB_API_URL='Not set'
+export F8A_ANITYA_API_URL='Not set'
+export RECOMMENDER_API_TOKEN='Not set'
