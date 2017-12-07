@@ -4,6 +4,11 @@
 
 Use your preferred package manager to install awk, aws-cli, psql, origin-clients, pwgen
 
+on Fedora:
+`sudo dnf install awk awscli pwgen postgresql origin-clients`
+
+Mac users will require to install gawk from brew.
+
 ## Configure fabric8-analytics services
 All configuration for the deployment script resides in env.sh.
 To configure your developemnt deployment copy env-template.sh
@@ -19,6 +24,13 @@ To generate password you will require tool named pwgen.
 
 Use generated password to update RDS_PASSWORD value
 
+### Run oc login
+
+dev cluster uses a self-signed certificate.
+We need to log in using the command line and accept the certificate.
+
+`oc login $OC_URI -u $OC_USERNAME -p $OC_PASSWD`
+
 ## Deploy fabric8-analytics services
 Just run the deploy script and enjoy!
 
@@ -30,3 +42,19 @@ CentosCI will build your image and comment on the PR with an image name and tag.
 Your image is available in the registry: docker pull registry.devshift.net/fabric8-analytics/worker-scaler:SNAPSHOT-PR-25
 
 To update your dev deployment use [oc edit](https://docs.openshift.com/container-platform/3.4/cli_reference/basic_cli_operations.html#edit) from the command line or editor in web interface.
+
+## E2E test
+
+### Configure OSIO token
+
+In your created env.sh set the RECOMMENDER_API_TOKEN.
+Token is available on your profile page after clicking on Update profile button.
+
+You will have to change email adress to ona asssociated with your osio account [Quick Link](https://openshift.io/thrcka@redhat.com/_update)
+
+### Run E2E test agaist your deployment
+
+Environment variables are set by running the script.
+`./run-2e2-test.sh`
+
+[More information](https://github.com/fabric8-analytics/fabric8-analytics-common/tree/master/integration-tests)
