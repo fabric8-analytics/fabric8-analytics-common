@@ -9,6 +9,12 @@ from src.json_utils import *
 from src.utils import split_comma_separated_list
 from src.graph_db_query import Query
 
+import logging
+
+# set up the logging for this module
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
+
 # no data should have timestamp with earlier date than 2015-01-01, simply because
 # this project was started after this date
 BAYESSIAN_PROJECT_START_DATE = time.mktime(time.strptime("2015-01-01", "%Y-%m-%d"))
