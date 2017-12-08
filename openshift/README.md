@@ -55,6 +55,6 @@ You will have to change email adress to one asssociated with your osio account [
 ### Run E2E test agaist your deployment
 
 Environment variables are set by running the script.
-`./run-2e2-test.sh`
+`./run-e2e-test.sh`
 
 [More information](https://github.com/fabric8-analytics/fabric8-analytics-common/tree/master/integration-tests)
