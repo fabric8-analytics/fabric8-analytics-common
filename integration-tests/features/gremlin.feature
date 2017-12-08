@@ -144,3 +144,34 @@ Feature: Check the Gremlin instance and its behaviour
     Then I should get 200 status code
      And I should get valid Gremlin response
      And I should get a valid timestamp represented as UNIX time
+
+  @requires_access_to_graph_db
+  Scenario: Check numeric values for GitHub metadata for the package from the pypi ecosystem
+    When I ask Gremlin to find the package clojure_py in the ecosystem pypi
+    Then I should get 200 status code
+     And I should find that the gh_forks property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_month_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_month_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_year_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_year_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_month_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_month_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_year_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_year_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_stargazers property has numeric value greater than or equal to -1
+
+  @requires_access_to_graph_db
+  Scenario: Check numeric values for Libio metadata for the package from the pypi ecosystem
+    When I ask Gremlin to find the package clojure_py in the ecosystem pypi
+    Then I should get 200 status code
+     And I should find that the libio_dependents_projects property has numeric value greater than or equal to -1
+     And I should find that the libio_dependents_repos property has numeric value greater than or equal to -1
+     And I should find that the libio_latest_release property has numeric value greater than or equal to -1
+     And I should find that the libio_latest_version property is set to 0.2.4 in the package properties
+     And I should find that the libio_total_releases property has numeric value greater than or equal to -1
+
+  @requires_access_to_graph_db
+  Scenario: Check other numeric values for the package from the pypi ecosystem
+    When I ask Gremlin to find the package clojure_py in the ecosystem pypi
+    Then I should get 200 status code
+     And I should find that the package_dependents_count property has numeric value greater than or equal to -1

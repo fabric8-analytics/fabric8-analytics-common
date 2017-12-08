@@ -267,10 +267,8 @@ def check_package_version_timestamp_comparison_with_remembered_time(context, com
         assert timestamp > remembered_time
 
 
-@then('I should find that the {property_name} property is set to {expected_value} in the package '
-      'properties')
-def check_property_value(context, property_name, expected_value):
-    """Check if the property is set to expected value for the first package returned by Gremlin."""
+def read_property_value_from_gremlin_response(context, property_name):
+    """Read property value from the Gremlin response with all checks."""
     data, meta = get_results_from_gremlin(context)
     package = data[0]
     properties = check_and_get_attribute(package, "properties")
@@ -283,8 +281,28 @@ def check_property_value(context, property_name, expected_value):
     id_value = id_values[0]
 
     # check the content of 'value' attribute
-    value = check_and_get_attribute(id_value, "value")
+    return check_and_get_attribute(id_value, "value")
+
+
+@then('I should find that the {property_name} property is set to {expected_value} in the package '
+      'properties')
+def check_property_value(context, property_name, expected_value):
+    """Check if the property is set to expected value for the first package returned by Gremlin."""
+    value = read_property_value_from_gremlin_response(context, property_name)
 
     assert value == expected_value, ("The property {p} value is set to '{value}', not to "
                                      "'{expected_value}").format(p=property_name, value=value,
                                                                  expected_value=expected_value)
+
+
+@then('I should find that the {property_name} property has numeric value greater than or equal '
+      'to {expected:d}')
+def check_numeric_property_value(context, property_name, expected):
+    """Check if the property has assigned numeric value that is greater than or equal to X."""
+    value = read_property_value_from_gremlin_response(context, property_name)
+
+    numeric = float(value)
+    assert numeric >= expected, ("The property {p} value is set to '{value}', but it should be "
+                                 "greater than or equal to {expected").format(p=property_name,
+                                                                              value=value,
+                                                                              expected=expected)
