@@ -175,3 +175,75 @@ Feature: Check the Gremlin instance and its behaviour
     When I ask Gremlin to find the package clojure_py in the ecosystem pypi
     Then I should get 200 status code
      And I should find that the package_dependents_count property has numeric value greater than or equal to -1
+
+  @requires_access_to_graph_db
+  Scenario: Basic check for Gremlin ability to search for given package in the npm ecosystem
+    Given System is running
+    When I ask Gremlin to find the package sequence in the ecosystem npm
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find that all found packages have valid timestamp with the last update time
+     And I should find that the ecosystem property is set to npm in the package properties
+     And I should find that the name property is set to sequence in the package properties
+     And I should find that the latest_version property is set to 3.0.0 in the package properties
+
+  @requires_access_to_graph_db
+  Scenario: Check numeric values for GitHub metadata for given package in the npm ecosystem
+    When I ask Gremlin to find the package sequence in the ecosystem npm
+    Then I should get 200 status code
+     And I should find that the gh_forks property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_month_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_month_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_year_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_year_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_month_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_month_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_year_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_year_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_stargazers property has numeric value greater than or equal to -1
+
+  @requires_access_to_graph_db
+  Scenario: Check numeric values for Libio metadata for given package in the npm ecosystem
+    When I ask Gremlin to find the package sequence in the ecosystem npm
+    Then I should get 200 status code
+     And I should find that the libio_dependents_projects property has numeric value greater than or equal to -1
+     And I should find that the libio_dependents_repos property has numeric value greater than or equal to -1
+     And I should find that the libio_latest_release property has numeric value greater than or equal to -1
+     And I should find that the libio_latest_version property is set to 3.0.0 in the package properties
+     And I should find that the libio_total_releases property has numeric value greater than or equal to -1
+
+  @requires_access_to_graph_db
+  Scenario: Basic check for Gremlin ability to search for given package in the Maven ecosystem
+    Given System is running
+    When I ask Gremlin to find the package io.vertx:vertx-core in the ecosystem maven
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find that all found packages have valid timestamp with the last update time
+     And I should find that the ecosystem property is set to maven in the package properties
+     And I should find that the name property is set to io.vertx:vertx-core in the package properties
+     And I should find that the latest_version property is set to 3.4.2 in the package properties
+
+  @requires_access_to_graph_db
+  Scenario: Check numeric values for GitHub metadata for given package in the Maven ecosystem
+    When I ask Gremlin to find the package io.vertx:vertx-core in the ecosystem maven
+    Then I should get 200 status code
+     And I should find that the gh_forks property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_month_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_month_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_year_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_issues_last_year_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_month_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_month_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_year_opened property has numeric value greater than or equal to -1
+     And I should find that the gh_prs_last_year_closed property has numeric value greater than or equal to -1
+     And I should find that the gh_stargazers property has numeric value greater than or equal to -1
+
+  @requires_access_to_graph_db
+  Scenario: Check numeric values for Libio metadata for given package in the Maven ecosystem
+    When I ask Gremlin to find the package io.vertx:vertx-core in the ecosystem maven
+    Then I should get 200 status code
+     And I should find that the libio_dependents_projects property has numeric value greater than or equal to -1
+     And I should find that the libio_dependents_repos property has numeric value greater than or equal to -1
+     And I should find that the libio_latest_release property has numeric value greater than or equal to -1
+     And I should find that the libio_latest_version property is set to 3.5.0.Beta1 in the package properties
+     And I should find that the libio_total_releases property has numeric value greater than or equal to -1
