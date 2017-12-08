@@ -100,8 +100,12 @@ function openshift_login() {
     fi
 }
 
+function get_rds_instance_info() {
+    aws --output=table rds describe-db-instances --db-instance-identifier $RDS_INSTANCE_NAME 2>/dev/null
+}
+
 function allocate_aws_rds() {
-    if ! aws --output=table rds describe-db-instances --db-instance-identifier $RDS_INSTANCE_NAME 2>/dev/null; then
+    if ! get_rds_instance_info; then
         aws rds create-db-instance \
         --allocated-storage $RDS_STORAGE \
         --db-instance-identifier $RDS_INSTANCE_NAME \
@@ -115,25 +119,25 @@ function allocate_aws_rds() {
         --publicly-accessible \
         --storage-type gp2 2>/dev/null
         #--storage-encrypted
-        echo "Waiting for $RDS_INSTANCE_NAME to come online"
+        echo "Waiting (60s) for $RDS_INSTANCE_NAME to come online"
         sleep 60
-        get_rds_instance_info
+        wait_for_rds_instance_info
     else
         echo "DB instance $RDS_INSTANCE_NAME already exists, recreating database"
         echo "DB password: $RDS_PASSWORD"
-        get_rds_instance_info
+        wait_for_rds_instance_info
         PGPASSWORD=$RDS_PASSWORD psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "drop database $RDS_DBNAME"
         PGPASSWORD=$RDS_PASSWORD psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "create database $RDS_DBNAME"
     fi
 }
 
-function get_rds_instance_info() {
+function wait_for_rds_instance_info() {
     while true; do
         echo "Trying to get RDS DB endpoint for $RDS_INSTANCE_NAME ..."
-        
-        export RDS_ENDPOINT=`aws --output=table rds describe-db-instances --db-instance-identifier $RDS_INSTANCE_NAME | grep -w Address | awk '{print $RDS_DBNAME}' | tr -d '|"' | sed 's/Address//g'`
-        
-        if [ "${RDS_ENDPOINT}" == "" ]; then
+
+        export RDS_ENDPOINT=$(get_rds_instance_info | grep -w Address | awk '{print $RDS_DBNAME}' | tr -d '|"' | sed 's/Address//g')
+
+        if [ -z "${RDS_ENDPOINT}" ]; then
             echo "DB is still initializing, waiting 30 seconds and retrying ..."
             sleep 30
         else
