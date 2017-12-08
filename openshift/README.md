@@ -50,7 +50,7 @@ To update your dev deployment use [oc edit](https://docs.openshift.com/container
 In your created env.sh set the RECOMMENDER_API_TOKEN.
 Token is available on your profile page after clicking on Update profile button.
 
-You will have to change email adress to ona asssociated with your osio account [Quick Link](https://openshift.io/thrcka@redhat.com/_update)
+You will have to change email adress to one asssociated with your osio account [Quick Link](https://openshift.io/thrcka@redhat.com/_update)
 
 ### Run E2E test agaist your deployment
 
