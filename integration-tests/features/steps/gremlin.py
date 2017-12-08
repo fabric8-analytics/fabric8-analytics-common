@@ -261,7 +261,6 @@ def check_package_version_timestamp_comparison_with_remembered_time(context, com
     """Check if the last_updated attribute is older or newer than remembered time."""
     remembered_time = context.current_time
     timestamp = get_timestamp_from_gremlin(context)
-    print(remembered_time, timestamp)
     if comparison == "older":
         assert timestamp < remembered_time
     elif comparison == "newer":
