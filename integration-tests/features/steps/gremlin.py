@@ -301,8 +301,31 @@ def check_numeric_property_value(context, property_name, expected):
     """Check if the property has assigned numeric value that is greater than or equal to X."""
     value = read_property_value_from_gremlin_response(context, property_name)
 
-    numeric = float(value)
+    numeric = convert_to_number(value)
     assert numeric >= expected, ("The property {p} value is set to '{value}', but it should be "
                                  "greater than or equal to {expected").format(p=property_name,
                                                                               value=value,
                                                                               expected=expected)
+
+
+def convert_to_number(value):
+    """Convert the value, that can be string, int, or float, to number."""
+    if type(value) is int or type(value) is float:
+        return value
+
+    scale = get_scale(value)
+    if scale is not None:
+        return float(value[:-1]) * scale
+    else:
+        return float(value)
+
+
+def get_scale(value):
+    """Get the scale for a numeric value stored as a string.
+
+    The scale is used for store libio attributes, dunno why.
+    """
+    scales = {
+        "k": 1000,
+        "m": 1000000}
+    return scales.get(value[-1].lower())
