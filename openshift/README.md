@@ -5,7 +5,7 @@
 Use your preferred package manager to install awk, aws-cli, psql, origin-clients, pwgen
 
 on Fedora:
-`sudo dnf install awk awscli pwgen postgresql origin-clients`
+`sudo dnf install gawk awscli pwgen postgresql origin-clients`
 
 Mac users will require to install gawk from brew.
 
