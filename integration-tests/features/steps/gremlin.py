@@ -310,7 +310,7 @@ def check_numeric_property_value(context, property_name, expected):
 
 def convert_to_number(value):
     """Convert the value, that can be string, int, or float, to number."""
-    if type(value) is int or type(value) is float:
+    if isinstance(value, (int, float)):
         return value
 
     scale = get_scale(value)
