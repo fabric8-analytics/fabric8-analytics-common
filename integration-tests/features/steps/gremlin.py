@@ -239,12 +239,17 @@ def check_unexpected_properties_in_results(context, properties):
                                 prop=prop))
 
 
+def get_timestamp_from_gremlin(context):
+    """Get the value of timestamp attribute."""
+    data, meta = get_results_from_gremlin(context)
+    assert len(data) == 1
+    return data[0]
+
+
 @then('I should get a valid timestamp represented as UNIX time')
 def check_unix_timestamp(context):
     """Check that only proper timestamp is returned in Gremlin response."""
-    data, meta = get_results_from_gremlin(context)
-    assert len(data) == 1
-    timestamp = data[0]
+    timestamp = get_timestamp_from_gremlin(context)
     assert type(timestamp) is float
 
 
