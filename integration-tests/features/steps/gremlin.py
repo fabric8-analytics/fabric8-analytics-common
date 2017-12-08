@@ -9,6 +9,12 @@ from src.json_utils import *
 from src.utils import split_comma_separated_list
 from src.graph_db_query import Query
 
+import logging
+
+# set up the logging for this module
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
+
 # no data should have timestamp with earlier date than 2015-01-01, simply because
 # this project was started after this date
 BAYESSIAN_PROJECT_START_DATE = time.mktime(time.strptime("2015-01-01", "%Y-%m-%d"))
@@ -71,6 +77,30 @@ def gremlin_read_last_update_time(context, package, version, ecosystem):
     post_query(context, query)
 
 
+@when('I wait for the update in the graph database for the package {package:S} version {version}'
+      ' in the ecosystem {ecosystem}')
+def wait_for_update_in_graph_db(context, package, version, ecosystem):
+    """Wait until the package metadata is not updated in the graph database."""
+    timeout = 300 * 60
+    sleep_amount = 10  # we don't want to overload the graph db, so 10 seconds seems to be good
+    max_iters = timeout // sleep_amount
+
+    start_time = time.time()
+    log.info("start time: " + str(start_time))
+
+    for i in range(max_iters):
+        gremlin_read_last_update_time(context, package, version, ecosystem)
+        timestamp = get_timestamp_from_gremlin(context)
+        log.info("Iteration {i} of {max}: start time: {t1}, timestamp: {t2}".format(i=i,
+                                                                                    max=max_iters,
+                                                                                    t1=start_time,
+                                                                                    t2=timestamp))
+        if timestamp > start_time:
+            return
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the new package metadata in graph DB!')
+
+
 def post_query(context, query):
     """Post the already constructed query to the Gremlin."""
     data = {"gremlin": str(query)}
@@ -121,8 +151,11 @@ def check_timestamp_for_all_packages_in_gremlin_response(context):
 
 
 @then('I should find that the package data is {comparison} than remembered time')
-def package_data_older_than_remembered_time(context, comparison):
-    """Check if the last_updated attribute is older or newer than remembered time."""
+def package_data_timestamp_comparison_with_remembered_time(context, comparison):
+    """Check if the last_updated attribute is older or newer than remembered time.
+
+    The timestamp is checked for all package versions.
+    """
     remembered_time = context.current_time
     data, meta = get_results_from_gremlin(context)
 
@@ -209,13 +242,29 @@ def check_unexpected_properties_in_results(context, properties):
                                 prop=prop))
 
 
+def get_timestamp_from_gremlin(context):
+    """Get the value of timestamp attribute."""
+    data, meta = get_results_from_gremlin(context)
+    assert len(data) == 1
+    return data[0]
+
+
 @then('I should get a valid timestamp represented as UNIX time')
 def check_unix_timestamp(context):
     """Check that only proper timestamp is returned in Gremlin response."""
-    data, meta = get_results_from_gremlin(context)
-    assert len(data) == 1
-    timestamp = data[0]
+    timestamp = get_timestamp_from_gremlin(context)
     assert type(timestamp) is float
+
+
+@then('I should find that the returned timestamp is {comparison} than remembered time')
+def check_package_version_timestamp_comparison_with_remembered_time(context, comparison):
+    """Check if the last_updated attribute is older or newer than remembered time."""
+    remembered_time = context.current_time
+    timestamp = get_timestamp_from_gremlin(context)
+    if comparison == "older":
+        assert timestamp < remembered_time
+    elif comparison == "newer":
+        assert timestamp > remembered_time
 
 
 @then('I should find that the {property_name} property is set to {expected_value} in the package '
