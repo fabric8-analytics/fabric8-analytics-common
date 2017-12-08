@@ -124,7 +124,6 @@ function allocate_aws_rds() {
         wait_for_rds_instance_info
     else
         echo "DB instance $RDS_INSTANCE_NAME already exists, recreating database"
-        echo "DB password: $RDS_PASSWORD"
         wait_for_rds_instance_info
         PGPASSWORD=$RDS_PASSWORD psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "drop database $RDS_DBNAME"
         PGPASSWORD=$RDS_PASSWORD psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "create database $RDS_DBNAME"
