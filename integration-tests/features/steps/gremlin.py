@@ -77,6 +77,30 @@ def gremlin_read_last_update_time(context, package, version, ecosystem):
     post_query(context, query)
 
 
+@when('I wait for the update in the graph database for the package {package:S} version {version}'
+      ' in the ecosystem {ecosystem}')
+def wait_for_update_in_graph_db(context, package, version, ecosystem):
+    """Wait until the package metadata is not updated in the graph database."""
+    timeout = 300 * 60
+    sleep_amount = 10  # we don't want to overload the graph db, so 10 seconds seems to be good
+    max_iters = timeout // sleep_amount
+
+    start_time = time.time()
+    log.info("start time: " + str(start_time))
+
+    for i in range(max_iters):
+        gremlin_read_last_update_time(context, package, version, ecosystem)
+        timestamp = get_timestamp_from_gremlin(context)
+        log.info("Iteration {i} of {max}: start time: {t1}, timestamp: {t2}".format(i=i,
+                                                                                    max=max_iters,
+                                                                                    t1=start_time,
+                                                                                    t2=timestamp))
+        if timestamp > start_time:
+            return
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the new package metadata in graph DB!')
+
+
 def post_query(context, query):
     """Post the already constructed query to the Gremlin."""
     data = {"gremlin": str(query)}
