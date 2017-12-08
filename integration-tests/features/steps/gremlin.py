@@ -151,8 +151,11 @@ def check_timestamp_for_all_packages_in_gremlin_response(context):
 
 
 @then('I should find that the package data is {comparison} than remembered time')
-def package_data_older_than_remembered_time(context, comparison):
-    """Check if the last_updated attribute is older or newer than remembered time."""
+def package_data_timestamp_comparison_with_remembered_time(context, comparison):
+    """Check if the last_updated attribute is older or newer than remembered time.
+
+    The timestamp is checked for all package versions.
+    """
     remembered_time = context.current_time
     data, meta = get_results_from_gremlin(context)
 
@@ -251,6 +254,18 @@ def check_unix_timestamp(context):
     """Check that only proper timestamp is returned in Gremlin response."""
     timestamp = get_timestamp_from_gremlin(context)
     assert type(timestamp) is float
+
+
+@then('I should find that the returned timestamp is {comparison} than remembered time')
+def check_package_version_timestamp_comparison_with_remembered_time(context, comparison):
+    """Check if the last_updated attribute is older or newer than remembered time."""
+    remembered_time = context.current_time
+    timestamp = get_timestamp_from_gremlin(context)
+    print(remembered_time, timestamp)
+    if comparison == "older":
+        assert timestamp < remembered_time
+    elif comparison == "newer":
+        assert timestamp > remembered_time
 
 
 @then('I should find that the {property_name} property is set to {expected_value} in the package '
