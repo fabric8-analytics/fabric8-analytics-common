@@ -11,6 +11,8 @@ fi
 #Load configuration from env variables
 source env.sh
 
+DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX:-$(oc whoami)}
+
 #Check for required tools
 if ! [ -x "$(command -v aws)" ]; then
     echo 'Error: aws is not installed.' >&2
@@ -64,7 +66,7 @@ if [ "${AWS_SECRET_ACCESS_KEY}" == "Not set" ]; then
 fi
 
 function generate_and_deploy_config() {
-    oc process -p DEPLOYMENT_PREFIX="$(oc whoami)" \
+    oc process -p DEPLOYMENT_PREFIX="${DEPLOYMENT_PREFIX}" \
     -p KEYCLOAK_URL="${KEYCLOAK_URL}" \
     -f ${here}/config-template.yaml > ${here}/config.yaml
     oc apply -f config.yaml
@@ -100,6 +102,12 @@ function openshift_login() {
     fi
 }
 
+function tag_rds_instance() {
+    aws rds add-tags-to-resource \
+            --resource-name $RDS_INSTANCE_NAME \
+            --tags "Key=ENV,Value=${DEPLOYMENT_PREFIX}"
+}
+
 function get_rds_instance_info() {
     aws --output=table rds describe-db-instances --db-instance-identifier $RDS_INSTANCE_NAME 2>/dev/null
 }
@@ -128,6 +136,7 @@ function allocate_aws_rds() {
         PGPASSWORD=$RDS_PASSWORD psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "drop database $RDS_DBNAME"
         PGPASSWORD=$RDS_PASSWORD psql -d template1 -h $RDS_ENDPOINT -U $RDS_DBADMIN -c "create database $RDS_DBNAME"
     fi
+    tag_rds_instance
 }
 
 function wait_for_rds_instance_info() {
