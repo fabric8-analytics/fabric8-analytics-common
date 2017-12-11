@@ -133,7 +133,7 @@ def check_vertexes_cound(context):
     """Check the number of vertexes returned in Gremlin response."""
     data, meta = get_results_from_gremlin(context)
     vertexes = len(data)
-    assert vertexes > 0, "Expected at least one vertex, but got zero instead" % vertexes
+    assert vertexes > 0, "Expected at least one vertex, but got zero instead"
 
 
 @then('I should find that all found packages have valid timestamp with the last update time')
