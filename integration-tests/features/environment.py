@@ -267,6 +267,14 @@ def _is_api_running(url, accepted_codes=None):
         pass
     return False
 
+def _is_3scale_staging_running(threescale_url, accepted_codes={200, 401}):
+    try:
+        res = requests.post(threescale_url)
+        if res.status_code in accepted_codes:
+            return True
+    except requests.exceptions.ConnectionError:
+        pass
+    return False
 
 def _is_api_running_post(url):
     try:
@@ -405,6 +413,7 @@ def before_all(context):
     context.send_json_file = _send_json_file
     context.wait_for_jobs_debug_api_service = _wait_for_jobs_debug_api_service
     context.wait_for_component_search_service = _wait_for_component_search_service
+    context.is_3scale_staging_running = _is_3scale_staging_running
 
     # Configure container logging
     context.dump_logs = _read_boolean_setting(context, 'dump_logs')
@@ -437,6 +446,7 @@ def before_all(context):
     jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
     anitya_url = _read_url_from_env_var('F8A_ANITYA_API_URL')
     gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
+    threescale_url = _read_url_from_env_var('F8A_3SCALE_URL')
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
 
