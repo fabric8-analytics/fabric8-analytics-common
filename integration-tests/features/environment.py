@@ -447,6 +447,7 @@ def before_all(context):
     anitya_url = _read_url_from_env_var('F8A_ANITYA_API_URL')
     gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
     threescale_url = _read_url_from_env_var('F8A_3SCALE_URL')
+    service_id = _read_url_from_env_var('F8A_SERVICE_ID')
 
     context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
 
