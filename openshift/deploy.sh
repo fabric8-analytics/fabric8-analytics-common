@@ -125,7 +125,7 @@ function allocate_aws_rds() {
         --master-username $RDS_DBADMIN \
         --master-user-password $RDS_PASSWORD \
         --publicly-accessible \
-        --storage-type gp2 2>/dev/null
+        --storage-type gp2
         #--storage-encrypted
         echo "Waiting (60s) for $RDS_INSTANCE_NAME to come online"
         sleep 60
