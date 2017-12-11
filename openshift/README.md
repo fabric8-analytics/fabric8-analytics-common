@@ -11,7 +11,7 @@ Mac users will require to install gawk from brew.
 
 ## Configure fabric8-analytics services
 All configuration for the deployment script resides in env.sh.
-To configure your developemnt deployment copy env-template.sh
+To configure your development deployment copy env-template.sh
 
 `cp env-template.sh env.sh`
 
