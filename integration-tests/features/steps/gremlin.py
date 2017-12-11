@@ -136,6 +136,17 @@ def check_vertexes_cound(context):
     assert vertexes > 0, "Expected at least one vertex, but got zero instead"
 
 
+@then('I should find at least one package in the Gremlin response')
+@then('I should find at least {expected:d} packages in the Gremlin response')
+def check_number_of_packages_returned(context, expected=1):
+    """Check the number of returned packages."""
+    data, meta = get_results_from_gremlin(context)
+    found = len(data)
+
+    assert found >= expected, \
+        "Expected at least %d packages, but %d was found instead" % (expected, found)
+
+
 @then('I should find that all found packages have valid timestamp with the last update time')
 def check_timestamp_for_all_packages_in_gremlin_response(context):
     """Check if the last_updated attribute exists and if it contain proper timestamp."""
