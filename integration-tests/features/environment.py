@@ -474,6 +474,10 @@ def before_all(context):
 
     context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
+    context.threescale_url = threescale_url
+
+    context.service_id = service_id
+
     # informations needed to access S3 database from tests
     _check_env_var_presence_s3_db('AWS_ACCESS_KEY_ID')
     _check_env_var_presence_s3_db('AWS_SECRET_ACCESS_KEY')
