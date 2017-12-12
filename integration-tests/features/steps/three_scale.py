@@ -10,23 +10,31 @@ from urllib.parse import urljoin
 
 from src.authorization_tokens import *
 
+
 @given('3scale staging pod is running')
 def running_3scale_api_register(context):
+    """Check if 3scale pod is running"""
     return context.is_3scale_staging_running
-    
+
 
 def three_scale_register_url(context):
     """Construct URL for 3scale REST API call."""
     return urljoin(context.threescale_url, 'get-route')
 
+
 def get_data(context):
-        """"Constructs data for 3scale REST API POST call."""
-        data = {"auth_token": authorization(context), "service_id": context.service_id}
+        """Construct data for 3scale REST API POST call."""
+        data = {
+            "auth_token": authorization(context),
+            "service_id": context.service_id
+        }
         return data
 
+
 def get_headers():
-    """"Constructs headers for 3scale REST API POST call."""
+    """Construct headers for 3scale REST API POST call."""
     return {'Content-type': 'application/json'}
+
 
 def register_3scale(context, use_token):
     """Call API endpoint get_route."""
@@ -35,17 +43,19 @@ def register_3scale(context, use_token):
         headers = get_headers()
 
         context.response = requests.post(three_scale_register_url(context),
-                        data=json.dumps(data), headers=headers)
+                                         data=json.dumps(data),
+                                         headers=headers)
     else:
         headers = get_headers()
         context.response = requests.post(three_scale_register_url(context),
-                        headers=headers)
+                                         headers=headers)
 
 
 @when("I access get_route API end point for 3scale without authorization")
 def register_3scale_without_token(context):
-    """Tries to register to 3scale without authentication"""
+    """Try to register to 3scale without authentication."""
     register_3scale(context, False)
+
 
 @then('I should get 400 status code as response')
 def check_status_code_3scale_registration(context):
@@ -55,11 +65,11 @@ def check_status_code_3scale_registration(context):
 
 @when("I make a post call with proper authentication token")
 def register_3scale_with_token(context):
-    """Tries to register to 3scale with authentication"""
+    """Try to register to 3scale with authentication."""
     register_3scale(context, True)
 
 
-@then('I should get json object that contains prod_url, user_key and staging_url')
+@then('I should get json object')
 def validate_result_post_registration(context):
     """Check that json response the appropriate data."""
     json_data = context.response.json()
@@ -67,7 +77,7 @@ def validate_result_post_registration(context):
     assert len(json_data) != 0
 
     user_key = json_data.get("user_key", None)
-    assert user_key != None
+    assert user_key  None
 
     endpoints = json_data.get("endpoints", None)
     assert endpoints != None
@@ -79,4 +89,3 @@ def validate_result_post_registration(context):
     stage_url = endpoints.get("stage", None)
     assert stage_url != None
     assert stage_url.startswith("http://") == True
-
