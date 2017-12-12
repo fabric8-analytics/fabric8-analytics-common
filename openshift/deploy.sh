@@ -90,7 +90,7 @@ function oc_process_apply() {
 }
 
 function openshift_login() {
-    oc login $OC_URI -u $OC_USERNAME -p $OC_PASSWD
+    oc login $OC_URI -u $OC_USERNAME -p $OC_PASSWD --insecure-skip-tls-verify=true
     if oc get project $OC_PROJECT; then
         oc project $OC_PROJECT
         echo "Removing all openshift resources from selected project"
