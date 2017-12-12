@@ -13,7 +13,7 @@ from src.authorization_tokens import *
 
 @given('3scale staging pod is running')
 def running_3scale_api_register(context):
-    """Check if 3scale pod is running"""
+    """Check if 3scale pod is running."""
     return context.is_3scale_staging_running
 
 

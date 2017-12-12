@@ -267,6 +267,7 @@ def _is_api_running(url, accepted_codes=None):
         pass
     return False
 
+
 def _is_3scale_staging_running(threescale_url, accepted_codes={200, 401}):
     try:
         res = requests.post(threescale_url)
@@ -275,6 +276,7 @@ def _is_3scale_staging_running(threescale_url, accepted_codes={200, 401}):
     except requests.exceptions.ConnectionError:
         pass
     return False
+
 
 def _is_api_running_post(url):
     try:
