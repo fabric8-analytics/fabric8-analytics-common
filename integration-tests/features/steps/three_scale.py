@@ -73,7 +73,7 @@ def validate_result_post_registration(context):
     assert json_data
 
     check_attribute_presence(json_data, "user_key")
-    check_attribute_presence(json_data, "endpoint")
+    check_attribute_presence(json_data, "endpoints")
 
     prod_url = check_and_get_attribute(json_data, "prod")
     assert prod_url.startswith("http://")
