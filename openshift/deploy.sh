@@ -98,7 +98,6 @@ function openshift_login() {
     else
         oc new-project $OC_PROJECT
     fi
-    DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX:-$(oc whoami)}
 }
 
 function tag_rds_instance() {
