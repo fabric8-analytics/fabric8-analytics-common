@@ -11,4 +11,5 @@ Feature: 3scale API
         Then I should get the proper authorization token
         Given 3scale staging pod is running
         When I make a post call to 3scale with proper authentication token
-        Then I should get proper 3scale response
+        Then I should get 200 status code
+         And I should get proper 3scale response
