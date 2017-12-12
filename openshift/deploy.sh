@@ -11,8 +11,6 @@ fi
 #Load configuration from env variables
 source env.sh
 
-DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX:-$(oc whoami)}
-
 #Check for required tools
 if ! [ -x "$(command -v aws)" ]; then
     echo 'Error: aws is not installed.' >&2
@@ -100,6 +98,7 @@ function openshift_login() {
     else
         oc new-project $OC_PROJECT
     fi
+    DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX:-$(oc whoami)}
 }
 
 function tag_rds_instance() {
