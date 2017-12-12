@@ -4,7 +4,7 @@
 export OC_URI='dev.rdu2c.fabric8.io:8443'
 export OC_USERNAME='Not set'
 export OC_PASSWD='Not set'
-export OC_PROJECT=$(whoami)'-greenfield-test'
+export OC_PROJECT="${OC_USERNAME}-greenfield-test"
 
 #AWS credentials
 export AWS_ACCESS_KEY_ID='Not set'
@@ -21,7 +21,7 @@ export FLASK_APP_SECRET_KEY='Not set'
 
 #AWS RDS configuration variables are use to provision RDS instance
 export RDS_ENDPOINT=''
-export RDS_INSTANCE_NAME="$OC_USERNAME-bayesiandb"
+export RDS_INSTANCE_NAME="${OC_USERNAME}-bayesiandb"
 export RDS_INSTANCE_CLASS='db.t2.micro'
 export RDS_DBNAME='postgres'
 export RDS_DBADMIN='coreapi'
@@ -34,3 +34,5 @@ export F8A_API_URL='Not set'
 export F8A_JOB_API_URL='Not set'
 export F8A_ANITYA_API_URL='Not set'
 export RECOMMENDER_API_TOKEN='Not set'
+
+export DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX:-${OC_USERNAME}}
