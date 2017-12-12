@@ -8,6 +8,7 @@ import json
 from behave import given, then, when
 from urllib.parse import urljoin
 
+from src.attribute_checks import *
 from src.authorization_tokens import *
 
 
@@ -58,12 +59,6 @@ def register_3scale_without_token(context):
     register_3scale(context, False)
 
 
-@then('I should get 400 status code as response')
-def check_status_code_3scale_registration(context):
-    """Check 3scale registration route require authorization tokens."""
-    assert context.response.status_code == 400
-
-
 @when("I make a post call to 3scale with proper authentication token")
 def register_3scale_with_token(context):
     """Try to register to 3scale with authentication."""
@@ -75,18 +70,13 @@ def validate_result_post_registration(context):
     """Check that json response contains appropriate data."""
     json_data = context.response.json()
     assert context.response.status_code == 200
-    assert len(json_data) is not 0
+    assert json_data
 
-    user_key = json_data.get("user_key", None)
-    assert user_key is not None
+    check_attribute_presence(json_data, "user_key")
+    check_attribute_presence(json_data, "endpoint")
 
-    endpoints = json_data.get("endpoints", None)
-    assert endpoints is not None
+    prod_url = check_and_get_attribute(json_data, "prod")
+    assert prod_url.startswith("http://")
 
-    prod_url = endpoints.get("prod", None)
-    assert prod_url is not None
-    assert prod_url.startswith("http://") is True
-
-    stage_url = endpoints.get("stage", None)
-    assert stage_url is not None
-    assert stage_url.startswith("http://") is True
+    stage_url = check_and_get_attribute(json_data, "stage")
+    assert stage_url.startswith("http://")
