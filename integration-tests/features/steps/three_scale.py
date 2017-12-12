@@ -28,7 +28,7 @@ def get_data(context):
         token = token.split("Bearer ")[-1]
         data = {
             "auth_token": token,
-            "service_id": context.service_id
+            "service_id": context.service_id[:-1]
         }
         return data
 
