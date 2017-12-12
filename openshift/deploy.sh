@@ -90,8 +90,8 @@ function oc_process_apply() {
 }
 
 function openshift_login() {
-    if oc login $OC_URI -u $OC_USERNAME -p $OC_PASSWD | grep -q $OC_PROJECT
-    then
+    oc login $OC_URI -u $OC_USERNAME -p $OC_PASSWD
+    if oc get project $OC_PROJECT; then
         oc project $OC_PROJECT
         echo "Removing all openshift resources from selected project"
         oc delete all,cm,secrets --all
