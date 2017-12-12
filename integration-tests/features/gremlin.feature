@@ -138,9 +138,25 @@ Feature: Check the Gremlin instance and its behaviour
       And I should find that the package data is older than remembered time
 
   @requires_access_to_graph_db
-  Scenario: Basic check for Gremlin ability to read last update timestamp for the selected package
+  Scenario: Basic check for Gremlin ability to read last update timestamp for the selected package from the Pypi ecosystem
     Given System is running
     When I read the last update time for the package clojure_py version 0.2.4 in the ecosystem pypi
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should get a valid timestamp represented as UNIX time
+
+  @requires_access_to_graph_db
+  Scenario: Basic check for Gremlin ability to read last update timestamp for the selected package from the npm ecosystem
+    Given System is running
+    When I read the last update time for the package sequence version 3.0.0 in the ecosystem npm
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should get a valid timestamp represented as UNIX time
+
+  @requires_access_to_graph_db
+  Scenario: Basic check for Gremlin ability to read last update timestamp for the selected package from the Maven ecosystem
+    Given System is running
+    When I read the last update time for the package io.vertx:vertx-core version 3.4.0 in the ecosystem maven
     Then I should get 200 status code
      And I should get valid Gremlin response
      And I should get a valid timestamp represented as UNIX time
