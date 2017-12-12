@@ -64,15 +64,15 @@ def check_status_code_3scale_registration(context):
     assert context.response.status_code == 400
 
 
-@when("I make a post call with proper authentication token")
+@when("I make a post call to 3scale with proper authentication token")
 def register_3scale_with_token(context):
     """Try to register to 3scale with authentication."""
     register_3scale(context, True)
 
 
-@then('I should get json object')
+@then('I should get proper 3scale response')
 def validate_result_post_registration(context):
-    """Check that json response the appropriate data."""
+    """Check that json response contains appropriate data."""
     json_data = context.response.json()
     assert context.response.status_code == 200
     assert len(json_data) is not 0
