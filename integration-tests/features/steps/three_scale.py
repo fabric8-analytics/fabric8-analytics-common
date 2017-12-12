@@ -74,18 +74,18 @@ def validate_result_post_registration(context):
     """Check that json response the appropriate data."""
     json_data = context.response.json()
     assert context.response.status_code == 200
-    assert len(json_data) != 0
+    assert len(json_data) is not 0
 
     user_key = json_data.get("user_key", None)
-    assert user_key  None
+    assert user_key is not None
 
     endpoints = json_data.get("endpoints", None)
-    assert endpoints != None
+    assert endpoints is not None
 
     prod_url = endpoints.get("prod", None)
-    assert prod_url != None
-    assert prod_url.startswith("http://") == True
+    assert prod_url is not None
+    assert prod_url.startswith("http://") is True
 
     stage_url = endpoints.get("stage", None)
-    assert stage_url != None
-    assert stage_url.startswith("http://") == True
+    assert stage_url is not None
+    assert stage_url.startswith("http://") is True
