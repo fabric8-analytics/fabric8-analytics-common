@@ -96,7 +96,7 @@ function openshift_login() {
         echo "Removing all openshift resources from selected project"
         oc delete all,cm,secrets --all
     else
-        oc new-project ${$OC_PROJECT}
+        oc new-project ${OC_PROJECT}
     fi
 }
 
