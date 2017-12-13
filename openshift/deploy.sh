@@ -72,14 +72,14 @@ function generate_and_deploy_config() {
 
 function deploy_secrets() {
     #All secrets must be base64 encoded
-    oc process -f secrets-template.yaml -p AWS_ACCESS_KEY_ID=$(echo -n $AWS_ACCESS_KEY_ID | base64) \
-    -p AWS_SECRET_ACCESS_KEY=$(echo -n $AWS_SECRET_ACCESS_KEY | base64) \
-    -p GITHUB_API_TOKENS=$(echo -n $GITHUB_API_TOKENS | base64) \
-    -p GITHUB_OAUTH_CONSUMER_KEY=$(echo -n $GITHUB_OAUTH_CONSUMER_KEY | base64) \
-    -p GITHUB_OAUTH_CONSUMER_SECRET=$(echo -n $GITHUB_OAUTH_CONSUMER_SECRET | base64) \
-    -p FLASK_APP_SECRET_KEY=$(echo -n $FLASK_APP_SECRET_KEY | base64) \
-    -p RDS_ENDPOINT=$(echo -n $RDS_ENDPOINT | base64) \
-    -p RDS_PASSWORD=$(echo -n $RDS_PASSWORD | base64) \
+    oc process -f secrets-template.yaml -p AWS_ACCESS_KEY_ID="$(echo -n $AWS_ACCESS_KEY_ID | base64)" \
+    -p AWS_SECRET_ACCESS_KEY="$(echo -n $AWS_SECRET_ACCESS_KEY | base64)" \
+    -p GITHUB_API_TOKENS="$(echo -n $GITHUB_API_TOKENS | base64)" \
+    -p GITHUB_OAUTH_CONSUMER_KEY="$(echo -n $GITHUB_OAUTH_CONSUMER_KEY | base64)" \
+    -p GITHUB_OAUTH_CONSUMER_SECRET="$(echo -n $GITHUB_OAUTH_CONSUMER_SECRET | base64)" \
+    -p FLASK_APP_SECRET_KEY="$(echo -n $FLASK_APP_SECRET_KEY | base64)" \
+    -p RDS_ENDPOINT="$(echo -n $RDS_ENDPOINT | base64)" \
+    -p RDS_PASSWORD="$(echo -n $RDS_PASSWORD | base64)" \
     > ${here}/secrets.yaml
     oc apply -f secrets.yaml
 }
@@ -91,12 +91,12 @@ function oc_process_apply() {
 
 function openshift_login() {
     oc login $OC_URI -u $OC_USERNAME -p $OC_PASSWD --insecure-skip-tls-verify=true
-    if oc get project $OC_PROJECT; then
-        oc project $OC_PROJECT
+    if oc get project ${OC_PROJECT}; then
+        oc project ${OC_PROJECT}
         echo "Removing all openshift resources from selected project"
         oc delete all,cm,secrets --all
     else
-        oc new-project $OC_PROJECT
+        oc new-project ${$OC_PROJECT}
     fi
 }
 
