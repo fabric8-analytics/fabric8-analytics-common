@@ -58,10 +58,10 @@ def register_3scale_without_token(context):
     register_3scale(context, False)
 
 
-@then('I should get 400 status code as response')
+@then('I should get 404 status code as response')
 def check_status_code_3scale_registration(context):
     """Check 3scale registration route require authorization tokens."""
-    assert context.response.status_code == 400
+    assert context.response.status_code == 404
 
 
 @when("I make a post call with proper authentication token")
