@@ -10,7 +10,7 @@ RUN yum --setopt=tsflags=nodocs install -y epel-release centos-release-openshift
     yum --setopt=tsflags=nodocs install -y postgresql awscli awk pwgen origin-clients &&\
     yum clean all
 
-RUN mkdir -p /home/deployer/
+RUN mkdir -p /home/deployer/templates/
 
 COPY env.sh deploy.sh secrets-template.yaml config-template.yaml /home/deployer/
 
