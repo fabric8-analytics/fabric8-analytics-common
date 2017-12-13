@@ -102,7 +102,7 @@ function openshift_login() {
 
 function tag_rds_instance() {
     aws rds add-tags-to-resource \
-            --resource-name $RDS_INSTANCE_NAME \
+            --resource-name $RDS_ARN\
             --tags "Key=ENV,Value=${DEPLOYMENT_PREFIX}"
 }
 
@@ -142,6 +142,7 @@ function wait_for_rds_instance_info() {
         echo "Trying to get RDS DB endpoint for $RDS_INSTANCE_NAME ..."
 
         export RDS_ENDPOINT=$(get_rds_instance_info | grep -w Address | awk '{print $RDS_DBNAME}' | tr -d '|"' | sed 's/Address//g')
+        export RDS_ARN=$(get_rds_instance_info | grep -w DBInstanceArn | awk '{print $4}')
 
         if [ -z "${RDS_ENDPOINT}" ]; then
             echo "DB is still initializing, waiting 30 seconds and retrying ..."
