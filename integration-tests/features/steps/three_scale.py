@@ -23,14 +23,19 @@ def three_scale_register_url(context):
     return urljoin(context.threescale_url, 'get-route')
 
 
-def get_data(context):
+def get_data(context, use_token):
         """Construct data for 3scale REST API POST call."""
-        token = authorization(context).get("Authorization", None)
-        token = token.split("Bearer ")[-1]
-        data = {
-            "auth_token": token,
-            "service_id": context.service_id[:-1]
-        }
+        if use_token:
+            token = authorization(context).get("Authorization", None)
+            token = token.split("Bearer ")[-1]
+            data = {
+                "auth_token": token,
+                "service_id": context.service_id[:-1]
+            }
+        else:
+            data = {
+                "service_id": context.service_id[:-1]
+            }
         return data
 
 
@@ -42,14 +47,16 @@ def get_headers():
 def register_3scale(context, use_token):
     """Call API endpoint get_route."""
     if use_token:
-        data = get_data(context)
+        data = get_data(context, use_token)
         headers = get_headers()
         context.response = requests.post(three_scale_register_url(context),
                                          data=json.dumps(data),
                                          headers=headers)
     else:
+        data = get_data(context, use_token)
         headers = get_headers()
         context.response = requests.post(three_scale_register_url(context),
+                                         data=json.dumps(data),
                                          headers=headers)
 
 
