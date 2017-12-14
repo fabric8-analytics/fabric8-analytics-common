@@ -551,11 +551,12 @@ def run_core_api_concurrent_benchmark(core_api):
 def run_benchmarks(core_api, jobs_api, s3, run_stack_analysis, run_component_analysis,
                    run_parallel_tests, thread_max):
     """Start the selected benchmarks."""
-    if run_stack_analysis:
-        run_stack_analysis_sequenced_calls_benchmark(core_api, s3)
-    if run_component_analysis:
-        run_read_component_analysis_sequenced_calls_benchmark(core_api, s3)
-    if run_parallel_tests:
+    if not run_parallel_tests:
+        if run_stack_analysis:
+            run_stack_analysis_sequenced_calls_benchmark(core_api, s3)
+        if run_component_analysis:
+            run_read_component_analysis_sequenced_calls_benchmark(core_api, s3)
+    else:
         if run_stack_analysis:
             run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis",
                                               "stack_analysis_parallel_calls",
