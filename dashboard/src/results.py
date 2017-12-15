@@ -1,5 +1,7 @@
 """Results gathered by the Dashboard to be published."""
 
+import time
+
 
 class Results():
     """Class representing results gathered by the Dashboard to be published."""
@@ -23,6 +25,7 @@ class Results():
         self.f = lambda number: '{0:.2f}'.format(number)  # function to format floating point number
         self.sla = {}
         self.smoke_tests_results = {}
+        self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
 
     def __repr__(self):
         """Return textual representation of all results."""
