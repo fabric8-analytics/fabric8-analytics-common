@@ -1,17 +1,20 @@
 Feature: Server API
 
+  @production
   Scenario: Check the API entry point
     Given System is running
     When I access /api/v1/
     Then I should get 200 status code
     Then I should receive JSON response containing the paths key
 
+  @production
   Scenario: Check the /api/v1/readiness response
     Given System is running
     When I access /api/v1/readiness
     Then I should get 200 status code
     Then I should receive empty JSON response
 
+  @production
   Scenario: Check the /api/v1/liveness response
     Given System is running
     When I wait 20 seconds
@@ -19,6 +22,7 @@ Feature: Server API
     Then I should get 200 status code
     Then I should receive empty JSON response
 
+  @production
   Scenario: Check the service/state response
     Given System is running
     When I access /api/v1/system/version/
@@ -26,6 +30,7 @@ Feature: Server API
     Then I should receive JSON response containing the commit_hash key
     Then I should receive JSON response containing the committed_at key
 
+  @production
   Scenario: Check the /api/v1/schemas response
     Given System is running
     When I access /api/v1/schemas/
