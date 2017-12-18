@@ -201,9 +201,12 @@ def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to
         wait_for_all_threads(threads)
         print("Done")
 
-        values = [q.get()[0][0]["delta"] for t in threads]
+        queue_size = q.qsize()
+
+        # read all really stored results from the queue
+        values = [q.get()[0][0]["delta"] for i in range(queue_size)]
         print("values")
-        print(len(values))
+        print("count: {cnt}".format(cnt=len(values)))
         print(values)
         print("----")
         title = "{n}, {t} concurrent threads".format(n=message,
