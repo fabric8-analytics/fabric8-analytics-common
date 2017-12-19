@@ -167,6 +167,23 @@ def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
                                                                               pause_time))
 
 
+def check_number_of_results(queue_size, thread_count):
+    """Check if we really got the same number of results as expected.
+
+    When the server respond by any HTTP error code (4xx, 5xx), the results
+    are NOT stored in the queue. This means that number of results stored
+    in the queue might be less than number of threads set up by user via
+    CLI parameters in certain situations. This function check this situation.
+    """
+    print("queue size: {size}".format(size=queue_size))
+
+    if queue_size != thread_count:
+        print("Warning: {expected} results expected, but only {got} is presented".format(
+            expected=thread_count, got=queue_size))
+        print("This means that {n} stack analysis ends with error or exception".format(
+            n=thread_count - queue_size))
+
+
 def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to_call,
                                       thread_counts=None):
     """Universal function to call any callback function in more threads and collect results."""
@@ -201,9 +218,13 @@ def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to
         wait_for_all_threads(threads)
         print("Done")
 
-        values = [q.get()[0][0]["delta"] for t in threads]
+        queue_size = q.qsize()
+        check_number_of_results(queue_size, thread_count)
+
+        # read all really stored results from the queue
+        values = [q.get()[0][0]["delta"] for i in range(queue_size)]
         print("values")
-        print(len(values))
+        print("count: {cnt}".format(cnt=len(values)))
         print(values)
         print("----")
         title = "{n}, {t} concurrent threads".format(n=message,
