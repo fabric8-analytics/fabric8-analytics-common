@@ -9,6 +9,8 @@ load_jenkins_vars() {
           > ~/.jenkins-env
         source ~/.jenkins-env
     fi
+    echo "Jenkins URL: $JENKINS_URL"
+    echo "Build URL: $BUILD_URL"
 }
 
 prep() {
