@@ -34,14 +34,20 @@ We need to log in using the command line and accept the certificate.
 ## Deploy fabric8-analytics services
 Just run the deploy script and enjoy!
 
-`$./deploy.sh
+`$./deploy.sh`
 
 ## Deploy your changes to dev-cluster
-To deploy your changes, open a PR from your fork to the upstream repository. 
-CentosCI will build your image and comment on the PR with an image name and tag.
-Your image is available in the registry: docker pull registry.devshift.net/fabric8-analytics/worker-scaler:SNAPSHOT-PR-25
 
-To update your dev deployment use [oc edit](https://docs.openshift.com/container-platform/3.4/cli_reference/basic_cli_operations.html#edit) from the command line or editor in web interface.
+Assume you have opened a PR in one of the [fabric8-analytics](https://github.com/fabric8-analytics) repositories.
+Once tests pass in the PR, [CentosCI](https://ci.centos.org) builds your image and adds a similar comment to the PR:
+
+`Your image is available in the registry: docker pull registry.devshift.net/fabric8-analytics/worker-scaler:SNAPSHOT-PR-25`
+
+To update your dev deployment you can use one the following ways:
+
+- [oc edit](https://docs.openshift.com/container-platform/3.4/cli_reference/basic_cli_operations.html#edit) from command line
+- editor in web interface: `Applications` -> `Deployments` -> select deployment -> `Actions` -> `Edit YAML`
+- edit [deploy.sh](deploy.sh), add `"-p IMAGE_TAG=SNAPSHOT-PR-25"` (with correct tag) to corresponding `oc_process_apply` call at the end of the file and (re-)run `./deploy.sh`.
 
 ## E2E test
 
