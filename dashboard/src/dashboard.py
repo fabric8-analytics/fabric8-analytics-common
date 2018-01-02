@@ -15,6 +15,8 @@ from html_generator import *
 from perf_tests import *
 from smoke_tests import *
 from sla import *
+from ci_jobs import *
+from cliargs import *
 
 
 def check_environment_variable(env_var_name):
@@ -315,7 +317,6 @@ def main():
         delete_work_files(repository)
         update_overall_status(results, repository)
 
-        results.ci_jobs[repository] = {}
         for job_type in ["test_job", "build_job", "pylint_job", "pydoc_job"]:
             results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
 

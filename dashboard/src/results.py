@@ -1,6 +1,7 @@
 """Results gathered by the Dashboard to be published."""
 
 import time
+from collections import defaultdict
 
 
 class Results():
@@ -26,7 +27,7 @@ class Results():
         self.sla = {}
         self.smoke_tests_results = {}
         self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
-        self.ci_jobs = {}
+        self.ci_jobs = defaultdict(dict)
 
     def __repr__(self):
         """Return textual representation of all results."""

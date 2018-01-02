@@ -37,4 +37,4 @@ class CIJobs:
     @staticmethod
     def remove_prefix(text, prefix):
         """Remove the prefix from input string (if the string starts with prefix)."""
-        return text[text.startswith(prefix) and len(prefix):]
+        return text[len(prefix):] if text.startswith(prefix) else text
