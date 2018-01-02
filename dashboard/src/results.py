@@ -1,6 +1,7 @@
 """Results gathered by the Dashboard to be published."""
 
 import time
+from collections import defaultdict
 
 
 class Results():
@@ -26,13 +27,16 @@ class Results():
         self.sla = {}
         self.smoke_tests_results = {}
         self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
+        self.ci_jobs = defaultdict(dict)
 
     def __repr__(self):
         """Return textual representation of all results."""
         template = "Stage: {stage}\nProduction: {production}\n" + \
-                   "Repo stats: {rs}\nRepo linter checks: {rl}\n Repo docstyle checks: {rd}"
+                   "Repo stats: {rs}\nRepo linter checks: {rl}\nRepo docstyle checks: {rd}\n" + \
+                   "CI jobs: {ci}"
         return template.format(stage=self.stage,
                                production=self.production,
                                rs=self.repo_statistics,
                                rl=self.repo_linter_checks,
-                               rd=self.repo_docstyle_checks)
+                               rd=self.repo_docstyle_checks,
+                               ci=self.ci_jobs)

@@ -20,6 +20,7 @@ def generate_details_page_for_repository(repository, results):
     data["linter_checks"] = results.repo_linter_checks[repository]["files"]
     data["docstyle_checks"] = results.repo_docstyle_checks[repository]["files"]
     data["generated_on"] = results.generated_on
+    data["ci_jobs"] = results.ci_jobs
     generated_page = template.render(**data)
     filename = "repository_{repository}.html".format(repository=repository)
     with open(filename, "w") as fout:

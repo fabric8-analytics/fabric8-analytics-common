@@ -15,6 +15,8 @@ from html_generator import *
 from perf_tests import *
 from smoke_tests import *
 from sla import *
+from ci_jobs import *
+from cliargs import *
 
 
 def check_environment_variable(env_var_name):
@@ -298,6 +300,8 @@ def main():
     jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
     results.production = check_system(core_api, jobs_api)
 
+    ci_jobs = CIJobs()
+
     results.repositories = repositories
 
     # clone repositories + run pylint + run docstyle script + accumulate results
@@ -312,6 +316,9 @@ def main():
 
         delete_work_files(repository)
         update_overall_status(results, repository)
+
+        for job_type in ["test_job", "build_job", "pylint_job", "pydoc_job"]:
+            results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
 
     perf_tests = PerfTests()
     perf_tests.read_results()
