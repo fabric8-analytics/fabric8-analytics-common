@@ -67,6 +67,7 @@ fi
 function generate_and_deploy_config() {
     oc process -p DEPLOYMENT_PREFIX="${DEPLOYMENT_PREFIX}" \
     -p KEYCLOAK_URL="${KEYCLOAK_URL}" \
+    -p AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION}" \
     -f "${here}/config-template.yaml" > "${here}/config.yaml"
     oc apply -f config.yaml
 }

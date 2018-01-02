@@ -11,6 +11,7 @@ objects:
     deployment-prefix: "${DEPLOYMENT_PREFIX}"
     s3-bucket-for-analyses: "${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_ANALYSES}"
     s3-bucket-for-package-analyses: "${DEPLOYMENT_PREFIX}-${S3_BUCKET_FOR_PACKAGE_ANALYSES}"
+    aws-default-region: "${AWS_DEFAULT_REGION}"
     dynamodb-prefix: "${DEPLOYMENT_PREFIX}"
     keycloak-url: "${KEYCLOAK_URL}"
     three-scale-api-host-url: "${THREE_SCALE_API_HOST_URL}"
@@ -33,6 +34,12 @@ parameters:
   required: true
   name: S3_BUCKET_FOR_PACKAGE_ANALYSES
   value: "bayesian-core-package-data"
+
+- description: AWS default region to use
+  displayName: AWS default region
+  required: true
+  name: AWS_DEFAULT_REGION
+  value: "us-east-1"
 
 - description: Keycloak URL
   displayName: Keycloak URL
