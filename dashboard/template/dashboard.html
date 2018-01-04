@@ -21,66 +21,68 @@
                     </div>
                 </div>
             </nav>
-            <div class="panel panel-primary">
-                <div class="panel-heading">Services liveness and readiness</div>
-                <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><th>Environment</th><th>Core API</th><th>Jobs API</th><th>Auth.token<br />to core API</th><th>Auth.token<br />to jobs API</th><th>Smoketests</th></tr>
-                    <tr><td>Stage</td>
-                        % if stage["core_api_available"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if stage["jobs_api_available"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if stage["core_api_auth_token"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if stage["jobs_api_auth_token"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if smoke_tests_results["stage"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                    </tr>
-                    <tr><td>Production</td>
-                        % if production["core_api_available"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if production["jobs_api_available"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if production["core_api_auth_token"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if production["jobs_api_auth_token"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if smoke_tests_results["production"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                    </tr>
-                </table>
-            </div>
+            % if enable_liveness_table:
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Services liveness and readiness</div>
+                    <table class="table table-condensed table-hover table-bordered" rules="all">
+                        <tr><th>Environment</th><th>Core API</th><th>Jobs API</th><th>Auth.token<br />to core API</th><th>Auth.token<br />to jobs API</th><th>Smoketests</th></tr>
+                        <tr><td>Stage</td>
+                            % if stage["core_api_available"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if stage["jobs_api_available"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if stage["core_api_auth_token"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if stage["jobs_api_auth_token"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if smoke_tests_results["stage"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                        </tr>
+                        <tr><td>Production</td>
+                            % if production["core_api_available"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if production["jobs_api_available"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if production["core_api_auth_token"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if production["jobs_api_auth_token"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if smoke_tests_results["production"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                        </tr>
+                    </table>
+                </div>
+            % endif
             % if enable_sla_table:
                 <div class="panel panel-primary">
                     <div class="panel-heading">SLA</div>

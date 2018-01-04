@@ -338,13 +338,14 @@ def main():
 
     cfg = Configuration()
 
-    core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
-    jobs_api = JobsApi(cfg.stage.jobs_api_url, cfg.stage.jobs_api_token)
-    results.stage = check_system(core_api, jobs_api)
+    if enable_liveness_table:
+        core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
+        jobs_api = JobsApi(cfg.stage.jobs_api_url, cfg.stage.jobs_api_token)
+        results.stage = check_system(core_api, jobs_api)
 
-    core_api = CoreApi(cfg.prod.core_api_url, cfg.prod.core_api_token)
-    jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
-    results.production = check_system(core_api, jobs_api)
+        core_api = CoreApi(cfg.prod.core_api_url, cfg.prod.core_api_token)
+        jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
+        results.production = check_system(core_api, jobs_api)
 
     if enable_ci_jobs_table:
         ci_jobs = CIJobs()
