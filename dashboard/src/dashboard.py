@@ -105,13 +105,33 @@ ci_job_types = [
 ]
 
 
+def is_repository_cloned(repository):
+    """Check if the directory with cloned repository exist."""
+    return os.path.isdir(repository)
+
 
 def clone_repository(repository):
     """Clone the selected repository."""
+    print("Cloning the repository {repository}".format(repository=repository))
     prefix = "https://github.com/fabric8-analytics"
     command = "git clone --single-branch --depth 1 {prefix}/{repo}.git".format(prefix=prefix,
                                                                                repo=repository)
     os.system(command)
+
+
+def fetch_repository(repository):
+    """Fetch the selected repository."""
+    print("Fetching changes from the repository {repository}".format(repository=repository))
+    command = "pushd {repository}; git fetch; popd".format(repository=repository)
+    os.system(command)
+
+
+def clone_or_fetch_repository(repository):
+    """Clone or fetch the selected repository."""
+    if is_repository_cloned(repository):
+        fetch_repository(repository)
+    else:
+        clone_repository(repository)
 
 
 def run_pylint(repository):
@@ -322,9 +342,13 @@ def main():
 
     results.repositories = repositories
 
-    # clone repositories + run pylint + run docstyle script + accumulate results
+    # clone/fetch repositories + run pylint + run docstyle script + accumulate results
     for repository in repositories:
-        clone_repository(repository)
+
+        # clone or fetch the repository if the cloning/fetching is not disabled via CLI arguments
+        if cli_arguments.clone_repositories:
+            clone_or_fetch_repository(repository)
+
         run_pylint(repository)
         run_docstyle_check(repository)
 
