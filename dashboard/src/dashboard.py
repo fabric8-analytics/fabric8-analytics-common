@@ -322,48 +322,47 @@ def export_into_csv(results):
         writer.writerow(record)
 
 
-def main():
-    """Entry point to the QA Dashboard."""
-    cli_arguments = cli_parser.parse_args()
-
-    # some CLI arguments are used to DISABLE given feature of the dashboard,
-    # but let's not use double negation everywhere :)
-    enable_ci_jobs_table = not cli_arguments.disable_ci_jobs
-    enable_code_quality_table = not cli_arguments.disable_code_quality
-    enable_liveness_table = not cli_arguments.disable_liveness
-    enable_sla_table = not cli_arguments.disable_sla
-
-    check_environment_variables()
-    results = Results()
-
+def prepare_data_for_liveness_table(results):
+    """Prepare data for sevices liveness/readiness table on the dashboard."""
     cfg = Configuration()
 
-    if enable_liveness_table:
-        core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
-        jobs_api = JobsApi(cfg.stage.jobs_api_url, cfg.stage.jobs_api_token)
-        results.stage = check_system(core_api, jobs_api)
+    core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
+    jobs_api = JobsApi(cfg.stage.jobs_api_url, cfg.stage.jobs_api_token)
+    results.stage = check_system(core_api, jobs_api)
 
-        core_api = CoreApi(cfg.prod.core_api_url, cfg.prod.core_api_token)
-        jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
-        results.production = check_system(core_api, jobs_api)
+    core_api = CoreApi(cfg.prod.core_api_url, cfg.prod.core_api_token)
+    jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
+    results.production = check_system(core_api, jobs_api)
 
-    if enable_ci_jobs_table:
+    smoke_tests = SmokeTests()
+    results.smoke_tests_results = smoke_tests.results
+
+
+def prepare_data_for_sla_table(results):
+    """Prepare data for SLA table on the dashboard."""
+    perf_tests = PerfTests()
+    perf_tests.read_results()
+    perf_tests.compute_statistic()
+    results.perf_tests_results = perf_tests.results
+    results.perf_tests_statistic = perf_tests.statistic
+
+    results.sla_thresholds = SLA
+
+
+def prepare_data_for_repositories(repositories, results,
+                                  clone_repositories_enabled, cleanup_repositories_enabled,
+                                  code_quality_table_enabled, ci_jobs_table_enabled):
+    """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
+    if ci_jobs_table_enabled:
         ci_jobs = CIJobs()
 
-    # we need to know which tables are enabled or disabled to proper process the template
-    results.repositories = repositories
-    results.enable_sla_table = enable_sla_table
-    results.enable_liveness_table = enable_liveness_table
-    results.enable_code_quality_table = enable_code_quality_table
-
-    # clone/fetch repositories + run pylint + run docstyle script + accumulate results
     for repository in repositories:
 
         # clone or fetch the repository if the cloning/fetching is not disabled via CLI arguments
-        if cli_arguments.clone_repositories:
+        if clone_repositories_enabled:
             clone_or_fetch_repository(repository)
 
-        if enable_code_quality_table:
+        if code_quality_table_enabled:
             run_pylint(repository)
             run_docstyle_check(repository)
 
@@ -372,28 +371,52 @@ def main():
             results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
             update_overall_status(results, repository)
 
-        delete_work_files(repository)
+        # delete_work_files(repository)
 
-        if cli_arguments.cleanup_repositories:
+        if cleanup_repositories_enabled:
             cleanup_repository(repository)
 
-        if enable_ci_jobs_table:
+        if ci_jobs_table_enabled:
             for job_type in ci_job_types:
                 results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
 
-    if enable_sla_table:
-        perf_tests = PerfTests()
-        perf_tests.read_results()
-        perf_tests.compute_statistic()
-        results.perf_tests_results = perf_tests.results
-        results.perf_tests_statistic = perf_tests.statistic
 
-        results.sla_thresholds = SLA
+def main():
+    """Entry point to the QA Dashboard."""
+    cli_arguments = cli_parser.parse_args()
 
-    smoke_tests = SmokeTests()
-    results.smoke_tests_results = smoke_tests.results
+    # some CLI arguments are used to DISABLE given feature of the dashboard,
+    # but let's not use double negation everywhere :)
+    ci_jobs_table_enabled = not cli_arguments.disable_ci_jobs
+    code_quality_table_enabled = not cli_arguments.disable_code_quality
+    liveness_table_enabled = not cli_arguments.disable_liveness
+    sla_table_enabled = not cli_arguments.disable_sla
+    clone_repositories_enabled = cli_arguments.clone_repositories
+    cleanup_repositories_enabled = cli_arguments.cleanup_repositories
 
-    if enable_code_quality_table:
+    check_environment_variables()
+    results = Results()
+
+    # list of repositories to check
+    results.repositories = repositories
+
+    # we need to know which tables are enabled or disabled to proper process the template
+    results.sla_table_enabled = sla_table_enabled
+    results.liveness_table_enabled = liveness_table_enabled
+    results.code_quality_table_enabled = code_quality_table_enabled
+    results.ci_jobs_table_enabled = ci_jobs_table_enabled
+
+    if liveness_table_enabled:
+        prepare_data_for_liveness_table(results)
+
+    prepare_data_for_repositories(repositories, results,
+                                  clone_repositories_enabled, cleanup_repositories_enabled,
+                                  code_quality_table_enabled, ci_jobs_table_enabled)
+
+    if sla_table_enabled:
+        prepare_data_for_sla_table(results)
+
+    if code_quality_table_enabled and liveness_table_enabled:
         export_into_csv(results)
 
     generate_dashboard(results)

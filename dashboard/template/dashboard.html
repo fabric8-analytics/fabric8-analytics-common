@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </nav>
-            % if enable_liveness_table:
+            % if liveness_table_enabled:
                 <div class="panel panel-primary">
                     <div class="panel-heading">Services liveness and readiness</div>
                     <table class="table table-condensed table-hover table-bordered" rules="all">
@@ -83,7 +83,7 @@
                     </table>
                 </div>
             % endif
-            % if enable_sla_table:
+            % if sla_table_enabled:
                 <div class="panel panel-primary">
                     <div class="panel-heading">SLA</div>
                     <table class="table table-condensed table-hover table-bordered" rules="all">
@@ -130,7 +130,7 @@
                     </table>
                 </div>
             % endif
-            % if enable_code_quality_table:
+            % if code_quality_table_enabled:
                 <div class="panel panel-primary">
                     <div class="panel-heading">Code quality</div>
                     <table class="table table-condensed table-hover table-bordered" rules="all">
@@ -165,7 +165,7 @@
                     </table>
                 </div>
             % endif
-            % if ci_jobs:
+            % if ci_jobs_table_enabled:
                 <div class="panel panel-primary">
                     <div class="panel-heading">CI jobs</div>
                     <table class="table table-condensed table-hover table-bordered" rules="all">
