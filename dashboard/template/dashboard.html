@@ -21,162 +21,170 @@
                     </div>
                 </div>
             </nav>
-            <div class="panel panel-primary">
-                <div class="panel-heading">Services liveness and readiness</div>
-                <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><th>Environment</th><th>Core API</th><th>Jobs API</th><th>Auth.token<br />to core API</th><th>Auth.token<br />to jobs API</th><th>Smoketests</th></tr>
-                    <tr><td>Stage</td>
-                        % if stage["core_api_available"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if stage["jobs_api_available"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if stage["core_api_auth_token"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if stage["jobs_api_auth_token"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if smoke_tests_results["stage"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                    </tr>
-                    <tr><td>Production</td>
-                        % if production["core_api_available"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if production["jobs_api_available"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if production["core_api_auth_token"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if production["jobs_api_auth_token"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        % if smoke_tests_results["production"]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                    </tr>
-                </table>
-            </div>
-            <div class="panel panel-primary">
-                <div class="panel-heading">SLA</div>
-                <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><th>Benchmark</th>
-                        <th colspan="6">Stack analysis</th>
-                        <th colspan="6">Component analysis for known component</th>
-                        <th colspan="6">Component analysis for unknown component</th></tr>
-                    <tr><th>Test type</th><th colspan="3">Sequential</th><th colspan="3">Parallel</th>
-                                          <th colspan="3">Sequential</th><th colspan="3">Parallel</th>
-                                          <th colspan="3">Sequential</th><th colspan="3">Parallel</th></tr>
-                    <tr><th>Results</th>
-                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
-                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
-                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
-                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
-                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
-                        <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th></tr>
-
-                    % for row_title, statistic_value in zip(perf_tests_measurement_titles, perf_tests_measurement_selectors):
-                    <tr><td>${row_title}</td>
-                        % for measurement_type in ["sequenced_calls", "parallel_calls"]:
-                            <td class="numeric">${f(perf_tests_statistic["stack analysis"][measurement_type][statistic_value])}</td>
-                            <td class="numeric">${f(sla_thresholds["stack analysis"][measurement_type][statistic_value])}</td>
-                            % if perf_tests_statistic["stack analysis"][measurement_type][statistic_value] <= sla_thresholds["stack analysis"][measurement_type][statistic_value]:
+            % if liveness_table_enabled:
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Services liveness and readiness</div>
+                    <table class="table table-condensed table-hover table-bordered" rules="all">
+                        <tr><th>Environment</th><th>Core API</th><th>Jobs API</th><th>Auth.token<br />to core API</th><th>Auth.token<br />to jobs API</th><th>Smoketests</th></tr>
+                        <tr><td>Stage</td>
+                            % if stage["core_api_available"]:
                                 <td class="boolean ok">&#x2713;</td>
                             % else:
                                 <td class="boolean error">&times;</td>
                             % endif
-                        % endfor
-
-                        <!-- this part will be very likely moved into other place, so don't glue it with previous loop right now -->
-                        % for measurement_type in ["sequenced_calls_known_component", "parallel_calls_known_component", "sequenced_calls_unknown_component", "parallel_calls_unknown_component"]:
-                            <td class="numeric">${f(perf_tests_statistic["component analysis"][measurement_type][statistic_value])}</td>
-                            <td class="numeric">${f(sla_thresholds["component analysis"][measurement_type][statistic_value])}</td>
-                            % if perf_tests_statistic["component analysis"][measurement_type][statistic_value] <= sla_thresholds["component analysis"][measurement_type][statistic_value]:
+                            % if stage["jobs_api_available"]:
                                 <td class="boolean ok">&#x2713;</td>
                             % else:
                                 <td class="boolean error">&times;</td>
                             % endif
+                            % if stage["core_api_auth_token"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if stage["jobs_api_auth_token"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if smoke_tests_results["stage"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                        </tr>
+                        <tr><td>Production</td>
+                            % if production["core_api_available"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if production["jobs_api_available"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if production["core_api_auth_token"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if production["jobs_api_auth_token"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            % if smoke_tests_results["production"]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                        </tr>
+                    </table>
+                </div>
+            % endif
+            % if sla_table_enabled:
+                <div class="panel panel-primary">
+                    <div class="panel-heading">SLA</div>
+                    <table class="table table-condensed table-hover table-bordered" rules="all">
+                        <tr><th>Benchmark</th>
+                            <th colspan="6">Stack analysis</th>
+                            <th colspan="6">Component analysis for known component</th>
+                            <th colspan="6">Component analysis for unknown component</th></tr>
+                        <tr><th>Test type</th><th colspan="3">Sequential</th><th colspan="3">Parallel</th>
+                                              <th colspan="3">Sequential</th><th colspan="3">Parallel</th>
+                                              <th colspan="3">Sequential</th><th colspan="3">Parallel</th></tr>
+                        <tr><th>Results</th>
+                            <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                            <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                            <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                            <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                            <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th>
+                            <th class="column">duration&nbsp;(s)</th><th class="column">limit (s)</th><th class="column">status</th></tr>
+
+                        % for row_title, statistic_value in zip(perf_tests_measurement_titles, perf_tests_measurement_selectors):
+                        <tr><td>${row_title}</td>
+                            % for measurement_type in ["sequenced_calls", "parallel_calls"]:
+                                <td class="numeric">${f(perf_tests_statistic["stack analysis"][measurement_type][statistic_value])}</td>
+                                <td class="numeric">${f(sla_thresholds["stack analysis"][measurement_type][statistic_value])}</td>
+                                % if perf_tests_statistic["stack analysis"][measurement_type][statistic_value] <= sla_thresholds["stack analysis"][measurement_type][statistic_value]:
+                                    <td class="boolean ok">&#x2713;</td>
+                                % else:
+                                    <td class="boolean error">&times;</td>
+                                % endif
+                            % endfor
+
+                            <!-- this part will be very likely moved into other place, so don't glue it with previous loop right now -->
+                            % for measurement_type in ["sequenced_calls_known_component", "parallel_calls_known_component", "sequenced_calls_unknown_component", "parallel_calls_unknown_component"]:
+                                <td class="numeric">${f(perf_tests_statistic["component analysis"][measurement_type][statistic_value])}</td>
+                                <td class="numeric">${f(sla_thresholds["component analysis"][measurement_type][statistic_value])}</td>
+                                % if perf_tests_statistic["component analysis"][measurement_type][statistic_value] <= sla_thresholds["component analysis"][measurement_type][statistic_value]:
+                                    <td class="boolean ok">&#x2713;</td>
+                                % else:
+                                    <td class="boolean error">&times;</td>
+                                % endif
+                            % endfor
+                        </tr>
                         % endfor
-                    </tr>
+
+                    </table>
+                </div>
+            % endif
+            % if code_quality_table_enabled:
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Code quality</div>
+                    <table class="table table-condensed table-hover table-bordered" rules="all">
+                        <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="3">Linter results</th><th colspan="3">Pydocstyle results</th><th>Overall status</th><th>Remark</th></tr>
+                        <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+                    % for repository in repositories:
+                        <tr>
+                            <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
+                            <td class="numeric" style="width:8ex"><a href="repository_${repository}.html">${source_files[repository]["count"]}</a></td>
+                            <td class="numeric" style="width:8ex">${source_files[repository]["total_lines"]}</td>
+                            <td class="numeric ok" style="width:8ex">${repo_linter_checks[repository]["passed"]}</td>
+                            <td class="numeric error" style="width:8ex">${repo_linter_checks[repository]["failed"]}</td>
+                            <td class="numeric" style="width:16ex">
+                                <div class='progress-bar ${repo_linter_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_linter_checks[repository]["progress_bar_width"]}%'>
+                                ${repo_linter_checks[repository]["passed%"]}%
+                                </div>
+                            </td>
+                            <td class="numeric ok" style="width:8ex">${repo_docstyle_checks[repository]["passed"]}</td>
+                            <td class="numeric error" style="width:8ex">${repo_docstyle_checks[repository]["failed"]}</td>
+                            <td class="numeric" style="width:16ex">
+                                <div class='progress-bar ${repo_docstyle_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_docstyle_checks[repository]["progress_bar_width"]}%'>
+                                ${repo_docstyle_checks[repository]["passed%"]}%
+                                </div>
+                            </td>
+                            % if overall_status[repository]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            <td style="width:30ex">${remarks[repository]}</td>
                     % endfor
-
-                </table>
-            </div>
-            <div class="panel panel-primary">
-                <div class="panel-heading">Code quality</div>
-                <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="3">Linter results</th><th colspan="3">Pydocstyle results</th><th>Overall status</th><th>Remark</th></tr>
-                    <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>&nbsp;</th><th>&nbsp;</th></tr>
-                % for repository in repositories:
-                    <tr>
-                        <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
-                        <td class="numeric" style="width:8ex"><a href="repository_${repository}.html">${source_files[repository]["count"]}</a></td>
-                        <td class="numeric" style="width:8ex">${source_files[repository]["total_lines"]}</td>
-                        <td class="numeric ok" style="width:8ex">${repo_linter_checks[repository]["passed"]}</td>
-                        <td class="numeric error" style="width:8ex">${repo_linter_checks[repository]["failed"]}</td>
-                        <td class="numeric" style="width:16ex">
-                            <div class='progress-bar ${repo_linter_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_linter_checks[repository]["progress_bar_width"]}%'>
-                            ${repo_linter_checks[repository]["passed%"]}%
-                            </div>
-                        </td>
-                        <td class="numeric ok" style="width:8ex">${repo_docstyle_checks[repository]["passed"]}</td>
-                        <td class="numeric error" style="width:8ex">${repo_docstyle_checks[repository]["failed"]}</td>
-                        <td class="numeric" style="width:16ex">
-                            <div class='progress-bar ${repo_docstyle_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_docstyle_checks[repository]["progress_bar_width"]}%'>
-                            ${repo_docstyle_checks[repository]["passed%"]}%
-                            </div>
-                        </td>
-                        % if overall_status[repository]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        <td style="width:30ex">${remarks[repository]}</td>
-                % endfor
-                </table>
-            </div>
-            <div class="panel panel-primary">
-                <div class="panel-heading">CI jobs</div>
-                <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><th>Repository</th><th>Build job</th><th>Test job</th><th>Pylint job</th><th>Pydocstyle job</th></tr>
-                % for repository in repositories:
-                    <tr>
-                        <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
-                        % for job_type in ["build_job", "test_job", "pylint_job", "pydoc_job"]:
-                            % if ci_jobs[repository][job_type]:
-                                <td style="width:10ex"><a href='${ci_jobs[repository][job_type]}'>link</a></td>
-                            % else:
-                                <td style="width:10ex" class="boolean error">&times;</td>
-                            % endif
-                        % endfor
-                    </tr>
-                % endfor
-                </table>
-            </div>
+                    </table>
+                </div>
+            % endif
+            % if ci_jobs_table_enabled:
+                <div class="panel panel-primary">
+                    <div class="panel-heading">CI jobs</div>
+                    <table class="table table-condensed table-hover table-bordered" rules="all">
+                        <tr><th>Repository</th><th>Build job</th><th>Test job</th><th>Pylint job</th><th>Pydocstyle job</th></tr>
+                    % for repository in repositories:
+                        <tr>
+                            <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
+                            % for job_type in ["build_job", "test_job", "pylint_job", "pydoc_job"]:
+                                % if ci_jobs[repository][job_type]:
+                                    <td style="width:10ex"><a href='${ci_jobs[repository][job_type]}'>link</a></td>
+                                % else:
+                                    <td style="width:10ex" class="boolean error">&times;</td>
+                                % endif
+                            % endfor
+                        </tr>
+                    % endfor
+                    </table>
+                </div>
+            % endif
             <div style='height:100px'></div>
             <div>Author: Pavel Tisnovsky &lt;<a href="mailto:ptisnovs@redhat.com">ptisnovs@redhat.com</a>&gt;</div>
             <div>Generated on: ${generated_on}</div>

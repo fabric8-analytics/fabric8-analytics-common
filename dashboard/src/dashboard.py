@@ -6,6 +6,7 @@ import os
 import sys
 import requests
 import csv
+import shutil
 
 from coreapi import *
 from jobsapi import *
@@ -97,13 +98,41 @@ repositories = [
     "fabric8-analytics-recommender"
 ]
 
+ci_job_types = [
+    "test_job",
+    "build_job",
+    "pylint_job",
+    "pydoc_job"
+]
+
+
+def is_repository_cloned(repository):
+    """Check if the directory with cloned repository exist."""
+    return os.path.isdir(repository)
+
 
 def clone_repository(repository):
     """Clone the selected repository."""
+    print("Cloning the repository {repository}".format(repository=repository))
     prefix = "https://github.com/fabric8-analytics"
     command = "git clone --single-branch --depth 1 {prefix}/{repo}.git".format(prefix=prefix,
                                                                                repo=repository)
     os.system(command)
+
+
+def fetch_repository(repository):
+    """Fetch the selected repository."""
+    print("Fetching changes from the repository {repository}".format(repository=repository))
+    command = "pushd {repository}; git fetch; popd".format(repository=repository)
+    os.system(command)
+
+
+def clone_or_fetch_repository(repository):
+    """Clone or fetch the selected repository."""
+    if is_repository_cloned(repository):
+        fetch_repository(repository)
+    else:
+        clone_repository(repository)
 
 
 def run_pylint(repository):
@@ -256,6 +285,14 @@ def delete_work_files(repository):
     os.remove("{repo}.pydocstyle".format(repo=repository))
 
 
+def cleanup_repository(repository):
+    """Cleanup the directory with the clone of specified repository."""
+    # let's do very basic check that the repository is really local dir
+    if '/' not in repository:
+        print("cleanup " + repository)
+        shutil.rmtree(repository, ignore_errors=True)
+
+
 def export_into_csv(results):
     """Export the results into CSV file."""
     record = [
@@ -285,11 +322,8 @@ def export_into_csv(results):
         writer.writerow(record)
 
 
-def main():
-    """Entry point to the QA Dashboard."""
-    check_environment_variables()
-    results = Results()
-
+def prepare_data_for_liveness_table(results):
+    """Prepare data for sevices liveness/readiness table on the dashboard."""
     cfg = Configuration()
 
     core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
@@ -300,26 +334,12 @@ def main():
     jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
     results.production = check_system(core_api, jobs_api)
 
-    ci_jobs = CIJobs()
+    smoke_tests = SmokeTests()
+    results.smoke_tests_results = smoke_tests.results
 
-    results.repositories = repositories
 
-    # clone repositories + run pylint + run docstyle script + accumulate results
-    for repository in repositories:
-        clone_repository(repository)
-        run_pylint(repository)
-        run_docstyle_check(repository)
-
-        results.source_files[repository] = get_source_files(repository)
-        results.repo_linter_checks[repository] = parse_pylint_results(repository)
-        results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
-
-        delete_work_files(repository)
-        update_overall_status(results, repository)
-
-        for job_type in ["test_job", "build_job", "pylint_job", "pydoc_job"]:
-            results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
-
+def prepare_data_for_sla_table(results):
+    """Prepare data for SLA table on the dashboard."""
     perf_tests = PerfTests()
     perf_tests.read_results()
     perf_tests.compute_statistic()
@@ -328,10 +348,77 @@ def main():
 
     results.sla_thresholds = SLA
 
-    smoke_tests = SmokeTests()
-    results.smoke_tests_results = smoke_tests.results
 
-    export_into_csv(results)
+def prepare_data_for_repositories(repositories, results,
+                                  clone_repositories_enabled, cleanup_repositories_enabled,
+                                  code_quality_table_enabled, ci_jobs_table_enabled):
+    """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
+    if ci_jobs_table_enabled:
+        ci_jobs = CIJobs()
+
+    for repository in repositories:
+
+        # clone or fetch the repository if the cloning/fetching is not disabled via CLI arguments
+        if clone_repositories_enabled:
+            clone_or_fetch_repository(repository)
+
+        if code_quality_table_enabled:
+            run_pylint(repository)
+            run_docstyle_check(repository)
+
+            results.source_files[repository] = get_source_files(repository)
+            results.repo_linter_checks[repository] = parse_pylint_results(repository)
+            results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
+            update_overall_status(results, repository)
+
+        # delete_work_files(repository)
+
+        if cleanup_repositories_enabled:
+            cleanup_repository(repository)
+
+        if ci_jobs_table_enabled:
+            for job_type in ci_job_types:
+                results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
+
+
+def main():
+    """Entry point to the QA Dashboard."""
+    cli_arguments = cli_parser.parse_args()
+
+    # some CLI arguments are used to DISABLE given feature of the dashboard,
+    # but let's not use double negation everywhere :)
+    ci_jobs_table_enabled = not cli_arguments.disable_ci_jobs
+    code_quality_table_enabled = not cli_arguments.disable_code_quality
+    liveness_table_enabled = not cli_arguments.disable_liveness
+    sla_table_enabled = not cli_arguments.disable_sla
+    clone_repositories_enabled = cli_arguments.clone_repositories
+    cleanup_repositories_enabled = cli_arguments.cleanup_repositories
+
+    check_environment_variables()
+    results = Results()
+
+    # list of repositories to check
+    results.repositories = repositories
+
+    # we need to know which tables are enabled or disabled to proper process the template
+    results.sla_table_enabled = sla_table_enabled
+    results.liveness_table_enabled = liveness_table_enabled
+    results.code_quality_table_enabled = code_quality_table_enabled
+    results.ci_jobs_table_enabled = ci_jobs_table_enabled
+
+    if liveness_table_enabled:
+        prepare_data_for_liveness_table(results)
+
+    prepare_data_for_repositories(repositories, results,
+                                  clone_repositories_enabled, cleanup_repositories_enabled,
+                                  code_quality_table_enabled, ci_jobs_table_enabled)
+
+    if sla_table_enabled:
+        prepare_data_for_sla_table(results)
+
+    if code_quality_table_enabled and liveness_table_enabled:
+        export_into_csv(results)
+
     generate_dashboard(results)
 
 

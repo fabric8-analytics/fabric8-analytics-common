@@ -30,5 +30,6 @@ def generate_details_page_for_repository(repository, results):
 def generate_dashboard(results):
     """Generate all pages with the dashboard and detailed information as well."""
     generate_index_page(results)
-    for repository in results.repositories:
-        generate_details_page_for_repository(repository, results)
+    if results.code_quality_table_enabled:
+        for repository in results.repositories:
+            generate_details_page_for_repository(repository, results)
