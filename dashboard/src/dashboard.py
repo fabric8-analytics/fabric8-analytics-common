@@ -6,6 +6,7 @@ import os
 import sys
 import requests
 import csv
+import shutil
 
 from coreapi import *
 from jobsapi import *
@@ -284,6 +285,14 @@ def delete_work_files(repository):
     os.remove("{repo}.pydocstyle".format(repo=repository))
 
 
+def cleanup_repository(repository):
+    """Cleanup the directory with the clone of specified repository."""
+    # let's do very basic check that the repository is really local dir
+    if '/' not in repository:
+        print("cleanup " + repository)
+        shutil.rmtree(repository, ignore_errors=True)
+
+
 def export_into_csv(results):
     """Export the results into CSV file."""
     record = [
@@ -357,6 +366,10 @@ def main():
         results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
 
         delete_work_files(repository)
+
+        if cli_arguments.cleanup_repositories:
+            cleanup_repository(repository)
+
         update_overall_status(results, repository)
 
         if enable_ci_jobs:
