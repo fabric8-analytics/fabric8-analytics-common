@@ -105,6 +105,7 @@ services:
      - broker
      - pgbouncer
      - minio-s3
+     - gremlin-http
     environment:
       # Uncomment if you want to start job service in a paused state
       #JOB_SERVICE_PAUSED: 1
