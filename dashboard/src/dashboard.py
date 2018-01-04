@@ -97,6 +97,14 @@ repositories = [
     "fabric8-analytics-recommender"
 ]
 
+ci_job_types = [
+    "test_job",
+    "build_job",
+    "pylint_job",
+    "pydoc_job"
+]
+
+
 
 def clone_repository(repository):
     """Clone the selected repository."""
@@ -287,6 +295,15 @@ def export_into_csv(results):
 
 def main():
     """Entry point to the QA Dashboard."""
+    cli_arguments = cli_parser.parse_args()
+
+    # some CLI arguments are used to DISABLE given feature of the dashboard,
+    # but let's not use double negation everywhere :)
+    enable_ci_jobs = not cli_arguments.disable_ci_jobs
+    enable_code_quality = not cli_arguments.disable_code_quality
+    enable_liveness_check = not cli_arguments.disable_liveness
+    enable_sla = not cli_arguments.disable_sla
+
     check_environment_variables()
     results = Results()
 
@@ -317,7 +334,7 @@ def main():
         delete_work_files(repository)
         update_overall_status(results, repository)
 
-        for job_type in ["test_job", "build_job", "pylint_job", "pydoc_job"]:
+        for job_type in ci_job_types:
             results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
 
     perf_tests = PerfTests()
