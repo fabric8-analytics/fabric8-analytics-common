@@ -29,7 +29,7 @@ def gremlin_url_access(context):
 @when('I ask Gremlin to find all vertexes having property {name} set to {value}')
 def gremlin_search_vertexes(context, name, value):
     """Perform simple query to the Gremlin for all vertexes having the specified property."""
-    query = Query().has("name", value)
+    query = Query().has(name, value)
     post_query(context, query)
 
 
