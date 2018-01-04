@@ -126,39 +126,41 @@
 
                 </table>
             </div>
-            <div class="panel panel-primary">
-                <div class="panel-heading">Code quality</div>
-                <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="3">Linter results</th><th colspan="3">Pydocstyle results</th><th>Overall status</th><th>Remark</th></tr>
-                    <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>&nbsp;</th><th>&nbsp;</th></tr>
-                % for repository in repositories:
-                    <tr>
-                        <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
-                        <td class="numeric" style="width:8ex"><a href="repository_${repository}.html">${source_files[repository]["count"]}</a></td>
-                        <td class="numeric" style="width:8ex">${source_files[repository]["total_lines"]}</td>
-                        <td class="numeric ok" style="width:8ex">${repo_linter_checks[repository]["passed"]}</td>
-                        <td class="numeric error" style="width:8ex">${repo_linter_checks[repository]["failed"]}</td>
-                        <td class="numeric" style="width:16ex">
-                            <div class='progress-bar ${repo_linter_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_linter_checks[repository]["progress_bar_width"]}%'>
-                            ${repo_linter_checks[repository]["passed%"]}%
-                            </div>
-                        </td>
-                        <td class="numeric ok" style="width:8ex">${repo_docstyle_checks[repository]["passed"]}</td>
-                        <td class="numeric error" style="width:8ex">${repo_docstyle_checks[repository]["failed"]}</td>
-                        <td class="numeric" style="width:16ex">
-                            <div class='progress-bar ${repo_docstyle_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_docstyle_checks[repository]["progress_bar_width"]}%'>
-                            ${repo_docstyle_checks[repository]["passed%"]}%
-                            </div>
-                        </td>
-                        % if overall_status[repository]:
-                            <td class="boolean ok">&#x2713;</td>
-                        % else:
-                            <td class="boolean error">&times;</td>
-                        % endif
-                        <td style="width:30ex">${remarks[repository]}</td>
-                % endfor
-                </table>
-            </div>
+            % if enable_code_quality_table:
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Code quality</div>
+                    <table class="table table-condensed table-hover table-bordered" rules="all">
+                        <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="3">Linter results</th><th colspan="3">Pydocstyle results</th><th>Overall status</th><th>Remark</th></tr>
+                        <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+                    % for repository in repositories:
+                        <tr>
+                            <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
+                            <td class="numeric" style="width:8ex"><a href="repository_${repository}.html">${source_files[repository]["count"]}</a></td>
+                            <td class="numeric" style="width:8ex">${source_files[repository]["total_lines"]}</td>
+                            <td class="numeric ok" style="width:8ex">${repo_linter_checks[repository]["passed"]}</td>
+                            <td class="numeric error" style="width:8ex">${repo_linter_checks[repository]["failed"]}</td>
+                            <td class="numeric" style="width:16ex">
+                                <div class='progress-bar ${repo_linter_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_linter_checks[repository]["progress_bar_width"]}%'>
+                                ${repo_linter_checks[repository]["passed%"]}%
+                                </div>
+                            </td>
+                            <td class="numeric ok" style="width:8ex">${repo_docstyle_checks[repository]["passed"]}</td>
+                            <td class="numeric error" style="width:8ex">${repo_docstyle_checks[repository]["failed"]}</td>
+                            <td class="numeric" style="width:16ex">
+                                <div class='progress-bar ${repo_docstyle_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_docstyle_checks[repository]["progress_bar_width"]}%'>
+                                ${repo_docstyle_checks[repository]["passed%"]}%
+                                </div>
+                            </td>
+                            % if overall_status[repository]:
+                                <td class="boolean ok">&#x2713;</td>
+                            % else:
+                                <td class="boolean error">&times;</td>
+                            % endif
+                            <td style="width:30ex">${remarks[repository]}</td>
+                    % endfor
+                    </table>
+                </div>
+            % endif
             % if ci_jobs:
                 <div class="panel panel-primary">
                     <div class="panel-heading">CI jobs</div>

@@ -329,7 +329,7 @@ def main():
     # some CLI arguments are used to DISABLE given feature of the dashboard,
     # but let's not use double negation everywhere :)
     enable_ci_jobs = not cli_arguments.disable_ci_jobs
-    enable_code_quality = not cli_arguments.disable_code_quality
+    enable_code_quality_table = not cli_arguments.disable_code_quality
     enable_liveness_check = not cli_arguments.disable_liveness
     enable_sla = not cli_arguments.disable_sla
 
@@ -350,6 +350,7 @@ def main():
         ci_jobs = CIJobs()
 
     results.repositories = repositories
+    results.enable_code_quality_table = enable_code_quality_table
 
     # clone/fetch repositories + run pylint + run docstyle script + accumulate results
     for repository in repositories:
@@ -358,19 +359,19 @@ def main():
         if cli_arguments.clone_repositories:
             clone_or_fetch_repository(repository)
 
-        run_pylint(repository)
-        run_docstyle_check(repository)
+        if enable_code_quality_table:
+            run_pylint(repository)
+            run_docstyle_check(repository)
 
-        results.source_files[repository] = get_source_files(repository)
-        results.repo_linter_checks[repository] = parse_pylint_results(repository)
-        results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
+            results.source_files[repository] = get_source_files(repository)
+            results.repo_linter_checks[repository] = parse_pylint_results(repository)
+            results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
+            update_overall_status(results, repository)
 
         delete_work_files(repository)
 
         if cli_arguments.cleanup_repositories:
             cleanup_repository(repository)
-
-        update_overall_status(results, repository)
 
         if enable_ci_jobs:
             for job_type in ci_job_types:
@@ -387,7 +388,9 @@ def main():
     smoke_tests = SmokeTests()
     results.smoke_tests_results = smoke_tests.results
 
-    export_into_csv(results)
+    if enable_code_quality_table:
+        export_into_csv(results)
+
     generate_dashboard(results)
 
 
