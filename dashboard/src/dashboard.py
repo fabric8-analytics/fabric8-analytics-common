@@ -328,10 +328,10 @@ def main():
 
     # some CLI arguments are used to DISABLE given feature of the dashboard,
     # but let's not use double negation everywhere :)
-    enable_ci_jobs = not cli_arguments.disable_ci_jobs
+    enable_ci_jobs_table = not cli_arguments.disable_ci_jobs
     enable_code_quality_table = not cli_arguments.disable_code_quality
-    enable_liveness_check = not cli_arguments.disable_liveness
-    enable_sla = not cli_arguments.disable_sla
+    enable_liveness_table = not cli_arguments.disable_liveness
+    enable_sla_table = not cli_arguments.disable_sla
 
     check_environment_variables()
     results = Results()
@@ -346,10 +346,13 @@ def main():
     jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
     results.production = check_system(core_api, jobs_api)
 
-    if enable_ci_jobs:
+    if enable_ci_jobs_table:
         ci_jobs = CIJobs()
 
+    # we need to know which tables are enabled or disabled to proper process the template
     results.repositories = repositories
+    results.enable_sla_table = enable_sla_table
+    results.enable_liveness_table = enable_liveness_table
     results.enable_code_quality_table = enable_code_quality_table
 
     # clone/fetch repositories + run pylint + run docstyle script + accumulate results
@@ -373,17 +376,18 @@ def main():
         if cli_arguments.cleanup_repositories:
             cleanup_repository(repository)
 
-        if enable_ci_jobs:
+        if enable_ci_jobs_table:
             for job_type in ci_job_types:
                 results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
 
-    perf_tests = PerfTests()
-    perf_tests.read_results()
-    perf_tests.compute_statistic()
-    results.perf_tests_results = perf_tests.results
-    results.perf_tests_statistic = perf_tests.statistic
+    if enable_sla_table:
+        perf_tests = PerfTests()
+        perf_tests.read_results()
+        perf_tests.compute_statistic()
+        results.perf_tests_results = perf_tests.results
+        results.perf_tests_statistic = perf_tests.statistic
 
-    results.sla_thresholds = SLA
+        results.sla_thresholds = SLA
 
     smoke_tests = SmokeTests()
     results.smoke_tests_results = smoke_tests.results
