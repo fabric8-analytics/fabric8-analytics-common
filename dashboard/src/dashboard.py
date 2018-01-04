@@ -317,7 +317,8 @@ def main():
     jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
     results.production = check_system(core_api, jobs_api)
 
-    ci_jobs = CIJobs()
+    if enable_ci_jobs:
+        ci_jobs = CIJobs()
 
     results.repositories = repositories
 
@@ -334,8 +335,9 @@ def main():
         delete_work_files(repository)
         update_overall_status(results, repository)
 
-        for job_type in ci_job_types:
-            results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
+        if enable_ci_jobs:
+            for job_type in ci_job_types:
+                results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
 
     perf_tests = PerfTests()
     perf_tests.read_results()
