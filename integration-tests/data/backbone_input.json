@@ -1,5 +1,5 @@
 {
-	"external_request_id": {req_id},
+	"external_request_id": "{req_id}",
 	"result": [{
 		"summary": [],
 		"details": [{

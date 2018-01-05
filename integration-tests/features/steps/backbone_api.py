@@ -5,11 +5,13 @@
 import requests
 import json
 import uuid
+import os
 
 from behave import given, then, when
 from urllib.parse import urljoin
 
-from src.json_utils import check_request_id_value_in_json_response
+from src.json_utils import *
+from src.authorization_tokens import *
 
 @given('backbone service is running')
 def running_3scale_api_register(context):
@@ -21,12 +23,14 @@ def running_3scale_api_register(context):
 def post_backbone_api(context, input_file, endpoint):
     filename = 'data/{input_file}'.format(input_file=input_file)
     with open(filename, 'r') as f:
-        content = f.read().decode('utf8')
-    context.external_request_id = uuid.uuid4().hex
-    data = json.loads(content.format(req_id=context.external_request_id))
-    headers = {'Content-Type: application/json'}
+        content = f.read()
+    request_id = uuid.uuid4().hex
+    content = content.replace('{req_id}', request_id)
 
-    context.response = requests.post('{}/endpoint'.format(context.backbone_api_url), json=data, headers=headers)
+    headers = {'Content-Type': 'application/json'}
+
+    context.response = requests.post('{}/{}'.format(context.backbone_api_url, endpoint), json=json.loads(content), headers=headers)
+    context.external_request_id = request_id
 
 
 @then('I should receive a valid {worker} json response')
@@ -42,9 +46,14 @@ def check_valid_response(context, worker):
 @then('I should find a valid {worker} database entry')
 def verify_database_entry(context, worker):
     worker_name = '{}_v2'.format(worker)
-    url = '{}/{}/_debug'.format(context.coreapi_url, context.external_request_id)
+    recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
 
-    resp = requests.get(url)
+    headers = {'Authorization': 'Bearer {}'.format(recommender_token)}
+    print ('######## %r' % headers)
+    url = '{}/api/v1/stack-analyses/{}/_debug'.format(context.coreapi_url, context.external_request_id)
+    print ('####### {}'.format(url))
+
+    resp = requests.get(url, headers=headers)
     assert (resp.status_code == 200)
 
     json_data = resp.json()
