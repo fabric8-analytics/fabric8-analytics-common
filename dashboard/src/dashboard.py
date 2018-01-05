@@ -105,6 +105,9 @@ ci_job_types = [
     "pydoc_job"
 ]
 
+JENKINS_URL = "https://ci.centos.org"
+JOBS_STATUSES_FILENAME = "jobs.json"
+
 
 def is_repository_cloned(repository):
     """Check if the directory with cloned repository exist."""
@@ -355,6 +358,7 @@ def prepare_data_for_repositories(repositories, results,
     """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
     if ci_jobs_table_enabled:
         ci_jobs = CIJobs()
+        job_statuses = read_ci_jobs_statuses(JENKINS_URL)
 
     for repository in repositories:
 
@@ -378,7 +382,46 @@ def prepare_data_for_repositories(repositories, results,
 
         if ci_jobs_table_enabled:
             for job_type in ci_job_types:
-                results.ci_jobs[repository][job_type] = ci_jobs.get_job_url(repository, job_type)
+                url = ci_jobs.get_job_url(repository, job_type)
+                name = ci_jobs.get_job_name(repository, job_type)
+                job_status = job_statuses.get(name)
+                results.ci_jobs_links[repository][job_type] = url
+                results.ci_jobs_statuses[repository][job_type] = job_status
+
+
+def read_jobs_statuses(filename):
+    """Deserialize statuses for all jobs from the JSON file."""
+    with open(filename) as fin:
+        return json.load(fin)["jobs"]
+
+
+def store_jobs_statuses(filename, data):
+    """Serialize statuses of all jobs into the JSON file."""
+    with open(filename, "w") as fout:
+        fout.write(data)
+
+
+def jenkins_api_query(jenkins_url):
+    """Construct API query to Jenkins (CI)."""
+    return "{url}/api/json?tree=jobs[name,color]".format(url=jenkins_url)
+
+
+def jobs_as_dict(raw_jobs):
+    """Construct a dictionary with job name as key and job status as value."""
+    return dict((job["name"], job["color"]) for job in raw_jobs if "color" in job)
+
+
+def read_ci_jobs_statuses(jenkins_url):
+    """Read statuses of all jobs from the Jenkins (CI)."""
+    api_query = jenkins_api_query(jenkins_url)
+    response = requests.get(api_query)
+    raw_jobs = response.json()["jobs"]
+
+    # for debugging purposes only
+    # store_jobs_statuses(JOBS_STATUSES_FILENAME, response.text)
+
+    # raw_jobs = read_jobs_statuses(JOBS_STATUSES_FILENAME)
+    return jobs_as_dict(raw_jobs)
 
 
 def main():
