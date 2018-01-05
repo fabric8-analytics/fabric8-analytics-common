@@ -1,0 +1,26 @@
+{
+	"external_request_id": {req_id},
+	"result": [{
+		"summary": [],
+		"details": [{
+			"ecosystem": "maven",
+			"description": "Exposes an HTTP API using Vert.x",
+			"_resolved": [{
+				"package": "io.vertx:vertx-web",
+				"version": "3.4.2"
+			}, {
+				"package": "io.vertx:vertx-core",
+				"version": "3.4.2"
+			}],
+			"manifest_file_path": "/home/JohnDoe",
+			"manifest_file": "pom.xml",
+			"declared_licenses": ["Apache License, Version 2.0"],
+			"name": "Vert.x - HTTP",
+			"dependencies": ["io.vertx:vertx-web 3.4.2", "io.vertx:vertx-core 3.4.2"],
+			"version": "1.0.0-SNAPSHOT",
+			"devel_dependencies": ["com.jayway.restassured:rest-assured 2.9.0", "io.openshift:openshift-test-utils 2", "org.assertj:assertj-core 3.6.2", "junit:junit 4.12", "io.vertx:vertx-unit 3.4.2", "io.vertx:vertx-web-client 3.4.2", "com.jayway.awaitility:awaitility 1.7.0"],
+			"homepage": null
+		}],
+		"status": "success"
+	}]
+}
