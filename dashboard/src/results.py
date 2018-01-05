@@ -27,7 +27,8 @@ class Results():
         self.sla = {}
         self.smoke_tests_results = {}
         self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
-        self.ci_jobs = defaultdict(dict)
+        self.ci_jobs_links = defaultdict(dict)
+        self.ci_jobs_statuses = defaultdict(dict)
 
     def __repr__(self):
         """Return textual representation of all results."""

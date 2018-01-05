@@ -29,6 +29,16 @@ class CIJobs:
         except (configparser.NoSectionError, configparser.NoOptionError):
             return None
 
+    def get_job_name(self, repository_name, job_type):
+        """Return the job name w/o the full URL to CI."""
+        assert job_type in {"build_job", "test_job", "pylint_job", "pydoc_job"}
+        try:
+            repository_name = CIJobs.remove_prefix(repository_name, "fabric8-analytics-")
+            url_suffix = self.config.get(repository_name, job_type)
+            return url_suffix
+        except (configparser.NoSectionError, configparser.NoOptionError):
+            return None
+
     @staticmethod
     def construct_job_url(url_prefix, url_suffix):
         """Construct the URL to job on CI from CI prefix and suffix with job name."""
