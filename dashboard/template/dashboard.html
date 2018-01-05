@@ -174,8 +174,16 @@
                         <tr>
                             <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
                             % for job_type in ["build_job", "test_job", "pylint_job", "pydoc_job"]:
-                                % if ci_jobs[repository][job_type]:
-                                    <td style="width:10ex"><a href='${ci_jobs[repository][job_type]}'>link</a></td>
+                                % if ci_jobs_links[repository][job_type]:
+                                    <td style="width:10ex"><a href='${ci_jobs_links[repository][job_type]}'>link</a>
+                                    % if ci_jobs_statuses[repository][job_type] == "blue":
+                                        <span class="boolean ok">&#x2713;</span>
+                                    % elif ci_jobs_statuses[repository][job_type] == "red":
+                                        <span class="bookean error">&times;</span>
+                                    % else:
+                                        <span class="bookean error">?</span>
+                                    % endif
+                                    </td>
                                 % else:
                                     <td style="width:10ex" class="boolean error">&times;</td>
                                 % endif
