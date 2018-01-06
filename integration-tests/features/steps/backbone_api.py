@@ -49,9 +49,7 @@ def verify_database_entry(context, worker):
     recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
 
     headers = {'Authorization': 'Bearer {}'.format(recommender_token)}
-    print ('######## %r' % headers)
     url = '{}/api/v1/stack-analyses/{}/_debug'.format(context.coreapi_url, context.external_request_id)
-    print ('####### {}'.format(url))
 
     resp = requests.get(url, headers=headers)
     assert (resp.status_code == 200)
