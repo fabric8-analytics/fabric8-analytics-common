@@ -108,9 +108,11 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
 
 def stack_analysis_endpoint(context, version):
     """Return endpoint for the stack analysis of selected version."""
-    # please note that the stack analysis v2 now becames the only available endpoint
+    # Two available endpoints for stack analysis are /stack-analyses and /analyse
+    # /analyse endpoint was developed to meet the performance norms at production
     endpoint = {"1": "/api/v1/stack-analyses-v1/",
-                "2": "/api/v1/stack-analyses/"}.get(version)
+                "2": "/api/v1/stack-analyses/",
+                "3": "/api/v1/analyse"}.get(version)
     if endpoint is None:
         raise Exception("Wrong version specified: {v}".format(v=version))
     return urljoin(context.coreapi_url, endpoint)
@@ -118,6 +120,7 @@ def stack_analysis_endpoint(context, version):
 
 @when("I send NPM package manifest {manifest} to stack analysis")
 @when("I send NPM package manifest {manifest} to stack analysis {token} authorization token")
+@when("I send NPM package manifest {manifest} to stack analysis version {version}")
 @when("I send NPM package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
 def npm_manifest_stack_analysis(context, manifest, version="2", token="without"):
@@ -130,6 +133,7 @@ def npm_manifest_stack_analysis(context, manifest, version="2", token="without")
 
 @when("I send Python package manifest {manifest} to stack analysis")
 @when("I send Python package manifest {manifest} to stack analysis {token} authorization token")
+@when("I send Python package manifest {manifest} to stack analysis version {version}")
 @when("I send Python package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
 def python_manifest_stack_analysis(context, manifest, version="2", token="without"):
@@ -142,6 +146,7 @@ def python_manifest_stack_analysis(context, manifest, version="2", token="withou
 
 @when("I send Maven package manifest {manifest} to stack analysis")
 @when("I send Maven package manifest {manifest} to stack analysis {token} authorization token")
+@when("I send Maven package manifest {manifest} to stack analysis version {version}")
 @when("I send Maven package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
 def maven_manifest_stack_analysis(context, manifest, version="2", token="without"):
