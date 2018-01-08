@@ -49,10 +49,17 @@ function oc_process_apply() {
 
 function openshift_login() {
     oc login "${OC_URI}" -u "${OC_USERNAME}" -p "${OC_PASSWD}" --insecure-skip-tls-verify=true
+}
+
+function remove_project_resources() {
+    echo "Removing all openshift resources from selected project"
+    oc delete all,cm,secrets --all
+}
+
+function create_or_reuse_project() {
     if oc get project "${OC_PROJECT}"; then
         oc project "${OC_PROJECT}"
-        echo "Removing all openshift resources from selected project"
-        oc delete all,cm,secrets --all
+        remove_project_resources
     else
         oc new-project "${OC_PROJECT}"
     fi
@@ -60,9 +67,7 @@ function openshift_login() {
 
 function tag_rds_instance() {
     TAGS="Key=ENV,Value=${DEPLOYMENT_PREFIX}"
-
     echo "Tagging RDS instance with ${TAGS}"
-
     aws rds add-tags-to-resource \
             --resource-name "${RDS_ARN}" \
             --tags "${TAGS}"
@@ -91,10 +96,13 @@ function allocate_aws_rds() {
         sleep 60
         wait_for_rds_instance_info
     else
-        echo "DB instance ${RDS_INSTANCE_NAME} already exists, recreating database"
+        echo "DB instance ${RDS_INSTANCE_NAME} already exists"
         wait_for_rds_instance_info
-        PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "drop database ${RDS_DBNAME}"
-        PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "create database ${RDS_DBNAME}"
+        if [ "$clean_aws_resources" == true ] ; then
+            echo "recreating database"
+            PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "drop database ${RDS_DBNAME}"
+            PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "create database ${RDS_DBNAME}"
+        fi
     fi
     tag_rds_instance
 }

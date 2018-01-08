@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+# Deploy fabric8-analytics to Openshift
+# possible arguments:
+#   --keep-aws-resources: do not clear previously allocated AWS resources
+
 here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 source helpers.sh
@@ -37,7 +41,21 @@ fabric8-analytics-worker fabric8-analytics-pgbouncer gremlin-docker
 fabric8-analytics-scaler fabric8-analytics-firehose-fetcher
 fabric8-analytics-license-analysis fabric8-analytics-stack-analysis fabric8-analytics-stack-report-ui"
 
+clean_aws_resources=true # default
+for key in "$@"; do
+    case $key in
+        --keep-aws-resources)
+            clean_aws_resources=false
+            shift # next argument
+            ;;
+        *)  # unknown option
+            shift # next argument
+            ;;
+    esac
+done
+
 openshift_login
+create_or_reuse_project
 allocate_aws_rds
 generate_and_deploy_config
 deploy_secrets
