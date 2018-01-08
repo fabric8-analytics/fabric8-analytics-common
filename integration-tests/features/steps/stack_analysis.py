@@ -108,7 +108,8 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
 
 def stack_analysis_endpoint(context, version):
     """Return endpoint for the stack analysis of selected version."""
-    # please note that the stack analysis v2 now becames the only available endpoint
+    # Two available endpoints for stack analysis are /stack-analyses and /analyse
+    # /analyse endpoint was developed to meet the performance norms at production
     endpoint = {"1": "/api/v1/stack-analyses-v1/",
                 "2": "/api/v1/stack-analyses/",
                 "3": "/api/v1/analyse"}.get(version)
