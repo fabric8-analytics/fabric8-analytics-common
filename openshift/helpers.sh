@@ -43,7 +43,8 @@ function deploy_secrets() {
 
 function oc_process_apply() {
     echo -e "\\n Processing template - $1 ($2) \\n"
-    oc process -f $1 $2 | oc apply -f -
+    # Don't quote $2 as we need it to split into individual arguments
+    oc process -f "$1" $2 | oc apply -f -
 }
 
 function openshift_login() {
