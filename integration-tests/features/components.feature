@@ -60,7 +60,7 @@ Feature: Components API V1
     Given Component search service is running
     When I acquire the authorization token
     Then I should get the proper authorization token
-    When I search for component foobar with authorization token
+    When I search for component component_that_really_do_not_exist with authorization token
     Then I should get 200 status code
     Then I should see 0 components
 
