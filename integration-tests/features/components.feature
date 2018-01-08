@@ -82,7 +82,6 @@ Feature: Components API V1
     When I start analysis for component npm/sequence/2.2.0
     Then I should get 401 status code
 
-  @production
   Scenario: Check if component analysis is accessible via API
     Given System is running
     Given Component search service is running
