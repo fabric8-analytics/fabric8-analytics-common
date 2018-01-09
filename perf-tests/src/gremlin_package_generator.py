@@ -34,6 +34,9 @@ class GremlinPackageGenerator:
     @staticmethod
     def package_generator():
         """Provide generator for package specifications across all ecosystems."""
+        # the inner for-loop generates a finite sequence of all valid
+        # ecosystem+package combinations, but we need infinite sequence.
+        # Thence we use outer infinite loop here
         while True:
             for ecosystem, packages in GremlinPackageGenerator.PACKAGES.items():
                 yield from GremlinPackageGenerator.generate_ecosystem_package(ecosystem, packages)
@@ -41,6 +44,9 @@ class GremlinPackageGenerator:
     @staticmethod
     def package_version_generator():
         """Provide generator for package+version specifications across all ecosystems."""
+        # the inner for-loop generates a finite sequence of all valid
+        # ecosystem+package+version combinations, but we need infinite sequence.
+        # Thence we use outer infinite loop here
         while True:
             for ecosystem, packages in GremlinPackageGenerator.PACKAGES.items():
                 yield from GremlinPackageGenerator.generate_ecosystem_package_version(ecosystem,
@@ -50,6 +56,9 @@ class GremlinPackageGenerator:
     def package_generator_for_ecosystem(ecosystem='pypi'):
         """Provide generator for package specifications for selected ecosystem."""
         packages = GremlinPackageGenerator.PACKAGES[ecosystem]
+        # the inner for-loop generates a finite sequence of all valid
+        # ecosystem+package combinations, but we need infinite sequence.
+        # Thence we use outer infinite loop here
         while True:
             yield from GremlinPackageGenerator.generate_ecosystem_package(ecosystem, packages)
 
@@ -57,6 +66,9 @@ class GremlinPackageGenerator:
     def package_version_generator_for_ecosystem(ecosystem='pypi'):
         """Provide generator for package+version specifications for selected ecosystem."""
         packages = GremlinPackageGenerator.PACKAGES[ecosystem]
+        # the inner for-loop generates a finite sequence of all valid
+        # ecosystem+package+version combinations, but we need infinite sequence.
+        # Thence we use outer infinite loop here
         while True:
             yield from GremlinPackageGenerator.generate_ecosystem_package_version(ecosystem,
                                                                                   packages)
