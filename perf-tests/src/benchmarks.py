@@ -93,8 +93,24 @@ def component_analysis_flow_scheduling(jobs_api, s3, measurement_count, pause_ti
     """Measure jobs and worker modules by starting component analysis."""
     return measure(lambda i, s3: jobs_api.component_analysis(i, s3, thread_id,
                                                              ecosystem, component, version),
-                   lambda retval: retval is True, measurement_count, pause_time,
-                   thread_id, s3)
+                   lambda retval: retval is True,
+                   measurement_count, pause_time, thread_id, s3)
+
+
+def package_query_to_graph_db(gremlin_api, s3, measurement_count, pause_time,
+                              thread_id=None):
+    """Measure the simple package query to Gremlin database."""
+    return measure(lambda i: gremlin_api.package_query(i, None),
+                   lambda retval: gremlin_api.check_gremlin_response(retval),
+                   measurement_count, pause_time, thread_id, s3)
+
+
+def package_version_query_to_graph_db(gremlin_api, s3, measurement_count, pause_time,
+                                      thread_id=None):
+    """Measure the simple package+version query to Gremlin database."""
+    return measure(lambda i: gremlin_api.package_version_query(i, None),
+                   lambda retval: gremlin_api.check_gremlin_response(retval),
+                   measurement_count, pause_time, thread_id, s3)
 
 
 def core_api_benchmark_thread(core_api, measurement_count, pause_time, q, thread_id):
