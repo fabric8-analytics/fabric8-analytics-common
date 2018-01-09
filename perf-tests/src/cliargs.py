@@ -20,6 +20,14 @@ cli_parser.add_argument('-C', '--component-analysis-benchmark',
                         help='run component analysis benchmarks',
                         action='store_true')
 
+cli_parser.add_argument('-P', '--package-query-to-graph-benchmark',
+                        help='run benchmark that query packages in the graph database',
+                        action='store_true')
+
+cli_parser.add_argument('-V', '--package-version-query-to-graph-benchmark',
+                        help='run benchmark that query package version in the graph database',
+                        action='store_true')
+
 cli_parser.add_argument('-p', '--parallel',
                         help='enable making parallel calls',
                         action='store_true')
