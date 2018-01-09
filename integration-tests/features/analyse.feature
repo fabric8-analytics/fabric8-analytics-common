@@ -17,7 +17,6 @@ Feature: Analyse API funcationality check
     When I send Maven package manifest pom-effective.xml to stack analysis without authorization token
     Then I should get 401 status code
 
-  @production
   Scenario: Check that the stack-analyses returns a valid response for maven ecosystem
     Given System is running
     When I acquire the authorization token
