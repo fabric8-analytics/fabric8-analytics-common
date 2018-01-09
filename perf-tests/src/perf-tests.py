@@ -13,6 +13,7 @@ import csv
 
 from coreapi import *
 from jobsapi import *
+from gremlin_api import *
 import benchmarks
 import graph
 from s3interface import *
@@ -165,6 +166,30 @@ def run_component_analysis_sequenced_calls_benchmark(jobs_api, s3):
                                 benchmarks.component_analysis_flow_scheduling(api, s3,
                                                                               measurement_count,
                                                                               pause_time))
+
+
+def run_package_query_to_graph_db_sequenced_benchmark(gremlin_api):
+    """Start the benchmarks for package query (graph DB)."""
+    print("Package query to graph DB sequenced calls benchmark")
+    run_sequenced_benchmark(gremlin_api, None,
+                            "Package query to graph DB sequenced benchmark",
+                            "package_query_graph_db",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.package_query_to_graph_db(api, s3,
+                                                                     measurement_count,
+                                                                     pause_time))
+
+
+def run_package_version_query_to_graph_db_sequenced_benchmark(gremlin_api):
+    """Start the benchmarks for package+version query (graph DB)."""
+    print("Package+version query to graph DB sequenced calls benchmark")
+    run_sequenced_benchmark(gremlin_api, None,
+                            "Package version query to graph DB sequenced benchmark",
+                            "package_version_query_graph_db",
+                            lambda api, s3, measurement_count, pause_time:
+                                benchmarks.package_version_query_to_graph_db(api, s3,
+                                                                             measurement_count,
+                                                                             pause_time))
 
 
 def check_number_of_results(queue_size, thread_count):
@@ -569,7 +594,9 @@ def run_core_api_concurrent_benchmark(core_api):
     run_api_concurrent_benchmark(core_api, benchmarks.core_api_benchmark_thread, "core_api")
 
 
-def run_benchmarks(core_api, jobs_api, s3, run_stack_analysis, run_component_analysis,
+def run_benchmarks(core_api, jobs_api, gremlin_api, s3,
+                   run_stack_analysis, run_component_analysis,
+                   run_package_query_to_graph_db, run_package_version_query_to_graph_db,
                    run_parallel_tests, thread_max):
     """Start the selected benchmarks."""
     if not run_parallel_tests:
@@ -577,6 +604,10 @@ def run_benchmarks(core_api, jobs_api, s3, run_stack_analysis, run_component_ana
             run_stack_analysis_sequenced_calls_benchmark(core_api, s3)
         if run_component_analysis:
             run_read_component_analysis_sequenced_calls_benchmark(core_api, s3)
+        if run_package_query_to_graph_db:
+            run_package_query_to_graph_db_sequenced_benchmark(gremlin_api)
+        if run_package_version_query_to_graph_db:
+            run_package_version_query_to_graph_db_sequenced_benchmark(gremlin_api)
     else:
         if run_stack_analysis:
             run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis",
@@ -634,6 +665,7 @@ def main():
 
     coreapi_url = os.environ.get('F8A_API_URL', None)
     jobs_api_url = os.environ.get('F8A_JOB_API_URL', None)
+    gremlin_api_url = os.environ.get('F8A_GREMLIN_URL', None)
 
     recommender_api_token = os.environ.get('RECOMMENDER_API_TOKEN')
     job_api_token = os.environ.get('JOB_API_TOKEN')
@@ -645,6 +677,8 @@ def main():
 
     core_api = CoreApi(coreapi_url, recommender_api_token)
     jobs_api = JobsApi(jobs_api_url, job_api_token)
+    gremlin_api = GremlinApi(gremlin_api_url)
+
     s3 = S3Interface(aws_access_key_id, aws_secret_access_key, s3_region_name, deployment_prefix)
 
     check_system(core_api, jobs_api, s3)
@@ -661,9 +695,11 @@ def main():
     if cli_arguments.sla:
         run_benchmarks_sla(core_api, jobs_api, s3)
     else:
-        run_benchmarks(core_api, jobs_api, s3,
+        run_benchmarks(core_api, jobs_api, gremlin_api, s3,
                        cli_arguments.stack_analysis_benchmark,
                        cli_arguments.component_analysis_benchmark,
+                       cli_arguments.package_query_to_graph_benchmark,
+                       cli_arguments.package_version_query_to_graph_benchmark,
                        cli_arguments.parallel,
                        cli_arguments.thread_max)
 
