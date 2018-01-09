@@ -51,9 +51,18 @@ function openshift_login() {
     oc login "${OC_URI}" -u "${OC_USERNAME}" -p "${OC_PASSWD}" --insecure-skip-tls-verify=true
 }
 
+function purge_aws_resources() {
+    echo "Removing previously allocated AWS resources"
+    # Purges $DEPLOYMENT_PREFIX prefixed SQS queues, S3 buckets and DynamoDB tables.
+    python3 ./purge_AWS_resources.py
+}
+
 function remove_project_resources() {
     echo "Removing all openshift resources from selected project"
     oc delete all,cm,secrets --all
+    if [ "$clean_aws_resources" == true ] ; then
+        purge_aws_resources
+    fi
 }
 
 function create_or_reuse_project() {

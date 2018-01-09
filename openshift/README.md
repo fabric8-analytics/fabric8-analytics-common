@@ -36,6 +36,9 @@ Just run the deploy script and enjoy!
 
 `$./deploy.sh`
 
+If you have already run the script previously and therefore there exists a `$OC_PROJECT` project, the script purges it to start from scratch.
+It also purges all existing `$DEPLOYMENT_PREFIX` prefixed AWS resources (RDS db, SQS queues, S3 buckets, DynamoDB tables) - this can be avoided by using `--keep-resources` argument.
+
 ## Deploy your changes to dev-cluster
 
 Assume you have opened a PR in one of the [fabric8-analytics](https://github.com/fabric8-analytics) repositories.
