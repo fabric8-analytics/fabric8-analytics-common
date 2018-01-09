@@ -42,7 +42,7 @@ Feature: Check the Gremlin instance and its behaviour
     Then I should get 200 status code
      And I should get valid Gremlin response
      And I should find the following properties (description, last_updated, pecosystem, pname, version, vertex_label) in all found packages
-     And I should not find any property apart from (description, last_updated, pecosystem, pname, version, vertex_label, licenses) in all found packages
+     And I should not find any property apart from (description, last_updated, pecosystem, pname, version, vertex_label, licenses, gh_release_date) in all found packages
      And I should find that all found packages have valid timestamp with the last update time
 
   @requires_access_to_graph_db
