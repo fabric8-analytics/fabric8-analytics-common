@@ -22,7 +22,6 @@ _API_ENDPOINT = 'api/v1'
 # Ports used by various services
 _FABRIC8_ANALYTICS_SERVER = 32000
 _FABRIC8_ANALYTICS_JOBS = 34000
-_ANITYA_SERVICE = 31005
 _FABRIC8_GREMLIN_SERVICE = 80
 
 # Endpoint for jobs debug API
@@ -458,20 +457,18 @@ def before_all(context):
 
     coreapi_url = _read_url_from_env_var('F8A_API_URL')
     jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
-    anitya_url = _read_url_from_env_var('F8A_ANITYA_API_URL')
     gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
     threescale_url = _read_url_from_env_var('F8A_3SCALE_URL')
     backbone_api_url = _read_url_from_env_var('F8A_BACKBONE_API_URL')
     service_id = _read_url_from_env_var('F8A_SERVICE_ID')
 
-    context.running_locally = not (coreapi_url and jobs_api_url and anitya_url)
+    context.running_locally = not (coreapi_url and jobs_api_url)
 
     if context.running_locally:
         print("Note: integration tests are running localy via docker-compose")
         if coreapi_url:
             _check_env_for_remote_tests("F8A_API_URL")
             _check_env_for_remote_tests("F8A_JOB_API_URL")
-            _check_env_for_remote_tests("F8A_ANITYA_API_URL")
     else:
         print("Note: integration tests are running against existing deploment")
         _check_api_tokens_presence()
@@ -484,8 +481,6 @@ def before_all(context):
 
     context.gremlin_url = gremlin_url or _get_api_url(context, 'gremlin_url',
                                                       _FABRIC8_GREMLIN_SERVICE)
-
-    context.anitya_url = anitya_url or _get_api_url(context, 'anitya_url', _ANITYA_SERVICE)
 
     context.threescale_url = threescale_url
 
@@ -540,8 +535,7 @@ def before_all(context):
     context.compare_analysis_sets = _compare_analysis_sets
 
     context.EXPECTED_COMPONENT_ANALYSES = {
-        'metadata', 'source_licenses',
-        'digests', 'redhat_downstream',
+        'metadata', 'source_licenses', 'digests',
         'dependency_snapshot', 'code_metrics'
         # The follower workers are currently disabled by default:
         # 'static_analysis', 'binary_data', 'languages', 'crypto_algorithms'

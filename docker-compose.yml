@@ -27,7 +27,7 @@ services:
     environment:
       POSTGRESQL_USER: coreapi
       POSTGRESQL_PASSWORD: coreapi
-      POSTGRESQL_DATABASE: "coreapi;anitya"
+      POSTGRESQL_DATABASE: "coreapi"
     container_name: coreapi-postgres
   pgbouncer:
     image: registry.devshift.net/bayesian/coreapi-pgbouncer
@@ -46,7 +46,6 @@ services:
     image: registry.devshift.net/bayesian/bayesian-api
     network_mode: bridge
     links:
-     - anitya-server
      - broker
      - pgbouncer
      - gremlin-http
@@ -140,7 +139,6 @@ services:
     depends_on:
      - worker-db-migrations
     links:
-     - anitya-server
      - broker
      - pgbouncer
      - minio-s3
@@ -173,9 +171,6 @@ services:
       # If no Github API token is provided, requests will be unauthenticated, i.e. limited to 60 per hour
       # Generate your token @ https://github.com/settings/tokens
       #GITHUB_TOKEN: ""
-      #PULP_URL: ""
-      #PULP_USERNAME: ""
-      #PULP_PASSWORD: ""
       #BLACKDUCK_HOST: ""
       #BLACKDUCK_SCHEME: ""
       #BLACKDUCK_PORT: ""
@@ -225,21 +220,6 @@ services:
       PGBOUNCER_SERVICE_HOST: coreapi-pgbouncer
       WORKER_ADMINISTRATION_REGION: ingestion
       WORKER_RUN_DB_MIGRATIONS: "1"
-  anitya-server:
-    image: registry.devshift.net/bayesian/anitya-server
-    ports:
-     - "31005:5000"
-    links:
-     - postgres
-    network_mode: bridge
-    container_name: anitya-server
-    environment:
-      ANITYA_POSTGRES_SERVICE_HOST: coreapi-postgres
-      ANITYA_POSTGRES_SERVICE_PORT: 5432
-      POSTGRESQL_USER: coreapi
-      POSTGRESQL_PASSWORD: coreapi
-      POSTGRESQL_DATABASE: anitya
-      POSTGRESQL_INITIAL_DATABASE: postgres
   minio-s3:
     image: minio/minio
     command:

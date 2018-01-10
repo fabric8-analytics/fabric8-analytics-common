@@ -64,12 +64,6 @@ def get_tgt_in_service(context, service):
     assert "Valid starting" in klist_out
 
 
-@when('I access anitya {url}')
-def anitya_url(context, url):
-    """Access the Anitya service API using the HTTP GET method."""
-    context.response = requests.get(context.anitya_url + url)
-
-
 @then('I should receive empty JSON response')
 @then('I should see empty analysis')
 def check_json_empty_response(context):

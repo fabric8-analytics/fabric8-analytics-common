@@ -33,7 +33,6 @@ export RDS_ARN='Not set'
 #Integration tests settings
 export F8A_API_URL='Not set'
 export F8A_JOB_API_URL='Not set'
-export F8A_ANITYA_API_URL='Not set'
 export RECOMMENDER_API_TOKEN='Not set'
 
 export DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX:-${OC_USERNAME}}

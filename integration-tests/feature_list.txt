@@ -10,7 +10,6 @@ features/stack_analyses_v2_minimal.feature
 features/analyse.feature
 features/user_feedback.feature
 #features/versions.feature
-#features/anitya.feature
 #features/stack_analyses_v2.feature
 features/selfcheck.feature
 #features/regression_tests.feature

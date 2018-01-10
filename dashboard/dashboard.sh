@@ -26,7 +26,6 @@ function run_smoketests()
     pushd ../integration-tests/
     export F8A_API_URL=$1
     export F8A_JOB_API_URL=$2
-    export F8A_ANITYA_API_URL=not_used
     ./runtest.sh --tags=smoketest > $cwd/$3
     echo $? > $cwd/$4
     popd

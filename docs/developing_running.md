@@ -68,22 +68,9 @@ will need a restart to pick the new code up.
 $ sudo ./docker-compose.sh build --pull
 ```
 
-If you want Anitya to automatically scan for new releases, you need to use
-both `docker-compose.yml` and `docker-compose.anitya-cron.yml` files explicitly:
-
-```
-$ sudo docker-compose -f docker-compose.yml -f docker-compose.anitya-cron.yml <up/pull/...>
-```
-
-or
-
-```
-$ sudo ./docker-compose.sh -f docker-compose.yml -f docker-compose.anitya-cron.yml <up/pull/...>
-```
-
 #### Secrets
 
-Some parts (GithubTask, DownstreamUsageTask, BlackDuckTask) need credentials
+Some parts (GithubTask, BlackDuckTask) need credentials
 for proper operation. You can provide environment variables in `worker_environment`
 in `docker-compose.yml`.
 
@@ -122,8 +109,7 @@ bound to `localhost`. When running with OpenShift, TODO
    Celery Flower is only run if you run with `-f docker-compose.debug.yml`
 4. PGWeb (web UI for database, see pgweb-service.yaml) - port `31003`
    PGWeb is only run if you run with `-f docker-compose.debug.yml`
-5. Anitya (see anitya-service.yaml) - port `31005`
-6. Minio S3 - port `33000`
+5. Minio S3 - port `33000`
 
 #### Logs
 
