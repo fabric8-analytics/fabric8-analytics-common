@@ -175,7 +175,7 @@ def run_package_query_to_graph_db_sequenced_benchmark(gremlin_api):
                             "Package query to graph DB sequenced benchmark",
                             "package_query_graph_db",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.package_query_to_graph_db(api, s3,
+                                benchmarks.package_query_to_graph_db(api,
                                                                      measurement_count,
                                                                      pause_time))
 
@@ -187,7 +187,7 @@ def run_package_version_query_to_graph_db_sequenced_benchmark(gremlin_api):
                             "Package version query to graph DB sequenced benchmark",
                             "package_version_query_graph_db",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.package_version_query_to_graph_db(api, s3,
+                                benchmarks.package_version_query_to_graph_db(api,
                                                                              measurement_count,
                                                                              pause_time))
 
@@ -609,6 +609,16 @@ def run_benchmarks(core_api, jobs_api, gremlin_api, s3,
         if run_package_version_query_to_graph_db:
             run_package_version_query_to_graph_db_sequenced_benchmark(gremlin_api)
     else:
+        if run_package_query_to_graph_db:
+            run_analysis_concurrent_benchmark(gremlin_api, s3, "Package query to graph db",
+                                              "package_query_graph_db_parallel",
+                                              benchmarks.package_query_graph_db_thread,
+                                              [thread_max])
+        if run_package_version_query_to_graph_db:
+            run_analysis_concurrent_benchmark(gremlin_api, s3, "Package query to graph db",
+                                              "package_version_query_graph_db_parallel",
+                                              benchmarks.package_version_query_graph_db_thread,
+                                              [thread_max])
         if run_stack_analysis:
             run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis",
                                               "stack_analysis_parallel_calls",
@@ -643,7 +653,7 @@ def run_benchmarks_sla(core_api, jobs_api, s3):
                                       benchmarks.component_analysis_read_thread_unknown_component,
                                       range(1, 5))
 
-    run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis", "stack_analysis",
+    run_analysis_concurrent_benchmark(core_api, s3, "Stack analysis",
                                       "stack_analysis_parallel_calls",
                                       benchmarks.stack_analysis_thread, range(1, 5))
 

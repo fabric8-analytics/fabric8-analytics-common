@@ -97,20 +97,20 @@ def component_analysis_flow_scheduling(jobs_api, s3, measurement_count, pause_ti
                    measurement_count, pause_time, thread_id, s3)
 
 
-def package_query_to_graph_db(gremlin_api, s3, measurement_count, pause_time,
+def package_query_to_graph_db(gremlin_api, measurement_count, pause_time,
                               thread_id=None):
     """Measure the simple package query to Gremlin database."""
     return measure(lambda i: gremlin_api.package_query(i, None),
                    lambda retval: gremlin_api.check_gremlin_response(retval),
-                   measurement_count, pause_time, thread_id, s3)
+                   measurement_count, pause_time, thread_id)
 
 
-def package_version_query_to_graph_db(gremlin_api, s3, measurement_count, pause_time,
+def package_version_query_to_graph_db(gremlin_api, measurement_count, pause_time,
                                       thread_id=None):
     """Measure the simple package+version query to Gremlin database."""
     return measure(lambda i: gremlin_api.package_version_query(i, None),
                    lambda retval: gremlin_api.check_gremlin_response(retval),
-                   measurement_count, pause_time, thread_id, s3)
+                   measurement_count, pause_time, thread_id)
 
 
 def core_api_benchmark_thread(core_api, measurement_count, pause_time, q, thread_id):
@@ -153,4 +153,19 @@ def stack_analysis_thread(core_api, s3, measurement_count, pause_time, q, thread
     """Perform stack analysis in current thread and put results into the provided queue."""
     measurements = stack_analysis_benchmark(core_api, measurement_count,
                                             pause_time, thread_id)
+    q.put(measurements)
+
+
+def package_query_graph_db_thread(core_api, s3, measurement_count, pause_time, q, thread_id):
+    """Perform query to graph DB in current thread and put results into the provided queue."""
+    measurements = package_query_to_graph_db(core_api, measurement_count,
+                                             pause_time, thread_id)
+    q.put(measurements)
+
+
+def package_version_query_graph_db_thread(core_api, s3, measurement_count, pause_time, q,
+                                          thread_id):
+    """Perform query to graph DB in current thread and put results into the provided queue."""
+    measurements = package_version_query_to_graph_db(core_api, measurement_count,
+                                                     pause_time, thread_id)
     q.put(measurements)
