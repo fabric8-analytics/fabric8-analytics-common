@@ -154,3 +154,15 @@ def stack_analysis_thread(core_api, s3, measurement_count, pause_time, q, thread
     measurements = stack_analysis_benchmark(core_api, measurement_count,
                                             pause_time, thread_id)
     q.put(measurements)
+
+def package_query_graph_db_thread(core_api, s3, measurement_count, pause_time, q, thread_id):
+    """Perform query to graph DB in current thread and put results into the provided queue."""
+    measurements = package_query_to_graph_db(core_api, measurement_count,
+                                             pause_time, thread_id)
+    q.put(measurements)
+
+def package_version_query_graph_db_thread(core_api, s3, measurement_count, pause_time, q, thread_id):
+    """Perform query to graph DB in current thread and put results into the provided queue."""
+    measurements = package_version_query_to_graph_db(core_api, measurement_count,
+                                                     pause_time, thread_id)
+    q.put(measurements)
