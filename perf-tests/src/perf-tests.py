@@ -175,7 +175,7 @@ def run_package_query_to_graph_db_sequenced_benchmark(gremlin_api):
                             "Package query to graph DB sequenced benchmark",
                             "package_query_graph_db",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.package_query_to_graph_db(api, s3,
+                                benchmarks.package_query_to_graph_db(api,
                                                                      measurement_count,
                                                                      pause_time))
 
@@ -187,7 +187,7 @@ def run_package_version_query_to_graph_db_sequenced_benchmark(gremlin_api):
                             "Package version query to graph DB sequenced benchmark",
                             "package_version_query_graph_db",
                             lambda api, s3, measurement_count, pause_time:
-                                benchmarks.package_version_query_to_graph_db(api, s3,
+                                benchmarks.package_version_query_to_graph_db(api,
                                                                              measurement_count,
                                                                              pause_time))
 
