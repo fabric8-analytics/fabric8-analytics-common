@@ -153,11 +153,6 @@ Feature: Check the implementation of test steps
      and I should find that the package description is Clojure implemented on top of Python
      and I should find that the project homepage can be found at https://github.com/halgari/clojure-py
      and I should find that the package name is clojure-py and version is 0.2.4
-    When I mock S3 data by content of data/clojure_py_core_data/0.2.4/redhat_downstream.json file
-    Then I should find the correct Red Hat downstream data for package clojure_py version 0.2.4 from ecosystem pypi
-     and I should not find the package in Brew
-     and I should not find the package in CDN
-     and I should find the package in Red Hat Anitya
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/security_issues.json file
     Then I should find the correct security issues data for package clojure_py version 0.2.4 from ecosystem pypi
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4/source_licenses.json file

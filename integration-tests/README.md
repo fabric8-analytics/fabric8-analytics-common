@@ -8,7 +8,6 @@ Following environment variables can be used to test specific deployments:
 
 `F8A_API_URL` - API server URL
 `F8A_JOB_API_URL` - jobs service URL
-`F8A_ANITYA_API_URL` - Anitya URL
 
 By default the system running on localhost will be tested.
 

@@ -17,7 +17,6 @@ def check_component_core_data(context, package, version, ecosystem):
             "security_issues",
             "metadata",
             "keywords_tagging",
-            "redhat_downstream",
             "digests",
             "source_licenses",
             "dependency_snapshot"
@@ -72,8 +71,7 @@ def check_component_core_data(context, package, version, ecosystem):
     # check the attributes for the 'analyses' subnode
     analyses = data["analyses"]
     attributes_to_check = ["security_issues", "metadata", "keywords_tagging",
-                           "redhat_downstream", "digests", "source_licenses",
-                           "dependency_snapshot"]
+                           "digests", "source_licenses", "dependency_snapshot"]
 
     check_attributes_presence(analyses, attributes_to_check)
 
@@ -244,67 +242,6 @@ def check_package_name_and_version(context, name, version):
 
     assert version == actual_version, "Version {v1} is different from expected " \
         "version {v2}".format(v1=actual_version, v2=version)
-
-
-@then('I should find the correct Red Hat downstream data for package {package} version {version} '
-      'from ecosystem {ecosystem}')
-def check_component_redhat_downstream_data(context, package, version, ecosystem):
-    """Check the basic Red Hat downstream metadata for the selected component."""
-    data = context.s3_data
-
-    check_audit_metadata(data)
-    check_release_attribute(data, ecosystem, package, version)
-    check_schema_attribute(data, "redhat_downstream", "2-2-1")
-    check_status_attribute(data)
-    check_summary_attribute(data)
-
-
-@then('I should not find the package in Brew')
-def check_package_not_in_brew(context):
-    """Check that the given package can not be found in the Brew."""
-    details = get_details_node(context)
-    brew = check_and_get_attribute(details, "brew")
-    assert not brew, "Expecting that the brew attrbute is empty list"
-
-
-@then('I should not find the package in CDN')
-def check_package_not_in_cdn(context):
-    """Check that the given package can not be found in the CDN."""
-    details = get_details_node(context)
-    cdn = check_and_get_attribute(details, "pulp_cdn")
-    assert not cdn, "Expecting that the pupl_cdm attrbute is empty list"
-
-
-@then('I should not find the package in Red Hat Anitya')
-def check_package_not_in_cdn(context):
-    """Check that the given package can not be found in the Red Hat Anitya."""
-    details = get_details_node(context)
-    cdn = check_and_get_attribute(details, "redhat_anitya")
-    assert not cdn, "Expecting that the redhat_anitya attrbute is empty list"
-
-
-@then('I should find the package in Brew')
-def check_package_is_in_brew(context):
-    """Check that the package can be found in the Brew."""
-    details = get_details_node(context)
-    brew = check_and_get_attribute(details, "brew")
-    assert brew, "Expecting that the brew attrbute is not empty list"
-
-
-@then('I should find the package in CDN')
-def check_package_is_in_cdn(context):
-    """Check that the package can not find in the CDN."""
-    details = get_details_node(context)
-    cdn = check_and_get_attribute(details, "pulp_cdn")
-    assert cdn, "Expecting that the pupl_cdm attrbute is not empty list"
-
-
-@then('I should find the package in Red Hat Anitya')
-def check_package_is_in_cdn(context):
-    """Check that the package can be found in the Red Hat Anitya."""
-    details = get_details_node(context)
-    cdn = check_and_get_attribute(details, "redhat_anitya")
-    assert cdn, "Expecting that the redhat_anitya attrbute is not empty list"
 
 
 @then('I should find the correct security issues data for package {package} version {version} '
