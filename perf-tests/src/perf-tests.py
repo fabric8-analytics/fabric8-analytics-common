@@ -615,7 +615,7 @@ def run_benchmarks(core_api, jobs_api, gremlin_api, s3,
                                               benchmarks.package_query_graph_db_thread,
                                               [thread_max])
         if run_package_version_query_to_graph_db:
-            run_analysis_concurrent_benchmark(gremlin_api, s3, "Package query to graph db",
+            run_analysis_concurrent_benchmark(gremlin_api, s3, "Package+version query to graph db",
                                               "package_version_query_graph_db_parallel",
                                               benchmarks.package_version_query_graph_db_thread,
                                               [thread_max])
