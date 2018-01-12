@@ -2,6 +2,8 @@
 from behave import given, then, when
 from src.attribute_checks import *
 from src.s3interface import *
+import boto3
+import botocore
 
 
 @then('I should find the correct GitHub details metadata for package {package} '
@@ -17,7 +19,7 @@ def check_github_details_file(context, package, ecosystem):
     check_attribute_presence(data, "summary")
     check_attribute_presence(data, "details")
 
-    check_schema_attribute(data, "github_details", "1-0-4")
+    check_schema_attribute(data, "github_details", "2-0-1")
 
 
 @then('I should find empty details about GitHub repository')
@@ -166,7 +168,7 @@ def read_core_package_data_from_bucket(context, selector, package, ecosystem, bu
         key = S3Interface.package_key(ecosystem, package)
     else:
         metadata = S3Interface.selector_to_key(selector)
-        key = S3.package_analysis_key(ecosystem, package, metadata)
+        key = S3Interface.package_analysis_key(ecosystem, package, metadata)
 
     s3_data = context.s3interface.read_object(bucket, key)
     assert s3_data is not None

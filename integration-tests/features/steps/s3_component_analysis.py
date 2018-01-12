@@ -2,6 +2,7 @@
 from behave import given, then, when
 from src.attribute_checks import *
 from src.s3interface import *
+from src.utils import split_comma_separated_list
 
 
 @then('I should find the correct component core data for package {package} version {version} '
@@ -68,12 +69,39 @@ def check_component_core_data(context, package, version, ecosystem):
                            "package_info", "subtasks"]
     check_attributes_presence(data, attributes_to_check)
 
-    # check the attributes for the 'analyses' subnode
-    analyses = data["analyses"]
-    attributes_to_check = ["security_issues", "metadata", "keywords_tagging",
-                           "digests", "source_licenses", "dependency_snapshot"]
+    # NOTE: 'analyses' subnode has to be checked in explicit test steps
 
-    check_attributes_presence(analyses, attributes_to_check)
+
+def _node_items_to_check(context, items, node):
+    expected_items = split_comma_separated_list(items)
+    assert expected_items is not None
+
+    data = context.s3_data
+    returned_items = check_and_get_attribute(data, node)
+    assert returned_items is not None
+
+    return returned_items, expected_items
+
+
+@then('I should find the following items ({items}) in the {node} node')
+def check_expected_items_in_node(context, items, node):
+    """Check if all expected items can be found in given node."""
+    returned_items, expected_items = _node_items_to_check(context, items, node)
+
+    check_attributes_presence(returned_items, expected_items)
+
+
+@then('I should not find any items apart from ({items}) in the {node} node')
+def check_unexpected_items_in_node(context, items, node):
+    """Check that only expected items can be found in given node."""
+    returned_items, expected_items = _node_items_to_check(context, items, node)
+
+    for item in returned_items:
+        # check that the item is contained in a list of expected items
+        if item not in expected_items:
+            print(item)
+            raise Exception("Unexpected item has been found: {item}".format(
+                            item=item))
 
 
 @then('I should find that the latest component version is {version}')
