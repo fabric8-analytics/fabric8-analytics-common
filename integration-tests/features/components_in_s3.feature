@@ -22,8 +22,10 @@ Feature: Checks the component metadata in AWS S3 database
     Then I should see bayesian-core-data bucket
     When I read component toplevel metadata for the package clojure_py version 0.2.4 in ecosystem pypi from the AWS S3 database bucket bayesian-core-data
     Then I should find the correct component toplevel metadata for package clojure_py version 0.2.4 ecosystem pypi with latest version 0.2.4
+     And I should find the following items (security_issues, metadata, keywords_tagging, digests, source_licenses, dependency_snapshot) in the analyses node
+     And I should not find any items apart from (security_issues, metadata, keywords_tagging, digests, source_licenses, dependency_snapshot, code_metrics, github_details) in the analyses node
 
-  @requires_s3_access
+  @requires_s3_access @jobs.requires_auth
   Scenario: Check that the component toplevel metadata are updated properly
     Given System is running
     When I wait 30 seconds
@@ -36,7 +38,7 @@ Feature: Checks the component metadata in AWS S3 database
     When I wait for new toplevel data for the package clojure_py version 0.2.4 in ecosystem pypi in the AWS S3 database bucket bayesian-core-data
     Then I should find the correct component toplevel metadata for package clojure_py version 0.2.4 ecosystem pypi with latest version 0.2.4
 
-  @requires_s3_access
+  @requires_s3_access @jobs.requires_auth
   Scenario: Check that the analysis had really been performed based on timestamps tests
     Given System is running
     When I wait 30 seconds
