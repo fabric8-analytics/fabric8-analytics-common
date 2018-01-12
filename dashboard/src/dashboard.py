@@ -18,6 +18,7 @@ from smoke_tests import *
 from sla import *
 from ci_jobs import *
 from cliargs import *
+from config import *
 
 
 def check_environment_variable(env_var_name):
@@ -103,6 +104,11 @@ ci_job_types = [
     "build_job",
     "pylint_job",
     "pydoc_job"
+]
+
+teams = [
+    "core",
+    "integration"
 ]
 
 JENKINS_URL = "https://ci.centos.org"
@@ -426,6 +432,7 @@ def read_ci_jobs_statuses(jenkins_url):
 
 def main():
     """Entry point to the QA Dashboard."""
+    config = Config()
     cli_arguments = cli_parser.parse_args()
 
     # some CLI arguments are used to DISABLE given feature of the dashboard,
@@ -448,6 +455,13 @@ def main():
     results.liveness_table_enabled = liveness_table_enabled
     results.code_quality_table_enabled = code_quality_table_enabled
     results.ci_jobs_table_enabled = ci_jobs_table_enabled
+
+    results.teams = teams
+    results.sprint = config.get_sprint()
+    print(results.sprint)
+
+    for team in teams:
+        results.issues_list_url[team] = config.get_list_of_issues_url(team)
 
     if liveness_table_enabled:
         prepare_data_for_liveness_table(results)
