@@ -6,12 +6,12 @@ from urllib.parse import urljoin
 class CIJobs:
     """Class representing configuration of all relevant CI jobs."""
 
-    CONFIG_FILE = 'config.ini'
+    CONFIG_FILE_NAME = 'ci_jobs.ini'
 
     def __init__(self):
         """Read and parse the configuration file."""
         self.config = configparser.ConfigParser()
-        self.config.read(CIJobs.CONFIG_FILE)
+        self.config.read(CIJobs.CONFIG_FILE_NAME)
 
     def get_ci_url(self):
         """Retrieve the URL to the CI front page."""
