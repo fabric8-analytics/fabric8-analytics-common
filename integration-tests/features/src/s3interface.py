@@ -61,36 +61,42 @@ class S3Interface():
         """Insert deployment prefix to the given bucket name."""
         return "{p}-{b}".format(p=self.deployment_prefix, b=bucket_name)
 
+    @staticmethod
     def package_key(ecosystem, package):
         """Construct a key to the selected package in the given ecosystem."""
         return "{ecosystem}/{package}.json".format(ecosystem=ecosystem,
                                                    package=package)
 
+    @staticmethod
     def package_analysis_key(ecosystem, package, metadata):
         """Construct a key to the selected package analysis in the given ecosystem."""
         return "{ecosystem}/{package}/{metadata}.json".format(ecosystem=ecosystem,
                                                               package=package,
                                                               metadata=metadata)
 
-    def component_key(self, ecosystem, package, version):
+    @staticmethod
+    def component_key(ecosystem, package, version):
         """Construct a key to the selected component in the given ecosystem."""
         return "{ecosystem}/{package}/{version}.json".format(ecosystem=ecosystem,
                                                              package=package,
                                                              version=version)
 
-    def component_analysis_key(self, ecosystem, package, version, analysis):
+    @staticmethod
+    def component_analysis_key(ecosystem, package, version, analysis):
         """Construct a key to the selected component analysis in the given ecosystem."""
         return "{ecosystem}/{package}/{version}/{analysis}.json".format(ecosystem=ecosystem,
                                                                         package=package,
                                                                         version=version,
                                                                         analysis=analysis)
 
-    def component_core_package_data_key(self, ecosystem, package):
+    @staticmethod
+    def component_core_package_data_key(ecosystem, package):
         """Construct a key to the selected package in the given ecosystem."""
         return "{ecosystem}/{package}.json".format(ecosystem=ecosystem,
                                                    package=package)
 
-    def component_core_package_data_analysis_key(self, ecosystem, package, analysis):
+    @staticmethod
+    def component_core_package_data_analysis_key(ecosystem, package, analysis):
         """Construct a key to the selected package analysis in the given ecosystem."""
         return "{ecosystem}/{package}/{analysis}.json".format(ecosystem=ecosystem,
                                                               package=package,
