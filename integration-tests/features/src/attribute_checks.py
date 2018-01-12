@@ -4,24 +4,26 @@ import re
 
 
 def check_attribute_presence(node, attribute_name):
-    """Check the attribute presence in the given dictionary.
+    """Check the attribute presence in the given dictionary or list.
 
     To be used to check the deserialized JSON data etc.
     """
+    found_attributes = node if type(node) is list else node.keys()
     assert attribute_name in node, \
         "'%s' attribute is expected in the node, " \
-        "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
+        "found: %s attributes " % (attribute_name, ", ".join(found_attributes))
 
 
 def check_attributes_presence(node, attribute_names):
-    """Check the presence of all attributes in the dictionary.
+    """Check the presence of all attributes in the dictionary or in the list.
 
     To be used to check the deserialized JSON data etc.
     """
     for attribute_name in attribute_names:
+        found_attributes = node if type(node) is list else node.keys()
         assert attribute_name in node, \
             "'%s' attribute is expected in the node, " \
-            "found: %s attributes " % (attribute_name, ", ".join(node.keys()))
+            "found: %s attributes " % (attribute_name, ", ".join(found_attributes))
 
 
 def check_and_get_attribute(node, attribute_name):
