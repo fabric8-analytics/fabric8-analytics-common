@@ -80,13 +80,13 @@ def _node_items_to_check(context, items, node):
     returned_items = check_and_get_attribute(data, node)
     assert returned_items is not None
 
-    return expected_items, returned_items
+    return returned_items, expected_items
 
 
 @then('I should find the following items ({items}) in the {node} node')
 def check_expected_items_in_node(context, items, node):
     """Check if all expected items can be found in given node."""
-    expected_items, returned_items = _node_items_to_check(context, items, node)
+    returned_items, expected_items = _node_items_to_check(context, items, node)
 
     check_attributes_presence(returned_items, expected_items)
 
@@ -94,7 +94,7 @@ def check_expected_items_in_node(context, items, node):
 @then('I should not find any items apart from ({items}) in the {node} node')
 def check_unexpected_items_in_node(context, items, node):
     """Check that only expected items can be found in given node."""
-    expected_items, returned_items = _node_items_to_check(context, items, node)
+    returned_items, expected_items = _node_items_to_check(context, items, node)
 
     for item in returned_items:
         # check that the item is contained in a list of expected items
