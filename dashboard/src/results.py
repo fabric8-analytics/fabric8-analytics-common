@@ -29,6 +29,9 @@ class Results():
         self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
         self.ci_jobs_links = defaultdict(dict)
         self.ci_jobs_statuses = defaultdict(dict)
+        self.sprint = None
+        self.teams = {}
+        self.issues_list_url = {}
 
     def __repr__(self):
         """Return textual representation of all results."""
