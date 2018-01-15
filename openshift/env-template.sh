@@ -2,22 +2,29 @@
 
 #Openshift configuration
 export OC_URI='dev.rdu2c.fabric8.io:8443'
-export OC_USERNAME='Not set'
-export OC_PASSWD='Not set'
-export OC_PROJECT="${OC_USERNAME}-greenfield-test"
+# Your dev cluster username
+export OC_USERNAME='not-set'
+# Your dev cluster password
+export OC_PASSWD='not-set'
+export OC_PROJECT="${OC_USERNAME}-fabric8-analytics"
 
 #AWS credentials
-export AWS_ACCESS_KEY_ID='Not set'
-export AWS_SECRET_ACCESS_KEY='Not set'
+export AWS_ACCESS_KEY_ID='not-set'
+export AWS_SECRET_ACCESS_KEY='not-set'
 export AWS_DEFAULT_REGION='us-east-1'
 
-#Github
-export GITHUB_API_TOKENS='Not set'
-export GITHUB_OAUTH_CONSUMER_KEY='Not set'
-export GITHUB_OAUTH_CONSUMER_SECRET='Not set'
+#GitHub
+# Comma-separated list of tokens for talking to GitHub API
+#   You can generate a token here: https://github.com/settings/tokens
+export GITHUB_API_TOKENS='not-set'
+# Create new GitHub OAuth App here: https://github.com/organizations/fabric8-analytics/settings/applications
+#   Client ID is GITHUB_OAUTH_CONSUMER_KEY
+#   Client Secret is GITHUB_OAUTH_CONSUMER_SECRET
+export GITHUB_OAUTH_CONSUMER_KEY='not-set'
+export GITHUB_OAUTH_CONSUMER_SECRET='not-set'
 
 export KEYCLOAK_URL='https://sso.openshift.io'
-export FLASK_APP_SECRET_KEY='Not set'
+export FLASK_APP_SECRET_KEY='notsosecret'
 
 #AWS RDS configuration variables are use to provision RDS instance
 export RDS_ENDPOINT=''
@@ -28,11 +35,12 @@ export RDS_DBADMIN='coreapi'
 export RDS_STORAGE=5
 export RDS_PASSWORD=''
 export RDS_SUBNET_GROUP_NAME='dv peering az'
-export RDS_ARN='Not set'
+export RDS_ARN='not-set'
 
 #Integration tests settings
-export F8A_API_URL='Not set'
-export F8A_JOB_API_URL='Not set'
-export RECOMMENDER_API_TOKEN='Not set'
+export F8A_API_URL='not-set'
+export F8A_JOB_API_URL='not-set'
+export RECOMMENDER_API_TOKEN='not-set'
 
 export DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX:-${OC_USERNAME}}
+
