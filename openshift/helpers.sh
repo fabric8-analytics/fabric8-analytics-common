@@ -3,7 +3,7 @@ function is_set_or_fail() {
     local name=$1
     local value=$2
 
-    if [ -v $value ] || [ $value == "not-set" ]; then
+    if [ ! -v value ] || [ "$value" == "not-set" ]; then
         echo "You have to set $name" >&2
         exit 1
     fi
@@ -43,7 +43,7 @@ function deploy_secrets() {
 
 function oc_process_apply() {
     echo -e "\\n Processing template - $1 ($2) \\n"
-    oc process -f $1 $2 | oc apply -f -
+    oc process -f "$1" "$2" | oc apply -f -
 }
 
 function openshift_login() {

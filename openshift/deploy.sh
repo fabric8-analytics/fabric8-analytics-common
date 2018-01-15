@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-source helpers.sh
-
 here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+source helpers.sh
 
 #Check for configuration file
 if ! [ -f "${here}/env.sh" ]
@@ -24,12 +24,12 @@ tool_is_installed oc
 source env.sh
 
 #Check if required env variables are set
-is_set_or_fail RDS_PASSWORD ${RDS_PASSWORD}
-is_set_or_fail RDS_INSTANCE_NAME ${RDS_INSTANCE_NAME}
-is_set_or_fail OC_USERNAME ${OC_USERNAME}
-is_set_or_fail OC_PASSWD ${OC_PASSWD}
-is_set_or_fail AWS_ACCESS_KEY_ID ${AWS_ACCESS_KEY_ID}
-is_set_or_fail AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY}
+is_set_or_fail RDS_PASSWORD "$RDS_PASSWORD"
+is_set_or_fail RDS_INSTANCE_NAME "$RDS_INSTANCE_NAME"
+is_set_or_fail OC_USERNAME "$OC_USERNAME"
+is_set_or_fail OC_PASSWD "$OC_PASSWD"
+is_set_or_fail AWS_ACCESS_KEY_ID "$AWS_ACCESS_KEY_ID"
+is_set_or_fail AWS_SECRET_ACCESS_KEY "$AWS_SECRET_ACCESS_KEY"
 
 templates_dir="${here}/templates"
 templates="fabric8-analytics-jobs fabric8-analytics-server fabric8-analytics-data-model
