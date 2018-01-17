@@ -364,7 +364,6 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                                   clone_repositories_enabled, cleanup_repositories_enabled,
                                   code_quality_table_enabled, ci_jobs_table_enabled):
     """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
-
     for repository in repositories:
 
         # clone or fetch the repository if the cloning/fetching is not disabled via CLI arguments
