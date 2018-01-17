@@ -23,7 +23,7 @@ class Config:
             url_prefix = self.config.get('issue_tracker', 'url')
             project_group = self.config.get('issue_tracker', 'group') + "/"
             project_name = self.config.get('issue_tracker', 'project_name')
-            return urljoin(urljoin(url_prefix, project_group), project_name) + "/"
+            return urljoin(urljoin(url_prefix, project_group), project_name)
         except (configparser.NoSectionError, configparser.NoOptionError):
             return None
 
