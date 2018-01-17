@@ -47,7 +47,6 @@ class SmokeTests:
                     url = self._ci_jobs.get_job_url(system, job_name)
                     name = self._ci_jobs.get_job_name(system, job_name)
                     job_status = self._all_jobs_statuses.get(name)
-                    print(url, name, job_status)
                     self._ci_jobs_links[system] = url
                     self._ci_jobs_statuses[system] = job_status
 
