@@ -8,6 +8,8 @@ class CIJobs:
 
     CONFIG_FILE_NAME = 'ci_jobs.ini'
 
+    JOB_TYPES = {"build_job", "test_job", "pylint_job", "pydoc_job", "smoketests"}
+
     def __init__(self):
         """Read and parse the configuration file."""
         self.config = configparser.ConfigParser()
@@ -19,7 +21,7 @@ class CIJobs:
 
     def get_job_url(self, repository_name, job_type):
         """Retrieve the URL to the CI job for given repository and job type."""
-        assert job_type in {"build_job", "test_job", "pylint_job", "pydoc_job"}
+        assert job_type in CIJobs.JOB_TYPES
         # the job with given type might not exist, return None in such cases
         try:
             repository_name = CIJobs.remove_prefix(repository_name, "fabric8-analytics-")
@@ -31,7 +33,7 @@ class CIJobs:
 
     def get_job_name(self, repository_name, job_type):
         """Return the job name w/o the full URL to CI."""
-        assert job_type in {"build_job", "test_job", "pylint_job", "pydoc_job"}
+        assert job_type in CIJobs.JOB_TYPES
         try:
             repository_name = CIJobs.remove_prefix(repository_name, "fabric8-analytics-")
             url_suffix = self.config.get(repository_name, job_type)
