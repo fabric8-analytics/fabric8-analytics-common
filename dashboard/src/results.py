@@ -37,10 +37,18 @@ class Results():
         """Return textual representation of all results."""
         template = "Stage: {stage}\nProduction: {production}\n" + \
                    "Repo stats: {rs}\nRepo linter checks: {rl}\nRepo docstyle checks: {rd}\n" + \
-                   "CI jobs: {ci}"
+                   "Smoke tests results: {smoke_tests_results}\n" + \
+                   "Smoke tests links: {smoke_tests_links}\n" + \
+                   "Smoke tests statuses: {smoke_tests_statuses}\n" + \
+                   "CI jobs links: {ci_jobs_links}\n" + \
+                   "CI jobs status: {ci_jobs_stats}\n"
         return template.format(stage=self.stage,
                                production=self.production,
                                rs=self.repo_statistics,
                                rl=self.repo_linter_checks,
                                rd=self.repo_docstyle_checks,
-                               ci=self.ci_jobs)
+                               smoke_tests_results=self.smoke_tests_results,
+                               smoke_tests_links=self.smoke_tests_links,
+                               smoke_tests_statuses=self.smoke_tests_statuses,
+                               ci_jobs_links=self.ci_jobs_links.__repr__(),
+                               ci_jobs_stats=self.ci_jobs_statuses.__repr__())
