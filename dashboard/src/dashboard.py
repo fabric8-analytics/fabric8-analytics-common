@@ -331,7 +331,7 @@ def export_into_csv(results):
         writer.writerow(record)
 
 
-def prepare_data_for_liveness_table(results):
+def prepare_data_for_liveness_table(results, ci_jobs, job_statuses):
     """Prepare data for sevices liveness/readiness table on the dashboard."""
     cfg = Configuration()
 
@@ -343,8 +343,10 @@ def prepare_data_for_liveness_table(results):
     jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
     results.production = check_system(core_api, jobs_api)
 
-    smoke_tests = SmokeTests()
+    smoke_tests = SmokeTests(ci_jobs, job_statuses)
     results.smoke_tests_results = smoke_tests.results
+    results.smoke_tests_links = smoke_tests.ci_jobs_links
+    results.smoke_tests_statuses = smoke_tests.ci_jobs_statuses
 
 
 def prepare_data_for_sla_table(results):
@@ -358,13 +360,10 @@ def prepare_data_for_sla_table(results):
     results.sla_thresholds = SLA
 
 
-def prepare_data_for_repositories(repositories, results,
+def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                                   clone_repositories_enabled, cleanup_repositories_enabled,
                                   code_quality_table_enabled, ci_jobs_table_enabled):
     """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
-    if ci_jobs_table_enabled:
-        ci_jobs = CIJobs()
-        job_statuses = read_ci_jobs_statuses(JENKINS_URL)
 
     for repository in repositories:
 
@@ -430,6 +429,14 @@ def read_ci_jobs_statuses(jenkins_url):
     return jobs_as_dict(raw_jobs)
 
 
+def read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled):
+    """Read job statuses from the CI, but only if its necessary."""
+    if ci_jobs_table_enabled or liveness_table_enabled:
+        return read_ci_jobs_statuses(JENKINS_URL)
+    else:
+        return None
+
+
 def main():
     """Entry point to the QA Dashboard."""
     config = Config()
@@ -458,15 +465,18 @@ def main():
 
     results.teams = teams
     results.sprint = config.get_sprint()
-    print(results.sprint)
+    print("Sprint: " + results.sprint)
+
+    ci_jobs = CIJobs()
+    job_statuses = read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled)
 
     for team in teams:
         results.issues_list_url[team] = config.get_list_of_issues_url(team)
 
     if liveness_table_enabled:
-        prepare_data_for_liveness_table(results)
+        prepare_data_for_liveness_table(results, ci_jobs, job_statuses)
 
-    prepare_data_for_repositories(repositories, results,
+    prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                                   clone_repositories_enabled, cleanup_repositories_enabled,
                                   code_quality_table_enabled, ci_jobs_table_enabled)
 
