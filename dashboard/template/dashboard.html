@@ -47,10 +47,16 @@
                             % else:
                                 <td class="boolean error">&times;</td>
                             % endif
-                            % if smoke_tests_results["stage"]:
-                                <td class="boolean ok">&#x2713;</td>
+                            % if "stage" in smoke_tests_links:
+                                <td>
+                                % if smoke_tests_statuses["stage"] == "blue":
+                                    <span class="ci_status boolean ok">&#x2713;</span>
+                                % else:
+                                    <span class="ci_status boolean error">&times;</span>
+                                % endif
+                                    <a href='${smoke_tests_links["stage"]}'>link</a></td>
                             % else:
-                                <td class="boolean error">&times;</td>
+                                <td class="boolean error">?</td>
                             % endif
                         </tr>
                         <tr><td>Production</td>
@@ -74,10 +80,16 @@
                             % else:
                                 <td class="boolean error">&times;</td>
                             % endif
-                            % if smoke_tests_results["production"]:
-                                <td class="boolean ok">&#x2713;</td>
+                            % if "production" in smoke_tests_links:
+                                <td>
+                                % if smoke_tests_statuses["production"] == "blue":
+                                    <span class="ci_status boolean ok">&#x2713;</span>
+                                % else:
+                                    <span class="ci_status boolean error">&times;</span>
+                                % endif
+                                    <a href='${smoke_tests_links["production"]}'>link</a></td>
                             % else:
-                                <td class="boolean error">&times;</td>
+                                <td class="boolean error">?</td>
                             % endif
                         </tr>
                     </table>
