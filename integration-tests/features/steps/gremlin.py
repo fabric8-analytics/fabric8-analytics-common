@@ -121,7 +121,7 @@ def valid_gremlin_response(context):
 
 @then('I should get zero vertexes')
 @then('I should get {num:d} vertexes')
-def check_vertexes_cound(context, num=0):
+def check_vertexes_count(context, num=0):
     """Check the number of vertexes returned in Gremlin response."""
     data, meta = get_results_from_gremlin(context)
     vertexes = len(data)
@@ -129,11 +129,40 @@ def check_vertexes_cound(context, num=0):
 
 
 @then('I should find at least one such vertex')
-def check_vertexes_cound(context):
+def check_non_zero_vertexes_count(context):
     """Check the number of vertexes returned in Gremlin response."""
     data, meta = get_results_from_gremlin(context)
     vertexes = len(data)
     assert vertexes > 0, "Expected at least one vertex, but got zero instead"
+
+
+def get_node_value_from_properties_returned_by_gremlin(context, node_name):
+    """Try to retrieve node value from the 'properties' node returned by Gremlin."""
+    data, meta = get_results_from_gremlin(context)
+    assert len(data) == 1, "Expected precisely one vertex with package data"
+    assert data[0] is not None
+    properties = check_and_get_attribute(data[0], "properties")
+    node = check_and_get_attribute(properties, node_name)
+    assert node[0] is not None
+    return check_and_get_attribute(node[0], "value")
+
+
+@then('I should find the package {package} name in the Gremlin response')
+def check_package_name(context, package):
+    """Check the package name in Gremlin response."""
+    name = get_node_value_from_properties_returned_by_gremlin(context, "name")
+    assert name == package, \
+        "Returned package name '{name}' is different from expected name '{package}'" \
+        .format(name=name, package=package)
+
+
+@then('I should find the ecosystem {ecosystem} name in the Gremlin response')
+def check_ecosystem_name(context, ecosystem):
+    """Check the ecosystem name in Gremlin response."""
+    name = get_node_value_from_properties_returned_by_gremlin(context, "ecosystem")
+    assert name == ecosystem, \
+        "Returned ecosystem name '{name}' is different from expected name '{ecosystem}'" \
+        .format(name=name, ecosystem=ecosystem)
 
 
 @then('I should find at least one package in the Gremlin response')
