@@ -147,6 +147,24 @@ def get_node_value_from_properties_returned_by_gremlin(context, node_name):
     return check_and_get_attribute(node[0], "value")
 
 
+@then('I should find the package {package} name in the Gremlin response')
+def check_package_name(context, package):
+    """Check the package name in Gremlin response."""
+    name = get_node_value_from_properties_returned_by_gremlin(context, "name")
+    assert name == package, \
+        "Returned package name '{name}' is different from expected name '{package}'" \
+        .format(name=name, package=package)
+
+
+@then('I should find the ecosystem {ecosystem} name in the Gremlin response')
+def check_ecosystem_name(context, ecosystem):
+    """Check the package name in Gremlin response."""
+    name = get_node_value_from_properties_returned_by_gremlin(context, "ecosystem")
+    assert name == ecosystem, \
+        "Returned ecosystem name '{name}' is different from expected name '{ecosystem}'" \
+        .format(name=name, ecosystem=ecosystem)
+
+
 @then('I should find at least one package in the Gremlin response')
 @then('I should find at least {expected:d} packages in the Gremlin response')
 def check_number_of_packages_returned(context, expected=1):
