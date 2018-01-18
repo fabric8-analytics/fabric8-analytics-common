@@ -7,7 +7,7 @@ import boto3
 from botocore.exceptions import ClientError
 from itertools import chain
 from os import getenv
-from sys import exit
+from sys import exit, stderr
 
 _AWS_ACCESS_KEY_ID = getenv('AWS_ACCESS_KEY_ID')
 _AWS_SECRET_ACCESS_KEY = getenv('AWS_SECRET_ACCESS_KEY')
@@ -140,7 +140,7 @@ if __name__ == '__main__':
 
     if not all(_AWS_ACCESS_KEY_ID and _AWS_SECRET_ACCESS_KEY and _AWS_DEFAULT_REGION and
                _DEPLOYMENT_PREFIX):
-        print("Not all environment variables are properly defined.")
+        print("Not all environment variables are properly defined.", file=stderr)
         exit(1)
 
     if args.tag:
@@ -148,15 +148,20 @@ if __name__ == '__main__':
             k, v = args.tag.split(',')
             args.tag = (k, v)
         except ValueError:
-            print("Tag needs to be 'key,value'")
+            print("Tag needs to be 'key,value'", file=stderr)
             exit(1)
         print("About to delete resources tagged with %r" % ','.join(args.tag))
     else:
         print("About to purge %r prefixed resources." % _DEPLOYMENT_PREFIX)
 
-    if (args.tag and args.tag[1].lower() in {'prod', 'stage'}
-            or _DEPLOYMENT_PREFIX.lower() in {'prod', 'stage'}) and not args.force:
-        print("If you really want to destroy prod/stage use -f/--force.")
+    if args.tag and args.tag[1].lower() in {'prod', 'stage'}:
+        prod_stage = args.tag[1]
+    elif _DEPLOYMENT_PREFIX.lower() in {'prod', 'stage'}:
+        prod_stage = _DEPLOYMENT_PREFIX
+    else:
+        prod_stage = False
+    if prod_stage and not args.force:
+        print("If you really want to destroy %s use -f/--force." % prod_stage, file=stderr)
         exit(0)
 
     aws_cleaner = AWSCleaner(args.tag)
