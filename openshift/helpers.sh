@@ -65,6 +65,14 @@ function remove_project_resources() {
     fi
 }
 
+function delete_project_and_aws_resources() {
+    if oc get project "${OC_PROJECT}"; then
+        echo "Deleting project ${OC_PROJECT}"
+        oc delete project "${OC_PROJECT}"
+    fi
+    purge_aws_resources
+}
+
 function create_or_reuse_project() {
     if oc get project "${OC_PROJECT}"; then
         oc project "${OC_PROJECT}"
