@@ -132,3 +132,25 @@ Feature: Check the content written into the graph database
          |npm | 2 |
          |underscore | 2 |
 
+  @requires_access_to_graph_db @detailed_tests
+  Scenario Outline: Check that all frequently used packages for the pypi ecosystem are stored in the graph DB
+    Given System is running
+    When I ask Gremlin to find all versions of the package <package> in the ecosystem pypi
+    Then I should get 200 status code
+     And I should get valid Gremlin response
+     And I should find at least <number> packages in the Gremlin response
+
+     Examples: packages
+         |package    | number |
+         |requests   | 16 |
+         |scrapy     | 2 |
+         |Pillow     | 6|
+         |SQLAlchemy | 7|
+         |Twisted    | 4|
+         |matplotlib | 3|
+         |nltk       | 1|
+         |nose       | 3|
+         |numpy      | 7|
+         |mechanize  | 3|
+         |pywinauto  | 1|
+
