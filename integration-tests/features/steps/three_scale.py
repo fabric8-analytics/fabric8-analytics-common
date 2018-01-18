@@ -83,7 +83,7 @@ def validate_result_post_registration(context):
     endpoints = check_and_get_attribute(json_data, "endpoints")
 
     prod_url = check_and_get_attribute(endpoints, "prod")
-    assert prod_url.startswith("http://")
+    assert prod_url.startswith("https://")
 
-    stage_url = check_and_get_attribute(endpoints, "stage")
-    assert stage_url.startswith("http://")
+    # stage_url = check_and_get_attribute(endpoints, "stage")
+    # assert stage_url.startswith("http://")
