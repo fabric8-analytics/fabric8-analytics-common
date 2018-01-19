@@ -311,3 +311,11 @@ Feature: Server API
          |component_analyses|source_licenses|1-0-0|
          |component_analyses|source_licenses|2-0-0|
          |component_analyses|source_licenses|3-0-0|
+
+  @production
+  Scenario: Check the /api/v1/submit-feedback response
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I access /api/v1/submit-feedback without valid values
+    Then I should get 400 status code
