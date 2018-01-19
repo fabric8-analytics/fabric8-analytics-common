@@ -159,3 +159,18 @@ def get_details_node(context):
     data = context.s3_data
 
     return check_and_get_attribute(data, 'details')
+
+
+def check_cve_value(cve):
+    """Check CVE values in CVE records."""
+    pattern = "CVE-([0-9]{4})-[0-9]{4,}"
+
+    match = re.fullmatch(pattern, cve)
+    assert match is not None, "Improper CVE number %s" % cve
+
+    year = int(re.fullmatch(pattern, cve).group(1))
+    current_year = datetime.datetime.now().year
+
+    # well the lower limit is a bit arbitrary
+    # (according to SRT guys it should be 1999)
+    assert year >= 1999 and year <= current_year
