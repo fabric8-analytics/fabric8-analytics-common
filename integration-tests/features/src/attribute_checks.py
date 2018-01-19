@@ -174,3 +174,22 @@ def check_cve_value(cve):
     # well the lower limit is a bit arbitrary
     # (according to SRT guys it should be 1999)
     assert year >= 1999 and year <= current_year
+
+
+def check_cve_value_with_score(cve):
+    """Check CVE values with scores in CVE records."""
+    # please note that in graph DB, the CVE entries have the following format:
+    # CVE-2012-1150:5.0
+    # don't ask me why, but the score is stored in one field together with ID itself
+    # the : character is used as a separator
+    pattern = "CVE-(\d{4})-\d{4,}:\d+\.\d+"
+
+    match = re.fullmatch(pattern, cve)
+    assert match is not None, "Improper CVE number %s" % cve
+
+    year = int(re.fullmatch(pattern, cve).group(1))
+    current_year = datetime.datetime.now().year
+
+    # well the lower limit is a bit arbitrary
+    # (according to SRT guys it should be 1999)
+    assert year >= 1999 and year <= current_year
