@@ -351,7 +351,8 @@ def check_package_versions_structure(context):
     # check all n items found in data
     for item in data:
         labelValue = check_and_get_attribute(item, "label")
-        #assert labelValue == "vertex" or labelValue == "Version"
+        # the following check is blocked by: 1934
+        # assert labelValue == "vertex" or labelValue == "Version"
         properties = check_and_get_attribute(item, "properties")
         test_last_updated_attribute(properties)
         test_cm_loc(properties)
