@@ -85,6 +85,7 @@ Feature: Check the content written into the graph database
     Then I should get 200 status code
      And I should get valid Gremlin response
      And I should find at least <number> packages in the Gremlin response
+     And I should find that all information about package versions have correct structure
 
      Examples: packages
          |package  | number |
@@ -139,6 +140,7 @@ Feature: Check the content written into the graph database
     Then I should get 200 status code
      And I should get valid Gremlin response
      And I should find at least <number> packages in the Gremlin response
+     And I should find that all information about package versions have correct structure
 
      Examples: packages
          |package    | number |
