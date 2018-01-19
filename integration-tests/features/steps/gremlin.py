@@ -142,9 +142,7 @@ def get_node_value_from_properties_returned_by_gremlin(context, node_name):
     assert len(data) == 1, "Expected precisely one vertex with package data"
     assert data[0] is not None
     properties = check_and_get_attribute(data[0], "properties")
-    node = check_and_get_attribute(properties, node_name)
-    assert node[0] is not None
-    return check_and_get_attribute(node[0], "value")
+    get_node_value(properties, node_name)
 
 
 @then('I should find the package {package} name in the Gremlin response')
@@ -179,15 +177,11 @@ def check_number_of_packages_returned(context, expected=1):
 @then('I should find that all found packages have valid timestamp with the last update time')
 def check_timestamp_for_all_packages_in_gremlin_response(context):
     """Check if the last_updated attribute exists and if it contain proper timestamp."""
-    now = time.time()
     data, meta = get_results_from_gremlin(context)
 
     for package in data:
         properties = check_and_get_attribute(package, "properties")
-        last_updated = check_and_get_attribute(properties, "last_updated")
-        value = check_and_get_attribute(last_updated[0], "value")
-        assert value >= BAYESSIAN_PROJECT_START_DATE
-        assert value <= now
+        test_last_updated_attribute(properties)
 
 
 @then('I should find that the package data is {comparison} than remembered time')
@@ -369,3 +363,25 @@ def get_scale(value):
         "k": 1000,
         "m": 1000000}
     return scales.get(value[-1].lower())
+
+
+def test_last_updated_attribute(properties):
+    """Check that the 'last_updated' attribute contains proper timestamp."""
+    now = time.time()
+    last_updated = check_and_get_attribute(properties, "last_updated")
+    value = check_and_get_attribute(last_updated[0], "value")
+    assert value >= BAYESSIAN_PROJECT_START_DATE
+    assert value <= now
+
+
+def get_node_value(properties, property_name):
+    """Retrieve the value of node taken from properties returned by Gremlin.
+
+    Please note, that each property is an array of id+value pairs and in
+    this case we are interested only in the first pair.
+    """
+    node = check_and_get_attribute(properties, property_name)
+    assert node[0] is not None
+    return check_and_get_attribute(node[0], "value")
+
+
