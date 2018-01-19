@@ -23,6 +23,7 @@ def access_url_with_authorization_token(context, url):
 
 @when('I access {url:S} without valid values')
 def check_submit_feedback(context, url):
+    """Access the submit-feedback API using the HTTP POST method."""
     payload = {
         "stack_id": "1234-569586048",
         "recommendation_type": "companion",
