@@ -342,6 +342,24 @@ def check_numeric_property_value(context, property_name, expected):
                                                                               expected=expected)
 
 
+@then('I should find that all information about package versions have correct structure')
+def check_package_versions_structure(context):
+    """Check all items returned by Gremlin."""
+    data, meta = get_results_from_gremlin(context)
+    assert len(data) > 0, "At least one vertex expected, but 0 has been found"
+
+    # check all n items found in data
+    for item in data:
+        labelValue = check_and_get_attribute(item, "label")
+        #assert labelValue == "vertex" or labelValue == "Version"
+        properties = check_and_get_attribute(item, "properties")
+        test_last_updated_attribute(properties)
+        test_cm_loc(properties)
+        test_cm_num_files(properties)
+        test_cm_avg_cyclomatic_complexity(properties)
+        test_cve_ids(properties)
+
+
 def convert_to_number(value):
     """Convert the value, that can be string, int, or float, to number."""
     if isinstance(value, (int, float)):
@@ -385,3 +403,43 @@ def get_node_value(properties, property_name):
     return check_and_get_attribute(node[0], "value")
 
 
+def check_integer_property_value(properties, property_name):
+    """Check if the node value is valid integer."""
+    value = get_node_value(properties, property_name)
+    assert type(value) is int
+
+
+def check_float_property_value(properties, property_name):
+    """Check if the node value is valid float."""
+    value = get_node_value(properties, property_name)
+    assert type(value) is float
+
+
+def test_cm_loc(properties, expected_property=False):
+    """Check the property 'cm_loc'."""
+    if expected_property or "cm_loc" in properties:
+        check_integer_property_value(properties, "cm_loc")
+
+
+def test_cm_avg_cyclomatic_complexity(properties, expected_property=False):
+    """Check the property 'cm_avg_cyclomatic_complexity'."""
+    if expected_property or "cm_avg_cyclomatic_complexity" in properties:
+        check_float_property_value(properties, "cm_avg_cyclomatic_complexity")
+
+
+def test_cm_num_files(properties, expected_property=False):
+    """Check the property 'cm_num_files'."""
+    if expected_property or "cm_num_files" in properties:
+        check_integer_property_value(properties, "cm_num_files")
+
+
+def test_cve_ids(properties, expected_property=False):
+    """Check all CVE entries found for the package.
+
+    The format for CVE is: CVE ID:score.
+    """
+    if expected_property or "cve_ids" in properties:
+        cve_ids = check_and_get_attribute(properties, "cve_ids")
+        for cve_id in cve_ids:
+            cve = cve_id["value"]
+            check_cve_value_with_score(cve)
