@@ -25,7 +25,7 @@ Feature: Analyse API funcationality check
     When I send Maven package manifest pom-effective.xml to stack analysis version 3 with authorization token
     Then I should get 200 status code
      And I should receive JSON response with the correct id
-    When I wait for stack analysis to finish with authorization token
+    When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should get a valid request ID
      And I should find the attribute request_id equals to id returned by stack analysis request
