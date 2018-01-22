@@ -32,7 +32,7 @@ def contains_alternate_node(json_resp):
 @when("I wait for stack analysis to finish")
 @when("I wait for stack analysis to finish {token} authorization token")
 @when("I wait for stack analysis version {version} to finish {token} authorization token")
-def wait_for_stack_analysis_completion(context, version="2", token="without"):
+def wait_for_stack_analysis_completion(context, version="3", token="without"):
     """Try to wait for the stack analysis to be finished.
 
     This step assumes that stack analysis has been started previously and
@@ -110,9 +110,12 @@ def stack_analysis_endpoint(context, version):
     """Return endpoint for the stack analysis of selected version."""
     # Two available endpoints for stack analysis are /stack-analyses and /analyse
     # /analyse endpoint was developed to meet the performance norms at production
-    endpoint = {"1": "/api/v1/stack-analyses-v1",
-                "2": "/api/v1/analyse",
-                "3": "/api/v1/stack-analyses"}.get(version)
+    endpoint_arr = ["/api/v1/stack-analyses-v1",
+                    "/api/v1/analyse",
+                    "/api/v1/stack-analyses/"]
+    index = int(version) - 1
+    endpoint = endpoint_arr[index]
+
     if endpoint is None:
         raise Exception("Wrong version specified: {v}".format(v=version))
     return urljoin(context.coreapi_url, endpoint)
@@ -149,7 +152,7 @@ def python_manifest_stack_analysis(context, manifest, version="2", token="withou
 @when("I send Maven package manifest {manifest} to stack analysis version {version}")
 @when("I send Maven package manifest {manifest} to stack analysis version {version} {token} "
       "authorization token")
-def maven_manifest_stack_analysis(context, manifest, version="2", token="without"):
+def maven_manifest_stack_analysis(context, manifest, version="3", token="without"):
     """Send the Maven package manifest file to the stack analysis."""
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
