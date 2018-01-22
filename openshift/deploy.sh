@@ -2,7 +2,7 @@
 
 # Deploy fabric8-analytics to Openshift
 # possible arguments:
-#   --keep-aws-resources: do not clear previously allocated AWS resources
+#   --purge-aws-resources: clear previously allocated AWS resources (SQS queues, S3 buckets, DynamoDB tables)
 
 here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -41,11 +41,11 @@ fabric8-analytics-worker fabric8-analytics-pgbouncer gremlin-docker
 fabric8-analytics-scaler fabric8-analytics-firehose-fetcher
 fabric8-analytics-license-analysis fabric8-analytics-stack-analysis fabric8-analytics-stack-report-ui"
 
-clean_aws_resources=true # default
+purge_aws_resources=false # default
 for key in "$@"; do
     case $key in
-        --keep-aws-resources)
-            clean_aws_resources=false
+        --purge-aws-resources)
+            purge_aws_resources=true
             shift # next argument
             ;;
         *)  # unknown option

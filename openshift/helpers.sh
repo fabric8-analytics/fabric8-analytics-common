@@ -60,7 +60,7 @@ function purge_aws_resources() {
 function remove_project_resources() {
     echo "Removing all openshift resources from selected project"
     oc delete all,cm,secrets --all
-    if [ "$clean_aws_resources" == true ] ; then
+    if [ "$purge_aws_resources" == true ]; then
         purge_aws_resources
     fi
 }
@@ -115,7 +115,7 @@ function allocate_aws_rds() {
     else
         echo "DB instance ${RDS_INSTANCE_NAME} already exists"
         wait_for_rds_instance_info
-        if [ "$clean_aws_resources" == true ] ; then
+        if [ "$purge_aws_resources" == true ]; then
             echo "recreating database"
             PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "drop database ${RDS_DBNAME}"
             PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "create database ${RDS_DBNAME}"
