@@ -6,7 +6,7 @@ features/jobs_debug_api.feature
 #features/ecosystems.feature
 features/component_search.feature
 features/components.feature
-#features/stack_analyses.feature
+features/stack_analyses.feature
 features/user_feedback.feature
 #features/versions.feature
 features/selfcheck.feature
