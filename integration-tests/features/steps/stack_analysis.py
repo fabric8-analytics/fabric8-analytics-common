@@ -110,9 +110,9 @@ def stack_analysis_endpoint(context, version):
     """Return endpoint for the stack analysis of selected version."""
     # Two available endpoints for stack analysis are /stack-analyses and /analyse
     # /analyse endpoint was developed to meet the performance norms at production
-    endpoint = {"1": "/api/v1/stack-analyses-v1/",
-                "2": "/api/v1/stack-analyses/",
-                "3": "/api/v1/analyse"}.get(version)
+    endpoint = {"1": "/api/v1/stack-analyses-v1",
+                "2": "/api/v1/analyse",
+                "3": "/api/v1/stack-analyses"}.get(version)
     if endpoint is None:
         raise Exception("Wrong version specified: {v}".format(v=version))
     return urljoin(context.coreapi_url, endpoint)
