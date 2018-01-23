@@ -159,3 +159,29 @@ def get_details_node(context):
     data = context.s3_data
 
     return check_and_get_attribute(data, 'details')
+
+
+def check_cve_value(cve, with_score=False):
+    """Check CVE values in CVE records."""
+    if with_score:
+        # please note that in graph DB, the CVE entries have the following format:
+        # CVE-2012-1150:5.0
+        # don't ask me why, but the score is stored in one field together with ID itself
+        # the : character is used as a separator
+        pattern = "CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
+    else:
+        pattern = "CVE-(\d{4})-\d{4,}"
+
+    match = re.fullmatch(pattern, cve)
+    assert match is not None, "Improper CVE number %s" % cve
+
+    year = int(match.group(1))
+    current_year = datetime.datetime.now().year
+
+    # well the lower limit is a bit arbitrary
+    # (according to SRT guys it should be 1999)
+    assert year >= 1999 and year <= current_year
+
+    if with_score:
+        score = float(match.group(2))
+        assert score >= 0.0 and score <= 10.0
