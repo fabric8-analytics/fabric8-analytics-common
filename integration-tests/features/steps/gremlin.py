@@ -142,7 +142,7 @@ def get_node_value_from_properties_returned_by_gremlin(context, node_name):
     assert len(data) == 1, "Expected precisely one vertex with package data"
     assert data[0] is not None
     properties = check_and_get_attribute(data[0], "properties")
-    get_node_value(properties, node_name)
+    return get_node_value(properties, node_name)
 
 
 @then('I should find the package {package} name in the Gremlin response')
@@ -344,7 +344,7 @@ def check_numeric_property_value(context, property_name, expected):
 
 @then('I should find that all information about package versions have correct structure')
 def check_package_versions_structure(context):
-    """Check all items returned by Gremlin."""
+    """Check all items with package version metadata returned by Gremlin."""
     data, meta = get_results_from_gremlin(context)
     assert len(data) > 0, "At least one vertex expected, but 0 has been found"
 
@@ -404,17 +404,26 @@ def get_node_value(properties, property_name):
     return check_and_get_attribute(node[0], "value")
 
 
-def check_integer_property_value(properties, property_name):
+def check_integer_property_value(properties, property_name, additional_check=None):
     """Check if the node value is valid integer."""
     value = get_node_value(properties, property_name)
     assert type(value) is int
 
+    # additional_check might be lambda expression
+    if additional_check is not None:
+        assert additional_check(value),\
+            "Additional check has failed for the integer value {v}".format(v=value)
 
-def check_float_property_value(properties, property_name):
+
+def check_float_property_value(properties, property_name, additional_check=None):
     """Check if the node value is valid float."""
     value = get_node_value(properties, property_name)
     assert type(value) is float
 
+    # additional_check might be lambda expression
+    if additional_check is not None:
+        assert additional_check(value),\
+            "Additional check has failed for the floating point value {v}".format(v=value)
 
 def test_cm_loc(properties, expected_property=False):
     """Check the property 'cm_loc'."""
