@@ -1,5 +1,6 @@
 """Functions for handling JSON responses returned by various API endpoints."""
 import string
+import pprint
 
 from src.attribute_checks import *
 
@@ -79,3 +80,9 @@ def check_id_value_in_json_response(context, id_attribute_name):
 def is_empty_json_response(context):
     """Check if the JSON response is empty (but not None)."""
     return context.response.json() == {}
+
+
+def pretty_print(json, indent_level=4):
+    """Pretty print the JSON."""
+    pp = pprint.PrettyPrinter(indent=indent_level)
+    pp.pprint(json)
