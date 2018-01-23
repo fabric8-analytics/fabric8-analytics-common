@@ -342,6 +342,24 @@ def check_numeric_property_value(context, property_name, expected):
                                                                               expected=expected)
 
 
+@then('I should find that all information about package have correct structure')
+def check_package_structure(context):
+    """Check all items with package metadate returned by Gremlin."""
+    data, meta = get_results_from_gremlin(context)
+    assert len(data) == 1, "Exactly one vertex expected, but 0 has been found"
+
+    # now we know we have exactly one vertex, so let's check its content
+    item = data[0]
+
+    labelValue = check_and_get_attribute(item, "label")
+    assert labelValue == "vertex" or labelValue == "Package"
+
+    properties = check_and_get_attribute(item, "properties")
+    test_last_updated_attribute(properties)
+    test_vertex_label(properties, "Package")
+    test_github_related_properties(properties, False)
+
+
 @then('I should find that all information about package versions have correct structure')
 def check_package_versions_structure(context):
     """Check all items with package version metadata returned by Gremlin."""
@@ -425,6 +443,14 @@ def check_float_property_value(properties, property_name, additional_check=None)
         assert additional_check(value),\
             "Additional check has failed for the floating point value {v}".format(v=value)
 
+
+def check_string_property_value(properties, property_name, expected_value):
+    """Check if the node value is a string with expected value."""
+    value = get_node_value(properties, property_name)
+    assert value == expected_value, "Property '{p}' should have the value '{e}', " + \
+        "but the value '{v}' was found instead.".format(p=property_name, e=expected_value, v=value)
+
+
 def test_cm_loc(properties, expected_property=False):
     """Check the property 'cm_loc'."""
     if expected_property or "cm_loc" in properties:
@@ -441,6 +467,32 @@ def test_cm_num_files(properties, expected_property=False):
     """Check the property 'cm_num_files'."""
     if expected_property or "cm_num_files" in properties:
         check_integer_property_value(properties, "cm_num_files")
+
+
+def test_github_related_properties(properties, expected_properties=False):
+    """Check all properties related to GitHub."""
+    integer_property_names = [
+        "gh_contributors_count",
+        "gh_forks",
+        "gh_open_issues_count",
+        "gh_issues_last_month_closed",
+        "gh_issues_last_year_closed",
+        "gh_prs_last_month_closed",
+        "gh_prs_last_month_opened",
+        "gh_prs_last_year_closed",
+        "gh_prs_last_year_opened",
+        "gh_stargazers",
+        "gh_subscribers_count"
+    ]
+    for integer_property_name in integer_property_names:
+        if expected_properties or integer_property_name in properties:
+            check_integer_property_value(properties, integer_property_name, lambda cnt: cnt >= -1)
+
+
+def test_vertex_label(properties, expected_value):
+    """Check the property 'vertex_label'."""
+    value = get_node_value(properties, "vertex_label")
+    check_string_property_value(properties, "vertex_label", expected_value)
 
 
 def test_cve_ids(properties, expected_property=False):
