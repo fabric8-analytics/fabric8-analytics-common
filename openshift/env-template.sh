@@ -14,10 +14,16 @@ export AWS_SECRET_ACCESS_KEY='not-set'
 export AWS_DEFAULT_REGION='us-east-1'
 
 #GitHub
+# GitHub username will be used to set up authentication for the Jobs service
+export GITHUB_USERNAME='not-set'
 # Comma-separated list of tokens for talking to GitHub API
 #   You can generate a token here: https://github.com/settings/tokens
 export GITHUB_API_TOKENS='not-set'
-# Create new GitHub OAuth App here: https://github.com/organizations/fabric8-analytics/settings/applications
+# Create a new GitHub OAuth App here: https://github.com/settings/developers
+# You will need to provide homepage and callback URL; for the dev cluster, use following values (replace OC_USERNAME):
+# "Homepage URL" is "http://bayesian-jobs-${OC_USERNAME}-fabric8-analytics.dev.rdu2c.fabric8.io/"
+# "Authorization callback URL" is "http://bayesian-jobs-${OC_USERNAME}-fabric8-analytics.dev.rdu2c.fabric8.io/api/v1/authorized"
+# In return, you'll get GITHUB_OAUTH_CONSUMER_KEY and GITHUB_OAUTH_CONSUMER_SECRET from GitHub.
 #   Client ID is GITHUB_OAUTH_CONSUMER_KEY
 #   Client Secret is GITHUB_OAUTH_CONSUMER_SECRET
 export GITHUB_OAUTH_CONSUMER_KEY='not-set'
@@ -43,4 +49,3 @@ export F8A_JOB_API_URL='not-set'
 export RECOMMENDER_API_TOKEN='not-set'
 
 export DEPLOYMENT_PREFIX=${DEPLOYMENT_PREFIX:-${OC_USERNAME}}
-
