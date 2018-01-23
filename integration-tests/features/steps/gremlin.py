@@ -344,9 +344,9 @@ def check_numeric_property_value(context, property_name, expected):
 
 @then('I should find that all information about package have correct structure')
 def check_package_structure(context):
-    """Check all items with package metadate returned by Gremlin."""
+    """Check all items with package metadata returned by Gremlin."""
     data, meta = get_results_from_gremlin(context)
-    assert len(data) == 1, "Exactly one vertex expected, but 0 has been found"
+    assert len(data) == 1, "Exactly one vertex expected, but {n} has been found".format(n=len(data))
 
     # now we know we have exactly one vertex, so let's check its content
     item = data[0]
