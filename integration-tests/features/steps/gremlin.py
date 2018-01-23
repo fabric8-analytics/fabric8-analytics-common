@@ -443,4 +443,4 @@ def test_cve_ids(properties, expected_property=False):
         cve_ids = check_and_get_attribute(properties, "cve_ids")
         for cve_id in cve_ids:
             cve = cve_id["value"]
-            check_cve_value_with_score(cve)
+            check_cve_value(cve, True)
