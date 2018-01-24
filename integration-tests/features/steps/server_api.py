@@ -3,6 +3,7 @@ from behave import given, then, when
 import requests
 
 from src.utils import *
+from src.authorization_tokens import *
 
 
 @when('I access {url:S}')
