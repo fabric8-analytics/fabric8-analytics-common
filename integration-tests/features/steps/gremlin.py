@@ -358,6 +358,7 @@ def check_package_structure(context):
     test_last_updated_attribute(properties)
     test_vertex_label(properties, "Package")
     test_github_related_properties(properties, False)
+    test_libio_related_properties(properties, False)
 
 
 @then('I should find that all information about package versions have correct structure')
@@ -433,6 +434,24 @@ def check_integer_property_value(properties, property_name, additional_check=Non
             "Additional check has failed for the integer value {v}".format(v=value)
 
 
+def check_libio_number_property_value(properties, property_name, additional_check=None):
+    """Check the 'numeric' value used in libraries.io properties.
+
+    Such values are stored as string with format like:
+    100
+    92.9K
+    10M
+
+    Please see https://github.com/openshiftio/openshift.io/issues/2023 for further info.
+    """
+    value = get_node_value(properties, "libio_dependents_projects")
+    value = convert_to_number(value)
+    # additional_check might be lambda expression
+    if additional_check is not None:
+        assert additional_check(value),\
+            "Additional check has failed for the numeric value {v}".format(v=value)
+
+
 def check_float_property_value(properties, property_name, additional_check=None):
     """Check if the node value is valid float."""
     value = get_node_value(properties, property_name)
@@ -467,6 +486,22 @@ def test_cm_num_files(properties, expected_property=False):
     """Check the property 'cm_num_files'."""
     if expected_property or "cm_num_files" in properties:
         check_integer_property_value(properties, "cm_num_files")
+
+
+def test_libio_related_properties(properties, expected_properties=False):
+    """Check all properties related to Libraries.io."""
+    if expected_properties or "libio_latest_release" in properties:
+        check_float_property_value(properties, "libio_latest_release", lambda v: v >= 0.0)
+
+    numeric_property_names = [
+        "libio_dependents_projects",
+        "libio_dependents_repos",
+        "libio_total_releases"
+    ]
+    for numeric_property_name in numeric_property_names:
+        if expected_properties or numeric_property_name in properties:
+            check_libio_number_property_value(properties, "libio_dependents_projects",
+                                              lambda v: v >= -1)
 
 
 def test_github_related_properties(properties, expected_properties=False):
