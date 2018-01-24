@@ -43,15 +43,40 @@ function deploy_secrets() {
 
 function oc_process_apply() {
     echo -e "\\n Processing template - $1 ($2) \\n"
-    oc process -f $1 $2 | oc apply -f -
+    # Don't quote $2 as we need it to split into individual arguments
+    oc process -f "$1" $2 | oc apply -f -
 }
 
 function openshift_login() {
     oc login "${OC_URI}" -u "${OC_USERNAME}" -p "${OC_PASSWD}" --insecure-skip-tls-verify=true
+}
+
+function purge_aws_resources() {
+    echo "Removing previously allocated AWS resources"
+    # Purges $DEPLOYMENT_PREFIX prefixed SQS queues, S3 buckets and DynamoDB tables.
+    python3 ./purge_AWS_resources.py
+}
+
+function remove_project_resources() {
+    echo "Removing all openshift resources from selected project"
+    oc delete all,cm,secrets --all
+    if [ "$purge_aws_resources" == true ]; then
+        purge_aws_resources
+    fi
+}
+
+function delete_project_and_aws_resources() {
+    if oc get project "${OC_PROJECT}"; then
+        echo "Deleting project ${OC_PROJECT}"
+        oc delete project "${OC_PROJECT}"
+    fi
+    purge_aws_resources
+}
+
+function create_or_reuse_project() {
     if oc get project "${OC_PROJECT}"; then
         oc project "${OC_PROJECT}"
-        echo "Removing all openshift resources from selected project"
-        oc delete all,cm,secrets --all
+        remove_project_resources
     else
         oc new-project "${OC_PROJECT}"
     fi
@@ -59,9 +84,7 @@ function openshift_login() {
 
 function tag_rds_instance() {
     TAGS="Key=ENV,Value=${DEPLOYMENT_PREFIX}"
-
     echo "Tagging RDS instance with ${TAGS}"
-
     aws rds add-tags-to-resource \
             --resource-name "${RDS_ARN}" \
             --tags "${TAGS}"
@@ -90,10 +113,13 @@ function allocate_aws_rds() {
         sleep 60
         wait_for_rds_instance_info
     else
-        echo "DB instance ${RDS_INSTANCE_NAME} already exists, recreating database"
+        echo "DB instance ${RDS_INSTANCE_NAME} already exists"
         wait_for_rds_instance_info
-        PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "drop database ${RDS_DBNAME}"
-        PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "create database ${RDS_DBNAME}"
+        if [ "$purge_aws_resources" == true ]; then
+            echo "recreating database"
+            PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "drop database ${RDS_DBNAME}"
+            PGPASSWORD="${RDS_PASSWORD}" psql -d template1 -h "${RDS_ENDPOINT}" -U "${RDS_DBADMIN}" -c "create database ${RDS_DBNAME}"
+        fi
     fi
     tag_rds_instance
 }

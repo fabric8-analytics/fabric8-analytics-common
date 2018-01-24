@@ -36,6 +36,17 @@ Just run the deploy script and enjoy!
 
 `$./deploy.sh`
 
+If you have already run the script previously and therefore there exists a `$OC_PROJECT` project, the script purges it to start from scratch.
+If you want to also purge previously allocated AWS resources (RDS db, SQS queues, S3 buckets, DynamoDB tables) use
+
+`$./deploy.sh --purge-aws-resources`
+
+Once you know that you no longer need the fabric8-analytics deployment, you can run
+
+`$./cleanup.sh`
+
+to remove the Openshift project and all allocated AWS resources.
+
 ## Deploy your changes to dev-cluster
 
 Assume you have opened a PR in one of the [fabric8-analytics](https://github.com/fabric8-analytics) repositories.
