@@ -31,8 +31,8 @@ def contains_alternate_node(json_resp):
 
 @when("I wait for stack analysis to finish")
 @when("I wait for stack analysis to finish {token} authorization token")
-@when("I wait for stack analysis version {version} to finish {token} authorization token")
-def wait_for_stack_analysis_completion(context, version="3", token="without"):
+@when("I wait for stack analysis version {version:d} to finish {token} authorization token")
+def wait_for_stack_analysis_completion(context, version=3, token="without"):
     """Try to wait for the stack analysis to be finished.
 
     This step assumes that stack analysis has been started previously and
@@ -110,23 +110,24 @@ def stack_analysis_endpoint(context, version):
     """Return endpoint for the stack analysis of selected version."""
     # Two available endpoints for stack analysis are /stack-analyses and /analyse
     # /analyse endpoint was developed to meet the performance norms at production
-    endpoint_arr = ["/api/v1/stack-analyses-v1",
-                    "/api/v1/analyse",
-                    "/api/v1/stack-analyses/"]
-    index = int(version) - 1
-    endpoint = endpoint_arr[index]
+    endpoints = ["/api/v1/stack-analyses-v1",
+                 "/api/v1/analyse",
+                 "/api/v1/stack-analyses/"]
 
-    if endpoint is None:
+    if version < 1 or version > len(endpoints):
         raise Exception("Wrong version specified: {v}".format(v=version))
+
+    endpoint = endpoints[version - 1]
+
     return urljoin(context.coreapi_url, endpoint)
 
 
 @when("I send NPM package manifest {manifest} to stack analysis")
 @when("I send NPM package manifest {manifest} to stack analysis {token} authorization token")
-@when("I send NPM package manifest {manifest} to stack analysis version {version}")
-@when("I send NPM package manifest {manifest} to stack analysis version {version} {token} "
+@when("I send NPM package manifest {manifest} to stack analysis version {version:d}")
+@when("I send NPM package manifest {manifest} to stack analysis version {version:d} {token} "
       "authorization token")
-def npm_manifest_stack_analysis(context, manifest, version="2", token="without"):
+def npm_manifest_stack_analysis(context, manifest, version=3, token="without"):
     """Send the NPM package manifest file to the stack analysis."""
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
@@ -136,10 +137,10 @@ def npm_manifest_stack_analysis(context, manifest, version="2", token="without")
 
 @when("I send Python package manifest {manifest} to stack analysis")
 @when("I send Python package manifest {manifest} to stack analysis {token} authorization token")
-@when("I send Python package manifest {manifest} to stack analysis version {version}")
-@when("I send Python package manifest {manifest} to stack analysis version {version} {token} "
+@when("I send Python package manifest {manifest} to stack analysis version {version:d}")
+@when("I send Python package manifest {manifest} to stack analysis version {version:d} {token} "
       "authorization token")
-def python_manifest_stack_analysis(context, manifest, version="2", token="without"):
+def python_manifest_stack_analysis(context, manifest, version=3, token="without"):
     """Send the Python package manifest file to the stack analysis."""
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
@@ -149,10 +150,10 @@ def python_manifest_stack_analysis(context, manifest, version="2", token="withou
 
 @when("I send Maven package manifest {manifest} to stack analysis")
 @when("I send Maven package manifest {manifest} to stack analysis {token} authorization token")
-@when("I send Maven package manifest {manifest} to stack analysis version {version}")
-@when("I send Maven package manifest {manifest} to stack analysis version {version} {token} "
+@when("I send Maven package manifest {manifest} to stack analysis version {version:d}")
+@when("I send Maven package manifest {manifest} to stack analysis version {version:d} {token} "
       "authorization token")
-def maven_manifest_stack_analysis(context, manifest, version="3", token="without"):
+def maven_manifest_stack_analysis(context, manifest, version=3, token="without"):
     """Send the Maven package manifest file to the stack analysis."""
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
@@ -459,25 +460,10 @@ def stack_analysis_validate_alternate_components(context):
     perform_alternate_components_validation(json_data)
 
 
-def check_cve_value(cve):
-    """Check CVE values in CVE records."""
-    pattern = "CVE-([0-9]{4})-[0-9]{4,}"
-
-    match = re.fullmatch(pattern, cve)
-    assert match is not None, "Improper CVE number %s" % cve
-
-    year = int(re.fullmatch(pattern, cve).group(1))
-    current_year = datetime.datetime.now().year
-
-    # well the lower limit is a bit arbitrary
-    # (according to SRT guys it should be 1999)
-    assert year >= 1999 and year <= current_year
-
-
 def check_cvss_value(cvss):
     """Check CVSS values in CVE records."""
     score = float(cvss)
-    # TODO: check the specificaion how to calculate the maximum possible value
+    # TODO: check the specification how to calculate the maximum possible value
     # https://www.first.org/cvss/specification-document
     assert score >= 0.0, "CVSS score must be >= 0.0"
     assert score <= 10.0, "CVSS score must be <= 10.0"
