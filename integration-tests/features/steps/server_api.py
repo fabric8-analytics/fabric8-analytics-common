@@ -32,6 +32,7 @@ def check_submit_feedback(context, url):
         "ecosystem": None
     }
     context.response = requests.post(context.coreapi_url + url,
+                                     headers=authorization(context),
                                      data=payload)
 
 
