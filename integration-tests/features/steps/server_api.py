@@ -28,6 +28,21 @@ def check_ecosystems(context, num):
         assert 'ecosystem' in e
 
 
+@when('I access {url:S} without valid values')
+def check_submit_feedback(context, url):
+    """Access the submit-feedback API using the HTTP POST method."""
+    payload = {
+        "stack_id": "1234-569586048",
+        "recommendation_type": "companion",
+        "package_name": "blah-blah",
+        "feedback_type": True,
+        "ecosystem": None
+    }
+    context.response = requests.post(context.coreapi_url + url,
+                                     headers=authorization(context),
+                                     data=payload)
+
+
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
 def check_versions(context, num=0, versions='', ecosystem='', package=''):
     """Check the versions for the selected ecosystems and package."""
