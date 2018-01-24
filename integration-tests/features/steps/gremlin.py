@@ -358,6 +358,7 @@ def check_package_structure(context):
     test_last_updated_attribute(properties)
     test_vertex_label(properties, "Package")
     test_github_related_properties(properties, False)
+    test_libio_related_properties(properties, False)
 
 
 @then('I should find that all information about package versions have correct structure')
@@ -485,6 +486,22 @@ def test_cm_num_files(properties, expected_property=False):
     """Check the property 'cm_num_files'."""
     if expected_property or "cm_num_files" in properties:
         check_integer_property_value(properties, "cm_num_files")
+
+
+def test_libio_related_properties(properties, expected_properties=False):
+    """Check all properties related to Libraries.io."""
+    if expected_properties or "libio_latest_release" in properties:
+        check_float_property_value(properties, "libio_latest_release", lambda v: v >= 0.0)
+
+    numeric_property_names = [
+        "libio_dependents_projects",
+        "libio_dependents_repos",
+        "libio_total_releases"
+    ]
+    for numeric_property_name in numeric_property_names:
+        if expected_properties or numeric_property_name in properties:
+            check_libio_number_property_value(properties, "libio_dependents_projects",
+                                              lambda v: v >= -1)
 
 
 def test_github_related_properties(properties, expected_properties=False):
