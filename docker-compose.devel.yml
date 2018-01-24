@@ -52,6 +52,8 @@ services:
     build:
       context: fabric8-analytics-data-model/
       dockerfile: Dockerfile.data-model
+    volumes:
+       - ./fabric8-analytics-data-model/src:/src:z
   minio-s3:
     # Uncomment this if you want to have S3 data persistent
     #volumes:

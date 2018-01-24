@@ -105,6 +105,7 @@ services:
      - pgbouncer
      - minio-s3
      - gremlin-http
+     - data-model-importer
     environment:
       # Uncomment if you want to start job service in a paused state
       #JOB_SERVICE_PAUSED: 1
@@ -124,6 +125,8 @@ services:
       BAYESIAN_GREMLIN_HTTP_SERVICE_HOST: "bayesian-gremlin-http"
       BAYESIAN_GREMLIN_HTTP_SERVICE_PORT: "8182"
       # Provide the number of end-users involved in tagging
+      BAYESIAN_DATA_IMPORTER_SERVICE_HOST: "data-model-importer"
+      BAYESIAN_DATA_IMPORTER_SERVICE_PORT: "9192"
       CROWDSOURCE_USER_COUNT: 2
       #AWS_S3_ACCESS_KEY_ID: ''
       #AWS_S3_SECRET_ACCESS_KEY: ''
@@ -294,6 +297,8 @@ services:
     links:
       - gremlin-http
       - minio-s3
+      - pgbouncer
+
   cvedb-s3-dump:
     # this service just copies pre-built CVE DB to S3 and exits
     # https://github.com/fabric8-analytics/cvedb-s3-dump-docker
