@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 
 """Script to start the stack analysis several times in parallel."""
 
