@@ -1,5 +1,7 @@
 #!/usr/local/bin/python3
 
+"""Script to start the stack analysis several times in parallel."""
+
 # This script requires refactoring. Another test script with
 # locust is being developed
 
@@ -34,6 +36,7 @@ session = FuturesSession(max_workers=total_threads)
 
 
 def close_fps(fp_arr):
+    """Close all previously open files."""
     if len(fp_arr) >= 50:
         for fp in fp_arr:
             fp.close()
