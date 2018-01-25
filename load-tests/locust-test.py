@@ -13,7 +13,8 @@ class UserBehavior(TaskSet):
 
         response = self.client.post(api, files={'manifest[]': ('pom.xml', fp1)},
                                     data={'analytics_cache': '1', 'filePath[]': '/home/JohnDoe'},
-                                    headers={'Authorization': 'Bearer {}'.format(RECOMMENDER_API_TOKEN)})
+                                    headers={'Authorization':
+                                    'Bearer {}'.format(RECOMMENDER_API_TOKEN)})
         print(response.json())
 
     tasks = {fetch: 1}
