@@ -34,6 +34,7 @@ function deploy_secrets() {
     -p GITHUB_API_TOKENS="$(echo -n "${GITHUB_API_TOKENS}" | base64)" \
     -p GITHUB_OAUTH_CONSUMER_KEY="$(echo -n "${GITHUB_OAUTH_CONSUMER_KEY}" | base64)" \
     -p GITHUB_OAUTH_CONSUMER_SECRET="$(echo -n "${GITHUB_OAUTH_CONSUMER_SECRET}" | base64)" \
+    -p LIBRARIES_IO_TOKEN="$(echo -n "${LIBRARIES_IO_TOKEN}" | base64)" \
     -p FLASK_APP_SECRET_KEY="$(echo -n "${FLASK_APP_SECRET_KEY}" | base64)" \
     -p RDS_ENDPOINT="$(echo -n "${RDS_ENDPOINT}" | base64)" \
     -p RDS_PASSWORD="$(echo -n "${RDS_PASSWORD}" | base64)" \

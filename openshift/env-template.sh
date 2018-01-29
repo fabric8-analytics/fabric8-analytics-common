@@ -29,6 +29,9 @@ export GITHUB_API_TOKENS='not-set'
 export GITHUB_OAUTH_CONSUMER_KEY='not-set'
 export GITHUB_OAUTH_CONSUMER_SECRET='not-set'
 
+# Get your API Key from https://libraries.io/account
+export LIBRARIES_IO_TOKEN='not-set'
+
 export KEYCLOAK_URL='https://sso.openshift.io'
 export FLASK_APP_SECRET_KEY='notsosecret'
 
