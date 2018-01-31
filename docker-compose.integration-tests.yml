@@ -1,5 +1,0 @@
-version: "2"
-services:
-  server:
-    environment:
-      DISABLE_AUTHENTICATION: 0
