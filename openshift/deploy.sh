@@ -2,7 +2,7 @@
 
 # Deploy fabric8-analytics to Openshift
 # possible arguments:
-#   --purge-aws-resources: clear previously allocated AWS resources (SQS queues, S3 buckets, DynamoDB tables)
+#   --purge-aws-resources: clear previously allocated AWS resources (RDS database, SQS queues, S3 buckets, DynamoDB tables)
 
 here=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -54,6 +54,7 @@ for key in "$@"; do
             ;;
     esac
 done
+[ "$purge_aws_resources" == false ] && echo "Use --purge-aws-resources if you want to also clear previously allocated AWS resources (RDS database, SQS queues, S3 buckets, DynamoDB tables)."
 
 openshift_login
 create_or_reuse_project
