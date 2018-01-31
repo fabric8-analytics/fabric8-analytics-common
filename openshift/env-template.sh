@@ -14,8 +14,6 @@ export AWS_SECRET_ACCESS_KEY='not-set'
 export AWS_DEFAULT_REGION='us-east-1'
 
 #GitHub
-# GitHub username will be used to set up authentication for the Jobs service
-export GITHUB_USERNAME='not-set'
 # Comma-separated list of tokens for talking to GitHub API
 #   You can generate a token here: https://github.com/settings/tokens
 export GITHUB_API_TOKENS='not-set'

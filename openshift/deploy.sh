@@ -77,7 +77,7 @@ oc_process_apply "${templates_dir}/worker.yaml" "-p WORKER_ADMINISTRATION_REGION
 oc_process_apply "${templates_dir}/worker.yaml" "-p WORKER_ADMINISTRATION_REGION=api -p WORKER_INCLUDE_QUEUES=GraphImporterTask -p WORKER_NAME_SUFFIX=-graph-import"
 oc_process_apply "${templates_dir}/f8a-server-backbone.yaml"
 oc_process_apply "${templates_dir}/server.yaml"
-oc_process_apply "${templates_dir}/jobs.yaml" "-p AUTH_ORGANIZATION=${GITHUB_USERNAME:-fabric8-analytics}"
+oc_process_apply "${templates_dir}/jobs.yaml"
 oc_process_apply "${templates_dir}/scaler.yaml" "-p DC_NAME=bayesian-worker-ingestion -p SQS_QUEUE_NAME=ingestion_bayesianFlow_v0 -p MAX_REPLICAS=8 -p DEFAULT_REPLICAS=2"
 oc_process_apply "${templates_dir}/scaler.yaml" "-p DC_NAME=bayesian-worker-api -p SQS_QUEUE_NAME=api_bayesianFlow_v0 -p MAX_REPLICAS=4 -p DEFAULT_REPLICAS=2"
 oc_process_apply "${templates_dir}/firehose-fetcher.yaml"
