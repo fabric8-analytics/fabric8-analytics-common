@@ -247,50 +247,6 @@ Feature: Server API
          |version_range_resolver|1-0-0|
 
   @production
-  Scenario Outline: Check the /api/v1/schemas/component_analyses response
-    Given System is running
-    When I access /api/v1/schemas/component_analyses
-    Then I should get 200 status code
-    Then I should find the schema <schema> version <version> in the list of supported schemas
-
-     Examples: schemas
-         |schema|version|
-         |binary_data|1-0-0|
-         |blackduck|1-0-0|
-         |code_metrics|1-0-0|
-         |crypto_algorithms|1-0-0|
-         |dependency_snapshot|1-0-0|
-         |digests|1-0-0|
-         |github_details|1-0-0|
-         |github_details|1-0-1|
-         |github_details|1-0-2|
-         |github_details|1-0-3|
-         |github_details|1-0-4|
-         |github_details|2-0-0|
-         |github_details|2-0-1|
-         |keywords_tagging|1-0-0|
-         |languages|1-0-0|
-         |metadata|1-0-0|
-         |metadata|1-0-1|
-         |metadata|1-1-0|
-         |metadata|2-0-0|
-         |metadata|2-1-0|
-         |metadata|2-1-1|
-         |metadata|3-0-0|
-         |metadata|3-0-1|
-         |metadata|3-1-0|
-         |metadata|3-1-1|
-         |metadata|3-2-0|
-         |package_keywords_tagging|1-0-0|
-         |security_issues|1-0-0|
-         |security_issues|2-0-0|
-         |security_issues|3-0-0|
-         |security_issues|3-0-1|
-         |source_licenses|1-0-0|
-         |source_licenses|2-0-0|
-         |source_licenses|3-0-0|
-
-  @production
   Scenario Outline: Check the /api/v1/schemas/<collection>/<schema>/<version> response
     Given System is running
     When I access /api/v1/schemas/<collection>/<schema>/<version>
