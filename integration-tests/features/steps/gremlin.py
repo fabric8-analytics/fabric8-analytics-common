@@ -329,6 +329,34 @@ def check_property_value(context, property_name, expected_value):
                                                                  expected_value=expected_value)
 
 
+@then('I should find that the {property_name} property is higher than or equal to '
+      '{expected_value} in the package properties')
+def check_latest_version_property_value(context, property_name, expected_value):
+    """Check if the latest_version property contains expected value.
+
+    The version string is splitted into major, minor, patch triple. Then the
+    major versions are compared. If they are the same, minor versions are compared.
+    Again if minor versions are the same, the patch numbers are compared.
+    """
+    value = read_property_value_from_gremlin_response(context, property_name)
+    major, minor, patch = parse_version(value)
+    expected_major, expected_minor, expected_patch = parse_version(expected_value)
+
+    # 1st step - compare major versions
+    assert major >= expected_major, "Major version {v} is less then {e}".format(
+        v=major, e=expected_major)
+
+    if major == expected_major:
+        # major versions are the same -> 2nd step - compare minor versions
+        assert minor >= expected_minor, "Minor version {v} is less then {e}".format(
+            v=minor, e=expected_minor)
+
+        if minor == expected_minor:
+            # minor versions are the same -> 3nd step - compare patch versions
+            assert patch >= expected_patch, "Patch version {v} is less then {e}".format(
+                v=patch, e=expected_patch)
+
+
 @then('I should find that the {property_name} property has numeric value greater than or equal '
       'to {expected:d}')
 def check_numeric_property_value(context, property_name, expected):
