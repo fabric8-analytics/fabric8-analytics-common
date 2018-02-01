@@ -21,5 +21,6 @@ pytest==3.0.3
 python-dateutil==2.6.1    # via botocore
 requests==2.11.1
 s3transfer==0.1.10        # via boto3
+semantic_version==2.6.0
 six==1.10.0               # via behave, docker-py, docker-pycreds, parse-type, python-dateutil, websocket-client
 websocket-client==0.37.0  # via docker-py
