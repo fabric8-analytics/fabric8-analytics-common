@@ -405,9 +405,14 @@ def store_jobs_statuses(filename, data):
         fout.write(data)
 
 
-def jenkins_api_query(jenkins_url):
+def jenkins_api_query_job_statuses(jenkins_url):
     """Construct API query to Jenkins (CI)."""
     return "{url}/api/json?tree=jobs[name,color]".format(url=jenkins_url)
+
+
+def jenkins_api_query_build_statuses(jenkins_url):
+    """Construct API query to Jenkins (CI)."""
+    return "{url}/api/json?tree=builds[result]".format(url=jenkins_url)
 
 
 def jobs_as_dict(raw_jobs):
@@ -417,7 +422,7 @@ def jobs_as_dict(raw_jobs):
 
 def read_ci_jobs_statuses(jenkins_url):
     """Read statuses of all jobs from the Jenkins (CI)."""
-    api_query = jenkins_api_query(jenkins_url)
+    api_query = jenkins_api_query_job_statuses(jenkins_url)
     response = requests.get(api_query)
     raw_jobs = response.json()["jobs"]
 
@@ -434,6 +439,17 @@ def read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled):
         return read_ci_jobs_statuses(JENKINS_URL)
     else:
         return None
+
+
+def production_smoketests_status(ci_jobs):
+    """Read total number of remembered builds and succeeded builds as well."""
+    job_url = ci_jobs.get_job_url("production", "smoketests")
+    api_query = jenkins_api_query_build_statuses(job_url)
+    response = requests.get(api_query)
+    builds = response.json()["builds"]
+    total_builds = [b for b in builds if b["result"] is not None]
+    success_builds = [b for b in builds if b["result"] == "SUCCESS"]
+    return len(total_builds), len(success_builds)
 
 
 def main():
@@ -468,6 +484,9 @@ def main():
 
     ci_jobs = CIJobs()
     job_statuses = read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled)
+
+    results.smoke_tests_total_builds, results.smoke_tests_success_builds = \
+        production_smoketests_status(ci_jobs)
 
     for team in teams:
         results.issues_list_url[team] = config.get_list_of_issues_url(team)

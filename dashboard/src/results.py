@@ -26,6 +26,8 @@ class Results():
         self.f = lambda number: '{0:.2f}'.format(number)  # function to format floating point number
         self.sla = {}
         self.smoke_tests_results = {}
+        self.smoke_tests_total_builds = 0
+        self.smoke_tests_success_builds = 0
         self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
         self.ci_jobs_links = defaultdict(dict)
         self.ci_jobs_statuses = defaultdict(dict)
