@@ -185,3 +185,9 @@ def check_cve_value(cve, with_score=False):
     if with_score:
         score = float(match.group(2))
         assert score >= 0.0 and score <= 10.0
+
+
+def parse_version(value):
+    """Parse the version string and split it into major, minor, patch numbers."""
+    match = re.match("(\d)\.(\d)\.(\d).*", value)
+    return int(match.group(1)), int(match.group(2)), int(match.group(3))
