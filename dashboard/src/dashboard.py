@@ -442,7 +442,7 @@ def read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled):
 
 
 def production_smoketests_status(ci_jobs):
-    """Read total number of remembered builds and failed builds as well."""
+    """Read total number of remembered builds and succeeded builds as well."""
     job_url = ci_jobs.get_job_url("production", "smoketests")
     api_query = jenkins_api_query_build_statuses(job_url)
     response = requests.get(api_query)
