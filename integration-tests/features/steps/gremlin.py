@@ -4,6 +4,7 @@ import requests
 
 from behave import given, then, when
 from urllib.parse import urljoin
+from semantic_version import Version
 import time
 from src.json_utils import *
 from src.utils import split_comma_separated_list
@@ -327,6 +328,14 @@ def check_property_value(context, property_name, expected_value):
     assert value == expected_value, ("The property {p} value is set to '{value}', not to "
                                      "'{expected_value}").format(p=property_name, value=value,
                                                                  expected_value=expected_value)
+
+
+@then('I should find that the {property_name} property is higher than or equal to '
+      '{expected_value} in the package properties')
+def check_latest_version_property_value(context, property_name, expected_value):
+    """Check if the latest_version property contains expected value."""
+    value = read_property_value_from_gremlin_response(context, property_name)
+    assert Version(value) >= Version(expected_value)
 
 
 @then('I should find that the {property_name} property has numeric value greater than or equal '
