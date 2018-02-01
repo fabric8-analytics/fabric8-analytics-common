@@ -25,7 +25,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">Services liveness and readiness</div>
                     <table class="table table-condensed table-hover table-bordered" rules="all">
-                        <tr><th>Environment</th><th>Core API</th><th>Jobs API</th><th>Auth.token<br />to core API</th><th>Auth.token<br />to jobs API</th><th>Smoketests</th></tr>
+                        <tr><th>Environment</th><th>Core API</th><th>Jobs API</th><th>Auth.token<br />to core API</th><th>Auth.token<br />to jobs API</th><th>Smoketests</th><th>Smoketests<br />history</th></tr>
                         <tr><td>Stage</td>
                             % if stage["core_api_available"]:
                                 <td class="boolean ok">&#x2713;</td>
@@ -54,10 +54,15 @@
                                 % else:
                                     <span class="ci_status boolean error">&times;</span>
                                 % endif
-                                    <a href='${smoke_tests_links["stage"]}'>link</a></td>
+                                <a href='${smoke_tests_links["stage"]}'>link</a>
+                                </td>
                             % else:
                                 <td class="boolean error">?</td>
                             % endif
+                            <td>
+                            &nbsp;
+                            <!-- we don't have smoketests CI builds for the stage -->
+                            </td>
                         </tr>
                         <tr><td>Production</td>
                             % if production["core_api_available"]:
@@ -87,10 +92,14 @@
                                 % else:
                                     <span class="ci_status boolean error">&times;</span>
                                 % endif
-                                    <a href='${smoke_tests_links["production"]}'>link</a></td>
+                                    <a href='${smoke_tests_links["production"]}'>link</a>
+                                </td>
                             % else:
                                 <td class="boolean error">?</td>
                             % endif
+                            <td style="width:3ex">
+                                <a href='${smoke_tests_links["production"]}'>${smoke_tests_failures}/${smoke_tests_total_builds}</a>
+                            </td>
                         </tr>
                     </table>
                 </div>
