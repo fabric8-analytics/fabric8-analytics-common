@@ -448,8 +448,8 @@ def production_smoketests_status(ci_jobs):
     response = requests.get(api_query)
     builds = response.json()["builds"]
     total_builds = [b for b in builds if b["result"] is not None]
-    failed_builds = [b for b in builds if b["result"] == "SUCCESS"]
-    return len(total_builds), len(failed_builds)
+    success_builds = [b for b in builds if b["result"] == "SUCCESS"]
+    return len(total_builds), len(success_builds)
 
 
 def main():
@@ -485,7 +485,7 @@ def main():
     ci_jobs = CIJobs()
     job_statuses = read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled)
 
-    results.smoke_tests_total_builds, results.smoke_tests_failures = \
+    results.smoke_tests_total_builds, results.smoke_tests_success_builds = \
         production_smoketests_status(ci_jobs)
 
     for team in teams:
