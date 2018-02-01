@@ -201,7 +201,7 @@ Feature: Check the Gremlin instance and its behaviour
      And I should find that all found packages have valid timestamp with the last update time
      And I should find that the ecosystem property is set to npm in the package properties
      And I should find that the name property is set to sequence in the package properties
-     And I should find that the latest_version property is set to 3.0.0 in the package properties
+     And I should find that the latest_version property is higher than or equal to 3.0.0 in the package properties
 
   @requires_access_to_graph_db
   Scenario: Check numeric values for GitHub metadata for given package in the npm ecosystem
@@ -237,7 +237,7 @@ Feature: Check the Gremlin instance and its behaviour
      And I should find that all found packages have valid timestamp with the last update time
      And I should find that the ecosystem property is set to maven in the package properties
      And I should find that the name property is set to io.vertx:vertx-core in the package properties
-     And I should find that the latest_version property is set to 3.4.2 in the package properties
+     And I should find that the latest_version property is higher than or equal to 3.4.2 in the package properties
 
   @requires_access_to_graph_db
   Scenario: Check numeric values for GitHub metadata for given package in the Maven ecosystem
