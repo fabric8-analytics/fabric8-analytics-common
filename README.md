@@ -30,4 +30,4 @@ It is also possible to trigger Fabric8-Analytics analyses from Jenkins. Please r
 
 # Developing and Running the System
 
-We have detailed [documentation](docs/developing_running.md) that describes possibilities of running whole Fabric8-Analytics, doing code changes, running tests etc.
+We have detailed [documentation](https://github.com/fabric8-analytics/fabric8-analytics-deployment/blob/master/README.md) that describes possibilities of running whole Fabric8-Analytics, doing code changes, running tests etc.

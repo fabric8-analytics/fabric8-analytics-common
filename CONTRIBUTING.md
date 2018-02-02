@@ -24,6 +24,8 @@ Core Reviewers are:
 * Pavel Odvody <podvody@redhat.com>
 * Slavek Kabrda <bkabrda@redhat.com>
 * Tomas Hrcka <thrcka@redhat.com>
+* Pavel Kajaba <pkajaba@redhat.com>
+* Pavel Tisnovsky <ptisnovs@redhat.com>
 
 Before you submit your pull request consider the following guidelines:
 
