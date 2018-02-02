@@ -1,4 +1,4 @@
-directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests openshift"
+directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests"
 pass=0
 fail=0
 
