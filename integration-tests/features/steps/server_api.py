@@ -21,6 +21,21 @@ def access_url_with_authorization_token(context, url):
                                     headers=authorization(context))
 
 
+@when('I access {url:S} without valid values')
+def check_submit_feedback(context, url):
+    """Access the submit-feedback API using the HTTP POST method."""
+    payload = {
+        "stack_id": "1234-569586048",
+        "recommendation_type": "companion",
+        "package_name": "blah-blah",
+        "feedback_type": True,
+        "ecosystem": None
+    }
+    context.response = requests.post(context.coreapi_url + url,
+                                     headers=authorization(context),
+                                     data=payload)
+
+
 @then('I should see {num:d} ecosystems')
 def check_ecosystems(context, num):
     """Check if the API call returns correct number of ecosystems."""
@@ -48,7 +63,8 @@ def check_endpoint_in_paths(context, endpoint):
     """Check the existence of given endpoint in the list of all supported endpoints."""
     data = context.response.json()
     paths = check_and_get_attribute(data, "paths")
-    assert endpoint in paths, "Cannot find the expected endpoint {e}".format(e=endpoint)
+    assert endpoint in paths, "Cannot find the expected endpoint {e}".format(
+        e=endpoint)
 
 
 @then('I should find the schema {schema} version {version} in the list of supported schemas')
