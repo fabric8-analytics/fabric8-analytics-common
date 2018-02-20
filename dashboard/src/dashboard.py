@@ -456,16 +456,16 @@ def read_unit_test_coverage(ci_jobs, jenkins_url, repository):
             unit_test_output = []
             for line in content:
                 line = line.strip()
-                if unit_test_output:
-                    unit_test_output.append(line)
                 # check where the test coverage begins
                 if line.startswith("Name  ") and line.endswith("Stmts   Miss  Cover   Missing"):
                     unit_test_output.append(line)
                 # check where the test coverage ends
-                if line.startswith("TOTAL                   "):
+                elif line.startswith("TOTAL                   "):
                     unit_test_output.append(line)
                     write_unit_test_coverage(unit_test_output, repository)
                     return parse_unit_test_statistic(line)
+                elif unit_test_output:
+                    unit_test_output.append(line)
     return None
 
 
