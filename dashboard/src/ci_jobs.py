@@ -41,6 +41,15 @@ class CIJobs:
         except (configparser.NoSectionError, configparser.NoOptionError):
             return None
 
+    def get_console_output_url(self, repository_name):
+        """Return URL that can be used to fetch console output of the last build."""
+        try:
+            job_url = self.get_job_url(repository_name, "test_job")
+            if job_url is not None:
+                return urljoin(job_url + "/", "lastBuild/consoleText")
+        except (configparser.NoSectionError, configparser.NoOptionError):
+            return None
+
     @staticmethod
     def construct_job_url(url_prefix, url_suffix):
         """Construct the URL to job on CI from CI prefix and suffix with job name."""
