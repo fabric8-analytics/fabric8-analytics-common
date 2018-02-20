@@ -7,6 +7,7 @@ import sys
 import requests
 import csv
 import shutil
+import re
 
 from coreapi import *
 from jobsapi import *
@@ -391,6 +392,8 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                 job_status = job_statuses.get(name)
                 results.ci_jobs_links[repository][job_type] = url
                 results.ci_jobs_statuses[repository][job_type] = job_status
+            results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs, JENKINS_URL,
+                                                                             repository)
 
 
 def read_jobs_statuses(filename):
@@ -418,6 +421,52 @@ def jenkins_api_query_build_statuses(jenkins_url):
 def jobs_as_dict(raw_jobs):
     """Construct a dictionary with job name as key and job status as value."""
     return dict((job["name"], job["color"]) for job in raw_jobs if "color" in job)
+
+
+def write_unit_test_coverage(unit_test_output, repository):
+    """Write the test coverage to new file."""
+    filename = repository + ".coverage"
+    with open(filename, "w") as fout:
+        for line in unit_test_output:
+            fout.write("%s\n" % line)
+
+
+def parse_unit_test_statistic(line):
+    """Parse the line containing unit test coverage statistic."""
+    pattern = re.compile('TOTAL\s+(\d+)\s+(\d+)\s+(\d+)%')
+    match = pattern.match(line)
+    if len(match.groups()) == 3:
+        coverage = match.group(3)
+        return {"statements": match.group(1),
+                "missed": match.group(2),
+                "coverage": coverage,
+                "progress_bar_class": progress_bar_class(coverage),
+                "progress_bar_width": progress_bar_width(coverage)}
+    else:
+        return None
+
+
+def read_unit_test_coverage(ci_jobs, jenkins_url, repository):
+    """Read and process unit test coverage."""
+    url = ci_jobs.get_console_output_url(repository)
+    if url is not None:
+        response = requests.get(url)
+        if response.status_code == 200:
+            content = response.text.split("\n")
+            unit_test_output = []
+            for line in content:
+                line = line.strip()
+                if unit_test_output:
+                    unit_test_output.append(line)
+                # check where the test coverage begins
+                if line.startswith("Name  ") and line.endswith("Stmts   Miss  Cover   Missing"):
+                    unit_test_output.append(line)
+                # check where the test coverage ends
+                if line.startswith("TOTAL                   "):
+                    unit_test_output.append(line)
+                    write_unit_test_coverage(unit_test_output, repository)
+                    return parse_unit_test_statistic(line)
+    return None
 
 
 def read_ci_jobs_statuses(jenkins_url):
