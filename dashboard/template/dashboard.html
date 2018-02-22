@@ -180,9 +180,11 @@
                                 <td class="numeric ok" style="width:7ex">${unit_test_coverage[repository]["statements"]}</td>
                                 <td class="numeric error" style="width:7ex">${unit_test_coverage[repository]["missed"]}</td>
                                 <td class="numeric" style="width:16ex">
-                                    <div class='progress-bar ${unit_test_coverage[repository]["progress_bar_class"]} progress-bar-striped' style='width:${unit_test_coverage[repository]["progress_bar_width"]}%'>
-                                    ${unit_test_coverage[repository]["coverage"]}%
-                                    </div>
+                                    <a href="${repository}.coverage.txt">
+                                        <div class='progress-bar ${unit_test_coverage[repository]["progress_bar_class"]} progress-bar-striped' style='width:${unit_test_coverage[repository]["progress_bar_width"]}%'>
+                                        ${unit_test_coverage[repository]["coverage"]}%
+                                        </div>
+                                    </a>
                                 </td>
                             % else:
                                 <td style="width:7ex">&nbsp;</td>
