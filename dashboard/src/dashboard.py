@@ -160,7 +160,7 @@ def run_docstyle_check(repository):
 def progress_bar_class(p):
     """Decide which class to use for progress bar."""
     p = int(p)
-    if p < 10:
+    if p < 25:
         return "progress-bar-danger"
     elif p > 90:
         return "progress-bar-success"
@@ -425,7 +425,7 @@ def jobs_as_dict(raw_jobs):
 
 def write_unit_test_coverage(unit_test_output, repository):
     """Write the test coverage to new file."""
-    filename = repository + ".coverage"
+    filename = repository + ".coverage.txt"
     with open(filename, "w") as fout:
         for line in unit_test_output:
             fout.write("%s\n" % line)
