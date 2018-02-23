@@ -1,0 +1,6 @@
+jsonschema
+requests
+pyjwt
+pycrypto
+boto3
+semantic_version
