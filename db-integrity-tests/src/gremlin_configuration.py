@@ -11,5 +11,4 @@ class GremlinConfiguration:
 
         # check if the required environment variable has been set
 
-        assert self.url is not None, \
-            "Please set up F8A_GREMLIN_URL environment variable"
+        assert self.url, "Please set up F8A_GREMLIN_URL environment variable"

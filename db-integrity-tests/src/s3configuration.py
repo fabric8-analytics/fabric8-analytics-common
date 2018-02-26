@@ -15,11 +15,11 @@ class S3Configuration:
 
         # check if all required environment variables have been set
 
-        assert self.access_key_id is not None, \
+        assert self.access_key_id, \
             "Please set up AWS_ACCESS_KEY_ID environment variable"
 
-        assert self.secret_access_key is not None, \
+        assert self.secret_access_key, \
             "Please set up AWS_SECRET_ACCESS_KEY_ID environment variable"
 
-        assert self.region_name is not None, \
+        assert self.region_name, \
             "Please set up S3_REGION_NAME environment variable"
