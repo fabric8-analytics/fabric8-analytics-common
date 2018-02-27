@@ -541,17 +541,13 @@ def before_all(context):
         # 'static_analysis', 'binary_data', 'languages', 'crypto_algorithms'
     }
     # Analyses that are only executed for particular language ecosystems
-    context.ECOSYSTEM_DEPENDENT_ANALYSES = {
-        "maven": {'blackduck'},
-        "npm": {'blackduck'},
-    }
+    context.ECOSYSTEM_DEPENDENT_ANALYSES = dict()
     # Results that use a nonstandard format, so we don't check for the
     # standard "status", "summary", and "details" keys
     context.NONSTANDARD_ANALYSIS_FORMATS = set()
     # Analyses that are just plain unreliable and so need to be excluded from
     # consideration when determining whether or not an analysis is complete
     context.UNRELIABLE_ANALYSES = {
-        'blackduck',
         'github_details',  # if no github api token provided
         'security_issues'  # needs Snyk vulndb in S3
     }
