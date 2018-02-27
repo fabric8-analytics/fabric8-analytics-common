@@ -24,7 +24,6 @@ class S3Interface():
 
     def connect(self):
         """Connect to the AWS S3 database."""
-
         # we are already connected -> let's use this connection
         if self.s3_resource is not None:
             return
