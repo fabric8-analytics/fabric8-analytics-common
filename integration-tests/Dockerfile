@@ -5,7 +5,7 @@ ENV LANG=en_US.UTF-8 \
     NOVENV=1
 
 RUN yum install -y epel-release &&\
-    yum install -y gcc which python34-pip python34-devel &&\
+    yum install -y gcc which python34-pip python34-devel centos-release-openshift-origin36 &&\
     mkdir -p /tests
 
 COPY . /tests
