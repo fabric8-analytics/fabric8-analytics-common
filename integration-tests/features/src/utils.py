@@ -18,7 +18,7 @@ def split_comma_separated_list(l):
 
 
 def oc_login(url, username, password, tls_verify=True):
-    """Wrapper around `oc login`.
+    """Wrap `oc login` command.
 
     :param url: str, OpenShift URL
     :param username: str, username
@@ -39,7 +39,7 @@ def oc_login(url, username, password, tls_verify=True):
 
 
 def oc_delete_pods(selector, namespace=None):
-    """Wrapper around `oc delete`.
+    """Wrap `oc delete` command.
 
     Selector determines which pods will be deleted.
     More on selectors:
