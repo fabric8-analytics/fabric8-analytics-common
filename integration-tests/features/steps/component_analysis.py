@@ -150,8 +150,8 @@ def check_component_analysis_existence(context, component, ecosystem):
     search_results = json_data['result']
 
     for search_result in search_results:
-        if search_result['ecosystem'] == ecosystem and \
-           search_result['name'] == component:
+        if ecosystem in search_result['ecosystem'] and \
+           component in search_result['name']:
             return
 
     # print_search_results(search_results)

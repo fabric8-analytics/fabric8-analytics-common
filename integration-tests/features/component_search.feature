@@ -46,5 +46,5 @@ Feature: Component search API
     When I acquire the authorization token
     Then I should get the proper authorization token
     When I search for component vertx with authorization token
-    Then I should find the analysis for the component io.vertx:vertx-core from ecosystem maven
+    Then I should find the analysis for the component vertx from ecosystem maven
 
