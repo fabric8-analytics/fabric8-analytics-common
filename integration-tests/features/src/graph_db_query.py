@@ -39,9 +39,9 @@ class Query:
         return self
 
     def __repr__(self):
-        """Return an official represenation of the object, same as __str__ here."""
+        """Return an official representation of the object, same as __str__ here."""
         return self.query
 
     def ___str___(self):
-        """Return an informal represenation of the object, same as __repr__ here."""
+        """Return an informal representation of the object, same as __repr__ here."""
         return self.query
