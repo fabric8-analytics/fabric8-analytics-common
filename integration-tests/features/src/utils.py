@@ -34,7 +34,7 @@ def oc_login(url, username, password, tls_verify=True):
         subprocess.check_call(command)
     except subprocess.CalledProcessError as e:
         # replace password with '***' so somebody will not accidentally leak it in CI logs
-        e.cmd = [x if x != password else '***' for x in e.cmd]
+        e.cmd = [x.replace(password, '***') for x in e.cmd]
         raise e
 
 
