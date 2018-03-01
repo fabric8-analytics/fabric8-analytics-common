@@ -1,6 +1,7 @@
 """Tests for Gremlin database."""
 import os
 import requests
+import pprint
 
 from behave import given, then, when
 from urllib.parse import urljoin
@@ -253,8 +254,11 @@ def check_properties_in_results(context, properties):
 
         for expected_property in expected_properties:
             if expected_property not in properties:
-                raise Exception("Required property could not be found: {prop}".format(
-                                prop=expected_property))
+                # print examined data so users would know what happened
+                formatted_data = pprint.pformat(package)
+                message = "Required property could not be found: {prop}\n" \
+                          "Tested Gremlin results:\n{r}"
+                raise Exception(message.format(prop=expected_property, r=formatted_data))
 
 
 @then('I should not find any property apart from ({properties}) in all found packages')
