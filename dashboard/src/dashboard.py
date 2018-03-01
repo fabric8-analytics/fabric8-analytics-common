@@ -21,6 +21,8 @@ from ci_jobs import *
 from cliargs import *
 from config import *
 
+CODE_COVERAGE_THRESHOLD = 50
+
 
 def check_environment_variable(env_var_name):
     """Check if the given environment variable exists."""
@@ -263,27 +265,52 @@ def get_source_files(repository):
             "total_lines": total_lines}
 
 
+def unit_test_coverage_ok(unit_test_coverage):
+    """Return True only if unit test coverage is above given threshold."""
+    if unit_test_coverage is not None:
+        return int(unit_test_coverage["coverage"]) > CODE_COVERAGE_THRESHOLD
+    else:
+        return False
+
+
 def update_overall_status(results, repository):
     """Update the overall status of all tested systems (stage, prod)."""
     remarks = ""
-    status = False
 
     source_files = results.source_files[repository]["count"]
     linter_checks = results.repo_linter_checks[repository]
     docstyle_checks = results.repo_docstyle_checks[repository]
+    unit_test_coverage = results.unit_test_coverage[repository]
 
     linter_checks_total = linter_checks["total"]
     docstyle_checks_total = docstyle_checks["total"]
 
-    if source_files == linter_checks_total and \
-       source_files == docstyle_checks_total:
-        if linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0:
-            status = True
+    status = source_files == linter_checks_total and \
+        source_files == docstyle_checks_total and \
+        linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0 and \
+        unit_test_coverage_ok(unit_test_coverage)
+
+    if source_files != linter_checks_total:
+        remarks += "not all source files are checked by linter<br>"
+
+    if source_files != docstyle_checks_total:
+        remarks += "not all source files are checked by pydocstyle<br>"
+
+    if linter_checks_total != docstyle_checks_total:
+        remarks += ", linter checked {n1} files, but pydocstyle checked {n2} files".format(
+            n1=linter_checks_total, n2=docstyle_checks_total)
+
+    if unit_test_coverage is not None:
+        if not unit_test_coverage_ok(unit_test_coverage):
+            remarks += "improve code coverage<br>"
     else:
-        remarks = "not all source files are checked"
-        if linter_checks_total != docstyle_checks_total:
-            remarks += ", linter checked {n1} files, but pydocstyle checked {n2} files".format(
-                n1=linter_checks_total, n2=docstyle_checks_total)
+        remarks += "unit tests has not been setup<br>"
+
+    if linter_checks["failed"] != 0:
+        remarks += "linter failed<br>"
+
+    if docstyle_checks["failed"] != 0:
+        remarks += "pydocstyle check failed<br>"
 
     results.overall_status[repository] = status
     results.remarks[repository] = remarks
@@ -379,7 +406,6 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
             results.source_files[repository] = get_source_files(repository)
             results.repo_linter_checks[repository] = parse_pylint_results(repository)
             results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
-            update_overall_status(results, repository)
 
         # delete_work_files(repository)
 
@@ -395,6 +421,8 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                 results.ci_jobs_statuses[repository][job_type] = job_status
             results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs, JENKINS_URL,
                                                                              repository)
+        if code_quality_table_enabled:
+            update_overall_status(results, repository)
 
 
 def read_jobs_statuses(filename):
