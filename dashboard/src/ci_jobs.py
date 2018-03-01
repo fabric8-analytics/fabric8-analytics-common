@@ -46,7 +46,7 @@ class CIJobs:
         try:
             job_url = self.get_job_url(repository_name, "test_job")
             if job_url is not None:
-                return urljoin(job_url + "/", "lastBuild/consoleText")
+                return urljoin(job_url + "/", "lastSuccessfulBuild/consoleText")
         except (configparser.NoSectionError, configparser.NoOptionError):
             return None
 
