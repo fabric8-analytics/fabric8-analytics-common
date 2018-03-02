@@ -99,7 +99,8 @@ repositories = [
     "fabric8-analytics-stack-analysis",
     "fabric8-analytics-license-analysis",
     "fabric8-analytics-data-model",
-    "fabric8-analytics-recommender"
+    "fabric8-analytics-recommender",
+    "fabric8-gemini-server"
 ]
 
 ci_job_types = [
@@ -489,7 +490,7 @@ def read_unit_test_coverage(ci_jobs, jenkins_url, repository):
                 if line.startswith("Name  ") and line.endswith("Stmts   Miss  Cover   Missing"):
                     unit_test_output.append(line)
                 # check where the test coverage ends
-                elif line.startswith("TOTAL                   "):
+                elif line.startswith("TOTAL      ") and line.endswith("%"):
                     unit_test_output.append(line)
                     write_unit_test_coverage(unit_test_output, repository)
                     return parse_unit_test_statistic(line)
