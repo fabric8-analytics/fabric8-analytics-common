@@ -24,7 +24,9 @@ class CIJobs:
         assert job_type in CIJobs.JOB_TYPES
         # the job with given type might not exist, return None in such cases
         try:
-            repository_name = CIJobs.remove_prefix(repository_name, "fabric8-analytics-")
+            # remove prefix from repository name because we use shorter names in the INI file
+            repository_name = CIJobs.remove_prefix(repository_name, ["fabric8-analytics-",
+                                                                     "fabric8-"])
             url_prefix = self.get_ci_url()
             url_suffix = self.config.get(repository_name, job_type)
             return CIJobs.construct_job_url(url_prefix, url_suffix)
@@ -35,7 +37,9 @@ class CIJobs:
         """Return the job name w/o the full URL to CI."""
         assert job_type in CIJobs.JOB_TYPES
         try:
-            repository_name = CIJobs.remove_prefix(repository_name, "fabric8-analytics-")
+            # remove prefix from repository name because we use shorter names in the INI file
+            repository_name = CIJobs.remove_prefix(repository_name, ["fabric8-analytics-",
+                                                                     "fabric8-"])
             url_suffix = self.config.get(repository_name, job_type)
             return url_suffix
         except (configparser.NoSectionError, configparser.NoOptionError):
@@ -56,6 +60,9 @@ class CIJobs:
         return urljoin(urljoin(url_prefix, "job/"), url_suffix)
 
     @staticmethod
-    def remove_prefix(text, prefix):
+    def remove_prefix(text, prefixes):
         """Remove the prefix from input string (if the string starts with prefix)."""
-        return text[len(prefix):] if text.startswith(prefix) else text
+        for prefix in prefixes:
+            if text.startswith(prefix):
+                return text[len(prefix):]
+        return text
