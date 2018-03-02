@@ -52,7 +52,9 @@ Feature: Check the Gremlin instance and its behaviour
     Then I should get 200 status code
      And I should get valid Gremlin response
      And I should find the following properties (description, last_updated, pecosystem, pname, version, vertex_label) in all found packages
-     And I should find the following properties (cm_avg_cyclomatic_complexity, cm_loc, cm_num_files, dependents_count) in all found packages
+     # the following properties might not be set for newer versions
+     # please see https://github.com/openshiftio/openshift.io/issues/2396 for context
+     # And I should find the following properties (cm_avg_cyclomatic_complexity, cm_loc, cm_num_files, dependents_count) in all found packages
      And I should find that all found packages have valid timestamp with the last update time
 
   @requires_access_to_graph_db
