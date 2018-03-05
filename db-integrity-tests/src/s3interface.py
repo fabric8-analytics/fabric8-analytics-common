@@ -52,6 +52,11 @@ class S3Interface():
         """Read all available buckets from the AWS S3 database."""
         return self.s3_resource.buckets.all()
 
+    def read_bucket_names(self):
+        """Read names of all available buckets from the AWS S3 database."""
+        buckets = self.read_all_buckets()
+        return [bucket.name for bucket in buckets]
+
     def full_bucket_name(self, bucket_name):
         """Insert deployment prefix to the given bucket name."""
         return "{p}-{b}".format(p=self.deployment_prefix, b=bucket_name)
@@ -96,6 +101,11 @@ class S3Interface():
         return "{ecosystem}/{package}/{analysis}.json".format(ecosystem=ecosystem,
                                                               package=package,
                                                               analysis=analysis)
+
+    @property
+    def deployment_prefix(self):
+        """Get the deployment prefix set up during initialization of this class."""
+        return self.s3_configuration.deployment_prefix
 
     def does_bucket_exist(self, bucket_name):
         """Check if the given bucket exists in the S3 database.
