@@ -326,15 +326,13 @@ def update_overall_status(results, repository):
     if docstyle_checks["failed"] != 0:
         remarks += "pydocstyle check failed<br>"
 
-    if ignored_pylint_files == 1:
-        remarks += "1 file ignored by pylint<br>"
-    elif ignored_pylint_files > 1:
-        remarks += "{n} files ignored by pylint<br>".format(n=ignored_pylint_files)
+    if ignored_pylint_files:
+        remarks += "{n} file{s} ignored by pylint<br>".format(
+            n=ignored_pylint_files, s="s" if ignored_pylint_files > 1 else "")
 
-    if ignored_pydocstyle_files == 1:
-        remarks += "1 file ignored by pydocstyle<br>"
-    elif ignored_pydocstyle_files > 1:
-        remarks += "{n} files ignored by pydocstyle<br>".format(n=ignored_pydocstyle_files)
+    if ignored_pydocstyle_files:
+        remarks += "{n} file{s} ignored by pydocstyle<br>".format(
+            n=ignored_pydocstyle_files, s="s" if ignored_pydocstyle_files > 1 else "")
 
     results.overall_status[repository] = status
     results.remarks[repository] = remarks
