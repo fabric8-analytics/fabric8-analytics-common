@@ -34,6 +34,8 @@
                             % else:
                                 <td class="boolean error">&times;</td>
                             % endif
+                        % elif file in ignored_pylint_files:
+                            <td class="boolean ignored">Ignored</td>
                         % else:
                             <td class="boolean error">Not checked</td>
                         % endif
@@ -43,6 +45,8 @@
                             % else:
                                 <td class="boolean error">&times;</td>
                             % endif
+                        % elif file in ignored_pydocstyle_files:
+                            <td class="boolean ignored">Ignored</td>
                         % else:
                             <td class="boolean error">Not checked</td>
                         % endif
