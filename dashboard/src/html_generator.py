@@ -10,7 +10,8 @@ def generate_index_page(results):
         fout.write(generated_page)
 
 
-def generate_details_page_for_repository(repository, results):
+def generate_details_page_for_repository(repository, results,
+                                         ignored_pylint_files, ignored_pydocstyle_files):
     """Generate the page with detailed information about code in the selected repository."""
     template = Template(filename="template/repo_details.html")
     data = {}
@@ -21,15 +22,19 @@ def generate_details_page_for_repository(repository, results):
     data["docstyle_checks"] = results.repo_docstyle_checks[repository]["files"]
     data["generated_on"] = results.generated_on
     data["ci_jobs"] = results.ci_jobs_links
+    data["ignored_pylint_files"] = ignored_pylint_files
+    data["ignored_pydocstyle_files"] = ignored_pydocstyle_files
     generated_page = template.render(**data)
     filename = "repository_{repository}.html".format(repository=repository)
     with open(filename, "w") as fout:
         fout.write(generated_page)
 
 
-def generate_dashboard(results):
+def generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle):
     """Generate all pages with the dashboard and detailed information as well."""
     generate_index_page(results)
     if results.code_quality_table_enabled:
         for repository in results.repositories:
-            generate_details_page_for_repository(repository, results)
+            generate_details_page_for_repository(repository, results,
+                                                 ignored_files_for_pylint.get(repository, []),
+                                                 ignored_files_for_pydocstyle.get(repository, []))

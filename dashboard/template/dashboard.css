@@ -30,6 +30,9 @@ body { padding-top: 100px; }
 .error {
     color:#800000;
 }
+.ignored {
+    color:#404040;
+}
 
 .ci_status {
     width:3ex;
