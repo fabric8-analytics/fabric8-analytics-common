@@ -103,6 +103,15 @@ repositories = [
     "fabric8-gemini-server"
 ]
 
+# files that are to be ignored by Pylint
+ignored_files_for_pylint = {
+}
+
+# files that are to be ignored by Pydocchecker
+ignored_files_for_pydocstyle = {
+    "fabric8-analytics-worker": ["tests/data/license/license.py"]
+}
+
 ci_job_types = [
     "test_job",
     "build_job",
@@ -286,18 +295,22 @@ def update_overall_status(results, repository):
     linter_checks_total = linter_checks["total"]
     docstyle_checks_total = docstyle_checks["total"]
 
+    ignored_pylint_files = len(ignored_files_for_pylint.get(repository, []))
+    ignored_pydocstyle_files = len(ignored_files_for_pydocstyle.get(repository, []))
+
     status = source_files == linter_checks_total and \
         source_files == docstyle_checks_total and \
         linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0 and \
         unit_test_coverage_ok(unit_test_coverage)
 
-    if source_files != linter_checks_total:
+    if source_files != linter_checks_total + ignored_pylint_files:
         remarks += "not all source files are checked by linter<br>"
 
-    if source_files != docstyle_checks_total:
+    if source_files != docstyle_checks_total + ignored_pydocstyle_files:
         remarks += "not all source files are checked by pydocstyle<br>"
 
-    if linter_checks_total != docstyle_checks_total:
+    if linter_checks_total + ignored_pylint_files != \
+       docstyle_checks_total + ignored_pydocstyle_files:
         remarks += ", linter checked {n1} files, but pydocstyle checked {n2} files".format(
             n1=linter_checks_total, n2=docstyle_checks_total)
 
@@ -312,6 +325,16 @@ def update_overall_status(results, repository):
 
     if docstyle_checks["failed"] != 0:
         remarks += "pydocstyle check failed<br>"
+
+    if ignored_pylint_files == 1:
+        remarks += "1 file ignored by pylint<br>"
+    elif ignored_pylint_files > 1:
+        remarks += "{n} files ignored by pylint<br>".format(n=ignored_pylint_files)
+
+    if ignored_pydocstyle_files == 1:
+        remarks += "1 file ignored by pydocstyle<br>"
+    elif ignored_pydocstyle_files > 1:
+        remarks += "{n} files ignored by pydocstyle<br>".format(n=ignored_pydocstyle_files)
 
     results.overall_status[repository] = status
     results.remarks[repository] = remarks
@@ -583,7 +606,7 @@ def main():
     if code_quality_table_enabled and liveness_table_enabled:
         export_into_csv(results)
 
-    generate_dashboard(results)
+    generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
 
 
 if __name__ == "__main__":
