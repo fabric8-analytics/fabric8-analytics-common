@@ -13,6 +13,7 @@ docker run -t \
     -e F8A_3SCALE_URL=${F8A_3SCALE_URL} \
     -e F8A_SERVICE_ID=${F8A_SERVICE_ID} \
     -e F8A_BACKBONE_API_URL=${F8A_BACKBONE_API_URL} \
+    -e F8A_GEMINI+SERVER_URL=${F8A_GEMINI_SERVER_URL} \
     ${RECOMMENDER_API_TOKEN:+-e RECOMMENDER_API_TOKEN=${RECOMMENDER_API_TOKEN}} \
     f8a-e2e-tests --tags=-jobs.requires_auth --no-color $@
 
