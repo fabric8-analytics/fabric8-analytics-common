@@ -150,6 +150,25 @@ class S3Interface():
         """Return list of all ecosystems from core-data bucket."""
         return self.read_ecosystems_from_bucket("bayesian-core-data")
 
+    def read_packages_from_bucket_for_ecosystem(self, ecosystem, bucket_name):
+        """Return list of all packages found for the selected ecosystem."""
+        if not ecosystem.endswith("/"):
+            ecosystem += "/"
+        bucket = self.s3_resource.Bucket(self.full_bucket_name(bucket_name))
+        result = bucket.meta.client.list_objects(Bucket=bucket.name, Delimiter='/',
+                                                 Prefix=ecosystem)
+        names = [o.get('Prefix') for o in result.get('CommonPrefixes')]
+        # names are returned in format "ecosystem/package/" -> we need to get only the package part
+        return [name[name.find("/") + 1: name.find("/", -1)] for name in names]
+
+    def read_core_packages_for_ecosystem(self, ecosystem):
+        """Return list of all core packages for the selected ecosystem."""
+        return self.read_packages_from_bucket_for_ecosystem(ecosystem, "bayesian-core-package-data")
+
+    def read_packages_for_ecosystem(self, ecosystem):
+        """Return list of all packages for the selected ecosystem."""
+        return self.read_packages_from_bucket_for_ecosystem(ecosystem, "bayesian-core-data")
+
     @staticmethod
     def selector_to_key(selector):
         """Construct a key from given selector (that is written in tests w/o underscores)."""
