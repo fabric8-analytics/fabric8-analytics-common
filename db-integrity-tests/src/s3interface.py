@@ -157,11 +157,27 @@ class S3Interface():
         if not ecosystem.endswith("/"):
             ecosystem += "/"
         bucket = self.s3_resource.Bucket(self.full_bucket_name(bucket_name))
-        result = bucket.meta.client.list_objects(Bucket=bucket.name, Delimiter='/',
-                                                 Prefix=ecosystem)
-        names = [o.get('Prefix') for o in result.get('CommonPrefixes')]
-        # names are returned in format "ecosystem/package/" -> we need to get only the package part
-        return [name[name.find("/") + 1: name.find("/", -1)] for name in names]
+
+        # parameters to be passed to list_objects_v2 method
+        kwargs = {'Bucket': bucket.name, 'Delimiter': '/', 'Prefix': ecosystem}
+
+        package_names = []
+
+        # the S3 interface supports and requires 'pagination', so we need
+        # to get list of package names in a loop
+        while True:
+            result = bucket.meta.client.list_objects_v2(**kwargs)
+            names = [o.get('Prefix') for o in result.get('CommonPrefixes')]
+            # names are returned in format "ecosystem/package/"
+            # -> we need to get only the package part
+            package_names.extend([name[name.find("/") + 1: name.find("/", -1)] for name in names])
+            # perform 'pagination', but only when results were truncated
+            if not result.get("IsTruncated"):
+                break
+            # token used by S3 to remember when the next page should begin
+            kwargs['ContinuationToken'] = result['NextContinuationToken']
+
+        return package_names
 
     def read_core_packages_for_ecosystem(self, ecosystem):
         """Return list of all core packages for the selected ecosystem."""
