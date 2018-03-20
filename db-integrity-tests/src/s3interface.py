@@ -139,8 +139,10 @@ class S3Interface():
     def read_ecosystems_from_bucket(self, bucket_name):
         """Return list of all ecosystems from selected bucket."""
         bucket = self.s3_resource.Bucket(self.full_bucket_name(bucket_name))
-        result = bucket.meta.client.list_objects(Bucket=bucket.name, Delimiter='/', Prefix='pypi/')
-        return [o.get('Prefix') for o in result.get('CommonPrefixes')]
+        result = bucket.meta.client.list_objects(Bucket=bucket.name, Delimiter='/')
+        names = [o.get('Prefix') for o in result.get('CommonPrefixes')]
+        # remove the / at the end of object name
+        return [name[:-1] for name in names]
 
     def read_ecosystems_from_core_package_data(self):
         """Return list of all ecosystems from core-package-data bucket."""
