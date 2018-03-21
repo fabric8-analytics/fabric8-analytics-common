@@ -9,6 +9,8 @@ from gremlin_configuration import GremlinConfiguration
 from gremlin_interface import GremlinInterface
 from cliargs import *
 from csv_reporter import CSVReporter
+from schema_validator import *
+from core_package_checker import CorePackageChecker
 
 import logging
 
@@ -66,6 +68,49 @@ def check_ecosystems_in_s3(s3interface):
     check_ecosystems_in_bucket(found_ecosystems, "core_data")
 
 
+def check_packages_in_ecosystem(s3interface, csvReporter, ecosystem):
+    """Check all packages in selected ecosystem."""
+    core_packages = s3interface.read_core_packages_for_ecosystem(ecosystem)
+    packages = s3interface.read_packages_for_ecosystem(ecosystem)
+    store_list("s3_core_packages.txt", core_packages)
+    store_list("s3_packages.txt", packages)
+
+    # dummy read
+    # core_packages = read_list("s3_core_packages.txt")
+    # packages = read_list("s3_packages.txt")
+
+    all_packages = list(set(core_packages) | set(packages))
+    all_packages.sort()
+    for package_name in all_packages:
+        core_package_checker = CorePackageChecker(s3interface, ecosystem, package_name)
+
+        in_core_packages = package_name in core_packages
+        in_packages = package_name in packages
+        core_package_json = "N/A"
+        core_package_github_details = "N/A"
+        core_package_keywords_tagging = "N/A"
+        core_package_libraries_io = "N/A"
+
+        if in_core_packages:
+            core_package_json = core_package_checker.check_core_json()
+            core_package_github_details = core_package_checker.check_github_details()
+            core_package_keywords_tagging = core_package_checker.check_keywords_tagging()
+            core_package_libraries_io = core_package_checker.check_libraries_io()
+
+        csvReporter.package_info(ecosystem, package_name, in_core_packages, in_packages,
+                                 core_package_json, core_package_github_details,
+                                 core_package_keywords_tagging, core_package_libraries_io)
+
+
+def check_packages_in_s3(s3interface):
+    """Check all packages in all ecosystems."""
+    ECOSYSTEMS = ["pypi"]
+    with CSVReporter("s3_packages.csv") as csvReporter:
+        csvReporter.csv_header()
+        for ecosystem in ECOSYSTEMS:
+            check_packages_in_ecosystem(s3interface, csvReporter, ecosystem)
+
+
 def set_log_level(log_level):
     """Set the desired log level."""
     logging.basicConfig(level=log_level)
@@ -86,6 +131,7 @@ def main():
 
     initial_checks(s3interface, gremlinInterface)
     check_ecosystems_in_s3(s3interface)
+    check_packages_in_s3(s3interface)
 
 
 if __name__ == "__main__":
