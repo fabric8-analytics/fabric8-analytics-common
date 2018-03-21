@@ -22,30 +22,43 @@ class CorePackageChecker:
         key = self.s3interface.package_key(self.ecosystem, self.package_name)
         try:
             data = self.s3interface.read_object(CorePackageChecker.BUCKET_NAME, key)
+            assert data, "N/A"
             return "OK"
         except Exception as e:
-            return "N/A"
+            return str(e)
 
     def check_github_details(self):
         """Check all relevant attributes stored in the JSON with GitHub details."""
         try:
             data = self.read_metadata("github_details")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
             return "OK"
-        except Exception as e:
+        except ClientError as e:
             return "N/A"
+        except Exception as e:
+            return str(e)
 
     def check_keywords_tagging(self):
         """Check all relevant attributes stored in the JSON with keywods tagging."""
         try:
             data = self.read_metadata("keywords_tagging")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
             return "OK"
-        except Exception as e:
+        except ClientError as e:
             return "N/A"
+        except Exception as e:
+            return str(e)
 
     def check_libraries_io(self):
         """Check the content of package metadata taken from libaries.io."""
         try:
             data = self.read_metadata("libraries_io")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
             return "OK"
-        except Exception as e:
+        except ClientError as e:
             return "N/A"
+        except Exception as e:
+            return str(e)
