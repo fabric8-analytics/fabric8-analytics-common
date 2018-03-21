@@ -339,7 +339,15 @@ def check_property_value(context, property_name, expected_value):
 def check_latest_version_property_value(context, property_name, expected_value):
     """Check if the latest_version property contains expected value."""
     value = read_property_value_from_gremlin_response(context, property_name)
-    assert Version(value) >= Version(expected_value)
+    try:
+        assert Version(value) >= Version(expected_value)
+    except Exception:
+        data, meta = get_results_from_gremlin(context)
+        print("Metadata returned by Gremlin:")
+        pprint.pprint(meta)
+        print("Data returned by Gremlin:")
+        pprint.pprint(data)
+        raise
 
 
 @then('I should find that the {property_name} property has numeric value greater than or equal '
