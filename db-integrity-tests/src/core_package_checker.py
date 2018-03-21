@@ -1,10 +1,14 @@
 """Checker for JSON files stored for the whole packages in core-package-data bucket."""
 
+from checker import Checker
+from botocore.exceptions import ClientError
 
-class CorePackageChecker:
+
+class CorePackageChecker(Checker):
     """Checker for JSON files stored for the whole packages in core-package-data bucket."""
 
     BUCKET_NAME = "bayesian-core-package-data"
+    GITHUB_DETAILS_SCHEMA_VERSION = "2-0-1"
 
     def __init__(self, s3interface, ecosystem, package_name):
         """Initialize the core package checker."""
@@ -26,6 +30,20 @@ class CorePackageChecker:
             return "OK"
         except Exception as e:
             return str(e)
+
+    @staticmethod
+    def release_string(ecosystem, package, version=None):
+        """Construct a string with ecosystem:package or ecosystem:package:version tuple."""
+        return "{e}:{p}:{v}".format(e=ecosystem, p=package, v=version)
+
+    def check_release_attribute(self, data, version=None):
+        """Check the content of _release attribute.
+
+        Check that the attribute _release contains proper release string for given ecosystem
+        and package.
+        """
+        self.check_attribute_presence(data, "_release")
+        assert data["_release"] == self.release_string(self.ecosystem, self.package_name, version)
 
     def check_github_details(self):
         """Check all relevant attributes stored in the JSON with GitHub details."""
