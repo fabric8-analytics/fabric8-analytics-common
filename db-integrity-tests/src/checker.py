@@ -105,5 +105,5 @@ class Checker:
             "expected name '{n2}'".format(n1=name, n2=expected_schema_name)
 
         # check the schema version (ATM we are able to check just one fixed version)
-        assert version == expected_schema_version, "Schema version {v1} is different from expected " \
-            "version {v2}".format(v1=version, v2=expected_schema_version)
+        assert version == expected_schema_version, "Schema version {v1} is different from " \
+            "expected version {v2}".format(v1=version, v2=expected_schema_version)
