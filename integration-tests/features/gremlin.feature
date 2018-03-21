@@ -51,7 +51,10 @@ Feature: Check the Gremlin instance and its behaviour
     When I ask Gremlin to find all versions of the package io.vertx:vertx-core in the ecosystem maven
     Then I should get 200 status code
      And I should get valid Gremlin response
-     And I should find the following properties (description, last_updated, pecosystem, pname, version, vertex_label) in all found packages
+     # the property 'description' won't be set for newer Maven packages
+     # please see https://github.com/openshiftio/openshift.io/issues/2475
+     #And I should find the following properties (description, last_updated, pecosystem, pname, version, vertex_label) in all found packages
+     And I should find the following properties (last_updated, pecosystem, pname, version, vertex_label) in all found packages
      # the following properties might not be set for newer versions
      # please see https://github.com/openshiftio/openshift.io/issues/2396 for context
      # And I should find the following properties (cm_avg_cyclomatic_complexity, cm_loc, cm_num_files, dependents_count) in all found packages
