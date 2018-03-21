@@ -73,3 +73,27 @@ class Checker:
 
         self.check_attribute_presence(audit, "ended_at")
         self.check_timestamp(audit["ended_at"])
+
+    def get_details_node(self, data):
+        """Get content of details node, given it exists."""
+        return self.check_and_get_attribute(data, 'details')
+
+    def check_schema_attribute(self, data, expected_schema_name, expected_schema_version):
+        """Check the content of the schema attribute.
+
+        This attribute should contains dictionary with name and version that are checked as well.
+        """
+        # read the toplevel attribute 'schema'
+        schema = self.check_and_get_attribute(data, "schema")
+
+        # read attributes from the 'schema' node
+        name = self.check_and_get_attribute(schema, "name")
+        version = self.check_and_get_attribute(schema, "version")
+
+        # check the schema name
+        assert name == expected_schema_name, "Schema name '{n1}' is different from " \
+            "expected name '{n2}'".format(n1=name, n2=expected_schema_name)
+
+        # check the schema version (ATM we are able to check just one fixed version)
+        assert version == expected_schema_version, "Schema version {v1} is different from expected " \
+            "version {v2}".format(v1=version, v2=expected_schema_version)
