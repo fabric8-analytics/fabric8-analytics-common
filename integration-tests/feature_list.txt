@@ -1,20 +1,21 @@
 # Order of the features in this file is significant, so shuffle them carefully.
-features/smoketest.feature
-features/server_api.feature
-features/jobs_api.feature
-features/jobs_debug_api.feature
-#features/ecosystems.feature
-features/component_search.feature
-features/components.feature
-features/stack_analyses.feature
-features/user_feedback.feature
-#features/versions.feature
-features/selfcheck.feature
-#features/regression_tests.feature
-features/user_tag.feature
-features/gremlin.feature
-features/three_scale.feature
-features/api_backbone.feature
+#features/smoketest.feature
+#features/server_api.feature
+#features/jobs_api.feature
+#features/jobs_debug_api.feature
+##features/ecosystems.feature
+#features/component_search.feature
+#features/components.feature
+#features/stack_analyses.feature
+#features/user_feedback.feature
+##features/versions.feature
+#features/selfcheck.feature
+##features/regression_tests.feature
+#features/user_tag.feature
+#features/gremlin.feature
+#features/three_scale.feature
+#features/api_backbone.feature
+features/gremlin_3rd_reproducer.feature
 
 # This is workaround to temporary disable integration tests
 #features/disabled.feature
