@@ -21,6 +21,16 @@ class Checker:
             "'%s' attribute is expected in the node, " \
             "found: %s attributes " % (attribute_name, ", ".join(found_attributes))
 
+    def check_and_get_attribute(self, node, attribute_name):
+        """Check the attribute presence and if the attribute is found, return its value."""
+        self.check_attribute_presence(node, attribute_name)
+        return node[attribute_name]
+
+    def check_status_attribute(self, data):
+        """Check the value of the status attribute, that should contain just two allowed values."""
+        status = self.check_and_get_attribute(data, "status")
+        assert status in ["success", "error"]
+
     def check_timestamp(self, timestamp):
         """Check if the string contains proper timestamp value.
 
