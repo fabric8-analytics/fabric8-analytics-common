@@ -344,9 +344,9 @@ def check_latest_version_property_value(context, property_name, expected_value):
     except Exception:
         data, meta = get_results_from_gremlin(context)
         print("Metadata returned by Gremlin:")
-        pprint.pformat(meta)
+        pprint.pprint(meta)
         print("Data returned by Gremlin:")
-        pprint.pformat(data)
+        pprint.pprint(data)
         raise
 
 
