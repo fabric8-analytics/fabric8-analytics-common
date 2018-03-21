@@ -51,6 +51,14 @@ class CorePackageChecker(Checker):
             data = self.read_metadata("github_details")
             assert data, "N/A"
             self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+
+            self.check_attribute_presence(data, "summary")
+            self.check_attribute_presence(data, "details")
+
+            self.check_schema_attribute(data, "github_details",
+                                        CorePackageChecker.GITHUB_DETAILS_SCHEMA_VERSION)
             return "OK"
         except ClientError as e:
             return "N/A"
@@ -63,6 +71,12 @@ class CorePackageChecker(Checker):
             data = self.read_metadata("keywords_tagging")
             assert data, "N/A"
             self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+
+            details = self.get_details_node(data)
+            self.check_attribute_presence(details, "package_name")
+            self.check_attribute_presence(details, "repository_description")
             return "OK"
         except ClientError as e:
             return "N/A"
@@ -75,6 +89,8 @@ class CorePackageChecker(Checker):
             data = self.read_metadata("libraries_io")
             assert data, "N/A"
             self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
             return "OK"
         except ClientError as e:
             return "N/A"
