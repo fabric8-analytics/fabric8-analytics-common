@@ -1,5 +1,6 @@
 """Progress bar handling."""
 
+
 def progress_bar_class(p):
     """Decide which class to use for progress bar."""
     p = int(p)
