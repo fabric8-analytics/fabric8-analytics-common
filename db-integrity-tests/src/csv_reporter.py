@@ -25,12 +25,13 @@ class CSVReporter:
         """Write the header row."""
         self.writer.writerow(["Ecosystem", "Package", "In core-packages?", "In packages?",
                               "Core: package.json", "Core: github_details",
-                              "Core: keywords_tagging", "Core: libraries_io"])
+                              "Core: keywords_tagging", "Core: libraries_io", "Core: Leftovers"])
 
     def package_info(self, ecosystem, package_name, in_core_packages, in_packages,
                      core_package_json, core_package_github_details, core_package_keywords_tagging,
-                     core_package_libraries_io):
+                     core_package_libraries_io, core_leftovers):
         """Write the record with package data."""
         self.writer.writerow([ecosystem, package_name, int(in_core_packages), int(in_packages),
                               core_package_json, core_package_github_details,
-                              core_package_keywords_tagging, core_package_libraries_io])
+                              core_package_keywords_tagging, core_package_libraries_io,
+                              core_leftovers])
