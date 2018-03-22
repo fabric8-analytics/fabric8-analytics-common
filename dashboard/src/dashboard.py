@@ -298,8 +298,8 @@ def update_overall_status(results, repository):
     ignored_pylint_files = len(ignored_files_for_pylint.get(repository, []))
     ignored_pydocstyle_files = len(ignored_files_for_pydocstyle.get(repository, []))
 
-    status = source_files == linter_checks_total and \
-        source_files == docstyle_checks_total and \
+    status = source_files == (linter_checks_total + ignored_pylint_files) and \
+        source_files == (docstyle_checks_total + ignored_pydocstyle_files) and \
         linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0 and \
         unit_test_coverage_ok(unit_test_coverage)
 
