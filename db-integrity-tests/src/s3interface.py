@@ -69,6 +69,11 @@ class S3Interface():
                                                    package=package)
 
     @staticmethod
+    def package_key_to_metadata(ecosystem, package):
+        """Construct a key to the selected package in the given ecosystem."""
+        return "{ecosystem}/{package}".format(ecosystem=ecosystem, package=package)
+
+    @staticmethod
     def package_analysis_key(ecosystem, package, metadata):
         """Construct a key to the selected package analysis in the given ecosystem."""
         return "{ecosystem}/{package}/{metadata}.json".format(ecosystem=ecosystem,
@@ -186,6 +191,16 @@ class S3Interface():
     def read_packages_for_ecosystem(self, ecosystem):
         """Return list of all packages for the selected ecosystem."""
         return self.read_packages_from_bucket_for_ecosystem(ecosystem, "bayesian-core-data")
+
+    def read_object_list(self, bucket_name, ecosystem, package):
+        """Read list of objects (JSON files) stored for the given E+P."""
+        bucket_name = self.full_bucket_name(bucket_name)
+        prefix = S3Interface.package_key_to_metadata(ecosystem, package)
+        bucket = self.s3_resource.Bucket(bucket_name)
+        result = bucket.meta.client.list_objects_v2(Bucket=bucket.name, Prefix=prefix)
+        contents = result["Contents"]
+        json_files = [o["Key"] for o in contents]
+        return [json_file[json_file.rfind("/") + 1:] for json_file in json_files]
 
     @staticmethod
     def selector_to_key(selector):
