@@ -90,16 +90,19 @@ def check_packages_in_ecosystem(s3interface, csvReporter, ecosystem):
         core_package_github_details = "N/A"
         core_package_keywords_tagging = "N/A"
         core_package_libraries_io = "N/A"
+        core_package_leftovers = "N/A"
 
         if in_core_packages:
             core_package_json = core_package_checker.check_core_json()
             core_package_github_details = core_package_checker.check_github_details()
             core_package_keywords_tagging = core_package_checker.check_keywords_tagging()
             core_package_libraries_io = core_package_checker.check_libraries_io()
+            core_package_leftovers = core_package_checker.check_leftovers()
 
         csvReporter.package_info(ecosystem, package_name, in_core_packages, in_packages,
                                  core_package_json, core_package_github_details,
-                                 core_package_keywords_tagging, core_package_libraries_io)
+                                 core_package_keywords_tagging, core_package_libraries_io,
+                                 core_package_leftovers)
 
 
 def check_packages_in_s3(s3interface):

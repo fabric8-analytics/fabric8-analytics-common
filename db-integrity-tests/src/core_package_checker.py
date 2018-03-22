@@ -96,3 +96,25 @@ class CorePackageChecker(Checker):
             return "N/A"
         except Exception as e:
             return str(e)
+
+    def check_leftovers(self):
+        """Check for any leftovers in the S3 database."""
+        try:
+            jsons = self.s3interface.read_object_list(CorePackageChecker.BUCKET_NAME,
+                                                      self.ecosystem, self.package_name)
+            jsons = set(jsons)
+
+            # remove the 'main' JSON file
+            package_json = "{p}.json".format(p=self.package_name)
+            jsons.remove(package_json)
+
+            expected = {'github_details.json', 'keywords_tagging.json', 'git_stats.json',
+                        'libraries_io.json'}
+
+            leftovers = jsons - expected
+            assert not leftovers, ",".join(leftovers)
+            return "none"
+        except ClientError as e:
+            return "S3-related error"
+        except Exception as e:
+            return str(e)
