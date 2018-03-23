@@ -11,6 +11,7 @@ from cliargs import *
 from csv_reporter import CSVReporter
 from schema_validator import *
 from core_package_checker import CorePackageChecker
+from component_versions_checker import ComponentVersionsChecker
 
 import logging
 
@@ -99,10 +100,25 @@ def check_packages_in_ecosystem(s3interface, csvReporter, ecosystem):
             core_package_libraries_io = core_package_checker.check_libraries_io()
             core_package_leftovers = core_package_checker.check_leftovers()
 
-        csvReporter.package_info(ecosystem, package_name, in_core_packages, in_packages,
-                                 core_package_json, core_package_github_details,
-                                 core_package_keywords_tagging, core_package_libraries_io,
-                                 core_package_leftovers)
+        csvReporter.core_package_info(ecosystem, package_name, in_core_packages, in_packages,
+                                      core_package_json, core_package_github_details,
+                                      core_package_keywords_tagging, core_package_libraries_io,
+                                      core_package_leftovers)
+
+
+def check_package_versions_in_ecosystem(s3interface, csvReporter, ecosystem):
+    """Check all package versions in selected ecosystem."""
+    packages = s3interface.read_packages_for_ecosystem(ecosystem)
+
+    for package_name in packages:
+        component_versions_checker = ComponentVersionsChecker(s3interface, ecosystem, package_name)
+        all_jsons = component_versions_checker.read_metadata_list()
+        directories, version_jsons, versions = component_versions_checker.read_versions()
+
+        for version in sorted(versions):
+            base_json = version in version_jsons
+            subdir = version in directories
+            csvReporter.package_version_info(ecosystem, package_name, version, base_json, subdir)
 
 
 def check_packages_in_s3(s3interface):
@@ -112,6 +128,11 @@ def check_packages_in_s3(s3interface):
         csvReporter.csv_header()
         for ecosystem in ECOSYSTEMS:
             check_packages_in_ecosystem(s3interface, csvReporter, ecosystem)
+
+    with CSVReporter("s3_package_versions.csv") as csvReporter:
+        csvReporter.csv_header_for_package_version()
+        for ecosystem in ECOSYSTEMS:
+            check_package_versions_in_ecosystem(s3interface, csvReporter, ecosystem)
 
 
 def set_log_level(log_level):
