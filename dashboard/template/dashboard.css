@@ -52,3 +52,6 @@ body { padding-top: 100px; }
     body { padding-top: 240px; }
   }
 
+.with-margin {
+    margin:1px;
+}
