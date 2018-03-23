@@ -26,6 +26,10 @@ class CorePackageChecker(Checker):
         key = self.s3interface.package_key(self.ecosystem, self.package_name)
         try:
             data = self.s3interface.read_object(CorePackageChecker.BUCKET_NAME, key)
+            self.check_attribute_presence(data, "id")
+            self.check_attribute_presence(data, "package_id")
+            self.check_attribute_presence(data, "started_at")
+            self.check_attribute_presence(data, "finished_at")
             assert data, "N/A"
             return "OK"
         except Exception as e:
