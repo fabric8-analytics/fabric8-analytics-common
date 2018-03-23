@@ -192,7 +192,8 @@ class S3Interface():
         """Return list of all packages for the selected ecosystem."""
         return self.read_packages_from_bucket_for_ecosystem(ecosystem, "bayesian-core-data")
 
-    def read_object_list(self, bucket_name, ecosystem, package):
+    def read_object_list(self, bucket_name, ecosystem, package, update_names=True,
+                         remove_prefix=False):
         """Read list of objects (JSON files) stored for the given E+P."""
         bucket_name = self.full_bucket_name(bucket_name)
         prefix = S3Interface.package_key_to_metadata(ecosystem, package)
@@ -200,7 +201,12 @@ class S3Interface():
         result = bucket.meta.client.list_objects_v2(Bucket=bucket.name, Prefix=prefix)
         contents = result["Contents"]
         json_files = [o["Key"] for o in contents]
-        return [json_file[json_file.rfind("/") + 1:] for json_file in json_files]
+        if update_names:
+            return [json_file[json_file.rfind("/") + 1:] for json_file in json_files]
+        elif remove_prefix:
+            return [json_file[len(prefix) + 1:] for json_file in json_files]
+        else:
+            return json_files
 
     @staticmethod
     def selector_to_key(selector):
