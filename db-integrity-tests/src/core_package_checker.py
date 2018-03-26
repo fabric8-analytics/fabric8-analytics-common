@@ -35,11 +35,6 @@ class CorePackageChecker(Checker):
         except Exception as e:
             return str(e)
 
-    @staticmethod
-    def release_string(ecosystem, package, version=None):
-        """Construct a string with ecosystem:package or ecosystem:package:version tuple."""
-        return "{e}:{p}:{v}".format(e=ecosystem, p=package, v=version)
-
     def check_release_attribute(self, data, version=None):
         """Check the content of _release attribute.
 
@@ -102,7 +97,7 @@ class CorePackageChecker(Checker):
             return str(e)
 
     def check_git_stats(self):
-        """Check the content of package metadata taken from git_stats.io."""
+        """Check the content of package metadata taken from git_stats.json."""
         try:
             data = self.read_metadata("git_stats")
             assert data, "N/A"

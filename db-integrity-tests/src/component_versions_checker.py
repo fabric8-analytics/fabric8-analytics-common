@@ -15,9 +15,35 @@ class ComponentVersionsChecker(Checker):
         self.ecosystem = ecosystem
         self.package_name = package_name
 
+    @property
+    def version(self):
+        """Return the current value of the version property."""
+        return self._version
+
+    @version.setter
+    def version(self, version):
+        """Set the value of the version property."""
+        self._version = version
+
+    def check_release_attribute(self, data):
+        """Check the content of _release attribute.
+
+        Check that the attribute _release contains proper release string for given ecosystem
+        and package.
+        """
+        self.check_attribute_presence(data, "_release")
+        assert data["_release"] == self.release_string(self.ecosystem, self.package_name,
+                                                       self._version)
+
+    def read_core_metadata(self):
+        """Read JSON metadata for the given key."""
+        key = self.s3interface.component_key(self.ecosystem, self.package_name, self._version)
+        return self.s3interface.read_object(ComponentVersionsChecker.BUCKET_NAME, key)
+
     def read_metadata(self, metadata_key):
         """Read JSON metadata for the given key."""
-        key = self.s3interface.package_analysis_key(self.ecosystem, self.package_name, metadata_key)
+        key = self.s3interface.component_analysis_key(self.ecosystem, self.package_name,
+                                                      self._version, metadata_key)
         return self.s3interface.read_object(ComponentVersionsChecker.BUCKET_NAME, key)
 
     def read_metadata_list(self):
@@ -60,3 +86,230 @@ class ComponentVersionsChecker(Checker):
         # so the union will be the same
         versions = directories | version_jsons
         return directories, version_jsons, versions, metadata_list
+
+    def check_core_data(self):
+        """Check the component core data read from the AWS S3 database.
+
+        Expected format (with an example data):
+            {
+              "analyses": [
+                "security_issues",
+                "metadata",
+                "keywords_tagging",
+                "digests",
+                "source_licenses",
+                "dependency_snapshot"
+              ],
+              "audit": null,
+              "dependents_count": -1,
+              "ecosystem": "pypi",
+              "finished_at": "2017-10-06T13:41:43.450021",
+              "id": 1,
+              "latest_version": "0.2.4",
+              "package": "clojure_py",
+              "package_info": {
+                "dependents_count": -1,
+                "relative_usage": "not used"
+              },
+              "release": "pypi:clojure_py:0.2.4",
+              "started_at": "2017-10-06T13:39:30.134801",
+              "subtasks": null,
+              "version": "0.2.4"
+            }
+        """
+        try:
+            data = self.read_core_metadata()
+            assert data, "N/A"
+            started_at = self.check_and_get_attribute(data, "started_at")
+            self.check_timestamp(started_at)
+
+            finished_at = self.check_and_get_attribute(data, "finished_at")
+            self.check_timestamp(finished_at)
+
+            actual_ecosystem = self.check_and_get_attribute(data, "ecosystem")
+
+            assert self.ecosystem == actual_ecosystem, "Ecosystem {e1} differs from expected " \
+                "ecosystem {e2}".format(e1=actual_ecosystem, e2=self.ecosystem)
+
+            actual_package = self.check_and_get_attribute(data, "package")
+            assert self.package_name == actual_package, "Package {p1} differs from expected " \
+                "package {p2}".format(p1=actual_package, p2=self.package_name)
+
+            actual_version = self.check_and_get_attribute(data, "version")
+            assert self._version == actual_version, "Version {v1} differs from expected " \
+                "version {v2}".format(v1=actual_version, v2=self._version)
+
+            # the following attributes are expected to be presented for all component
+            # toplevel metadata
+            attributes_to_check = ["id", "analyses", "audit", "dependents_count", "latest_version",
+                                   "package_info", "subtasks"]
+            self.check_attributes_presence(data, attributes_to_check)
+
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
+    def check_code_metrics(self):
+        """Check the content of package version metadata taken from core_metrics.json."""
+        try:
+            data = self.read_metadata("code_metrics")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+            self.check_attributes_presence(data, ["details", "schema", "summary"])
+            summary = data["summary"]
+            self.check_attributes_presence(summary, ["blank_lines", "code_lines", "comment_lines",
+                                                     "total_files", "total_lines"])
+            details = data["details"]
+            #
+            #
+            # 'details': {   'languages': [   {   'blank_lines': 433,
+            #                                    'code_lines': 2927,
+            #                                    'comment_lines': 62,
+            #                                    'files_count': 1,
+            #                                    'language': 'Clojure'},
+            #                                {   'blank_lines': 1771,
+            #                                    'code_lines': 6679,
+            #                                    'comment_lines': 1174,
+            #                                    'files_count': 77,
+            #                                    'language': 'Python',
+            #
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
+    def check_dependency_snapshot(self):
+        """Check the content of package version metadata taken from dependency_snapshot.json."""
+        try:
+            data = self.read_metadata("dependency_snapshot")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+            self.check_schema_attribute(data, "dependency_snapshot", "1-0-0")
+            self.check_attribute_presence(data, "summary")
+            summary = data["summary"]
+            self.check_attributes_presence(summary, ["dependency_counts", "errors"])
+            dependency_counts = self.check_and_get_attribute(summary, "dependency_counts")
+            runtime_count = self.check_and_get_attribute(dependency_counts, "runtime")
+            assert int(runtime_count) >= 0
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
+    def check_digests(self):
+        """Check the content of package version metadata taken from digests.json."""
+        try:
+            data = self.read_metadata("digests")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+            self.check_schema_attribute(data, "digests", "1-0-0")
+            self.check_attributes_presence(data, ["details", "summary"])
+            details = self.check_and_get_attribute(data, "details")
+            assert len(details) >= 0
+            # TODO: list of maps
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
+    def check_keywords_tagging(self):
+        """Check the content of package version metadata taken from keywords_tagging.json."""
+        try:
+            data = self.read_metadata("keywords_tagging")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+            self.check_attributes_presence(data, ["details", "summary"])
+            #  no schema to check (yet?)
+            #  tracked here: https://github.com/openshiftio/openshift.io/issues/1074
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
+    def check_metadata(self):
+        """Check the content of package version metadata taken from metadata.json."""
+        try:
+            data = self.read_metadata("metadata")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+            self.check_attributes_presence(data, ["details", "summary", "schema"])
+            self.check_schema_attribute(data, "metadata", "3-2-0")
+            details = data["details"]
+            # TODO: list of maps
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
+    def check_security_issues(self):
+        """Check the content of package version metadata taken from security_issues.json."""
+        try:
+            data = self.read_metadata("security_issues")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+            self.check_schema_attribute(data, "security_issues", "3-0-1")
+            self.check_attributes_presence(data, ["details", "summary", "schema"])
+            details = data["details"]
+            assert type(details) is list
+            # TODO: list of maps
+            summary = data["summary"]
+            for cve in summary:
+                self.check_cve_value(cve)
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
+    def check_source_licenses(self):
+        """Check the content of package version metadata taken from source_licenses.json."""
+        try:
+            data = self.read_metadata("source_licenses")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+            self.check_schema_attribute(data, "source_licenses", "3-0-0")
+            self.check_attributes_presence(data, ["details", "summary", "schema"])
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
+    def check_leftovers(self, jsons):
+        """Check for any leftovers in the S3 database."""
+        try:
+            jsons = [json[1 + json.find("/"):] for json in jsons]
+            jsons = set(jsons)
+
+            expected = {'security_issues.json', 'digests.json', 'metadata.json',
+                        'dependency_snapshot.json', 'code_metrics.json', 'source_licenses.json',
+                        'keywords_tagging.json'}
+
+            leftovers = jsons - expected
+            assert not leftovers, ",".join(leftovers)
+            return "none"
+        except ClientError as e:
+            return "S3-related error"
+        except Exception as e:
+            return str(e)

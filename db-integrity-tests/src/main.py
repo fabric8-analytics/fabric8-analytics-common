@@ -113,22 +113,41 @@ def check_package_versions_in_ecosystem(s3interface, csvReporter, ecosystem):
     """Check all package versions in selected ecosystem."""
     packages = s3interface.read_packages_for_ecosystem(ecosystem)
 
+    # dummy read
+    # core_packages = read_list("s3_core_packages.txt")
+    # packages = read_list("s3_packages.txt")
+
     for package_name in packages:
         component_versions_checker = ComponentVersionsChecker(s3interface, ecosystem, package_name)
         all_jsons = component_versions_checker.read_metadata_list()
-        directories, version_jsons, versions = component_versions_checker.read_versions()
+        directories, version_jsons, versions, metadata_list = \
+            component_versions_checker.read_versions()
 
         for version in sorted(versions):
+            component_versions_checker.version = version
             base_json = version in version_jsons
             subdir = version in directories
-            csvReporter.package_version_info(ecosystem, package_name, version, base_json, subdir)
+            metadata_for_version = [m for m in metadata_list if m.startswith(version + "/")]
+            core_data = component_versions_checker.check_core_data()
+            code_metrics = component_versions_checker.check_code_metrics()
+            dependency_snapshot = component_versions_checker.check_dependency_snapshot()
+            digests = component_versions_checker.check_digests()
+            keywords_tagging = component_versions_checker.check_keywords_tagging()
+            metadata = component_versions_checker.check_metadata()
+            security_issues = component_versions_checker.check_security_issues()
+            source_licenses = component_versions_checker.check_source_licenses()
+            leftovers = component_versions_checker.check_leftovers(metadata_for_version)
+            csvReporter.package_version_info(ecosystem, package_name, version, base_json, subdir,
+                                             core_data, code_metrics, dependency_snapshot, digests,
+                                             keywords_tagging, metadata, security_issues,
+                                             source_licenses, leftovers)
 
 
 def check_packages_in_s3(s3interface):
     """Check all packages in all ecosystems."""
     ECOSYSTEMS = ["pypi"]
-    with CSVReporter("s3_packages.csv") as csvReporter:
-        csvReporter.csv_header()
+    with CSVReporter("s3_core_packages.csv") as csvReporter:
+        csvReporter.csv_header_for_core_packages()
         for ecosystem in ECOSYSTEMS:
             check_packages_in_ecosystem(s3interface, csvReporter, ecosystem)
 
