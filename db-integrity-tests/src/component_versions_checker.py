@@ -214,7 +214,7 @@ class ComponentVersionsChecker(Checker):
             self.check_status_attribute(data)
             self.check_schema_attribute(data, "digests", "1-0-0")
             self.check_attributes_presence(data, ["details", "summary"])
-            details = self.check_and_get_attribute(data,"details")
+            details = self.check_and_get_attribute(data, "details")
             assert len(details) >= 0
             # TODO: list of maps
             return "OK"
@@ -296,6 +296,20 @@ class ComponentVersionsChecker(Checker):
         except Exception as e:
             return str(e)
 
-    def check_leftovers(self):
+    def check_leftovers(self, jsons):
         """Check for any leftovers in the S3 database."""
-        return "?"
+        try:
+            jsons = [json[1 + json.find("/"):] for json in jsons]
+            jsons = set(jsons)
+
+            expected = {'security_issues.json', 'digests.json', 'metadata.json',
+                        'dependency_snapshot.json', 'code_metrics.json', 'source_licenses.json',
+                        'keywords_tagging.json'}
+
+            leftovers = jsons - expected
+            assert not leftovers, ",".join(leftovers)
+            return "none"
+        except ClientError as e:
+            return "S3-related error"
+        except Exception as e:
+            return str(e)
