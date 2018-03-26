@@ -39,8 +39,15 @@ class CSVReporter:
 
     def csv_header_for_package_version(self):
         """Write the header row."""
-        self.writer.writerow(["Ecosystem", "Package", "Version", "Base JSON", "Subdir"])
+        self.writer.writerow(["Ecosystem", "Package", "Version", "Base JSON", "Subdir", "Core data",
+                              "Code metrics", "Dependency snapshot", "Digests", "Keywords tagging",
+                              "Metadata", "Security issues", "Source licenses", "Leftovers"])
 
-    def package_version_info(self, ecosystem, package_name, version, base_json, subdir):
+    def package_version_info(self, ecosystem, package_name, version, base_json, subdir, core_data,
+                             code_metrics, dependency_snapshot, digests, keywords_tagging,
+                             metadata, security_issues, source_licenses, leftovers):
         """Write the record with E+P+V data."""
-        self.writer.writerow([ecosystem, package_name, version, int(base_json), int(subdir)])
+        self.writer.writerow([ecosystem, package_name, version, int(base_json), int(subdir),
+                              core_data, code_metrics, dependency_snapshot, digests,
+                              keywords_tagging, metadata, security_issues, source_licenses,
+                              leftovers])
