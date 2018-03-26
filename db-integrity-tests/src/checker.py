@@ -21,6 +21,14 @@ class Checker:
             "'%s' attribute is expected in the node, " \
             "found: %s attributes " % (attribute_name, ", ".join(found_attributes))
 
+    def check_attributes_presence(self, node, attributes):
+        """Check the attributes presence in the given dictionary or list.
+
+        To be used to check the deserialized JSON data etc.
+        """
+        for attribute_name in attributes:
+            self.check_attribute_presence(node, attribute_name)
+
     def check_and_get_attribute(self, node, attribute_name):
         """Check the attribute presence and if the attribute is found, return its value."""
         self.check_attribute_presence(node, attribute_name)
@@ -66,6 +74,32 @@ class Checker:
         # the ValueError exception is raised or not
         datetime.datetime.strptime(timestamp, timeformat)
 
+    def check_cve_value(self, cve, with_score=False):
+        """Check CVE values in CVE records."""
+        if with_score:
+            # please note that in graph DB, the CVE entries have the following format:
+            # CVE-2012-1150:5.0
+            # don't ask me why, but the score is stored in one field together with ID itself
+            # the : character is used as a separator
+            pattern = "CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
+        else:
+            # the 'classis' CVE
+            pattern = "CVE-(\d{4})-\d{4,}"
+
+        match = re.fullmatch(pattern, cve)
+        assert match is not None, "Improper CVE number %s" % cve
+
+        year = int(match.group(1))
+        current_year = datetime.datetime.now().year
+
+        # well the lower limit is a bit arbitrary
+        # (according to SRT guys it should be 1999)
+        assert year >= 1999 and year <= current_year
+
+        if with_score:
+            score = float(match.group(2))
+            assert score >= 0.0 and score <= 10.0
+
     def check_audit_metadata(self, data):
         """Check the metadata stored in the _audit attribute.
 
@@ -107,3 +141,8 @@ class Checker:
         # check the schema version (ATM we are able to check just one fixed version)
         assert version == expected_schema_version, "Schema version {v1} is different from " \
             "expected version {v2}".format(v1=version, v2=expected_schema_version)
+
+    @staticmethod
+    def release_string(ecosystem, package, version=None):
+        """Construct a string with ecosystem:package or ecosystem:package:version tuple."""
+        return "{e}:{p}:{v}".format(e=ecosystem, p=package, v=version)
