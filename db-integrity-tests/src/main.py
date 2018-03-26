@@ -8,6 +8,7 @@ from s3configuration import S3Configuration
 from gremlin_configuration import GremlinConfiguration
 from gremlin_interface import GremlinInterface
 from cliargs import *
+from utils import *
 from csv_reporter import CSVReporter
 from schema_validator import *
 from core_package_checker import CorePackageChecker
@@ -91,6 +92,7 @@ def check_packages_in_ecosystem(s3interface, csvReporter, ecosystem):
         core_package_github_details = "N/A"
         core_package_keywords_tagging = "N/A"
         core_package_libraries_io = "N/A"
+        core_package_git_stats = "N/A"
         core_package_leftovers = "N/A"
 
         if in_core_packages:
@@ -98,12 +100,13 @@ def check_packages_in_ecosystem(s3interface, csvReporter, ecosystem):
             core_package_github_details = core_package_checker.check_github_details()
             core_package_keywords_tagging = core_package_checker.check_keywords_tagging()
             core_package_libraries_io = core_package_checker.check_libraries_io()
+            core_package_git_stats = core_package_checker.check_git_stats()
             core_package_leftovers = core_package_checker.check_leftovers()
 
         csvReporter.core_package_info(ecosystem, package_name, in_core_packages, in_packages,
                                       core_package_json, core_package_github_details,
                                       core_package_keywords_tagging, core_package_libraries_io,
-                                      core_package_leftovers)
+                                      core_package_git_stats, core_package_leftovers)
 
 
 def check_package_versions_in_ecosystem(s3interface, csvReporter, ecosystem):
