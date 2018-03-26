@@ -59,4 +59,4 @@ class ComponentVersionsChecker(Checker):
         # ideally the following property should be true: directories=versions_json
         # so the union will be the same
         versions = directories | version_jsons
-        return directories, version_jsons, versions
+        return directories, version_jsons, versions, metadata_list

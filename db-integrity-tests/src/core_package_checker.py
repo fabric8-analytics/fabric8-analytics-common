@@ -101,6 +101,22 @@ class CorePackageChecker(Checker):
         except Exception as e:
             return str(e)
 
+    def check_git_stats(self):
+        """Check the content of package metadata taken from git_stats.io."""
+        try:
+            data = self.read_metadata("git_stats")
+            assert data, "N/A"
+            self.check_audit_metadata(data)
+            self.check_release_attribute(data)
+            self.check_status_attribute(data)
+            details = self.get_details_node(data)
+            self.check_attribute_presence(details, "master")
+            return "OK"
+        except ClientError as e:
+            return "N/A"
+        except Exception as e:
+            return str(e)
+
     def check_leftovers(self):
         """Check for any leftovers in the S3 database."""
         try:
