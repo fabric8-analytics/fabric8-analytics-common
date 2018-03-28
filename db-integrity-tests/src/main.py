@@ -23,7 +23,14 @@ ECOSYSTEMS = [
 
 def initial_checks(s3interface, gremlinInterface):
     """Perform initial checks of services + selftest."""
-    check_buckets_existence(s3interface)
+    if s3interface is not None:
+        check_buckets_existence(s3interface)
+    else:
+        logging.info("S3 tests disabled, skipping")
+    if gremlinInterface is not None:
+        pass
+    else:
+        logging.info("Gremlin tests disabled, skipping")
 
 
 def check_buckets_existence(s3interface):
@@ -168,15 +175,26 @@ def main():
     cli_arguments = cli_parser.parse_args()
     set_log_level(cli_arguments.log_level)
 
-    s3configuration = S3Configuration()
-    s3interface = S3Interface(s3configuration)
-    s3interface.connect()
+    s3_tests_enabled = not cli_arguments.disable_s3_tests
+    gremlin_tests_enabled = not cli_arguments.disable_gremlin_tests
 
-    gremlinConfiguration = GremlinConfiguration()
-    gremlinInterface = GremlinInterface(gremlinConfiguration)
+    s3interface = None
+    if s3_tests_enabled:
+        s3configuration = S3Configuration()
+        s3interface = S3Interface(s3configuration)
+        s3interface.connect()
+
+    gremlinInterface = None
+    if gremlin_tests_enabled:
+        gremlinConfiguration = GremlinConfiguration()
+        gremlinInterface = GremlinInterface(gremlinConfiguration)
 
     initial_checks(s3interface, gremlinInterface)
-    check_ecosystems_in_s3(s3interface)
+
+    if cli_arguments.check:
+        logging.info("Only initial check is performed, exiting")
+        sys.exit()
+
     check_packages_in_s3(s3interface)
 
 
