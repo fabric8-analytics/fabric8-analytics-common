@@ -34,6 +34,7 @@ class Results():
         self.ci_jobs_links = defaultdict(dict)
         self.ci_jobs_statuses = defaultdict(dict)
         self.sprint = None
+        self.sprint_plan_url = None
         self.teams = {}
         self.issues_list_url = {}
         self.unit_test_coverage = {}
