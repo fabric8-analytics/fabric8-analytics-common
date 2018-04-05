@@ -27,6 +27,17 @@ class Config:
         except (configparser.NoSectionError, configparser.NoOptionError):
             return None
 
+    def get_sprint_plan_url(self):
+        """Return URL to sprint plan."""
+        try:
+            plan_issue = self.config.get('sprint', 'plan_issue')
+            project_url = self.get_project_url()
+            url = '{project_url}/issues/{plan_issue}'.format(
+                project_url=project_url, plan_issue=plan_issue)
+            return url
+        except (configparser.NoSectionError, configparser.NoOptionError):
+            return None
+
     def get_list_of_issues_url(self, team):
         """Return URL to list of issues for selected team."""
         try:

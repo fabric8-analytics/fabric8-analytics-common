@@ -472,6 +472,8 @@ def main():
     results.smoke_tests_total_builds, results.smoke_tests_success_builds = \
         production_smoketests_status(ci_jobs)
 
+    results.sprint_plan_url = config.get_sprint_plan_url()
+
     for team in teams:
         results.issues_list_url[team] = config.get_list_of_issues_url(team)
 
