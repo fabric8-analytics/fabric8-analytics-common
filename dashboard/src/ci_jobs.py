@@ -25,8 +25,8 @@ class CIJobs:
         # the job with given type might not exist, return None in such cases
         try:
             # remove prefix from repository name because we use shorter names in the INI file
-            repository_name = CIJobs.remove_prefix(repository_name, ["fabric8-analytics-",
-                                                                     "fabric8-"])
+            # repository_name = CIJobs.remove_prefix(repository_name, ["fabric8-analytics-",
+            #                                                          "fabric8-"])
             url_prefix = self.get_ci_url()
             url_suffix = self.config.get(repository_name, job_type)
             return CIJobs.construct_job_url(url_prefix, url_suffix)
@@ -38,8 +38,8 @@ class CIJobs:
         assert job_type in CIJobs.JOB_TYPES
         try:
             # remove prefix from repository name because we use shorter names in the INI file
-            repository_name = CIJobs.remove_prefix(repository_name, ["fabric8-analytics-",
-                                                                     "fabric8-"])
+            # repository_name = CIJobs.remove_prefix(repository_name, ["fabric8-analytics-",
+            #                                                          "fabric8-"])
             url_suffix = self.config.get(repository_name, job_type)
             return url_suffix
         except (configparser.NoSectionError, configparser.NoOptionError):

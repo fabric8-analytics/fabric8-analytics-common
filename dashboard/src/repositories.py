@@ -10,5 +10,6 @@ repositories = [
     "fabric8-analytics-license-analysis",
     "fabric8-analytics-data-model",
     "fabric8-analytics-recommender",
-    "fabric8-gemini-server"
+    "fabric8-gemini-server",
+    "f8a-server-backbone"
 ]
