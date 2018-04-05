@@ -125,7 +125,7 @@ def is_repository_cloned(repository):
 def clone_repository(repository):
     """Clone the selected repository."""
     print("Cloning the repository {repository}".format(repository=repository))
-    prefix = "https://github.com/fabric8-analytics"
+    prefix = "https://github.com/"
     command = "git clone --single-branch --depth 1 {prefix}/{repo}.git".format(prefix=prefix,
                                                                                repo=repository)
     os.system(command)
