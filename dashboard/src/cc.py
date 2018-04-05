@@ -31,12 +31,18 @@ class Results():
         return template.format(unit_test_coverage=self.unit_test_coverage)
 
 
-def generate_coverage_page(results):
+def generate_coverage_page(results, page_name):
     """Generate the code coverage HTML page with measured content."""
-    template = Template(filename="template/coverage.html")
+    template = Template(filename="template/{template}".format(template=page_name))
     generated_page = template.render(**results.__dict__)
-    with open("coverage.html", "w") as fout:
+    with open(page_name, "w") as fout:
         fout.write(generated_page)
+
+
+def generate_coverage_pages(results):
+    """Generate the code coverage HTML pages with measured content."""
+    generate_coverage_page(results, "coverage.html")
+    generate_coverage_page(results, "coverage2txt.html")
 
 
 def prepare_data_for_repositories(repositories, results):
@@ -78,7 +84,7 @@ def main():
 
     prepare_data_for_repositories(repositories, results)
 
-    generate_coverage_page(results)
+    generate_coverage_pages(results)
 
 
 if __name__ == "__main__":
