@@ -37,8 +37,9 @@ def check_uuid(uuid):
 
     Supported format: 71769af6-0a39-4242-94be-1f84f04c8a56
     """
-    regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}\Z',
-                       re.I)
+    regex = re.compile(
+        r'^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}\Z',
+        re.I)
     match = regex.match(uuid)
     return bool(match)
 
@@ -168,9 +169,9 @@ def check_cve_value(cve, with_score=False):
         # CVE-2012-1150:5.0
         # don't ask me why, but the score is stored in one field together with ID itself
         # the : character is used as a separator
-        pattern = "CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
+        pattern = r"CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
     else:
-        pattern = "CVE-(\d{4})-\d{4,}"
+        pattern = r"CVE-(\d{4})-\d{4,}"
 
     match = re.fullmatch(pattern, cve)
     assert match is not None, "Improper CVE number %s" % cve
