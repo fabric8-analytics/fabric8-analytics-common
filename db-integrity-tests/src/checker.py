@@ -81,10 +81,10 @@ class Checker:
             # CVE-2012-1150:5.0
             # don't ask me why, but the score is stored in one field together with ID itself
             # the : character is used as a separator
-            pattern = "CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
+            pattern = r"CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
         else:
             # the 'classis' CVE
-            pattern = "CVE-(\d{4})-\d{4,}"
+            pattern = r"CVE-(\d{4})-\d{4,}"
 
         match = re.fullmatch(pattern, cve)
         assert match is not None, "Improper CVE number %s" % cve

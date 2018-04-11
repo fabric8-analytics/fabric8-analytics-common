@@ -18,7 +18,7 @@ def unit_test_coverage_ok(unit_test_coverage):
 
 def parse_unit_test_statistic(line):
     """Parse the line containing unit test coverage statistic."""
-    pattern = re.compile('TOTAL\s+(\d+)\s+(\d+)\s+(\d+)%')
+    pattern = re.compile(r'TOTAL\s+(\d+)\s+(\d+)\s+(\d+)%')
     match = pattern.match(line)
     if len(match.groups()) == 3:
         coverage = match.group(3)

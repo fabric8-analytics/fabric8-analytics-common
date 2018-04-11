@@ -14,7 +14,7 @@ def parse_float_value_from_text_stream(text, key):
     Go through all lines of the text file, find the line with given key
     and parse float value specified here.
     """
-    regexp = key + "\s*=\s*(\d.\d*)"
+    regexp = key + r"\s*=\s*(\d.\d*)"
     for line in text.split("\n"):
         if line.startswith(key):
             # the key was found, now try to find and parse the float value
