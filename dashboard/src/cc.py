@@ -10,6 +10,7 @@ import re
 from repositories import *
 from source_files import *
 from unit_tests import *
+from config import *
 
 
 class Results():
@@ -21,6 +22,8 @@ class Results():
         self.repo_prefix = "https://github.com/fabric8-analytics/"
         self.source_files = {}
         self.improvement = {}
+        self.threshold = {}
+        self.threshold_pass = {}
         self.f = lambda number: '{0:.2f}'.format(number)  # function to format floating point number
         self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
         self.unit_test_coverage = {}
@@ -45,7 +48,7 @@ def generate_coverage_pages(results):
     generate_coverage_page(results, "coverage2txt.html")
 
 
-def prepare_data_for_repositories(repositories, results):
+def prepare_data_for_repositories(repositories, results, config):
     """Accumulate results."""
     results.repositories = repositories
     for repository in repositories:
@@ -55,9 +58,26 @@ def prepare_data_for_repositories(repositories, results):
             coverage = read_unit_test_coverage_for_week(repository, week)
             print(coverage)
             results.unit_test_coverage[repository].append(coverage)
+
         update_improvement(results, repository)
+        update_coverage_threshold_pass(results, repository, config)
     for repository in repositories:
         print(results.improvement[repository])
+
+
+def update_coverage_threshold_pass(results, repository, config):
+    """Update the 'coverage threshold' message."""
+    threshold = config.get_code_coverage_threshold_for_project(repository)
+    coverage = read_unit_test_coverage_for_week(repository, 1)
+    threshold_pass = None
+
+    if coverage:
+        coverage_value = coverage.get("coverage")
+        if threshold is not None and coverage_value is not None:
+            threshold_pass = int(coverage_value) >= threshold
+
+    results.threshold[repository] = threshold
+    results.threshold_pass[repository] = threshold_pass
 
 
 def update_improvement(results, repository):
@@ -80,9 +100,10 @@ def update_improvement(results, repository):
 
 def main():
     """Entry point to the CC reporter."""
+    config = Config()
     results = Results()
 
-    prepare_data_for_repositories(repositories, results)
+    prepare_data_for_repositories(repositories, results, config)
 
     generate_coverage_pages(results)
 

@@ -24,39 +24,39 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">Code quality</div>
                 <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="3">Code coverage</th><th>Overall status</th><th>Diff</th></tr>
-                    <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+                    <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="3">Code coverage</th><th>Overall status</th><th>Diff</th><th colspan=2">Goal</th></tr>
+                    <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>&nbsp;</th><th>&nbsp;</th><th>Threshold</th><th>Pass?</th></tr>
                 % for repository in repositories:
                     <tr>
                         <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a><br />&nbsp;</td>
                         <td class="numeric" style="width:7ex"><a href="repository_${repository}.html">${source_files[repository]["count"]}</a><br />&nbsp;</td>
                         <td class="numeric" style="width:7ex">${source_files[repository]["total_lines"]}<br />&nbsp;</td>
                         % if unit_test_coverage[repository][0] is not None and unit_test_coverage[repository][1]:
-                        <td class="numeric ok" style="width:7ex">
-                            ${unit_test_coverage[repository][0]["statements"]}<br />
-                            ${unit_test_coverage[repository][1]["statements"]}
-                        </td>
-                        <td class="numeric error" style="width:7ex">
-                            ${unit_test_coverage[repository][0]["missed"]}<br />
-                            ${unit_test_coverage[repository][1]["missed"]}
-                        </td>
-                        <td class="numeric" style="width:16ex">
-                            <a href="${repository}.coverage.0.txt">
-                                <div class='progress-bar ${unit_test_coverage[repository][0]["progress_bar_class"]} progress-bar-striped' style='width:${unit_test_coverage[repository][0]["progress_bar_width"]}%'>
-                                ${unit_test_coverage[repository][0]["coverage"]}%
-                                </div>
-                            </a><br />
-                            <div style="margin-bottom:2px"></div>
-                            <a href="${repository}.coverage.1.txt">
-                                <div class='progress-bar ${unit_test_coverage[repository][1]["progress_bar_class"]} progress-bar-striped' style='width:${unit_test_coverage[repository][1]["progress_bar_width"]}%'>
-                                ${unit_test_coverage[repository][1]["coverage"]}%
-                                </div>
-                            </a>
-                        </td>
+                            <td class="numeric ok" style="width:7ex">
+                                ${unit_test_coverage[repository][0]["statements"]}<br />
+                                ${unit_test_coverage[repository][1]["statements"]}
+                            </td>
+                            <td class="numeric error" style="width:7ex">
+                                ${unit_test_coverage[repository][0]["missed"]}<br />
+                                ${unit_test_coverage[repository][1]["missed"]}
+                            </td>
+                            <td class="numeric" style="width:16ex">
+                                <a href="${repository}.coverage.0.txt">
+                                    <div class='progress-bar ${unit_test_coverage[repository][0]["progress_bar_class"]} progress-bar-striped' style='width:${unit_test_coverage[repository][0]["progress_bar_width"]}%'>
+                                    ${unit_test_coverage[repository][0]["coverage"]}%
+                                    </div>
+                                </a><br />
+                                <div style="margin-bottom:2px"></div>
+                                <a href="${repository}.coverage.1.txt">
+                                    <div class='progress-bar ${unit_test_coverage[repository][1]["progress_bar_class"]} progress-bar-striped' style='width:${unit_test_coverage[repository][1]["progress_bar_width"]}%'>
+                                    ${unit_test_coverage[repository][1]["coverage"]}%
+                                    </div>
+                                </a>
+                            </td>
                         % else:
-                        <td style="width:7ex">&nbsp;</td>
-                        <td style="width:7ex">&nbsp;</td>
-                        <td style="width:16ex">&nbsp;</td>
+                            <td style="width:7ex">&nbsp;</td>
+                            <td style="width:7ex">&nbsp;</td>
+                            <td style="width:16ex">&nbsp;</td>
                         % endif
                         % if improvement[repository] == "better":
                             <td class="boolean ok">&#x2713;<br />better</td>
@@ -71,6 +71,20 @@
                             <td style="width:10ex"><a href="${repository}.coverage.png">diff</a></td>
                         % else:
                             <td style="width:10ex">&nbsp;</td>
+                        % endif
+                        <td class="numeric" style="width:5ex">
+                            % if threshold[repository]:
+                                ${threshold[repository]} %
+                            % endif
+                        </td>
+                        % if threshold_pass[repository] is not None:
+                            % if threshold_pass[repository]:
+                                <td class="boolean ok">yes</td>
+                            % else:
+                                <td class="boolean error">no</td>
+                            % endif
+                        % else:
+                            <td style="width:5ex">&nbsp;</td>
                         % endif
                     </tr>
                 % endfor
