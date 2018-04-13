@@ -7,4 +7,4 @@ function prepare_venv() {
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
 python3 -B src/cc.py $@
-links -width 125 -dump coverage2txt.html | sed 's/^[ \t]*//;s/[ \t]*$//' > coverage2.txt
+links -width 125 -dump coverage2txt.html | sed 's/^[ \t]*//;s/[ \t]*$//' > coverage.txt
