@@ -50,6 +50,17 @@ class Config:
         except (configparser.NoSectionError, configparser.NoOptionError):
             return None
 
+    def get_code_coverage_threshold_for_project(self, project_name):
+        """Return code coverage threshold for selected project."""
+        try:
+            # disable interpolation driven by % character
+            value = self.config.get('code_coverage_threshold', project_name, raw=True)
+            if value.endswith('%'):
+                value = value[:-1]
+            return int(value)
+        except (configparser.NoSectionError, configparser.NoOptionError, ValueError):
+            return None
+
 
 if __name__ == "__main__":
     # execute simple checks, but only if run this module as a script
