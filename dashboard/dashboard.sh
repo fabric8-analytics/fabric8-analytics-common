@@ -26,13 +26,14 @@ function run_smoketests()
     pushd ../integration-tests/
     export F8A_API_URL=$1
     export F8A_JOB_API_URL=$2
+    export F8A_ANITYA_API_URL=not_used
     ./runtest.sh --tags=smoketest > $cwd/$3
     echo $? > $cwd/$4
     popd
 }
 
-run_smoketests $F8A_API_URL_STAGE $F8A_JOB_API_URL_STAGE smoketests_stage.log smotests_stage.results
-run_smoketests $F8A_API_URL_PROD $F8A_JOB_API_URL_PROD smoketests_prod.log smotests_prod.results
+run_smoketests $F8A_API_URL_STAGE $F8A_JOB_API_URL_STAGE smoketests_stage.log smoketests_stage.results
+run_smoketests $F8A_API_URL_PROD $F8A_JOB_API_URL_PROD smoketests_prod.log smoketests_prod.results
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
