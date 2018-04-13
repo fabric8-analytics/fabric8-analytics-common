@@ -23,8 +23,8 @@
             </nav>
             <div class="panel panel-primary">
                 <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="4">Code coverage</th><th>Overall status</th></tr>
-                    <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Week</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>&nbsp;</th></tr>
+                    <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="4">Code coverage</th><th>Overall status</th><th colspan=2">Goal</th></tr>
+                    <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Week</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>&nbsp;</th><th>Threshold</th><th>Pass?</th></tr>
                 % for repository in repositories:
                     <tr>
                         <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a><br />&nbsp;</td>
@@ -67,6 +67,20 @@
                             <td class="boolean ignored">=<br />the same</td>
                         % else:
                             <td class="boolean ignored">?</td>
+                        % endif
+                        <td class="numeric" style="width:5ex">
+                            % if threshold[repository]:
+                                ${threshold[repository]} %
+                            % endif
+                        </td>
+                        % if threshold_pass[repository] is not None:
+                            % if threshold_pass[repository]:
+                                <td class="boolean ok">yes</td>
+                            % else:
+                                <td class="boolean error">no</td>
+                            % endif
+                        % else:
+                            <td style="width:5ex">&nbsp;</td>
                         % endif
                     </tr>
                 % endfor
