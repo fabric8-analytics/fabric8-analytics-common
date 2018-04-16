@@ -1,4 +1,5 @@
 """Unsorted utility functions used in integration tests."""
+import os
 import requests
 import subprocess
 
@@ -15,6 +16,26 @@ def download_file_from_url(url):
 def split_comma_separated_list(l):
     """Split the list into elements separated by commas."""
     return [i.strip() for i in l.split(',')]
+
+
+def is_exe(fpath):
+    """Check if the given file is executable."""
+    return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+
+def which(program):
+    """A simple implementation of 'which' utility."""
+    fpath, fname = os.path.split(program)
+    if fpath:
+        if is_exe(program):
+            return program
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+
+    return None
 
 
 def oc_login(url, username, password, tls_verify=True):
@@ -64,3 +85,14 @@ def oc_delete_pods(selector, namespace=None):
         command.extend(['--namespace', namespace])
 
     subprocess.check_call(command)
+
+
+def oc_run_command(*args):
+    """Run any command via the OpenShift Console.
+
+    :return: The command output on success, raises `subprocess.CalledProcessError` on error
+    """
+    command = ['oc']
+    command.extend(args)
+
+    return subprocess.check_output(command)
