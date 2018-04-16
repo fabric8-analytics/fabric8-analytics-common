@@ -24,7 +24,7 @@ def is_exe(fpath):
 
 
 def which(program):
-    """A simple implementation of 'which' utility."""
+    """Implement a basic form of 'which' utility."""
     fpath, fname = os.path.split(program)
     if fpath:
         if is_exe(program):
