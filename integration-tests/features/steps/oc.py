@@ -83,3 +83,9 @@ def oc_service_exist(context, service_name):
     metadata = check_and_get_attribute(context.oc_result, "metadata")
     name = check_and_get_attribute(metadata, "name")
     assert name == service_name, "Returned service has wrong name {name}".format(name=name)
+
+
+@when(u'I delete all pods for the service {service_name}')
+def oc_delete_selected_pods(context, service_name):
+    """Delete selected pods."""
+    oc_delete_pods(service=service_name)
