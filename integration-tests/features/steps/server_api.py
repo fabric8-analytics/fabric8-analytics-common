@@ -1,6 +1,7 @@
 """Basic checks for the server API."""
 from behave import given, then, when
 import requests
+import time
 
 from src.utils import *
 from src.authorization_tokens import *
@@ -12,6 +13,19 @@ from src.schema_validator import *
 def access_url(context, url):
     """Access the service API using the HTTP GET method."""
     context.response = requests.get(context.coreapi_url + url)
+
+
+@when('I access the {url:S} {repeat_count:d} times with {delay:d} seconds delay')
+def access_url_repeatedly(context, url, repeat_count, delay):
+    """Access the service API using the HTTP GET method repeatedly."""
+    context.api_call_results = []
+    url = context.coreapi_url + url
+
+    # repeatedly call REST API endpoint and collect HTTP status codes
+    for i in range(repeat_count):
+        response = requests.get(url)
+        context.api_call_results.append(response.status_code)
+        time.sleep(delay)
 
 
 @when('I access {url:S} with authorization token')
