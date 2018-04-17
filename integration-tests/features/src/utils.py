@@ -73,7 +73,7 @@ def oc_delete_pods(selector, namespace=None):
     and has permissions to delete pods.
 
     Example usage:
-    oc_delete_pods('service=bayesian-pgbouncer'
+    oc_delete_pods('service=bayesian-pgbouncer')
 
     :param selector: str, selector identifying pods that will be deleted
     :param namespace: str, namespace in which `oc delete` command should be executed,
