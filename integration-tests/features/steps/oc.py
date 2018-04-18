@@ -88,4 +88,5 @@ def oc_service_exist(context, service_name):
 @when(u'I delete all pods for the service {service_name}')
 def oc_delete_selected_pods(context, service_name):
     """Delete selected pods."""
-    oc_delete_pods(service=service_name)
+    selector = "service={service_name}".format(service_name=service_name)
+    oc_delete_pods(selector)
