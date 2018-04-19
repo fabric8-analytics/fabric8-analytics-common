@@ -12,6 +12,7 @@ repositories = [
     "fabric8-analytics-recommender",
     "fabric8-analytics-api-gateway",
     "fabric8-analytics-nvd-toolkit",
+    "fabric8-analytics-auth",
     "fabric8-gemini-server",
     "f8a-server-backbone"
 ]
