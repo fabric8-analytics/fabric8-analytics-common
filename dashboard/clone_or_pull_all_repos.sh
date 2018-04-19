@@ -14,7 +14,11 @@ fabric8-analytics-recommender
 fabric8-analytics-server
 fabric8-analytics-stack-analysis
 fabric8-analytics-tagger
-fabric8-analytics-worker"
+fabric8-analytics-worker
+fabric8-analytics-nvd-toolkit
+fabric8-gemini-server
+fabric8-analytics-api-gateway
+f8a-server-backbone"
 
 for repository in $REPOSITORIES
 do
