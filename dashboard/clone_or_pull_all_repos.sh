@@ -16,6 +16,7 @@ fabric8-analytics-stack-analysis
 fabric8-analytics-tagger
 fabric8-analytics-worker
 fabric8-analytics-nvd-toolkit
+fabric8-analytics-auth
 fabric8-gemini-server
 fabric8-analytics-api-gateway
 f8a-server-backbone"
