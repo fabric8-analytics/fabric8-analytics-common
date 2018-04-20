@@ -20,7 +20,7 @@ from sla import *
 from ci_jobs import *
 from cliargs import *
 from config import *
-from repositories import *
+from repositories import Repositories
 from progress_bar import *
 from source_files import *
 from unit_tests import *
@@ -283,7 +283,7 @@ def cleanup_repository(repository):
         shutil.rmtree(repository, ignore_errors=True)
 
 
-def export_into_csv(results):
+def export_into_csv(results, repositories):
     """Export the results into CSV file."""
     record = [
         datetime.date.today().strftime("%Y-%m-%d"),
@@ -440,6 +440,7 @@ def main():
     """Entry point to the QA Dashboard."""
     config = Config()
     cli_arguments = cli_parser.parse_args()
+    repositories = Repositories(config)
 
     # some CLI arguments are used to DISABLE given feature of the dashboard,
     # but let's not use double negation everywhere :)
@@ -454,7 +455,7 @@ def main():
     results = Results()
 
     # list of repositories to check
-    results.repositories = repositories
+    results.repositories = repositories.repolist
 
     # we need to know which tables are enabled or disabled to proper process the template
     results.sla_table_enabled = sla_table_enabled
@@ -480,7 +481,7 @@ def main():
     if liveness_table_enabled:
         prepare_data_for_liveness_table(results, ci_jobs, job_statuses)
 
-    prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
+    prepare_data_for_repositories(repositories.repolist, results, ci_jobs, job_statuses,
                                   clone_repositories_enabled, cleanup_repositories_enabled,
                                   code_quality_table_enabled, ci_jobs_table_enabled)
 
@@ -488,7 +489,7 @@ def main():
         prepare_data_for_sla_table(results)
 
     if code_quality_table_enabled and liveness_table_enabled:
-        export_into_csv(results)
+        export_into_csv(results, repositories.repolist)
 
     generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
 

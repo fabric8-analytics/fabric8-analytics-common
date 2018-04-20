@@ -7,7 +7,7 @@ import time
 import shutil
 import re
 
-from repositories import *
+from repositories import Repositories
 from source_files import *
 from unit_tests import *
 from config import *
@@ -102,8 +102,9 @@ def main():
     """Entry point to the CC reporter."""
     config = Config()
     results = Results()
+    repositories = Repositories(config)
 
-    prepare_data_for_repositories(repositories, results, config)
+    prepare_data_for_repositories(repositories.repolist, results, config)
 
     generate_coverage_pages(results)
 

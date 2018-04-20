@@ -61,6 +61,12 @@ class Config:
         except (configparser.NoSectionError, configparser.NoOptionError, ValueError):
             return None
 
+    def get_repolist(self):
+        """Return list of all repositories that needs to be processed."""
+        data = self.config.get('repositories', 'repolist')
+        repositories = [reponame.strip() for reponame in data.split(',')]
+        return repositories
+
 
 if __name__ == "__main__":
     # execute simple checks, but only if run this module as a script
