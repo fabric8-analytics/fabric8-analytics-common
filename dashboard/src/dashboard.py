@@ -159,6 +159,16 @@ def run_docstyle_check(repository):
     os.system(command)
 
 
+def run_cyclomatic_complexity_tool(repository):
+    """Run Cyclomatic Complexity tool against the selected repository."""
+    command = "pushd {repo};radon cc -a -s -i venv . |ansi2html.py > ../{repo}.cc.html;popd".format(
+        repo=repository)
+    os.system(command)
+    command = "pushd {repo};radon cc -s -j -i venv . > ../{repo}.cc.json;popd".format(
+        repo=repository)
+    os.system(command)
+
+
 def percentage(part1, part2):
     """Compute percentage of failed tests."""
     total = part1 + part2
@@ -354,6 +364,7 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
         if code_quality_table_enabled:
             run_pylint(repository)
             run_docstyle_check(repository)
+            run_cyclomatic_complexity_tool(repository)
 
             results.source_files[repository] = get_source_files(repository)
             results.repo_linter_checks[repository] = parse_pylint_results(repository)
