@@ -248,7 +248,8 @@ def parse_cyclomatic_complexity(repository):
                 rank = block["rank"]
                 results[rank] += 1
 
-    results["status"] = results["D"] == 0 and results["E"] == 0 and results["F"] == 0
+    results["status"] = results["C"] == 0 and results["D"] == 0 and \
+        results["E"] == 0 and results["F"] == 0
     return results
 
 
@@ -261,7 +262,7 @@ def parse_maintainability_index(repository):
             rank = mi["rank"]
             results[rank] += 1
 
-    results["status"] = results["C"] == 0
+    results["status"] = results["B"] == 0 and results["C"] == 0
     return results
 
 
@@ -273,6 +274,8 @@ def update_overall_status(results, repository):
     linter_checks = results.repo_linter_checks[repository]
     docstyle_checks = results.repo_docstyle_checks[repository]
     unit_test_coverage = results.unit_test_coverage[repository]
+    cyclomatic_complexity = results.repo_cyclomatic_complexity[repository]
+    maintainability_index = results.repo_maintainability_index[repository]
 
     linter_checks_total = linter_checks["total"]
     docstyle_checks_total = docstyle_checks["total"]
@@ -283,7 +286,9 @@ def update_overall_status(results, repository):
     status = source_files == (linter_checks_total + ignored_pylint_files) and \
         source_files == (docstyle_checks_total + ignored_pydocstyle_files) and \
         linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0 and \
-        unit_test_coverage_ok(unit_test_coverage)
+        unit_test_coverage_ok(unit_test_coverage) and \
+        cyclomatic_complexity["status"] and \
+        maintainability_index["status"]
 
     if source_files != linter_checks_total + ignored_pylint_files:
         remarks += "not all source files are checked by linter<br>"
@@ -315,6 +320,12 @@ def update_overall_status(results, repository):
     if ignored_pydocstyle_files:
         remarks += "{n} file{s} ignored by pydocstyle<br>".format(
             n=ignored_pydocstyle_files, s="s" if ignored_pydocstyle_files > 1 else "")
+
+    if not cyclomatic_complexity["status"]:
+        remarks += "lower cyclomatic complexity<br>"
+
+    if not maintainability_index["status"]:
+        remarks += "improve maintainability index<br>"
 
     results.overall_status[repository] = status
     results.remarks[repository] = remarks
