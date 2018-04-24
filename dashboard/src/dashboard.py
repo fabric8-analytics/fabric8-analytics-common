@@ -169,6 +169,16 @@ def run_cyclomatic_complexity_tool(repository):
     os.system(command)
 
 
+def run_maintainability_index(repository):
+    """Run Maintainability Index tool against the selected repository."""
+    command = "pushd {repo};radon mi -s -i venv . | ansi2html.py > ../{repo}.mi.html;popd".format(
+        repo=repository)
+    os.system(command)
+    command = "pushd {repo};radon mi -s -j -i venv . > ../{repo}.mi.json;popd".format(
+        repo=repository)
+    os.system(command)
+
+
 def percentage(part1, part2):
     """Compute percentage of failed tests."""
     total = part1 + part2
@@ -365,6 +375,7 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
             run_pylint(repository)
             run_docstyle_check(repository)
             run_cyclomatic_complexity_tool(repository)
+            run_maintainability_index(repository)
 
             results.source_files[repository] = get_source_files(repository)
             results.repo_linter_checks[repository] = parse_pylint_results(repository)
