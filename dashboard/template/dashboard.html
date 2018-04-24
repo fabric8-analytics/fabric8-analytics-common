@@ -217,11 +217,31 @@
                                 <td style="width:7ex">&nbsp;</td>
                                 <td style="width:16ex">&nbsp;</td>
                             % endif
+
+                            % for rank in ["D", "E", "F"]:
+                                % if repo_cyclomatic_complexity[repository][rank] > 0:
+                                    <td class="numeric error" style="width:3ex;padding-left:0px">${repo_cyclomatic_complexity[repository][rank]}</td>
+                                % else:
+                                    <td class="numeric ok" style="width:3ex;padding-left:0px">${repo_cyclomatic_complexity[repository][rank]}</td>
+                                % endif
+                            % endfor
+
+                            <td class="numeric ignored" style="width:3ex;padding-left:0px">${repo_maintainability_index[repository]["A"]}</td>
+
+                            % for rank in ["B", "C"]:
+                                % if repo_maintainability_index[repository][rank] > 0:
+                                    <td class="numeric error" style="width:3ex;padding-left:0px">${repo_maintainability_index[repository][rank]}</td>
+                                % else:
+                                    <td class="numeric ok" style="width:3ex;padding-left:0px">${repo_cyclomatic_complexity[repository][rank]}</td>
+                                % endif
+                            % endfor
+
                             % if overall_status[repository]:
                                 <td class="boolean ok">&#x2713;</td>
                             % else:
                                 <td class="boolean error">&times;</td>
                             % endif
+
                             <td style="width:26ex">${remarks[repository]}</td>
                     % endfor
                     </table>
@@ -270,6 +290,11 @@
             <div>Author: Pavel Tisnovsky &lt;<a href="mailto:ptisnovs@redhat.com">ptisnovs@redhat.com</a>&gt;</div>
             <div>Generated on: ${generated_on}</div>
         </div>
+        <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+        </script>
     </body>
 </html>
 
