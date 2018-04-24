@@ -15,6 +15,8 @@ class Results():
         self.repo_statistics = {}
         self.repo_linter_checks = {}
         self.repo_docstyle_checks = {}
+        self.repo_cyclomatic_complexity = {}
+        self.repo_maintainability_index = {}
         self.repo_prefix = "https://github.com/fabric8-analytics/"
         self.source_files = {}
         self.overall_status = {}
