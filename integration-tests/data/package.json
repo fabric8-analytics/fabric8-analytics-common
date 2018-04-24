@@ -11,7 +11,9 @@
     "url": "git://github.com/amirrajan/word-finder.git"
   },
   "dependencies": {
-          "underscore": "1.8.1"
+          "underscore" : "1.8.1",
+          "express": "4.15.2",
+          "mongoose": "4.8.6"
   },
   "old_dependencies": {
     "babel-core": "^6.7.7",
