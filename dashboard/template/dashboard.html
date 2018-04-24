@@ -158,8 +158,27 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">Code quality</div>
                     <table class="table table-condensed table-hover table-bordered" rules="all">
-                        <tr><th>Repository</th><th colspan="2">Source files</th><th colspan="3">Linter results</th><th colspan="3">Pydocstyle results</th><th colspan="3">Code coverage</th><th>Overall status</th><th>Remark</th></tr>
-                        <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+                        <tr>
+                            <th>Repository</th>
+                            <th colspan="2">Source files</th>
+                            <th colspan="3">Linter results</th>
+                            <th colspan="3">Pydocstyle results</th>
+                            <th colspan="3">Code coverage</th>
+                            <th colspan="3"><a href="#" rel="popover" onclick="return false;" id="cc" title="Cyclomatic Complexity" data-html="true" data-toggle="popover" data-placement="top" data-content="&lt;pre&gt;Score  Rank  Risk
+ 1 -  5   A   low - simple block
+ 6 - 10   B   low - well structured and stable block
+11 - 20   C   moderate - slightly complex block
+21 - 30   D   more than moderate - more complex block
+31 - 40   E   high - complex block, alarming
+41+       F   very high - error-prone, unstable block&lt;/pre&gt;">Cyclomatic<br />Complexity</a></th>
+                            <th colspan="3"><a href="#" rel="popover" onclick="return false;" id="mi" title="Maintainability Index" data-html="true" data-toggle="popover" data-placement="top" data-content="&lt;pre&gt;Score   Rank  Maintainability
+100 - 20  A   Very high
+ 19 - 10  B   Medium
+  9 -  0  C   Extremely low&lt;/pre&gt;">Maintainabi-<br />lity Index</a></th>
+                            <th>Overall status</th>
+                            <th>Remark</th>
+                        </tr>
+                        <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>D</th><th>E</th><th>F</th><th>A</th><th>B</th><th>C</th><th>&nbsp;</th><th>&nbsp;</th></tr>
                     % for repository in repositories:
                         <tr>
                             <td style="width:36ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
