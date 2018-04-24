@@ -220,19 +220,19 @@
 
                             % for rank in ["D", "E", "F"]:
                                 % if repo_cyclomatic_complexity[repository][rank] > 0:
-                                    <td class="numeric error" style="width:3ex;padding-left:0px">${repo_cyclomatic_complexity[repository][rank]}</td>
+                                    <td class="numeric error" style="width:3ex;padding-left:0px"><a href="${repository}.cc.html" class="numeric error">${repo_cyclomatic_complexity[repository][rank]}</a></td>
                                 % else:
-                                    <td class="numeric ok" style="width:3ex;padding-left:0px">${repo_cyclomatic_complexity[repository][rank]}</td>
+                                    <td class="numeric ok" style="width:3ex;padding-left:0px"><a href="${repository}.cc.html" class="numeric ok">${repo_cyclomatic_complexity[repository][rank]}</a></td>
                                 % endif
                             % endfor
 
-                            <td class="numeric ignored" style="width:3ex;padding-left:0px">${repo_maintainability_index[repository]["A"]}</td>
+                            <td class="numeric ignored" style="width:3ex;padding-left:0px"><a href="${repository}.mi.html" class="numeric ignored">${repo_maintainability_index[repository]["A"]}</a></td>
 
                             % for rank in ["B", "C"]:
                                 % if repo_maintainability_index[repository][rank] > 0:
-                                    <td class="numeric error" style="width:3ex;padding-left:0px">${repo_maintainability_index[repository][rank]}</td>
+                                    <td class="numeric error" style="width:3ex;padding-left:0px"><a href="${repository}.mi.html" class="numeric ok">${repo_maintainability_index[repository][rank]}</a></td>
                                 % else:
-                                    <td class="numeric ok" style="width:3ex;padding-left:0px">${repo_cyclomatic_complexity[repository][rank]}</td>
+                                    <td class="numeric ok" style="width:3ex;padding-left:0px"><a href="${repository}.mi.html" class="numeric ok">${repo_cyclomatic_complexity[repository][rank]}</a></td>
                                 % endif
                             % endfor
 
