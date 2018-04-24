@@ -41,7 +41,7 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
     Current API implementation returns just three HTTP codes:
     200 OK : analysis is already finished
     202 Accepted: analysis is started or is in progress (or other state!)
-    401 UNAUTHORIZED : missing or inproper authorization token
+    401 UNAUTHORIZED : missing or improper authorization token
     """
     timeout = context.stack_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
@@ -276,6 +276,15 @@ def check_outlier_validity(context):
     for usage_outlier in usage_outliers:
         # log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
         check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
+
+
+@then('I should find that greater than {min_count} companions are reported')
+def check_companion_count(context, min_count=0):
+    """Check that we have more than min_count companions."""
+    json_data = context.response.json()
+    path = "result/0/recommendation/companion"
+    companions = get_value_using_path(json_data, path)
+    assert len(companions) > int(min_count)
 
 
 def check_licenses(licenses, expected_licenses):
