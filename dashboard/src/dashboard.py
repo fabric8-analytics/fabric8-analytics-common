@@ -266,6 +266,53 @@ def parse_maintainability_index(repository):
     return results
 
 
+def compute_status(source_files, linter_checks_total, ignored_pylint_files, docstyle_checks_total,
+                   ignored_pydocstyle_files, linter_checks, docstyle_checks, unit_test_coverage,
+                   cyclomatic_complexity, maintainability_index):
+    """Compute the overall status from various metrics."""
+    return source_files == (linter_checks_total + ignored_pylint_files) and \
+        source_files == (docstyle_checks_total + ignored_pydocstyle_files) and \
+        linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0 and \
+        unit_test_coverage_ok(unit_test_coverage) and \
+        cyclomatic_complexity["status"] and \
+        maintainability_index["status"]
+
+
+def remark_linter(source_files, linter_checks_total, ignored_pylint_files):
+    """Generate remark when not all source files are checked by linter."""
+    if source_files != linter_checks_total + ignored_pylint_files:
+        return "not all source files are checked by linter<br>"
+    return ""
+
+
+def remark_docstyle(source_files, docstyle_checks_total, ignored_pydocstyle_files):
+    """Generate remark when not all source files are checked by pydocstyle."""
+    if source_files != docstyle_checks_total + ignored_pydocstyle_files:
+        return "not all source files are checked by pydocstyle<br>"
+    return ""
+
+
+def remark_linter_vs_docstyle(linter_checks_total, ignored_pylint_files,
+                              docstyle_checks_total, ignored_pydocstyle_files):
+    """Generate remark when linter checked different files that pydocstyle checker."""
+    if linter_checks_total + ignored_pylint_files != \
+       docstyle_checks_total + ignored_pydocstyle_files:
+        return ", linter checked {n1} files, but pydocstyle checked {n2} files".format(
+            n1=linter_checks_total, n2=docstyle_checks_total)
+    return ""
+
+
+def remark_unit_test_coverage(unit_test_coverage):
+    """Generate remark for unit test coverage problems."""
+    if unit_test_coverage is not None:
+        if not unit_test_coverage_ok(unit_test_coverage):
+            return "improve code coverage<br>"
+        else:
+            return ""
+    else:
+        return "unit tests has not been setup<br>"
+
+
 def update_overall_status(results, repository):
     """Update the overall status of all tested systems (stage, prod)."""
     remarks = ""
@@ -283,29 +330,16 @@ def update_overall_status(results, repository):
     ignored_pylint_files = len(ignored_files_for_pylint.get(repository, []))
     ignored_pydocstyle_files = len(ignored_files_for_pydocstyle.get(repository, []))
 
-    status = source_files == (linter_checks_total + ignored_pylint_files) and \
-        source_files == (docstyle_checks_total + ignored_pydocstyle_files) and \
-        linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0 and \
-        unit_test_coverage_ok(unit_test_coverage) and \
-        cyclomatic_complexity["status"] and \
-        maintainability_index["status"]
+    status = compute_status(source_files, linter_checks_total, ignored_pylint_files,
+                            docstyle_checks_total, ignored_pydocstyle_files, linter_checks,
+                            docstyle_checks, unit_test_coverage, cyclomatic_complexity,
+                            maintainability_index)
 
-    if source_files != linter_checks_total + ignored_pylint_files:
-        remarks += "not all source files are checked by linter<br>"
-
-    if source_files != docstyle_checks_total + ignored_pydocstyle_files:
-        remarks += "not all source files are checked by pydocstyle<br>"
-
-    if linter_checks_total + ignored_pylint_files != \
-       docstyle_checks_total + ignored_pydocstyle_files:
-        remarks += ", linter checked {n1} files, but pydocstyle checked {n2} files".format(
-            n1=linter_checks_total, n2=docstyle_checks_total)
-
-    if unit_test_coverage is not None:
-        if not unit_test_coverage_ok(unit_test_coverage):
-            remarks += "improve code coverage<br>"
-    else:
-        remarks += "unit tests has not been setup<br>"
+    remarks = remark_linter(source_files, linter_checks_total, ignored_pylint_files) + \
+        remark_docstyle(source_files, docstyle_checks_total, ignored_pydocstyle_files) + \
+        remark_linter_vs_docstyle(linter_checks_total, ignored_pylint_files,
+                                  docstyle_checks_total, ignored_pydocstyle_files) + \
+        remark_unit_test_coverage(unit_test_coverage)
 
     if linter_checks["failed"] != 0:
         remarks += "linter failed<br>"
