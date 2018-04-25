@@ -356,7 +356,7 @@ def update_overall_status(results, repository):
             n=ignored_pydocstyle_files, s="s" if ignored_pydocstyle_files > 1 else "")
 
     if not cyclomatic_complexity["status"]:
-        remarks += "lower cyclomatic complexity<br>"
+        remarks += "reduce cyclomatic complexity<br>"
 
     if not maintainability_index["status"]:
         remarks += "improve maintainability index<br>"
