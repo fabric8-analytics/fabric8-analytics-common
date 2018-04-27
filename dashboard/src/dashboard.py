@@ -161,9 +161,12 @@ def run_docstyle_check(repository):
 
 def run_cyclomatic_complexity_tool(repository):
     """Run Cyclomatic Complexity tool against the selected repository."""
-    command = "pushd {repo};radon cc -a -s -i venv . |ansi2html.py > ../{repo}.cc.html;popd".format(
-        repo=repository)
-    os.system(command)
+    for i in range(ord('A'), 1 + ord('F')):
+        rank = chr(i)
+        command = ("pushd {repo};radon cc -a -s -n {rank} -i venv . |ansi2html.py " +
+                   "> ../{repo}.cc.{rank}.html;popd").format(repo=repository, rank=rank)
+        os.system(command)
+
     command = "pushd {repo};radon cc -s -j -i venv . > ../{repo}.cc.json;popd".format(
         repo=repository)
     os.system(command)
@@ -171,9 +174,12 @@ def run_cyclomatic_complexity_tool(repository):
 
 def run_maintainability_index(repository):
     """Run Maintainability Index tool against the selected repository."""
-    command = "pushd {repo};radon mi -s -i venv . | ansi2html.py > ../{repo}.mi.html;popd".format(
-        repo=repository)
-    os.system(command)
+    for i in range(ord('A'), 1 + ord('C')):
+        rank = chr(i)
+        command = ("pushd {repo};radon mi -s -n {rank} -i venv . | ansi2html.py " +
+                   "> ../{repo}.mi.{rank}.html;popd").format(repo=repository, rank=rank)
+        os.system(command)
+
     command = "pushd {repo};radon mi -s -j -i venv . > ../{repo}.mi.json;popd".format(
         repo=repository)
     os.system(command)
@@ -248,7 +254,7 @@ def parse_cyclomatic_complexity(repository):
                 rank = block["rank"]
                 results[rank] += 1
 
-    results["status"] = results["C"] == 0 and results["D"] == 0 and \
+    results["status"] = results["D"] == 0 and \
         results["E"] == 0 and results["F"] == 0
     return results
 
