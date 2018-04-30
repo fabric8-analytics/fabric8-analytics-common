@@ -13,7 +13,7 @@ Feature: Gemini Analytics API
     Given gemini service is running
       And gemini service git url is https://github.com/jitpack/maven-simple
       And gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
-    When I get gemini API api/v1/report
+    When I get to gemini API api/v1/report
     Then I should get 401 status code
-    When I get gemini API api/v1/report with authorization token
+    When I get to gemini API api/v1/report with authorization token
     Then I should get 200 status code
