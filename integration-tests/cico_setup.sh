@@ -28,4 +28,4 @@ F8A_GREMLIN_URL=${F8A_GREMLIN_URL:-http://bayesian-gremlin-http-preview-b6ff-bay
 F8A_3SCALE_URL=${F8A_3SCALE_URL:-https://3scale-connect.api.prod-preview.openshift.io/}
 F8A_BACKBONE_API_URL=${F8A_BACKBONE_API_URL:-http://f8a-server-backbone-bayesian-preview.b6ff.rh-idev.openshiftapps.com/}
 F8A_SERVICE_ID=${F8A_SERVICE_ID:-2555417755633}
-F8A_GEMINI_API_URL=${F8A_GEMINI_API_URL:-https://gemini.api.prod-preview.openshift.io}
+F8A_GEMINI_API_URL=${F8A_GEMINI_API_URL:-http://gemini.api.prod-preview.openshift.io/}

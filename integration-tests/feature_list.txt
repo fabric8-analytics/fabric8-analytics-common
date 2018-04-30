@@ -15,6 +15,7 @@ features/user_tag.feature
 features/gremlin.feature
 features/three_scale.feature
 features/api_backbone.feature
+features/gemini.feature
 
 # This is workaround to temporary disable integration tests
 #features/disabled.feature
