@@ -288,7 +288,7 @@ def _is_backbone_api_running(backbone_api_url, accepted_codes={200}):
     return False
 
 
-def _is_backbone_api_running(gemini_api_url, accepted_codes={200}):
+def _is_gemini_api_running(gemini_api_url, accepted_codes={200}):
     try:
         url = '%s/api/v1/readiness' % gemini_api_url
         res = requests.get(url)
@@ -438,6 +438,7 @@ def before_all(context):
     context.wait_for_component_search_service = _wait_for_component_search_service
     context.is_3scale_staging_running = _is_3scale_staging_running
     context.is_backbone_api_running = _is_backbone_api_running
+    context.is_gemini_api_running = _is_gemini_api_running
 
     # Configure container logging
     context.dump_logs = _read_boolean_setting(context, 'dump_logs')
