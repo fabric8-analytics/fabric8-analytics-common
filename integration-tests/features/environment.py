@@ -185,6 +185,7 @@ def _teardown_system(context):
 
 
 def _wait_for_system(context, wait_for_server=60):
+    # TODO: reduce cyclomatic complexity
     start = datetime.datetime.now()
     wait_till = start + datetime.timedelta(seconds=wait_for_server)
     # try to wait for server to start for some time
@@ -409,6 +410,7 @@ def _read_url_from_env_var(env_var_name):
 
 def before_all(context):
     """Perform the setup before the first event."""
+    # TODO: reduce cyclomatic complexity
     context.config.setup_logging()
     context.start_system = _start_system
     context.teardown_system = _teardown_system
