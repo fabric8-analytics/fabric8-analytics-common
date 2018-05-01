@@ -132,6 +132,7 @@ def pause_scenario_execution(context, num):
 @then('I should see {state} analysis result for {ecosystem}/{package}/{version}')
 def check_analysis_result(context, state, ecosystem, package, version):
     """Check the analysis result for given ecosystem, package, and version."""
+    # TODO: reduce cyclomatic complexity
     res = context.response.json()
     if state == 'incomplete':
         assert res['ecosystem'] == ecosystem
