@@ -289,6 +289,17 @@ def _is_backbone_api_running(backbone_api_url, accepted_codes={200}):
     return False
 
 
+def _is_gemini_api_running(gemini_api_url, accepted_codes={200}):
+    try:
+        url = '%s/api/v1/readiness' % gemini_api_url
+        res = requests.get(url)
+        if res.status_code in accepted_codes:
+            return True
+    except requests.exceptions.ConnectionError:
+        pass
+    return False
+
+
 def _is_api_running_post(url):
     try:
         res = requests.post(url)
@@ -429,6 +440,7 @@ def before_all(context):
     context.wait_for_component_search_service = _wait_for_component_search_service
     context.is_3scale_staging_running = _is_3scale_staging_running
     context.is_backbone_api_running = _is_backbone_api_running
+    context.is_gemini_api_running = _is_gemini_api_running
 
     # Configure container logging
     context.dump_logs = _read_boolean_setting(context, 'dump_logs')
@@ -463,6 +475,7 @@ def before_all(context):
     threescale_url = _read_url_from_env_var('F8A_3SCALE_URL')
     backbone_api_url = _read_url_from_env_var('F8A_BACKBONE_API_URL')
     service_id = _read_url_from_env_var('F8A_SERVICE_ID')
+    gemini_api_url = _read_url_from_env_var('F8A_GEMINI_API_URL')
 
     context.running_locally = not (coreapi_url and jobs_api_url)
 
@@ -489,6 +502,8 @@ def before_all(context):
     context.backbone_api_url = backbone_api_url
 
     context.service_id = service_id
+
+    context.gemini_api_url = gemini_api_url
 
     # informations needed to access S3 database from tests
     _check_env_var_presence_s3_db('AWS_ACCESS_KEY_ID')
