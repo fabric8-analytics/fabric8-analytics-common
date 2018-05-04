@@ -170,9 +170,15 @@ def read_core_package_data_from_bucket(context, selector, package, ecosystem, bu
         metadata = S3Interface.selector_to_key(selector)
         key = S3Interface.package_analysis_key(ecosystem, package, metadata)
 
-    s3_data = context.s3interface.read_object(bucket, key)
-    assert s3_data is not None
-    context.s3_data = s3_data
+    try:
+        s3_data = context.s3interface.read_object(bucket, key)
+        assert s3_data is not None
+        context.s3_data = s3_data
+    except Exception as e:
+        m = "Can not read {key} for the E/P {ecosystem} {package} from bucket {bucket}"\
+            .format(key=key, ecosystem=ecosystem, package=package, bucket=bucket)
+        raise Exception(m) from e
+        context.s3_data = None
 
 
 @then('I should find the correct package toplevel metadata for package {package} '
