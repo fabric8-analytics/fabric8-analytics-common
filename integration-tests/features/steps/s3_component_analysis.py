@@ -9,7 +9,7 @@ from src.utils import split_comma_separated_list
       'from ecosystem {ecosystem}')
 @then('I should find the correct component toplevel metadata for package {package:S} '
       'version {version:S} ecosystem {ecosystem:S} with latest version {version2:S}')
-def check_component_core_data(context, package, version, ecosystem, version2):
+def check_component_core_data(context, package, version, ecosystem, version2=None):
     """Check the component core data read from the AWS S3 database.
 
     Expected format (with an example data):
