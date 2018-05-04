@@ -309,11 +309,22 @@ def check_package_license(context, license):
     assert license in licenses, "Can not find license {lic}".format(lic=license)
 
 
-@when('I read component toplevel metadata for the package {package} version {version} in ecosystem '
+@when('I read {selector} metadata for the package {package} version {version} in ecosystem '
       '{ecosystem} from the AWS S3 database bucket {bucket}')
-def read_core_data_from_bucket(context, package, version, ecosystem, bucket):
+def read_core_data_from_bucket(context, selector, package, version, ecosystem, bucket):
     """Read the component toplevel metadata."""
-    key = S3Interface.component_key(ecosystem, package, version)
-    s3_data = context.s3interface.read_object(bucket, key)
-    assert s3_data is not None
-    context.s3_data = s3_data
+    if selector == "component toplevel":
+        key = S3Interface.component_key(ecosystem, package, version)
+    else:
+        metadata = S3Interface.selector_to_key(selector)
+        key = S3Interface.component_analysis_key(ecosystem, package, version, metadata)
+
+    try:
+        s3_data = context.s3interface.read_object(bucket, key)
+        assert s3_data is not None
+        context.s3_data = s3_data
+    except Exception as e:
+        m = "Can not read {key} for the E/P/V {ecosystem} {package} {version} from bucket {bucket}"\
+            .format(key=key, ecosystem=ecosystem, package=package, version=version, bucket=bucket)
+        raise Exception(m) from e
+        context.s3_data = None
