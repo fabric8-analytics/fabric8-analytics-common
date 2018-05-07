@@ -6,6 +6,8 @@ from behave import given, then, when
 from src.schemas.component_code_metrics import COMPONENT_CODE_METRICS_SCHEMA
 from src.schemas.component_security_issues import COMPONENT_SECURITY_ISSUES_SCHEMA
 from src.schemas.component_digests import COMPONENT_DIGESTS_SCHEMA
+from src.schemas.component_source_licenses import COMPONENT_SOURCE_LICENSES_2_0_0_SCHEMA
+from src.schemas.component_source_licenses import COMPONENT_SOURCE_LICENSES_3_0_0_SCHEMA
 from src.schemas.component_dependency_snapshot import COMPONENT_DEPENDENCY_SNAPSHOT_SCHEMA
 from src.schemas.component_metadata import COMPONENT_METADATA_SCHEMA
 from src.schemas.component_keywords_tagging import COMPONENT_KEYWORDS_TAGGING_SCHEMA
@@ -53,3 +55,20 @@ def check_component_keywords_tagging_schema(context):
     assert COMPONENT_KEYWORDS_TAGGING_SCHEMA == json_data
 
 
+@then(u'I should find that the metadata conformns to component_source_licenses schema')
+@then(u'I should find that the metadata conformns to component_source_licenses schema ' +
+      'version {version:d}')
+def check_component_source_licenses_schema(context, version=None):
+    """Check if the component source licenses metadata conformns to schema."""
+    json_data = context.s3_data
+
+    if not version:
+        versions = {"2-0-0": 2,
+                    "3-0-0": 3}
+        schema_version = json_data["schema"]["version"]
+        version = versions[schema_version]
+
+    if version == 2:
+        assert COMPONENT_SOURCE_LICENSES_2_0_0_SCHEMA == json_data
+    else:
+        assert COMPONENT_SOURCE_LICENSES_3_0_0_SCHEMA == json_data
