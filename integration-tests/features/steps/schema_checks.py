@@ -3,6 +3,7 @@
 from behave import given, then, when
 
 # component-related schemas
+from src.schemas.component_toplevel import COMPONENT_TOPLEVEL_SCHEMA
 from src.schemas.component_code_metrics import COMPONENT_CODE_METRICS_SCHEMA
 from src.schemas.component_security_issues import COMPONENT_SECURITY_ISSUES_SCHEMA
 from src.schemas.component_digests import COMPONENT_DIGESTS_SCHEMA
@@ -11,6 +12,13 @@ from src.schemas.component_source_licenses import COMPONENT_SOURCE_LICENSES_3_0_
 from src.schemas.component_dependency_snapshot import COMPONENT_DEPENDENCY_SNAPSHOT_SCHEMA
 from src.schemas.component_metadata import COMPONENT_METADATA_SCHEMA
 from src.schemas.component_keywords_tagging import COMPONENT_KEYWORDS_TAGGING_SCHEMA
+
+
+@then(u'I should find that the metadata conformns to component_toplevel schema')
+def check_component_metadata_schema(context):
+    """Check if the component toplevel metadata conformns to schema."""
+    json_data = context.s3_data
+    assert COMPONENT_TOPLEVEL_SCHEMA == json_data
 
 
 @then(u'I should find that the metadata conformns to component_code_metrics schema')
