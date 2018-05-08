@@ -2,6 +2,8 @@
 
 from behave import given, then, when
 
+# package-related schemas
+from src.schemas.package_toplevel import PACKAGE_TOPLEVEL_SCHEMA
 # component-related schemas
 from src.schemas.component_toplevel import COMPONENT_TOPLEVEL_SCHEMA
 from src.schemas.component_code_metrics import COMPONENT_CODE_METRICS_SCHEMA
@@ -80,3 +82,10 @@ def check_component_source_licenses_schema(context, version=None):
         assert COMPONENT_SOURCE_LICENSES_2_0_0_SCHEMA == json_data
     else:
         assert COMPONENT_SOURCE_LICENSES_3_0_0_SCHEMA == json_data
+
+
+@then(u'I should find that the metadata conformns to package_toplevel schema')
+def check_package_metadata_schema(context):
+    """Check if the package toplevel metadata conformns to schema."""
+    json_data = context.s3_data
+    assert PACKAGE_TOPLEVEL_SCHEMA == json_data
