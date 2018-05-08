@@ -2,6 +2,13 @@
 
 from behave import given, then, when
 
+# package-related schemas
+from src.schemas.package_toplevel import PACKAGE_TOPLEVEL_SCHEMA
+from src.schemas.package_git_stats import PACKAGE_GIT_STATS_SCHEMA
+from src.schemas.package_github_details import PACKAGE_GITHUB_DETAILS_SCHEMA
+from src.schemas.package_keywords_tagging import PACKAGE_KEYWORDS_TAGGING_SCHEMA
+from src.schemas.package_libraries_io import PACKAGE_LIBRARIES_IO_SCHEMA
+
 # component-related schemas
 from src.schemas.component_toplevel import COMPONENT_TOPLEVEL_SCHEMA
 from src.schemas.component_code_metrics import COMPONENT_CODE_METRICS_SCHEMA
@@ -80,3 +87,38 @@ def check_component_source_licenses_schema(context, version=None):
         assert COMPONENT_SOURCE_LICENSES_2_0_0_SCHEMA == json_data
     else:
         assert COMPONENT_SOURCE_LICENSES_3_0_0_SCHEMA == json_data
+
+
+@then(u'I should find that the metadata conformns to package_toplevel schema')
+def check_package_metadata_schema(context):
+    """Check if the package toplevel metadata conformns to schema."""
+    json_data = context.s3_data
+    assert PACKAGE_TOPLEVEL_SCHEMA == json_data
+
+
+@then(u'I should find that the metadata conformns to package_git_stats schema')
+def check_package_git_stats_schema(context):
+    """Check if the package git stats metadata conformns to schema."""
+    json_data = context.s3_data
+    assert PACKAGE_GIT_STATS_SCHEMA == json_data
+
+
+@then(u'I should find that the metadata conformns to package_github_details schema')
+def check_package_github_details_schema(context):
+    """Check if the package github details metadata conformns to schema."""
+    json_data = context.s3_data
+    assert PACKAGE_GITHUB_DETAILS_SCHEMA == json_data
+
+
+@then(u'I should find that the metadata conformns to package_keywords_tagging schema')
+def check_package_keywords_tagging_schema(context):
+    """Check if the package keywords tagging metadata conformns to schema."""
+    json_data = context.s3_data
+    assert PACKAGE_KEYWORDS_TAGGING_SCHEMA == json_data
+
+
+@then(u'I should find that the metadata conformns to package_libraries_is schema')
+def check_package_libraries_io_schema(context):
+    """Check if the package libraries io metadata conformns to schema."""
+    json_data = context.s3_data
+    assert PACKAGE_LIBRARIES_IO_SCHEMA == json_data
