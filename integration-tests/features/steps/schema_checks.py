@@ -4,6 +4,7 @@ from behave import given, then, when
 
 # package-related schemas
 from src.schemas.package_toplevel import PACKAGE_TOPLEVEL_SCHEMA
+from src.schemas.package_git_stats import PACKAGE_GIT_STATS_SCHEMA
 # component-related schemas
 from src.schemas.component_toplevel import COMPONENT_TOPLEVEL_SCHEMA
 from src.schemas.component_code_metrics import COMPONENT_CODE_METRICS_SCHEMA
@@ -89,3 +90,10 @@ def check_package_metadata_schema(context):
     """Check if the package toplevel metadata conformns to schema."""
     json_data = context.s3_data
     assert PACKAGE_TOPLEVEL_SCHEMA == json_data
+
+
+@then(u'I should find that the metadata conformns to package_git_stats schema')
+def check_package_git_stats_schema(context):
+    """Check if the package git stats metadata conformns to schema."""
+    json_data = context.s3_data
+    assert PACKAGE_GIT_STATS_SCHEMA == json_data
