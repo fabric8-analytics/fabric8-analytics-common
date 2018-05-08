@@ -7,6 +7,8 @@ from src.schemas.package_toplevel import PACKAGE_TOPLEVEL_SCHEMA
 from src.schemas.package_git_stats import PACKAGE_GIT_STATS_SCHEMA
 from src.schemas.package_github_details import PACKAGE_GITHUB_DETAILS_SCHEMA
 from src.schemas.package_keywords_tagging import PACKAGE_KEYWORDS_TAGGING_SCHEMA
+from src.schemas.package_libraries_io import PACKAGE_LIBRARIES_IO_SCHEMA
+
 # component-related schemas
 from src.schemas.component_toplevel import COMPONENT_TOPLEVEL_SCHEMA
 from src.schemas.component_code_metrics import COMPONENT_CODE_METRICS_SCHEMA
@@ -115,3 +117,8 @@ def check_package_keywords_tagging_schema(context):
     assert PACKAGE_KEYWORDS_TAGGING_SCHEMA == json_data
 
 
+@then(u'I should find that the metadata conformns to package_libraries_is schema')
+def check_package_libraries_io_schema(context):
+    """Check if the package libraries io metadata conformns to schema."""
+    json_data = context.s3_data
+    assert PACKAGE_LIBRARIES_IO_SCHEMA == json_data

@@ -97,3 +97,23 @@ Feature: Checks the package metadata in AWS S3 database
      |io.vertx:vertx-core|
 
 
+  @requires_s3_access @requires_bayesian_core_data_bucket @requires_bayesian_core_package_data_bucket
+  Scenario: Check the libraries io metadata schema for io.vertx:vertx-core package (startup)
+    Given System is running
+    When I connect to the AWS S3 database
+    Then I should see bayesian-core-package-data bucket
+    When I read libraries_io metadata for the package io.vertx:vertx-core in ecosystem maven from the AWS S3 database bucket bayesian-core-package-data
+    Then I should find that the metadata conformns to package_libraries_is schema
+
+
+  @requires_s3_access @requires_bayesian_core_data_bucket @requires_bayesian_core_package_data_bucket
+  Scenario Outline: Check the toplevel metadata for all io.vertx packages
+    Given System is running
+    When I connect to the AWS S3 database
+    Then I should see bayesian-core-package-data bucket
+    When I read libraries_io metadata for the package <package> in ecosystem maven from the AWS S3 database bucket bayesian-core-package-data
+    Then I should find that the metadata conformns to package_libraries_is schema
+
+     Examples: packages
+     |package|
+     |io.vertx:vertx-core|
