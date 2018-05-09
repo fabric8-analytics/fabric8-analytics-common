@@ -192,3 +192,42 @@ Feature: Check the implementation of test steps
     | io.vertx_vertx_core_component_data/3.5.1/source_licenses.json |
 
 
+  @selfcheck
+  Scenario: Check the package tests by using mocked data - toplevel metadata schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/io.vertx_vertx-core.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_toplevel schema
+
+
+  @selfcheck
+  Scenario: Check the package tests by using mocked data - GitHub details schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/github_details.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_github_details schema
+
+
+  @selfcheck
+  Scenario: Check the package tests by using mocked data - Git stats schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/git_stats.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_git_stats schema
+
+
+  @selfcheck
+  Scenario: Check the package tests by using mocked data - libraries.io schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/libraries_io.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_libraries_is schema
+
+
+  @selfcheck
+  Scenario: Check the package tests by using mocked data - keywords tagging schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/keywords_tagging.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_keywords_tagging schema
+
