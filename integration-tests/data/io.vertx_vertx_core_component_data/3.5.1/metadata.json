@@ -1,0 +1,19 @@
+{
+  "_audit": {
+    "ended_at": "2018-04-17T19:24:18.531037",
+    "started_at": "2018-04-17T19:23:38.777074",
+    "version": "v1"
+  },
+  "_release": "maven:io.vertx:vertx-core:3.5.1",
+  "details": [
+    {
+      "ecosystem": "java-pom"
+    }
+  ],
+  "schema": {
+    "name": "metadata",
+    "version": "3-3-0"
+  },
+  "status": "success",
+  "summary": []
+}

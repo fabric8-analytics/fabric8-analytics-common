@@ -1,0 +1,24 @@
+{
+  "_audit": {
+    "ended_at": "2018-04-17T19:25:10.608930",
+    "started_at": "2018-04-17T19:25:10.117741",
+    "version": "v1"
+  },
+  "_release": "maven:io.vertx:vertx-core:3.5.1",
+  "details": [
+    {
+      "artifact": true,
+      "md5": "4dab5516fde731c00d139d8992c9912a",
+      "path": "vertx-core-3.5.1.jar",
+      "sha1": "863b28bd60ebcc6820beb1dc7f44b777936e6ad3",
+      "sha256": "4e56094137f414d5f67d27931c376834549723ef2ec2296b9ec8abb82c3484b1",
+      "ssdeep": "24576:BPoHmB2Pk9T32dWdQkbsCcHYRU1BqY+lpHG0ua8TjZLAlfwYHqX:i2lkk+9rHYRyBqP7Gda8BMlJKX"
+    }
+  ],
+  "schema": {
+    "name": "digests",
+    "version": "1-0-0"
+  },
+  "status": "success",
+  "summary": []
+}

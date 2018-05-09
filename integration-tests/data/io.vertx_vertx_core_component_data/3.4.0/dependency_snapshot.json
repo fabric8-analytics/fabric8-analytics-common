@@ -1,0 +1,142 @@
+{
+  "_audit": {
+    "ended_at": "2017-03-13T17:57:22.986401",
+    "started_at": "2017-03-13T17:57:22.895504",
+    "version": "v1"
+  },
+  "_release": "maven:io.vertx:vertx-core:3.4.0",
+  "details": {
+    "runtime": [
+      {
+        "declaration": "com.fasterxml.jackson.core:jackson-databind 2.7.4",
+        "ecosystem": "maven",
+        "name": "com.fasterxml.jackson.core:jackson-databind",
+        "resolved_at": "2017-03-13T17:57:22.980355",
+        "version": "2.7.4"
+      },
+      {
+        "declaration": "org.apache.logging.log4j:log4j-core 2.5",
+        "ecosystem": "maven",
+        "name": "org.apache.logging.log4j:log4j-core",
+        "resolved_at": "2017-03-13T17:57:22.980760",
+        "version": "2.5"
+      },
+      {
+        "declaration": "io.netty:netty-transport 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-transport",
+        "resolved_at": "2017-03-13T17:57:22.981117",
+        "version": "4.1.8.Final"
+      },
+      {
+        "declaration": "org.slf4j:slf4j-api 1.7.21",
+        "ecosystem": "maven",
+        "name": "org.slf4j:slf4j-api",
+        "resolved_at": "2017-03-13T17:57:22.981501",
+        "version": "1.7.21"
+      },
+      {
+        "declaration": "io.netty:netty-handler-proxy 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-handler-proxy",
+        "resolved_at": "2017-03-13T17:57:22.981852",
+        "version": "4.1.8.Final"
+      },
+      {
+        "declaration": "io.netty:netty-common 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-common",
+        "resolved_at": "2017-03-13T17:57:22.982203",
+        "version": "4.1.8.Final"
+      },
+      {
+        "declaration": "io.netty:netty-buffer 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-buffer",
+        "resolved_at": "2017-03-13T17:57:22.982567",
+        "version": "4.1.8.Final"
+      },
+      {
+        "declaration": "log4j:log4j 1.2.17",
+        "ecosystem": "maven",
+        "name": "log4j:log4j",
+        "resolved_at": "2017-03-13T17:57:22.982910",
+        "version": "1.2.17"
+      },
+      {
+        "declaration": "io.vertx:vertx-docgen 3.4.0",
+        "ecosystem": "maven",
+        "name": "io.vertx:vertx-docgen",
+        "resolved_at": "2017-03-13T17:57:22.983236",
+        "version": "3.4.0"
+      },
+      {
+        "declaration": "org.apache.logging.log4j:log4j-api 2.5",
+        "ecosystem": "maven",
+        "name": "org.apache.logging.log4j:log4j-api",
+        "resolved_at": "2017-03-13T17:57:22.983598",
+        "version": "2.5"
+      },
+      {
+        "declaration": "io.vertx:vertx-codegen 3.4.0",
+        "ecosystem": "maven",
+        "name": "io.vertx:vertx-codegen",
+        "resolved_at": "2017-03-13T17:57:22.983942",
+        "version": "3.4.0"
+      },
+      {
+        "declaration": "io.netty:netty-codec-http 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-codec-http",
+        "resolved_at": "2017-03-13T17:57:22.984274",
+        "version": "4.1.8.Final"
+      },
+      {
+        "declaration": "io.netty:netty-handler 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-handler",
+        "resolved_at": "2017-03-13T17:57:22.984634",
+        "version": "4.1.8.Final"
+      },
+      {
+        "declaration": "io.netty:netty-resolver-dns 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-resolver-dns",
+        "resolved_at": "2017-03-13T17:57:22.984976",
+        "version": "4.1.8.Final"
+      },
+      {
+        "declaration": "com.fasterxml.jackson.core:jackson-core 2.7.4",
+        "ecosystem": "maven",
+        "name": "com.fasterxml.jackson.core:jackson-core",
+        "resolved_at": "2017-03-13T17:57:22.985327",
+        "version": "2.7.4"
+      },
+      {
+        "declaration": "io.netty:netty-codec-http2 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-codec-http2",
+        "resolved_at": "2017-03-13T17:57:22.985683",
+        "version": "4.1.8.Final"
+      },
+      {
+        "declaration": "io.netty:netty-resolver 4.1.8.Final",
+        "ecosystem": "maven",
+        "name": "io.netty:netty-resolver",
+        "resolved_at": "2017-03-13T17:57:22.986013",
+        "version": "4.1.8.Final"
+      }
+    ]
+  },
+  "schema": {
+    "name": "dependency_snapshot",
+    "version": "1-0-0"
+  },
+  "status": "success",
+  "summary": {
+    "dependency_counts": {
+      "runtime": 17
+    },
+    "errors": []
+  }
+}
