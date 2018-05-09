@@ -160,3 +160,35 @@ Feature: Check the implementation of test steps
      and I should find that the package uses EPL 1.0 license
      and I should find that the package uses LGPL 2.1 or later license
      and I should find that the package uses MIT License license
+
+  @selfcheck
+  Scenario Outline: Check the we have all the required mock files
+    Given data directory exists
+    When I mock S3 data by content of data/<filename> file
+    Then I should receive nonempty JSON response from S3
+
+    Examples:
+    | filename |
+    | io.vertx_vertx_core_package_data/github_details.json |
+    | io.vertx_vertx_core_package_data/git_stats.json |
+    | io.vertx_vertx_core_package_data/io.vertx_vertx-core.json |
+    | io.vertx_vertx_core_package_data/keywords_tagging.json |
+    | io.vertx_vertx_core_package_data/libraries_io.json |
+    | io.vertx_vertx_core_component_data/3.4.0.json |
+    | io.vertx_vertx_core_component_data/3.5.1.json |
+    | io.vertx_vertx_core_component_data/3.4.0/binary_data.json |
+    | io.vertx_vertx_core_component_data/3.4.0/code_metrics.json |
+    | io.vertx_vertx_core_component_data/3.4.0/crypto_algorithms.json |
+    | io.vertx_vertx_core_component_data/3.4.0/dependency_snapshot.json |
+    | io.vertx_vertx_core_component_data/3.4.0/digests.json |
+    | io.vertx_vertx_core_component_data/3.4.0/languages.json |
+    | io.vertx_vertx_core_component_data/3.4.0/metadata.json |
+    | io.vertx_vertx_core_component_data/3.4.0/source_licenses.json |
+    | io.vertx_vertx_core_component_data/3.5.1/dependency_snapshot.json |
+    | io.vertx_vertx_core_component_data/3.5.1/digests.json |
+    | io.vertx_vertx_core_component_data/3.5.1/keywords_tagging.json |
+    | io.vertx_vertx_core_component_data/3.5.1/metadata.json |
+    | io.vertx_vertx_core_component_data/3.5.1/security_issues.json |
+    | io.vertx_vertx_core_component_data/3.5.1/source_licenses.json |
+
+
