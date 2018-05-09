@@ -80,7 +80,7 @@ def oc_delete_pods(selector, namespace=None):
            default: currently selected namespace
     :return: None on success, raises `subprocess.CalledProcessError` on error
     """
-    command = ['oc', 'delete', 'pods', '--selector=', selector]
+    command = ['oc', 'delete', 'pods', '--selector', selector]
     if namespace:
         command.extend(['--namespace', namespace])
 
