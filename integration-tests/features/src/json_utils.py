@@ -82,6 +82,11 @@ def is_empty_json_response(context):
     return context.response.json() == {}
 
 
+def is_empty_json_response_from_s3(context):
+    """Check if the JSON response from S3 is empty (but not None)."""
+    return context.s3_data == {}
+
+
 def pretty_print(json, indent_level=4):
     """Pretty print the JSON."""
     pp = pprint.PrettyPrinter(indent=indent_level)
