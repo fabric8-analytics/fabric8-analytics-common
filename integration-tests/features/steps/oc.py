@@ -89,4 +89,4 @@ def oc_service_exist(context, service_name):
 def oc_delete_selected_pods(context, service_name):
     """Delete selected pods."""
     selector = "service={service_name}".format(service_name=service_name)
-    oc_delete_pods(selector)
+    oc_delete_pods(selector, force=True)
