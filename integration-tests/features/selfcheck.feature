@@ -2,7 +2,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check the updated stack analysis response
-    Given System is running
+    Given data directory exists
     When I download and parse outlier probability threshold value
     Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/updated_stack_analysis_v2.json file
@@ -21,7 +21,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check that the stack analysis response for the pom.xml that contains only one component
-    Given System is running
+    Given data directory exists
     When I mock API response by data/mock_stack_analysis_v2_junit.json file
     Then I should find analyzed dependency named junit:junit with version 3.8.1 in the stack analysis
     Then I should find that none analyzed package can be found in companion packages as well
@@ -33,7 +33,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check that the stack analysis response for the springboot.xml
-    Given System is running
+    Given data directory exists
     When I download and parse outlier probability threshold value
     Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/mock_stack_analysis_v2_springboot.json file
@@ -50,7 +50,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check that the stack analysis response for the vertx.xml
-    Given System is running
+    Given data directory exists
     When I download and parse outlier probability threshold value
     Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/mock_stack_analysis_v2_vertx.json file
@@ -66,7 +66,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check that the stack analysis response for the springboot.xml - CVEs
-    Given System is running
+    Given data directory exists
     When I mock API response by data/mock_stack_analysis_v2_requirements.json file
     Then I should find the security node for all dependencies
     Then I should find the security node for all alternate components
@@ -98,7 +98,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check the package tests by using mocked data
-    Given System is running
+    Given data directory exists
     When I mock S3 data by content of data/clojure_py_package/github_details.json file
     Then I should find the correct GitHub details metadata for package clojure_py from ecosystem pypi
      and I should find empty details about GitHub repository
@@ -123,7 +123,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check the component tests by using mocked data
-    Given System is running
+    Given data directory exists
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4.json file
     Then I should find the correct component core data for package clojure_py version 0.2.4 from ecosystem pypi
      and I should find that the latest component version is 0.2.4
