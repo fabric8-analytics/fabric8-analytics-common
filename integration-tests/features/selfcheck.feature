@@ -2,7 +2,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check the updated stack analysis response
-    Given System is running
+    Given data directory exists
     When I download and parse outlier probability threshold value
     Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/updated_stack_analysis_v2.json file
@@ -21,7 +21,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check that the stack analysis response for the pom.xml that contains only one component
-    Given System is running
+    Given data directory exists
     When I mock API response by data/mock_stack_analysis_v2_junit.json file
     Then I should find analyzed dependency named junit:junit with version 3.8.1 in the stack analysis
     Then I should find that none analyzed package can be found in companion packages as well
@@ -33,7 +33,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check that the stack analysis response for the springboot.xml
-    Given System is running
+    Given data directory exists
     When I download and parse outlier probability threshold value
     Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/mock_stack_analysis_v2_springboot.json file
@@ -50,7 +50,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check that the stack analysis response for the vertx.xml
-    Given System is running
+    Given data directory exists
     When I download and parse outlier probability threshold value
     Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/mock_stack_analysis_v2_vertx.json file
@@ -66,7 +66,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check that the stack analysis response for the springboot.xml - CVEs
-    Given System is running
+    Given data directory exists
     When I mock API response by data/mock_stack_analysis_v2_requirements.json file
     Then I should find the security node for all dependencies
     Then I should find the security node for all alternate components
@@ -98,7 +98,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check the package tests by using mocked data
-    Given System is running
+    Given data directory exists
     When I mock S3 data by content of data/clojure_py_package/github_details.json file
     Then I should find the correct GitHub details metadata for package clojure_py from ecosystem pypi
      and I should find empty details about GitHub repository
@@ -123,7 +123,7 @@ Feature: Check the implementation of test steps
 
   @selfcheck
   Scenario: Check the component tests by using mocked data
-    Given System is running
+    Given data directory exists
     When I mock S3 data by content of data/clojure_py_core_data/0.2.4.json file
     Then I should find the correct component core data for package clojure_py version 0.2.4 from ecosystem pypi
      and I should find that the latest component version is 0.2.4
@@ -160,3 +160,199 @@ Feature: Check the implementation of test steps
      and I should find that the package uses EPL 1.0 license
      and I should find that the package uses LGPL 2.1 or later license
      and I should find that the package uses MIT License license
+
+  @selfcheck
+  Scenario Outline: Check the we have all the required mock files
+    Given data directory exists
+    When I mock S3 data by content of data/<filename> file
+    Then I should receive nonempty JSON response from S3
+
+    Examples:
+    | filename |
+    | io.vertx_vertx_core_package_data/github_details.json |
+    | io.vertx_vertx_core_package_data/git_stats.json |
+    | io.vertx_vertx_core_package_data/io.vertx_vertx-core.json |
+    | io.vertx_vertx_core_package_data/keywords_tagging.json |
+    | io.vertx_vertx_core_package_data/libraries_io.json |
+    | io.vertx_vertx_core_component_data/3.4.0.json |
+    | io.vertx_vertx_core_component_data/3.5.1.json |
+    | io.vertx_vertx_core_component_data/3.4.0/binary_data.json |
+    | io.vertx_vertx_core_component_data/3.4.0/code_metrics.json |
+    | io.vertx_vertx_core_component_data/3.4.0/crypto_algorithms.json |
+    | io.vertx_vertx_core_component_data/3.4.0/dependency_snapshot.json |
+    | io.vertx_vertx_core_component_data/3.4.0/digests.json |
+    | io.vertx_vertx_core_component_data/3.4.0/languages.json |
+    | io.vertx_vertx_core_component_data/3.4.0/metadata.json |
+    | io.vertx_vertx_core_component_data/3.4.0/source_licenses.json |
+    | io.vertx_vertx_core_component_data/3.5.1/dependency_snapshot.json |
+    | io.vertx_vertx_core_component_data/3.5.1/digests.json |
+    | io.vertx_vertx_core_component_data/3.5.1/keywords_tagging.json |
+    | io.vertx_vertx_core_component_data/3.5.1/metadata.json |
+    | io.vertx_vertx_core_component_data/3.5.1/security_issues.json |
+    | io.vertx_vertx_core_component_data/3.5.1/source_licenses.json |
+
+
+  @selfcheck
+  Scenario: Check the package schema tests by using mocked data - toplevel metadata schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/io.vertx_vertx-core.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_toplevel schema
+
+
+  @selfcheck
+  Scenario: Check the package schema tests by using mocked data - GitHub details schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/github_details.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_github_details schema
+
+
+  @selfcheck
+  Scenario: Check the package schema tests by using mocked data - Git stats schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/git_stats.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_git_stats schema
+
+
+  @selfcheck
+  Scenario: Check the package schema tests by using mocked data - libraries.io schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/libraries_io.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_libraries_is schema
+
+
+  @selfcheck
+  Scenario: Check the package schema tests by using mocked data - keywords tagging schema for package
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_package_data/keywords_tagging.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to package_keywords_tagging schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - toplevel metadata schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_toplevel schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - toplevel metadata schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.5.1.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_toplevel schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - binary_data schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0/binary_data.json file
+    Then I should receive nonempty JSON response from S3
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - dependency snapshot metadata schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0/dependency_snapshot.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_dependency_snapshot schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - dependency snapshot metadata schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.5.1/dependency_snapshot.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_dependency_snapshot schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - digests schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0/digests.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_digests schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - digests schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.5.1/digests.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_digests schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - keywords tagging schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.5.1/keywords_tagging.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_keywords_tagging schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - code metrics schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0/code_metrics.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_code_metrics schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - crypto algorithms schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0/crypto_algorithms.json file
+    Then I should receive nonempty JSON response from S3
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - languages schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0/languages.json file
+    Then I should receive nonempty JSON response from S3
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - metadata schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0/metadata.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_metadata schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - metadata schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.5.1/metadata.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_metadata schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - security issues metadata schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.5.1/security_issues.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_security_issues schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - source licenses schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.4.0/source_licenses.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_source_licenses schema
+
+
+  @selfcheck
+  Scenario: Check the component schema tests by using mocked data - source licenses schema for component
+    Given data directory exists
+    When I mock S3 data by content of data/io.vertx_vertx_core_component_data/3.5.1/source_licenses.json file
+    Then I should receive nonempty JSON response from S3
+     And I should find that the metadata conformns to component_source_licenses schema
+

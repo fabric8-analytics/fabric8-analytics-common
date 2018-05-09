@@ -1,0 +1,35 @@
+{
+  "_audit": {
+    "ended_at": "2017-03-13T19:06:47.326794",
+    "started_at": "2017-03-13T19:06:47.231974",
+    "version": "v1"
+  },
+  "_release": "maven:io.vertx:vertx-core:3.4.0",
+  "analyses": [
+    "languages",
+    "digests",
+    "metadata",
+    "binary_data",
+    "crypto_algorithms",
+    "code_metrics",
+    "redhat_downstream",
+    "github_details",
+    "source_licenses",
+    "dependency_snapshot"
+  ],
+  "audit": null,
+  "dependents_count": -1,
+  "ecosystem": "maven",
+  "finished_at": "2017-03-13T18:04:59.071292",
+  "id": 4877,
+  "latest_version": "3.4.0",
+  "package": "io.vertx:vertx-core",
+  "package_info": {
+    "dependents_count": -1,
+    "relative_usage": "not used"
+  },
+  "release": "maven:io.vertx:vertx-core:3.4.0",
+  "started_at": "2017-03-13T17:47:44.229788",
+  "subtasks": null,
+  "version": "3.4.0"
+}

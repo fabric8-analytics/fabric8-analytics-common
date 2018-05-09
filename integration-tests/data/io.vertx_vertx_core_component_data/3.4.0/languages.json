@@ -1,0 +1,4126 @@
+{
+  "_audit": {
+    "ended_at": "2017-03-13T17:53:15.470917",
+    "started_at": "2017-03-13T17:52:52.481838",
+    "version": "v1"
+  },
+  "_release": "maven:io.vertx:vertx-core:3.4.0",
+  "details": [
+    {
+      "output": {
+        "language": "",
+        "lines": 59,
+        "mime": "text/plain",
+        "sloc": 59,
+        "type": "Text"
+      },
+      "path": "META-INF/INDEX.LIST",
+      "type": [
+        "ASCII text"
+      ]
+    },
+    {
+      "output": {
+        "language": "JSON",
+        "lines": 9,
+        "mime": "application/json",
+        "sloc": 9,
+        "type": "Text"
+      },
+      "path": "codegen.json",
+      "type": [
+        "ASCII text"
+      ]
+    },
+    {
+      "output": {
+        "language": "",
+        "lines": 1,
+        "mime": "text/plain",
+        "sloc": 1,
+        "type": "Text"
+      },
+      "path": "META-INF/services/io.vertx.core.spi.PumpFactory",
+      "type": [
+        "ASCII text, with no line terminators"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/AbstractVerticle.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/AsyncResult$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/AsyncResult$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/AsyncResult.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Closeable.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/CompositeFuture.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Context.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/DeploymentOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/DeploymentOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Future.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Handler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Launcher.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/MultiMap.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/ServiceHelper.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Starter$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Starter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/TimeoutStream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Verticle.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/Vertx.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/VertxException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/VertxOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/VertxOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/WorkerExecutor.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/buffer/Buffer.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/buffer/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/buffer/impl/BufferFactoryImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/buffer/impl/BufferImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/AmbiguousOptionException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/Argument.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/ArgumentConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/CLI.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/CLIException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/CommandLine.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/InvalidValueException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/MissingOptionException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/MissingValueException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/Option.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/OptionConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/TypedArgument.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/TypedOption.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "Text",
+        "lines": 1,
+        "mime": "text/plain",
+        "sloc": 1,
+        "type": "Text"
+      },
+      "path": "vertx-version.txt",
+      "type": [
+        "ASCII text, with no line terminators"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/UsageMessageFormatter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/CLIConfigurator.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/Argument.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/ConvertedBy.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/DefaultValue.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/Description.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/Name.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/Hidden.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/Option.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/Summary.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/annotations/ParsedAsList.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/BooleanConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/CharacterConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/ConstructorBasedConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/Converter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/Converters.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/FromBasedConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/FromStringBasedConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/StringConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/converters/ValueOfBasedConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/impl/DefaultCLI.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/impl/DefaultCommandLine.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/impl/DefaultParser.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/cli/impl/ReflectionUtils.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/DatagramSocket.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/DatagramPacket.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/DatagramSocketOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/DatagramSocketOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/impl/DatagramChannelFutureListener.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "",
+        "lines": 1,
+        "mime": "text/plain",
+        "sloc": 1,
+        "type": "Text"
+      },
+      "path": "META-INF/services/io.vertx.core.spi.FutureFactory",
+      "type": [
+        "ASCII text, with no line terminators"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/impl/DatagramPacketImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/impl/DatagramServerHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/impl/DatagramSocketImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/impl/DatagramSocketImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/impl/PacketWriteStreamImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/datagram/impl/InternetProtocolFamily.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/AddressResolverOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/AddressResolverOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/DnsClient.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "",
+        "lines": 1,
+        "mime": "text/plain",
+        "sloc": 1,
+        "type": "Text"
+      },
+      "path": "META-INF/services/io.vertx.core.spi.BufferFactory",
+      "type": [
+        "ASCII text, with no line terminators"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/DnsException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/DnsResponseCode.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/SrvRecord.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/MxRecord.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/DnsClientImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/DnsClientImpl$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/DnsClientImpl$3$1$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/DnsClientImpl$3$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/DnsClientImpl$3.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/DnsClientImpl$RetryChannelFutureListener.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/DnsClientImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/MxRecordImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "",
+        "lines": 151,
+        "mime": "text/plain",
+        "sloc": 151,
+        "type": "Text"
+      },
+      "path": "META-INF/MANIFEST.MF",
+      "type": [
+        "assembler source, ASCII text, with CRLF line terminators"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/SrvRecordImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/decoder/RecordDecoder.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/dns/impl/decoder/StartOfAuthorityRecord.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/BridgeInterceptor.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/DeliveryOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/EventBus.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/EventBusOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/EventBusOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/FilteringInterceptor.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/Message.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/MessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/MessageProducer.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/MessageConsumer.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/ReplyFailure.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/ReplyException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/ReplyFailure$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/SendContext.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/BodyReadStream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/EventBusImpl$HandlerEntry.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/CodecManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/EventBusImpl$ReplySendContextImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/EventBusImpl$SendContextImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/EventBusImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/HandlerRegistration.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/HandlerHolder.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "Maven POM",
+        "lines": 652,
+        "mime": "application/xml",
+        "sloc": 652,
+        "type": "Text"
+      },
+      "path": "META-INF/maven/io.vertx/vertx-core/pom.xml",
+      "type": [
+        "XML 1.0 document, ASCII text"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/MessageImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/Handlers.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/clustered/ClusteredEventBus$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/clustered/ClusterNodeInfo.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/MessageProducerImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/clustered/ClusteredEventBus.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "",
+        "lines": 1,
+        "mime": "text/plain",
+        "sloc": 1,
+        "type": "Text"
+      },
+      "path": "META-INF/services/io.vertx.core.spi.VertxFactory",
+      "type": [
+        "ASCII text, with no line terminators"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/clustered/ClusteredMessage.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/clustered/ConnectionHolder.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/BooleanMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "",
+        "lines": 1,
+        "mime": "text/plain",
+        "sloc": 1,
+        "type": "Text"
+      },
+      "path": "META-INF/services/io.vertx.core.spi.WebSocketFrameFactory",
+      "type": [
+        "ASCII text, with no line terminators"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/ByteArrayMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "",
+        "lines": 26,
+        "mime": "text/plain",
+        "sloc": 26,
+        "type": "Text"
+      },
+      "path": "META-INF/services/io.vertx.core.spi.launcher.CommandFactory",
+      "type": [
+        "ASCII text"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/ByteMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/BufferMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/DoubleMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/FloatMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/CharMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/IntMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/JsonArrayMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/LongMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/JsonObjectMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/NullMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/ReplyExceptionMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/PingMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/AsyncFile.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/ShortMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/OpenOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/eventbus/impl/codecs/StringMessageCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/FileSystem.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/FileProps.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/FileSystemException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/FileSystemProps.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/OpenOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FilePropsImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/AsyncFileImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/AsyncFileImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/AsyncFileImpl$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$10.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$11$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$1$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$11.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$12.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$13.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$15.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$16.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$14.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$17.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$3.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$4$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$4.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$6.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$5.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$8.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$9.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$9$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$7.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/WindowsFileSystem$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemImpl$BlockingAction.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/FileSystemPropsImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/CaseInsensitiveHeaders$MapEntry.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/file/impl/WindowsFileSystem.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/GoAwayConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/GoAway.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/ClientAuth.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/ConnectionPoolTooBusyException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/CaseInsensitiveHeaders.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/Http2Settings.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/Http2SettingsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpClient.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpClientOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpClientResponse.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpClientRequest.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpFrame.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpClientOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpHeaders.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpConnection.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpServerFileUpload.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpServer.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpServerOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpMethod.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpServerRequest.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpServerResponse.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpVersion.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/HttpServerOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/WebSocket.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/ServerWebSocket.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/WebsocketVersion.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/StreamResetException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/WebSocketBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/AssembledFullHttpRequest.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/RequestOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/WebSocketFrame.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ClientConnection.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/AssembledFullHttpResponse.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/AssembledLastHttpContent.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ClientConnection$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/AssembledHttpResponse.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/AssembledHttpRequest.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ClientConnection$HandshakeInboundHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ClientHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ClientHandler$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$ChannelConnector$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$ChannelConnector$1UpgradeRequestHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$ChannelConnector$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$ChannelConnector.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$QueueManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$Pool.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$ConnQueue.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ConnectionManager$ConnectionKey.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/FileStreamChannel$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/FileStreamChannel$1$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/FileStreamChannel$StreamSocketAddress.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/FileStreamChannel$DefaultUnsafe.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/FileStreamChannel$Id.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/FileStreamChannel.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/FrameType.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HeadersAdaptor.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http1xPool.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2HeadersAdaptor$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "INI",
+        "lines": 6,
+        "mime": "text/plain",
+        "sloc": 6,
+        "type": "Text"
+      },
+      "path": "META-INF/maven/io.vertx/vertx-core/pom.properties",
+      "type": [
+        "ASCII text"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2ClientConnection.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2ClientConnection$Http2ClientStream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2ConnectionBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2HeadersAdaptor$2$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2HeadersAdaptor$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2Pool.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2HeadersAdaptor.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2ServerConnection$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2ServerConnection.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2ServerConnection$Push.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2ServerResponseImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Http2ServerRequestImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpChunkContentCompressor.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientImpl$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientConnection.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientImpl$WebSocketStream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientRequestBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientRequestImpl$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientRequestImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientRequestImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientRequestImpl$3.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientRequestPushPromise.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientResponseImpl$BodyHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientResponseImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientResponseImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerFileUploadImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpFrameImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpClientStream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerImpl$Http1xOrHttp2Handler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerImpl$HttpHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerImpl$1$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerImpl$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerImpl$HttpStreamHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerImpl$ServerHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerRequestImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpUtils$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpUtils$CustomCompressor.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerResponseImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/MimeMapping.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpServerImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/NettyFileUpload.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/HttpUtils.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ServerConnection$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/NettyFileUploadDataFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ServerConnection$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ServerWebSocketImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/VertxHttp2ClientUpgradeCodec.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ServerConnection.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/VertxHttp2Stream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/VertxHttp2ConnectionHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/VertxHttpHandler$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/VertxHttp2ConnectionHandlerBuilder.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/VertxHttp2NetSocket.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/VertxHttpHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/Waiter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/WebSocketImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/VertxHttpResponseEncoder.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/WebSocketFrameFactoryImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/WebSocketImplBase$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/cgbystrom/FlashPolicyHandler$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/WebSocketImplBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/cgbystrom/FlashPolicyHandler$ParseState.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/WebSocketImplBase$FrameAggregator.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/cgbystrom/FlashPolicyHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ws/WebSocketFrameImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/Action.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/http/impl/ws/WebSocketFrameInternal.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/AddressResolver$1$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/AddressResolver$ResolverRegistration.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/AddressResolver.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/AddressResolver$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/AddressResolver$AsyncCloseableResolverGroup.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/Args.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/Arguments.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/BlockedThreadChecker.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/ContextTask.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/ContextInternal.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/CloseHooks.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/ConcurrentHashSet.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/ContextImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/BlockedThreadChecker$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/CompositeFutureImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/DeploymentManager$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/Deployment.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/DeploymentManager$DeploymentImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/EventLoopContext.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/DeploymentManager$VerticleHolder.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/DeploymentManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/ExtendedClusterManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/FileResolver.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/FutureFactoryImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/FailoverCompleteHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/FutureImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/HAManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/MultiThreadedWorkerContext.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/JavaVerticleFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/NoStackTraceThrowable.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/HAManager$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/OrderedExecutorFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/OrderedExecutorFactory$OrderedExecutor.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/IsolatingClassLoader.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/StringEscapeUtils.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/Utils.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxImpl$1$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxImpl$InternalTimerHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxImpl$SharedWorkerPool.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxInternal.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxFactoryImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxThread.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxImpl$TimeoutStreamImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/VertxThreadFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/WorkerContext.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/WorkerPool.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/WorkerExecutorImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/WorkerExecutorInternal.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/ServiceCommandFactoryLoader.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/CommandLineUtils.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/VertxCommandLauncher$CommandRegistration.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/VertxCommandLauncher.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/VertxLifecycleHooks.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/BareCommand.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/BareCommand$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/ClasspathHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/BareCommandFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/ExecUtils.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/FileSelector.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/ListCommand.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/RunCommand$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/ListCommandFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/RunCommand.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/StartCommand.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/StartCommandFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/RunCommandFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/StopCommandFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/StopCommand.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/VersionCommand.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/Watcher$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/VertxIsolatedDeployer.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/verticle/CompilingClassLoader.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/Watcher$FileInfo.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/Watcher.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/launcher/commands/VersionCommandFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/verticle/MemoryFileManager$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/verticle/CustomJavaFileObject.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/verticle/JavaSourceContext.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/verticle/PackageHelper.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/impl/verticle/MemoryFileManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/JsonArray.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/JsonArray$Iter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/DecodeException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/Json$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/Json.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/Json$JsonArraySerializer.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/JsonObject$Entry.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/EncodeException.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/Json$JsonObjectSerializer.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/JsonObject.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/json/JsonObject$Iter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/JULLogDelegate.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/Log4j2LogDelegate.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/Log4jLogDelegateFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/JULLogDelegateFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/Log4jLogDelegate.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/Logger.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/Log4j2LogDelegateFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/LoggerFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/SLF4JLogDelegateFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/SLF4JLogDelegate.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/logging/VertxLoggerFormatter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/MetricsOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/Measured.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/impl/DummyVertxMetrics$DummyDatagramMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/MetricsOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/impl/DummyVertxMetrics$DummyHttpClientMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/impl/DummyVertxMetrics$DummyEventBusMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/impl/DummyVertxMetrics$DummyHttpServerMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/impl/DummyVertxMetrics$DummyTCPMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/impl/DummyVertxMetrics$DummyWorkerPoolMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/metrics/impl/DummyVertxMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/ClientOptionsBaseConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/JdkSSLEngineOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/ClientOptionsBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/JksOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetClient.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetClientOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/JksOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetServerOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetServer.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/KeyCertOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetClientOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetSocket.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetworkOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetServerOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/OpenSSLEngineOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/OpenSSLEngineOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/NetworkOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/PemKeyCertOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/PfxOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/PemTrustOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/PemTrustOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/PemKeyCertOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/PfxOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/ProxyOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/TCPSSLOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/ProxyOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/SelfSignedCertificate.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/ProxyType.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/SocketAddress.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/SSLEngineOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/ServerOptionsBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/TrustOptions.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/AsyncResolveConnectHelper.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/TCPSSLOptionsConverter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/ChannelProvider$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/ChannelProvider.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/HandlerHolder.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/ConnectionBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/HandlerManager$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/KeyStoreHelper$KeyCert.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/HandlerManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/KeyStoreHelper$JKSOrPKCS12.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/KeyStoreHelper$CA.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/HandlerManager$Handlers.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetClientImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/KeyStoreHelper.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetClientImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetServerBase$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetServerBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetServerImpl$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetServerImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetServerBase$ServerHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetServerImpl$NetSocketStream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/PartialPooledByteBufAllocator.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/ProxyChannelProvider$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/ProxyChannelProvider$1$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/PartialPooledByteBufAllocator$PooledChannelHandlerContext.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/NetSocketImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/ProxyChannelProvider.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/ProxyChannelProvider$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/PartialPooledByteBufAllocator$ForceDirectPoooledByteBufAllocator.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/SelfSignedCertificateImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/ServerID.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/SSLHelper$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/SSLHelper$3.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/SSLHelper$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/SocketAddressImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/SSLHelper.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxEventLoopGroup$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxEventLoopGroup$EventLoopHolder.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxEventLoopGroup.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/TrustAllTrustManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxNetHandler.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxEventLoopGroup$EventLoopIterator.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxEventLoopGroup$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxTrustManagerFactory$1.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/Counter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxTrustManagerFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/net/impl/VertxTrustManagerFactory$2.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/parsetools/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/parsetools/impl/RecordParserImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/AsyncMap.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/parsetools/RecordParser.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/LocalMap.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/Lock.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/impl/AsynchronousCounter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/SharedData.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/impl/AsynchronousLock$LockWaiter.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/impl/Checker.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/Shareable.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/impl/AsynchronousLock.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/impl/ClusterSerializable.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/impl/SharedDataImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/impl/LocalMapImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/shareddata/impl/SharedDataImpl$WrappedAsyncMap.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/BufferFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/PumpFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/VerticleFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/FutureFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/VertxFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/cluster/AsyncMultiMap.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/VertxMetricsFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/WebSocketFrameFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/cluster/ChoosableIterable.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/cluster/ClusterManager.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/cluster/NodeListener.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/launcher/Command.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/launcher/CommandFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/launcher/CommandFactoryLookup.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/launcher/DefaultCommand.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/launcher/ExecutionContext.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/DatagramSocketMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/logging/LogDelegateFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/HttpServerMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/EventBusMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/launcher/DefaultCommandFactory.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/logging/LogDelegate.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/Metrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/HttpClientMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/PoolMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/TCPMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/MetricsProvider.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/streams/StreamBase.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/NetworkMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/streams/ReadStream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/spi/metrics/VertxMetrics.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/streams/package-info.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/streams/Pump.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/streams/impl/PumpFactoryImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/streams/WriteStream.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": null,
+      "path": "io/vertx/core/streams/impl/PumpImpl.class",
+      "type": [
+        "compiled Java class data, version 52.0 (Java 1.8)"
+      ]
+    },
+    {
+      "output": {
+        "language": "",
+        "lines": 178,
+        "mime": "text/plain",
+        "sloc": 178,
+        "type": "Text"
+      },
+      "path": "vertx-core/template/dataObjectConverter.templ",
+      "type": [
+        "ASCII text"
+      ]
+    }
+  ],
+  "schema": {
+    "name": "languages",
+    "version": "1-0-0"
+  },
+  "status": "success",
+  "summary": []
+}

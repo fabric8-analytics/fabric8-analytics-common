@@ -1,0 +1,55 @@
+{
+  "_audit": {
+    "ended_at": "2017-03-13T17:52:48.856784",
+    "started_at": "2017-03-13T17:52:44.140447",
+    "version": "v1"
+  },
+  "_release": "maven:io.vertx:vertx-core:3.4.0",
+  "details": [
+    {
+      "code_repository": {
+        "type": "unknown",
+        "url": "git@github.com:eclipse/vert.x.git"
+      },
+      "declared_license": "The Apache Software License, Version 2.0, Eclipse Public License - v 1.0",
+      "dependencies": [
+        "com.fasterxml.jackson.core:jackson-databind 2.7.4",
+        "org.apache.logging.log4j:log4j-core 2.5",
+        "io.netty:netty-transport 4.1.8.Final",
+        "org.slf4j:slf4j-api 1.7.21",
+        "io.netty:netty-handler-proxy 4.1.8.Final",
+        "io.netty:netty-common 4.1.8.Final",
+        "io.netty:netty-buffer 4.1.8.Final",
+        "log4j:log4j 1.2.17",
+        "io.vertx:vertx-docgen 3.4.0",
+        "org.apache.logging.log4j:log4j-api 2.5",
+        "io.vertx:vertx-codegen 3.4.0",
+        "io.netty:netty-codec-http 4.1.8.Final",
+        "io.netty:netty-handler 4.1.8.Final",
+        "io.netty:netty-resolver-dns 4.1.8.Final",
+        "com.fasterxml.jackson.core:jackson-core 2.7.4",
+        "io.netty:netty-codec-http2 4.1.8.Final",
+        "io.netty:netty-resolver 4.1.8.Final"
+      ],
+      "description": "Sonatype helps open source projects to set up Maven repositories on https://oss.sonatype.org/",
+      "devel_dependencies": [
+        "org.mortbay.jetty.alpn:jetty-alpn-agent 2.0.6",
+        "org.slf4j:slf4j-simple 1.7.21",
+        "org.assertj:assertj-core 3.4.1",
+        "io.netty:netty-tcnative-boringssl-static 1.1.33.Fork26",
+        "org.apache.directory.server:apacheds-protocol-dns 1.5.7",
+        "junit:junit 4.12"
+      ],
+      "ecosystem": "java-pom",
+      "homepage": "http://nexus.sonatype.org/oss-repository-hosting.html/vertx-parent/vertx-core",
+      "name": "Vert.x Core",
+      "version": "3.4.0"
+    }
+  ],
+  "schema": {
+    "name": "metadata",
+    "version": "3-1-0"
+  },
+  "status": "success",
+  "summary": []
+}

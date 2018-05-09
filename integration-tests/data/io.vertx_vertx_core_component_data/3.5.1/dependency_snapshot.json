@@ -1,0 +1,22 @@
+{
+  "_audit": {
+    "ended_at": "2018-04-17T19:25:31.187354",
+    "started_at": "2018-04-17T19:25:31.180603",
+    "version": "v1"
+  },
+  "_release": "maven:io.vertx:vertx-core:3.5.1",
+  "details": {
+    "runtime": []
+  },
+  "schema": {
+    "name": "dependency_snapshot",
+    "version": "1-0-0"
+  },
+  "status": "success",
+  "summary": {
+    "dependency_counts": {
+      "runtime": 0
+    },
+    "errors": []
+  }
+}

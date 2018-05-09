@@ -42,6 +42,13 @@ def running_system(context):
         initial_state(context)
 
 
+@given('{directory} directory exists')
+def does_data_directory_exists(context, directory):
+    """Ensure that the specified directory exists."""
+    assert os.path.isdir(directory), \
+        "The specified directory '{directory}' does not exist".format(directory=directory)
+
+
 @when("I obtain TGT in {service} service")
 def get_tgt_in_service(context, service):
     """Obtain TGT in specified container via `docker exec` and returns output of klist."""
@@ -69,6 +76,24 @@ def get_tgt_in_service(context, service):
 def check_json_empty_response(context):
     """Check that the JSON response is empty."""
     assert is_empty_json_response(context)
+
+
+@then('I should receive nonempty JSON response')
+def check_json_nonempty_response(context):
+    """Check that the JSON response is not empty."""
+    assert not is_empty_json_response(context)
+
+
+@then('I should receive nempty JSON response from S3')
+def check_json_nempty_response_from_s3(context):
+    """Check that the JSON response from S3 is empty."""
+    assert is_empty_json_response_from_s3(context)
+
+
+@then('I should receive nonempty JSON response from S3')
+def check_json_nonempty_response_from_s3(context):
+    """Check that the JSON response from S3 is not empty."""
+    assert not is_empty_json_response_from_s3(context)
 
 
 @then('I should get {status:d} status code')

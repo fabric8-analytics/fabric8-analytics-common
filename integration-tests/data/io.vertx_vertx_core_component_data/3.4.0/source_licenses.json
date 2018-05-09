@@ -1,0 +1,4281 @@
+{
+  "_audit": {
+    "ended_at": "2017-03-13T17:52:40.163861",
+    "started_at": "2017-03-13T17:52:13.268455",
+    "version": "v1"
+  },
+  "_release": "maven:io.vertx:vertx-core:3.4.0",
+  "details": {
+    "files": [
+      {
+        "path": "io/vertx/core/cli/CLIException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/ReplyException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/NetSocketImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/ConstructorBasedConverter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpServerRequest.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/StopCommandFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Http2HeadersAdaptor.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/ws/WebSocketFrameInternal.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpClientRequest.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/streams/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpServerResponse.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpServerOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpClientImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/cli/AnnotatedCli.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/PingMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/VertxImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/parsetools/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/VertxMetricsFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/Message.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/VertxOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/FileSelector.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/clustered/ClusteredEventBus.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/Utils.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/ContextTask.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/JULLogDelegateFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/CoreExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/Option.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/PemTrustOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/impl/InternetProtocolFamily.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/WorkerExecutorImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/AmbiguousOptionException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/MetricsProvider.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/ConcurrentHashSet.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpServer.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/EventBus.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpServerResponseImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpServerOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/json/JsonObject.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/impl/DatagramChannelFutureListener.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/StreamResetException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpClient.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/cluster/NodeListener.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/WorkerExecutor.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/Starter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/VertxCommandLauncher.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpChunkContentCompressor.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpClientRequestBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetworkOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/MessageConsumer.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/FileSystemException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/Name.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/GoAway.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/PfxOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/VertxTrustManagerFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/NetServerImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/VertxOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/impl/AsynchronousCounter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpConnection.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/MultiMap.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/PumpFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/BodyReadStream.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/WebSocketFrameFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/ConvertedBy.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/AsyncResolveConnectHelper.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/metrics/MetricsOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/FileResolver.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/ServerWebSocketImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/Watcher.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/ListCommandFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/ContextInternal.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetServerOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/DeploymentManager.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/HandlerHolder.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/streams/StreamBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/metrics/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/ClientHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/cli/MyCommand.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/Verticle.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/cli/CLIExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/VertxFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/launcher/CommandFactoryLookup.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/CaseInsensitiveHeaders.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/CLIConfigurator.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Http2ServerConnection.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/NetClientImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/EventBusExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/FileStreamChannel.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/DNSExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/Argument.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/Context.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Http2Pool.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/verticle/CustomJavaFileObject.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/DnsResponseCode.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/DnsException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/Log4jLogDelegateFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/impl/decoder/StartOfAuthorityRecord.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Http2ConnectionBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/VertxHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/VertxHttp2NetSocket.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/FileSystemProps.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetClient.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/ConnectionManager.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/CommandLine.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/impl/DefaultCLI.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/IntMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/impl/PacketWriteStreamImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/ServerWebSocket.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpHeaders.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/PemKeyCertOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/HTTP2Examples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/VertxLoggerFormatter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/buffer/impl/BufferImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/Http2SettingsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/VertxThreadFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/LongMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetClientOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/FutureFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/impl/SharedDataImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/AsyncFile.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/StringConverter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/SharedData.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Http1xPool.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/AddressResolverOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/parsetools/RecordParser.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/KeyCertOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/streams/impl/PumpFactoryImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpClientConnection.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/impl/Checker.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpClientRequestImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/IsolatingClassLoader.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/AddressResolver.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/Converter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/Shareable.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpFrameImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/TCPMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpClientOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/Future.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpClientOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/WebSocketImplBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/cli/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/buffer/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/launcher/Command.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/WorkerContext.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/OrderedExecutorFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/StopCommand.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/SLF4JLogDelegateFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/Argument.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/logging/LogDelegateFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/ClientOptionsBaseConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/StartCommand.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/HttpClientMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetServerOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/TrustAllTrustManager.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetSocket.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/NetworkMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/FloatMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/ProxyOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/MessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/SharedDataExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/impl/DefaultCommandLine.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/OpenSSLEngineOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/VertxThread.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/AssembledFullHttpResponse.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Http2ClientConnection.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/ConnectionPoolTooBusyException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/ContextImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/FailoverCompleteHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/impl/DefaultParser.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/VersionCommand.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/DatagramSocketOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/impl/decoder/RecordDecoder.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/SocketAddressImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/impl/LocalMapImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/AsyncResult.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/impl/DatagramServerHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/parsetools/impl/RecordParserImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/Metrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Http2ServerResponseImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/Summary.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/NettyFileUploadDataFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/RequestOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetClientOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/Http2Settings.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/ServerID.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/Lock.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/verticle/PackageHelper.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/AssembledHttpRequest.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/StartCommandFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/CompositeFutureImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/ReplyFailure.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/launcher/CommandFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpServerRequestImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/Log4j2LogDelegateFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/VertxHttp2ConnectionHandlerBuilder.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/MultiThreadedWorkerContext.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/impl/DatagramSocketImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/impl/WindowsFileSystem.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/verticle/MemoryFileManager.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/FrameType.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/buffer/impl/BufferFactoryImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpFrame.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/FutureFactoryImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/cluster/ClusterManager.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/Hidden.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpServerImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/ByteArrayMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/JavaVerticleFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/impl/DnsClientImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/JsonArrayMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/JsonObjectMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpClientResponseImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/VertxHttp2ConnectionHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/MimeMapping.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/AssembledHttpResponse.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/AssembledFullHttpRequest.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpClientResponse.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/OpenOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpUtils.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/Description.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/PemKeyCertOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/MessageProducerImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/Option.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/PoolMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/MessageProducer.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/verticle/JavaSourceContext.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/Counter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/SLF4JLogDelegate.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/HandlerManager.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/TrustOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/cli/TypedCLIExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/WorkerExecutorInternal.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/launcher/DefaultCommandFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/launcher/DefaultCommand.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpServerFileUpload.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/AddressResolverOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/json/JsonArray.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/DeploymentOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/VerticleFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/TCPSSLOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/metrics/MetricsOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/HAManager.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/EventLoopContext.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/cluster/AsyncMultiMap.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Waiter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/JULLogDelegate.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/MxRecord.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/CommandLineUtils.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/Logger.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HeadersAdaptor.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/cgbystrom/LICENSE",
+        "result": [
+          {
+            "license_name": "MITNFA",
+            "match": 35,
+            "variant_id": "mitnfa"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/MissingOptionException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/Launcher.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/BufferMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/ReplyExceptionMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/StringEscapeUtils.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/DeploymentOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/impl/ClusterSerializable.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/NetServerBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/CharacterConverter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/SSLHelper.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/InvalidValueException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpClientRequestPushPromise.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/FileProps.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/json/Json.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/NullMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/cgbystrom/FlashPolicyHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/impl/decoder/package-info.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/CompositeFuture.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/VertxInternal.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/FromBasedConverter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/FutureImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/ExecUtils.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/VertxHttp2ClientUpgradeCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/ProxyType.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/MessageImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/VertxIsolatedDeployer.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/BufferExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/package-info.java",
+        "result": [
+          {
+            "license_name": "Forbidden Phrase",
+            "variant_id": "license-f"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/MissingValueException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/Log4j2LogDelegate.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/VertxNetHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/Converters.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/impl/AsynchronousLock.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/VertxHttp2Stream.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/DatagramExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/ServerOptionsBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/VersionCommandFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/ProxyOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/CharMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/Arguments.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/ParsedAsList.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/ServerConnection.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/OpenOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/launcher/ExecutionContext.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetworkOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/streams/ReadStream.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/ServiceHelper.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/Handler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/FromStringBasedConverter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/SrvRecord.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/WebSocketBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/json/EncodeException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/Log4jLogDelegate.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/AbstractVerticle.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/WebsocketVersion.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/annotations/DefaultValue.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/AsyncMap.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/PartialPooledByteBufAllocator.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/VertxEventLoopGroup.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/AssembledLastHttpContent.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/RunCommandFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/ws/WebSocketFrameImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/streams/impl/PumpImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/metrics/impl/DummyVertxMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/VertxMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/EventBusOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpMethod.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/HttpServerMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/TypedOption.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/LocalMap.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/SelfSignedCertificateImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/NetExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/GoAwayConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/NettyFileUpload.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/JksOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/logging/LogDelegate.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/json/DecodeException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/ClientOptionsBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/VertxLifecycleHooks.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/cluster/ChoosableIterable.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/NoStackTraceThrowable.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/KeyStoreHelper.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/verticle/CompilingClassLoader.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/impl/FileSystemImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/VertxException.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/TCPSSLOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/buffer/Buffer.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/logging/LoggerFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/TypedArgument.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/ServiceCommandFactoryLoader.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/VertxFactoryImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/Http2ServerRequestImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/HttpVersion.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/impl/ConnectionBase.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/Deployment.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/WebSocketFrameFactoryImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/BooleanConverter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/CLI.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/SSLEngineOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/DnsClient.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/DatagramSocketMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/OptionConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/impl/ReflectionUtils.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/WorkerPool.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/BlockedThreadChecker.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/RunCommand.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/impl/SrvRecordImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/impl/FileSystemPropsImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/DatagramSocket.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/ListCommand.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/DatagramSocketOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/impl/FilePropsImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/HTTPExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/DoubleMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/metrics/Measured.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/impl/DatagramPacketImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/EventBusImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/FileSystem.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/Args.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/converters/ValueOfBasedConverter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/ExtendedClusterManager.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/StringMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpServerFileUploadImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/BooleanMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/TimeoutStream.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/Closeable.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/PfxOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/UsageMessageFormatter.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/NetServer.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/ShortMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/Vertx.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/WebSocketImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/WebSocket.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/file/impl/AsyncFileImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/StreamsExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/SocketAddress.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/VertxHttpResponseEncoder.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/JksOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/clustered/ClusteredMessage.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/ClasspathHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/codecs/ByteMessageCodec.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/BareCommand.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/metrics/EventBusMetrics.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/DeliveryOptions.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/launcher/commands/BareCommandFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/EventBusOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/ClientConnection.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/SelfSignedCertificate.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/datagram/DatagramPacket.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/VertxHttpHandler.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/eventbus/impl/clustered/ClusterNodeInfo.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/streams/Pump.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/dns/impl/MxRecordImpl.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/streams/WriteStream.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/WebSocketFrame.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/spi/BufferFactory.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/shareddata/package-info.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "examples/FileSystemExamples.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/cli/ArgumentConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/net/PemTrustOptionsConverter.java",
+        "result": [
+          {
+            "license_name": "ASL 2.0",
+            "match": 96,
+            "variant_id": "asl-2.0-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/http/impl/HttpClientStream.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      },
+      {
+        "path": "io/vertx/core/impl/Action.java",
+        "result": [
+          {
+            "license_name": "Free Art",
+            "match": 23,
+            "variant_id": "fal-1.3-s"
+          }
+        ]
+      }
+    ],
+    "license_stats": [
+      {
+        "count": 26,
+        "license_name": "ASL 2.0",
+        "variant_id": "asl-2.0-s"
+      },
+      {
+        "count": 392,
+        "license_name": "Forbidden Phrase",
+        "variant_id": "copyright-f"
+      },
+      {
+        "count": 392,
+        "license_name": "Free Art",
+        "variant_id": "fal-1.3-s"
+      },
+      {
+        "count": 1,
+        "license_name": "Forbidden Phrase",
+        "variant_id": "license-f"
+      },
+      {
+        "count": 1,
+        "license_name": "MITNFA",
+        "variant_id": "mitnfa"
+      }
+    ],
+    "oslc_stats": {
+      "All files": 447,
+      "Conflicts (global)": 4,
+      "Conflicts (ref)": 3808,
+      "Distinct licenses": 5,
+      "License files": 1,
+      "Source files": 436
+    }
+  },
+  "schema": {
+    "name": "source_licenses",
+    "version": "2-0-0"
+  },
+  "status": "success",
+  "summary": {
+    "all_files": 447,
+    "distinct_licenses": [
+      {
+        "count": 26,
+        "license_name": "ASL 2.0"
+      },
+      {
+        "count": 392,
+        "license_name": "Free Art"
+      },
+      {
+        "count": 1,
+        "license_name": "MITNFA"
+      },
+      {
+        "count": 1,
+        "license_name": "Forbidden Phrase"
+      }
+    ],
+    "license_files": 1,
+    "licensed_files": 420,
+    "source_files": 436,
+    "sure_licenses": [
+      "ASL 2.0",
+      "Free Art",
+      "MITNFA",
+      "Forbidden Phrase"
+    ]
+  }
+}
