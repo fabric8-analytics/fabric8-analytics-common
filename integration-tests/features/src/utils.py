@@ -81,9 +81,11 @@ def oc_delete_pods(selector, namespace=None, force=False):
     :param force: bool, immediate deletion of the resources, default: False
     :return: None on success, raises `subprocess.CalledProcessError` on error
     """
-    command = ['oc', 'delete', '--force={f}'.format(f=str(force)), 'pods', '--selector', selector]
+    command = ['oc', 'delete', 'pods', '--selector', selector]
     if namespace:
         command.extend(['--namespace', namespace])
+    if force:
+        command.extend(['--force={f}'.format(f=str(force).lower()), '--grace-period=0'])
 
     subprocess.check_call(command)
 
