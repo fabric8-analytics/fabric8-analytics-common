@@ -149,13 +149,17 @@ def clone_or_fetch_repository(repository):
 
 def run_pylint(repository):
     """Run Pylint checker against the selected repository."""
-    command = "pushd {repo};./run-linter.sh > ../{repo}.linter.txt;popd".format(repo=repository)
+    command = ("pushd {repo} >> /dev/null;" +
+               "./run-linter.sh > ../{repo}.linter.txt;" +
+               "popd >> /dev/null").format(repo=repository)
     os.system(command)
 
 
 def run_docstyle_check(repository):
     """Run PyDocsStyle checker against the selected repository."""
-    command = "pushd {repo};./check-docstyle.sh > ../{repo}.pydocstyle.txt;popd".format(
+    command = ("pushd {repo} >> /dev/null;" +
+               "./check-docstyle.sh > ../{repo}.pydocstyle.txt;" +
+               "popd >> /dev/null").format(
         repo=repository)
     os.system(command)
 
@@ -164,12 +168,14 @@ def run_cyclomatic_complexity_tool(repository):
     """Run Cyclomatic Complexity tool against the selected repository."""
     for i in range(ord('A'), 1 + ord('F')):
         rank = chr(i)
-        command = ("pushd {repo};radon cc -a -s -n {rank} -i venv . |ansi2html.py " +
-                   "> ../{repo}.cc.{rank}.html;popd").format(repo=repository, rank=rank)
+        command = ("pushd {repo} >> /dev/null;" +
+                   "radon cc -a -s -n {rank} -i venv . |ansi2html.py > ../{repo}.cc.{rank}.html;" +
+                   "popd >> /dev/null").format(repo=repository, rank=rank)
         os.system(command)
 
-    command = "pushd {repo};radon cc -s -j -i venv . > ../{repo}.cc.json;popd".format(
-        repo=repository)
+    command = ("pushd {repo} >> /dev/null;" +
+               "radon cc -s -j -i venv . > ../{repo}.cc.json;" +
+               "popd >> /dev/null").format(repo=repository)
     os.system(command)
 
 
@@ -383,7 +389,7 @@ def cleanup_repository(repository):
     """Cleanup the directory with the clone of specified repository."""
     # let's do very basic check that the repository is really local dir
     if '/' not in repository:
-        print("cleanup " + repository)
+        print("Cleanup the repository " + repository)
         shutil.rmtree(repository, ignore_errors=True)
 
 
