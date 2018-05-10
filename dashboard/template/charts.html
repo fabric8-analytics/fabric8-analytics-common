@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Fabric8-analytics charts for repository ${repository}</title>
+        <meta name="Author" content="Pavel Tisnovsky" />
+        <meta name="Generator" content="Vim" />
+        <meta http-equiv="Content-type"  content="text/html; charset=utf-8"/>
+	<link href="bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script src="bootstrap.min.js" type="text/javascript"></script>
+	<link href="dashboard.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body style="padding-top:70px">
+        <div class="container" style="width:90%">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container-fluid"><div class="row">
+                    <div class="col-md-4">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="/">Fabric8-analytics charts for repository ${repository}</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="panel panel-primary">
+                <!--<div class="panel-heading">Code coverage</div>-->
+                <div class="panel-heading">Cyclomatic complexity</div>
+                <img src="cyclomatic_complexity_${repository}.png" />
+                <div class="panel-heading">Maintainability index</div>
+                <img src="maintainability_index_${repository}.png" />
+            </div>
+            <div style='height:100px'></div>
+            <div>Author: Pavel Tisnovsky &lt;<a href="mailto:ptisnovs@redhat.com">ptisnovs@redhat.com</a>&gt;</div>
+            <div>Generated on: ${generated_on}</div>
+        </div>
+    </body>
+</html>
+
