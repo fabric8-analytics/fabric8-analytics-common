@@ -24,6 +24,7 @@ from repositories import Repositories
 from progress_bar import *
 from source_files import *
 from unit_tests import *
+from charts import *
 
 
 def check_environment_variable(env_var_name):
@@ -599,6 +600,7 @@ def main():
         export_into_csv(results, repositories.repolist)
 
     generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
+    generate_charts(results)
 
 
 if __name__ == "__main__":
