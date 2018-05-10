@@ -175,18 +175,19 @@
 100 - 20  A   Very high
  19 - 10  B   Medium
   9 -  0  C   Extremely low&lt;/pre&gt;">Maintainabi-<br />lity Index</a></th>
+                            <th style="width:2ex"><img src="line_chart.gif" title="Charts for specific repository" /></th>
                             <th><a href="#" rel="popover" onclick="return false;" id="status" title="Overall Status" data-html="true" data-toggle="popover" data-placement="top" data-content="The following conditons must be met:
 &lt;ol&gt;&lt;li&gt;Source is 100% correct according to linter&lt;/li&gt;&lt;li&gt;Source is 100% correct according to docstyle checker&lt;/li&gt;&lt;li&gt;Code coverage &gt; 50%&lt;/li&gt;&lt;li&gt;Cyclomatic complexity in ranks A-C for all blocks&lt;/li&gt;&lt;li&gt;Maintainabity Index in rank A for all source files&lt;/li&gt;&lt;/ol&gt;">Overall<br />status</a></th>
                             <th>Remark</th>
                         </tr>
-                        <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>A</th><th>B</th><th>C</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+                        <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>A</th><th>B</th><th>C</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
                     % for repository in repositories:
                         <tr>
                             <td style="width:34ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
                             <td class="numeric" style="width:7ex"><a href="repository_${repository}.html">${source_files[repository]["count"]}</a></td>
                             <td class="numeric" style="width:7ex">${source_files[repository]["total_lines"]}</td>
-                            <td class="numeric ok" style="width:7ex">${repo_linter_checks[repository]["passed"]}</td>
-                            <td class="numeric error" style="width:7ex">${repo_linter_checks[repository]["failed"]}</td>
+                            <td class="numeric ok" style="width:6ex">${repo_linter_checks[repository]["passed"]}</td>
+                            <td class="numeric error" style="width:6ex">${repo_linter_checks[repository]["failed"]}</td>
                             <td class="numeric" style="width:16ex">
                                 <a href="${repository}.linter.txt">
                                     <div class='progress-bar ${repo_linter_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_linter_checks[repository]["progress_bar_width"]}%'>
@@ -194,8 +195,8 @@
                                     </div>
                                 </a>
                             </td>
-                            <td class="numeric ok" style="width:7ex">${repo_docstyle_checks[repository]["passed"]}</td>
-                            <td class="numeric error" style="width:7ex">${repo_docstyle_checks[repository]["failed"]}</td>
+                            <td class="numeric ok" style="width:6ex">${repo_docstyle_checks[repository]["passed"]}</td>
+                            <td class="numeric error" style="width:6ex">${repo_docstyle_checks[repository]["failed"]}</td>
                             <td class="numeric" style="width:16ex">
                                 <a href="${repository}.pydocstyle.txt">
                                     <div class='progress-bar ${repo_docstyle_checks[repository]["progress_bar_class"]} progress-bar-striped' style='width:${repo_docstyle_checks[repository]["progress_bar_width"]}%'>
@@ -204,8 +205,8 @@
                                 </a>
                             </td>
                             % if unit_test_coverage[repository] is not None:
-                                <td class="numeric ok" style="width:7ex">${unit_test_coverage[repository]["statements"]}</td>
-                                <td class="numeric error" style="width:7ex">${unit_test_coverage[repository]["missed"]}</td>
+                                <td class="numeric ok" style="width:6ex">${unit_test_coverage[repository]["statements"]}</td>
+                                <td class="numeric error" style="width:6ex">${unit_test_coverage[repository]["missed"]}</td>
                                 <td class="numeric" style="width:16ex">
                                     <a href="${repository}.coverage.txt">
                                         <div class='progress-bar ${unit_test_coverage[repository]["progress_bar_class"]} progress-bar-striped' style='width:${unit_test_coverage[repository]["progress_bar_width"]}%'>
@@ -241,6 +242,7 @@
                                 % endif
                             % endfor
 
+                            <td><a href="charts_${repository}.html"><img src="line_chart.gif" alt="Charts for the ${repository} repository" /></a></td>
                             % if overall_status[repository]:
                                 <td class="boolean ok" style="width:6ex;">&#x2713;</td>
                             % else:
