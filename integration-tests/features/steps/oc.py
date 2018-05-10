@@ -8,6 +8,7 @@ from src.attribute_checks import *
 from subprocess import CalledProcessError
 import json
 import re
+import time
 
 
 @given(u'The OpenShift Client is installed')
@@ -43,9 +44,9 @@ def oc_got_user_name_p(context):
     assert re.fullmatch(regexp, name)
 
 
-@when(u'I ask for statuses of all deployments')
+@when(u'I ask for states of all deployments')
 def check_status_of_all_deployments(context):
-    """Run the 'oc' command to retrieve statuses of all deployments."""
+    """Run the 'oc' command to retrieve states of all deployments."""
     try:
         result = oc_run_command("get", "deploymentconfigs", "--output", "json")
         context.oc_result = json.loads(result)
@@ -118,28 +119,64 @@ def oc_number_of_pods(context, num):
     assert cnt >= num, "Wrong number of pods ({cnt}) has been found".format(cnt=cnt)
 
 
-@then(u'I should find that all pods are in the {state} state')
-def oc_pods_in_state(context, state):
-    """Check state for all pods for the given service."""
+def get_pod_phase(pod):
+    """Get the current phase of pod from JSON data returned by OpenShift client."""
+    status = check_and_get_attribute(pod, "status")
+    return check_and_get_attribute(status, "phase")
+
+
+def is_pod(pod):
+    """Check whether the data describes Pod or something else."""
+    kind = check_and_get_attribute(pod, "kind")
+    return kind == "Pod"
+
+
+def get_pod_states(context):
+    """Get states for all pods."""
+    states = {}
     pods = check_and_get_attribute(context.oc_result, "items")
     for pod in pods:
-        kind = check_and_get_attribute(pod, "kind")
-        if kind == "Pod":
-            status = check_and_get_attribute(pod, "status")
-            phase = check_and_get_attribute(status, "phase")
-            assert phase == state, "The pod should be in state {state}".format(state=state)
+        if is_pod(pod):
+            metadata = check_and_get_attribute(pod, "metadata")
+            name = check_and_get_attribute(metadata, "name")
+            phase = get_pod_phase(pod)
+            states[name] = phase
+    return states
+
+
+@then(u'I should find that all pods are in the {expected} state')
+def oc_pods_in_state(context, expected):
+    """Check state for all pods for the given service."""
+    states = get_pod_states(context)
+    for pod_name, pod_state in states.items():
+        assert pod_state == expected, ("Pod {name} should be in state {expected}, but it is in " +
+                                       "state {pod_state} instead.").format(name=pod_name,
+                                                                            expected=expected,
+                                                                            pod_state=pod_state)
 
 
 @then(u'I should find that none of pods are in the {state} state')
 def oc_pods_in_state_negative(context, state):
     """Check state for all pods for the given service."""
-    pods = check_and_get_attribute(context.oc_result, "items")
-    for pod in pods:
-        kind = check_and_get_attribute(pod, "kind")
-        metadata = check_and_get_attribute(pod, "metadata")
-        name = check_and_get_attribute(metadata, "name")
-        if kind == "Pod":
-            status = check_and_get_attribute(pod, "status")
-            phase = check_and_get_attribute(status, "phase")
-            assert phase != state, "Pod {name} is in wrong state {state}".format(name=name,
+    states = get_pod_states(context)
+    for pod_name, pod_state in states.items():
+        assert pod_state != state, "Pod {name} is in wrong state {state}".format(name=name,
                                                                                  state=state)
+
+
+@when(u'I wait for the service {service_name} to restart with timeout set to {timeout:d} minutes')
+def oc_wait_for_service_restart(context, service_name, timeout):
+    """Try to wait for the service to be restarted."""
+    timeout *= 60  # minutes
+    sleep_amount = 2
+    for _ in range(timeout // sleep_amount):
+        oc_get_pods_for_service(context, service_name)
+        states = get_pod_states(context)
+        for pod_name, status in states.items():
+            if status == "Running":
+                # pod has been started
+                return
+        time.sleep(sleep_amount)
+    else:
+        raise Exception("Timeout waiting for service {service} to restart".format(
+            service=service_name))

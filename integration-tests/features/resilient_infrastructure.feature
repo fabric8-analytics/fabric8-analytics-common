@@ -44,6 +44,10 @@ Feature: Resilient storage
      And I wait 10 seconds
      And I get all pods for the f8a-server-backbone service
     Then I should find that none of pods are in the Running state
+    When I wait for the service f8a-server-backbone to restart with timeout set to 10 minutes
+     And I get all pods for the f8a-server-backbone service
+    Then I should find at least 1 pod
+     And I should find that all pods are in the Running state
 
   @requires.openshift.console.access
   Scenario: Check what happens to server when the f8a-server-backbone is restarted
