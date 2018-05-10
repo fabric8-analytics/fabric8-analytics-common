@@ -39,6 +39,7 @@ Feature: Resilient storage
      And I access the /api/v1/ 30 times with 2 seconds delay
     Then I should get 200 status code for all calls
 
+  @requires.openshift.console.access
   Scenario: Check that the stack-analyses works (nothing more ATM)
     Given System is running
     When I acquire the authorization token
