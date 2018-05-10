@@ -47,7 +47,7 @@ def oc_got_user_name_p(context):
 def check_status_of_all_deployments(context):
     """Run the 'oc' command to retrieve statuses of all deployments."""
     try:
-        result = oc_run_command("get", "dc", "--output", "json")
+        result = oc_run_command("get", "deploymentconfigs", "--output", "json")
         context.oc_result = json.loads(result)
     except (CalledProcessError, FileNotFoundError) as e:
         # nothing we can do ATM
@@ -85,8 +85,61 @@ def oc_service_exist(context, service_name):
     assert name == service_name, "Returned service has wrong name {name}".format(name=name)
 
 
+def selector_for_service(service_name):
+    """Construct selector for a service (or any other label)."""
+    return "service={service_name}".format(service_name=service_name)
+
+
 @when(u'I delete all pods for the service {service_name}')
 def oc_delete_selected_pods(context, service_name):
     """Delete selected pods."""
-    selector = "service={service_name}".format(service_name=service_name)
+    selector = selector_for_service(service_name)
     oc_delete_pods(selector, force=True)
+
+
+@when(u'I get all pods for the {service_name} service')
+def oc_get_pods_for_service(context, service_name):
+    """Get all pods for the service."""
+    selector = selector_for_service(service_name)
+    try:
+        result = oc_run_command("get", "pods", "--selector", selector, "--output", "json")
+        context.oc_result = json.loads(result)
+    except (CalledProcessError, FileNotFoundError) as e:
+        # nothing we can do ATM
+        raise
+
+
+@then(u'I should find at least {num:n} pod')
+@then(u'I should find at least {num:n} pods')
+def oc_number_of_pods(context, num):
+    """Check if at least specified number of pods exists for the given service."""
+    pods = check_and_get_attribute(context.oc_result, "items")
+    cnt = len(pods)
+    assert cnt >= num, "Wrong number of pods ({cnt}) has been found".format(cnt=cnt)
+
+
+@then(u'I should find that all pods are in the {state} state')
+def oc_pods_in_state(context, state):
+    """Check state for all pods for the given service."""
+    pods = check_and_get_attribute(context.oc_result, "items")
+    for pod in pods:
+        kind = check_and_get_attribute(pod, "kind")
+        if kind == "Pod":
+            status = check_and_get_attribute(pod, "status")
+            phase = check_and_get_attribute(status, "phase")
+            assert phase == state, "The pod should be in state {state}".format(state=state)
+
+
+@then(u'I should find that none of pods are in the {state} state')
+def oc_pods_in_state_negative(context, state):
+    """Check state for all pods for the given service."""
+    pods = check_and_get_attribute(context.oc_result, "items")
+    for pod in pods:
+        kind = check_and_get_attribute(pod, "kind")
+        metadata = check_and_get_attribute(pod, "metadata")
+        name = check_and_get_attribute(metadata, "name")
+        if kind == "Pod":
+            status = check_and_get_attribute(pod, "status")
+            phase = check_and_get_attribute(status, "phase")
+            assert phase != state, "Pod {name} is in wrong state {state}".format(name=name,
+                                                                                 state=state)
