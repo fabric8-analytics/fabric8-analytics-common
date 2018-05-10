@@ -30,6 +30,18 @@ def generate_details_page_for_repository(repository, results,
         fout.write(generated_page)
 
 
+def generate_charts_page_for_repository(repository, results):
+    """Generate the page with charts for the selected repository."""
+    template = Template(filename="template/charts.html")
+    data = {}
+    data["repository"] = repository
+    data["generated_on"] = results.generated_on
+    generated_page = template.render(**data)
+    filename = "charts_{repository}.html".format(repository=repository)
+    with open(filename, "w") as fout:
+        fout.write(generated_page)
+
+
 def generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle):
     """Generate all pages with the dashboard and detailed information as well."""
     generate_index_page(results)
@@ -38,3 +50,4 @@ def generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydo
             generate_details_page_for_repository(repository, results,
                                                  ignored_files_for_pylint.get(repository, []),
                                                  ignored_files_for_pydocstyle.get(repository, []))
+            generate_charts_page_for_repository(repository, results)
