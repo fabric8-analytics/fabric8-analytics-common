@@ -31,6 +31,21 @@ Feature: Resilient storage
     Then I should find that the service bayesian-pgbouncer exists
 
   @requires.openshift.console.access
+  Scenario: Check if we are able to restart the f8a-server-backbone service
+    Given The OpenShift Client is installed
+    When I ask for statuses of all deployments
+    Then I should find that the deployment f8a-server-backbone exists
+    When I ask for status of the f8a-server-backbone service
+    Then I should find that the service f8a-server-backbone exists
+    When I get all pods for the f8a-server-backbone service
+    Then I should find at least 1 pod
+     And I should find that all pods are in the Running state
+    When I delete all pods for the service f8a-server-backbone
+     And I wait 10 seconds
+     And I get all pods for the f8a-server-backbone service
+    Then I should find that none of pods are in the Running state
+
+  @requires.openshift.console.access
   Scenario: Check what happens to server when the f8a-server-backbone is restarted
     Given The OpenShift Client is installed
     When I access the /api/v1/ 30 times with 2 seconds delay
