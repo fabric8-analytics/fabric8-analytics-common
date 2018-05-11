@@ -154,31 +154,49 @@ def pause_scenario_execution(context, num):
     time.sleep(num)
 
 
+def check_datetime(attribute):
+    """Check the datetime attribute stored in the analysis result."""
+    assert datetime.datetime.strptime(attribute, "%Y-%m-%dT%H:%M:%S.%f")
+
+
+def check_incomplete_analysis_result(res, ecosystem, package, version):
+    """Check incomplete analysis result for given ecosystem, package, and version."""
+    assert res['ecosystem'] == ecosystem
+    assert res['package'] == package
+    assert res['version'] == version
+    check_datetime(res["started_at"])
+
+
+def check_analyzers_with_standard_schema(res, analyzers_keys):
+    """Check analyzers with standard schema."""
+    analyzers_with_standard_schema = set(analyzers_keys)
+    analyzers_with_standard_schema -= context.NONSTANDARD_ANALYSIS_FORMATS
+    for a in analyzers_with_standard_schema:
+        a_keys = set(res["analyses"].get(a, {}).keys())
+        if not a_keys and a in context.UNRELIABLE_ANALYSES:
+            continue
+        assert a_keys.issuperset({"details", "status", "summary"}), a_keys
+
+
+def check_complete_analysis_result(res, ecosystem, package, version):
+    """Check complete analysis result for given ecosystem, package, and version."""
+    check_datetime(res["finished_at"])
+    analyzers_keys = context.get_expected_component_analyses(ecosystem)
+    actual_keys = set(res["analyses"].keys())
+    missing, unexpected = context.compare_analysis_sets(actual_keys, analyzers_keys)
+    err_str = 'unexpected analyses: {}, missing analyses: {}'
+    assert not missing and not unexpected, err_str.format(unexpected, missing)
+    check_analyzers_with_standard_schema(res, analyzers_keys)
+
+
 @then('I should see {state} analysis result for {ecosystem}/{package}/{version}')
 def check_analysis_result(context, state, ecosystem, package, version):
     """Check the analysis result for given ecosystem, package, and version."""
-    # TODO: reduce cyclomatic complexity
     res = context.response.json()
     if state == 'incomplete':
-        assert res['ecosystem'] == ecosystem
-        assert res['package'] == package
-        assert res['version'] == version
-        assert datetime.datetime.strptime(res["started_at"], "%Y-%m-%dT%H:%M:%S.%f")
+        check_incomplete_analysis_result(res, ecosystem, package, version)
     elif state == 'complete':
-        assert datetime.datetime.strptime(res["finished_at"], "%Y-%m-%dT%H:%M:%S.%f")
-        analyzers_keys = context.get_expected_component_analyses(ecosystem)
-        actual_keys = set(res["analyses"].keys())
-        missing, unexpected = context.compare_analysis_sets(actual_keys,
-                                                            analyzers_keys)
-        err_str = 'unexpected analyses: {}, missing analyses: {}'
-        assert not missing and not unexpected, err_str.format(unexpected, missing)
-        analyzers_with_standard_schema = set(analyzers_keys)
-        analyzers_with_standard_schema -= context.NONSTANDARD_ANALYSIS_FORMATS
-        for a in analyzers_with_standard_schema:
-            a_keys = set(res["analyses"].get(a, {}).keys())
-            if not a_keys and a in context.UNRELIABLE_ANALYSES:
-                continue
-            assert a_keys.issuperset({"details", "status", "summary"}), a_keys
+        check_complete_analysis_result(res, ecosystem, package, version)
 
 
 @then('Result of {ecosystem}/{package}/{version} should be valid')
@@ -200,18 +218,23 @@ def validate_analysis_result(context, ecosystem, package, version):
         jsonschema.validate(struct, schema)
 
 
-@then('I should find the value {value} under the path {path} in the JSON response')
-def find_value_under_the_path(context, value, path):
+def compare_value_from_json(value, expected):
+    """Compare value read from JSON with the expected value, ignoring the type."""
+    # fallback for int value in the JSON file
+    if type(value) is int:
+        assert value == int(expected)
+    else:
+        assert value == expected
+
+
+@then('I should find the value {expected} under the path {path} in the JSON response')
+def find_value_under_the_path(context, expected, path):
     """Check if the value (attribute) can be found in the JSON output."""
     jsondata = context.response.json()
     assert jsondata is not None
-    v = get_value_using_path(jsondata, path)
-    assert v is not None
-    # fallback for int value in the JSON file
-    if type(v) is int:
-        assert v == int(value)
-    else:
-        assert v == value
+    value = get_value_using_path(jsondata, path)
+    assert value is not None
+    compare_value_from_json(value, expected)
 
 
 @then('I should find the null value under the path {path} in the JSON response')
