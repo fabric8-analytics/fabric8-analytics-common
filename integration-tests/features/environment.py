@@ -184,8 +184,17 @@ def _teardown_system(context):
         subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
 
+def _post_startup(started_all, wait_for_server):
+    """Post startup actions."""
+    if started_all:
+        # let's give the whole system a while to breathe
+        time.sleep(float(context.config.userdata.get('breath_time', 5)))
+    else:
+        raise Exception('Server failed to start in under {s} seconds'.
+                        format(s=wait_for_server))
+
+
 def _wait_for_system(context, wait_for_server=60):
-    # TODO: reduce cyclomatic complexity
     start = datetime.datetime.now()
     wait_till = start + datetime.timedelta(seconds=wait_for_server)
     # try to wait for server to start for some time
@@ -212,12 +221,7 @@ def _wait_for_system(context, wait_for_server=60):
             if _is_running(context):
                 started_all = True
                 break
-    if started_all:
-        # let's give the whole system a while to breathe
-        time.sleep(float(context.config.userdata.get('breath_time', 5)))
-    else:
-        raise Exception('Server failed to start in under {s} seconds'.
-                        format(s=wait_for_server))
+    _post_startup(started_all, wait_for_server)
 
 
 def _wait_for_api(context, wait_for_service, check_function):
@@ -419,9 +423,30 @@ def _read_url_from_env_var(env_var_name):
     return _add_slash(os.environ.get(env_var_name, None))
 
 
+def check_test_environment(context, coreapi_url):
+    """Check the test environent - whether tests are run locally or in Docker."""
+    if context.running_locally:
+        print("Note: integration tests are running localy via docker-compose")
+        if coreapi_url:
+            _check_env_for_remote_tests("F8A_API_URL")
+            _check_env_for_remote_tests("F8A_JOB_API_URL")
+    else:
+        print("Note: integration tests are running against existing deploment")
+        _check_api_tokens_presence()
+
+
+def _running_locally(coreapi_url, jobs_api_url):
+    """Check if tests are running locally."""
+    return not (coreapi_url and jobs_api_url)
+
+
+def _get_url(context, actual, attribute_name, port):
+    """Get the URL + port for the selected service."""
+    return actual or _get_api_url(context, attribute_name, port)
+
+
 def before_all(context):
     """Perform the setup before the first event."""
-    # TODO: reduce cyclomatic complexity
     context.config.setup_logging()
     context.start_system = _start_system
     context.teardown_system = _teardown_system
@@ -477,25 +502,12 @@ def before_all(context):
     service_id = _read_url_from_env_var('F8A_SERVICE_ID')
     gemini_api_url = _read_url_from_env_var('F8A_GEMINI_API_URL')
 
-    context.running_locally = not (coreapi_url and jobs_api_url)
+    context.running_locally = _running_locally(coreapi_url, jobs_api_url)
+    check_test_environment(context, coreapi_url)
 
-    if context.running_locally:
-        print("Note: integration tests are running localy via docker-compose")
-        if coreapi_url:
-            _check_env_for_remote_tests("F8A_API_URL")
-            _check_env_for_remote_tests("F8A_JOB_API_URL")
-    else:
-        print("Note: integration tests are running against existing deploment")
-        _check_api_tokens_presence()
-
-    context.coreapi_url = coreapi_url or _get_api_url(context, 'coreapi_url',
-                                                      _FABRIC8_ANALYTICS_SERVER)
-
-    context.jobs_api_url = jobs_api_url or _get_api_url(context, 'jobs_api_url',
-                                                        _FABRIC8_ANALYTICS_JOBS)
-
-    context.gremlin_url = gremlin_url or _get_api_url(context, 'gremlin_url',
-                                                      _FABRIC8_GREMLIN_SERVICE)
+    context.coreapi_url = _get_url(context, coreapi_url, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
+    context.jobs_api_url = _get_url(context, jobs_api_url, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
+    context.gremlin_url = _get_url(context, gremlin_url, "gremlin_url", _FABRIC8_GREMLIN_SERVICE)
 
     context.threescale_url = threescale_url
 
