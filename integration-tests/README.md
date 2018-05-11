@@ -280,6 +280,36 @@ into OpenShift before the tests are run. Also you have to switch to the right pr
 because these tests try to restart different pods (so it is not a good idea to
 run such tests against production, for example).
 
+To run the test, you'd need to make sure you are switched to the right project
+in the OpenShift:
+
+    $ oc projects
+
+The selected project is marked by \*, for example:
+
+    *  my-test-project
+       bayesian-preview
+       yet-another-project
+
+To switch to other project use the following command:
+
+    $ oc project <project-name>
+
+For example:
+
+    $ oc project bayesian-preview
+
+Then you can start the resilient infrastructure tests by issuing the following command:
+
+    $ ./runtest.sh --tags resilient.infrastructure 
+
+### Attention
+
+These tests restart different pods, so please make sure you don't run them
+against production environment (given you have enough rights to restart pods
+there, of course)
+
+
 ## TODO
 
 - make it possible to run the integration tests from a venv even when docker
