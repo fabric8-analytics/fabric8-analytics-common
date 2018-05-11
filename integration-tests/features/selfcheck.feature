@@ -7,6 +7,9 @@ Feature: Check the implementation of test steps
     Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/updated_stack_analysis_v2.json file
     Then I should get a valid request ID
+     And I should receive JSON response containing the started_at key
+     And I should receive JSON response containing the finished_at key
+     And I should receive JSON response containing the request_id key
      And I should find that valid outliers are reported
      And I should get license_analysis field in stack report
      And I should find dependency named io.vertx:vertx-core with version 3.4.2 in the stack analysis
@@ -18,6 +21,10 @@ Feature: Check the implementation of test steps
      And I should find the security node for all alternate components
      And I should find that none analyzed package can be found in companion packages as well
      And I should find the following analyzed dependencies (io.vertx:vertx-core,io.vertx:vertx-web) in the stack analysis
+     And I should find the value pom.xml under the path result/0/manifest_name in the JSON response
+     And I should find the value 3 under the path result/0/user_stack_info/total_licenses in the JSON response
+     And I should find the value 0 under the path result/0/user_stack_info/unknown_dependencies_count in the JSON response
+     And I should find the value maven under the path result/0/user_stack_info/ecosystem in the JSON response
 
   @selfcheck
   Scenario: Check that the stack analysis response for the pom.xml that contains only one component
