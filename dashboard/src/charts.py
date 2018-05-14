@@ -20,14 +20,14 @@ def pie_chart_for_repository(repository, labels, fractions, colors):
     """Prepare pie chart for given repository, sequence of labels, fractions, and colors."""
     fig = plt.figure(1, figsize=(1.0 * DEFAULT_WIDTH / DPI, 1.0 * DEFAULT_WIDTH / DPI), dpi=DPI)
     ax = fig.add_axes([0.06, 0.00, 0.88, 0.88])
-    fig.suptitle(repository, fontsize=20)
+    fig.suptitle(repository, fontsize=16)
 
     patches, texts, autotexts = ax.pie(fractions, colors=colors, labels=labels, autopct='%1.1f%%',
                                        shadow=False)
 
     # font setup
     proptease = fm.FontProperties()
-    proptease.set_size('large')
+    proptease.set_size('small')
     plt.setp(autotexts, fontproperties=proptease)
     plt.setp(texts, fontproperties=proptease)
 
@@ -72,8 +72,8 @@ def generate_cyclomatic_complexity_chart(repository, cyclomatic_complexity):
     plt.close(fig)
 
 
-def generate_maintainability_index(repository, maintainability_index):
-    """Generate chart with cyclomatic complexity data for given repository."""
+def generate_maintainability_index_chart(repository, maintainability_index):
+    """Generate chart with maintainability index data for given repository."""
     labels, fractions, colors = prepare_data_for_maintability_index(maintainability_index)
     fig, ax = pie_chart_for_repository(repository, labels, fractions, colors)
 
@@ -87,14 +87,17 @@ def generate_charts(results):
     for repository in results.repositories:
         generate_cyclomatic_complexity_chart(repository,
                                              results.repo_cyclomatic_complexity[repository])
-        generate_maintainability_index(repository,
-                                       results.repo_maintainability_index[repository])
+        generate_maintainability_index_chart(repository,
+                                             results.repo_maintainability_index[repository])
 
 
 if __name__ == "__main__":
-    # execute only if run as a script
+    # execute only if this module is run as a script
     # (just test charts)
+
+    # cyclomatic complexity charts
     data = {"A": 749, "B": 48, "C": 3, "D": 0, "E": 0, "F": 0, "status": True}
     generate_cyclomatic_complexity_chart("fabric8-analytics-common", data)
+
     data = {"A": 276, "B": 21, "C": 12, "D": 0, "E": 0, "F": 0, "status": True}
     generate_cyclomatic_complexity_chart("fabric8-analytics-server", data)
