@@ -20,14 +20,14 @@ def pie_chart_for_repository(repository, labels, fractions, colors):
     """Prepare pie chart for given repository, sequence of labels, fractions, and colors."""
     fig = plt.figure(1, figsize=(1.0 * DEFAULT_WIDTH / DPI, 1.0 * DEFAULT_WIDTH / DPI), dpi=DPI)
     ax = fig.add_axes([0.06, 0.00, 0.88, 0.88])
-    fig.suptitle(repository, fontsize=20)
+    fig.suptitle(repository, fontsize=16)
 
     patches, texts, autotexts = ax.pie(fractions, colors=colors, labels=labels, autopct='%1.1f%%',
                                        shadow=False)
 
     # font setup
     proptease = fm.FontProperties()
-    proptease.set_size('large')
+    proptease.set_size('small')
     plt.setp(autotexts, fontproperties=proptease)
     plt.setp(texts, fontproperties=proptease)
 
@@ -62,6 +62,19 @@ def prepare_data_for_maintability_index(maintainability_index):
     return labels, fractions, colors
 
 
+def prepare_data_for_code_coverage(coverage_data):
+    """Prepare data (values, labels, colors) for the unit test code coverage chart."""
+    labels = ("covered", "not\ncovered")
+
+    coverage = float(coverage_data["coverage"])
+    coverage_ratio = coverage / 100.0
+    fractions = [coverage_ratio, 1.0 - coverage_ratio]
+
+    colors = ('#60a060', 'red')
+
+    return labels, fractions, colors
+
+
 def generate_cyclomatic_complexity_chart(repository, cyclomatic_complexity):
     """Generate chart with cyclomatic complexity data for given repository."""
     labels, fractions, colors = prepare_data_for_cyclomatic_complexity_chart(cyclomatic_complexity)
@@ -72,8 +85,8 @@ def generate_cyclomatic_complexity_chart(repository, cyclomatic_complexity):
     plt.close(fig)
 
 
-def generate_maintainability_index(repository, maintainability_index):
-    """Generate chart with cyclomatic complexity data for given repository."""
+def generate_maintainability_index_chart(repository, maintainability_index):
+    """Generate chart with maintainability index data for given repository."""
     labels, fractions, colors = prepare_data_for_maintability_index(maintainability_index)
     fig, ax = pie_chart_for_repository(repository, labels, fractions, colors)
 
@@ -82,19 +95,57 @@ def generate_maintainability_index(repository, maintainability_index):
     plt.close(fig)
 
 
+def generate_code_coverage_chart(repository, code_coverage):
+    """Generate chart with code coverage chart for given repository."""
+    if code_coverage is not None:
+        labels, fractions, colors = prepare_data_for_code_coverage(code_coverage)
+        fig, ax = pie_chart_for_repository(repository, labels, fractions, colors)
+
+        filename = "code_coverage_{repository}.png".format(repository=repository)
+        save_graph(fig, filename, DPI)
+        plt.close(fig)
+
+
 def generate_charts(results):
     """Generate all charts for the QA dashboard."""
     for repository in results.repositories:
         generate_cyclomatic_complexity_chart(repository,
                                              results.repo_cyclomatic_complexity[repository])
-        generate_maintainability_index(repository,
-                                       results.repo_maintainability_index[repository])
+        generate_maintainability_index_chart(repository,
+                                             results.repo_maintainability_index[repository])
+        generate_code_coverage_chart(repository,
+                                     results.unit_test_coverage[repository])
 
 
 if __name__ == "__main__":
-    # execute only if run as a script
+    # execute only if this module is run as a script
     # (just test charts)
+
+    # cyclomatic complexity charts
     data = {"A": 749, "B": 48, "C": 3, "D": 0, "E": 0, "F": 0, "status": True}
     generate_cyclomatic_complexity_chart("fabric8-analytics-common", data)
+
     data = {"A": 276, "B": 21, "C": 12, "D": 0, "E": 0, "F": 0, "status": True}
     generate_cyclomatic_complexity_chart("fabric8-analytics-server", data)
+
+    # code coverage charts
+    data = {"statements": "1000",
+            "missed": "500",
+            "coverage": "50",
+            "progress_bar_class": "something",
+            "progress_bar_width": "ignore"}
+    generate_code_coverage_chart("fabric8-analytics-common", data)
+
+    data = {"statements": "1000",
+            "missed": "100",
+            "coverage": "10",
+            "progress_bar_class": "something",
+            "progress_bar_width": "ignore"}
+    generate_code_coverage_chart("fabric8-analytics-server", data)
+
+    data = {"statements": "1000",
+            "missed": "900",
+            "coverage": "90",
+            "progress_bar_class": "something",
+            "progress_bar_width": "ignore"}
+    generate_code_coverage_chart("fabric8-analytics-something-else", data)
