@@ -50,16 +50,24 @@ class Config:
         except (configparser.NoSectionError, configparser.NoOptionError):
             return None
 
-    def get_code_coverage_threshold_for_project(self, project_name):
-        """Return code coverage threshold for selected project."""
+    def get_code_coverage_threshold(self, selector):
+        """Return code coverage threshold for given selector."""
         try:
             # disable interpolation driven by % character
-            value = self.config.get('code_coverage_threshold', project_name, raw=True)
+            value = self.config.get('code_coverage_threshold', selector, raw=True)
             if value.endswith('%'):
                 value = value[:-1]
             return int(value)
         except (configparser.NoSectionError, configparser.NoOptionError, ValueError):
             return None
+
+    def get_code_coverage_threshold_for_project(self, project_name):
+        """Return code coverage threshold for selected project."""
+        return self.get_code_coverage_threshold(project_name)
+
+    def get_overall_code_coverage_threshold(self):
+        """Return the overall code coverage threshold."""
+        return self.get_code_coverage_threshold("overall")
 
     def get_repolist(self):
         """Return list of all repositories that needs to be processed."""

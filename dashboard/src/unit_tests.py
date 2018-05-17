@@ -5,13 +5,16 @@ import requests
 from progress_bar import *
 
 
-CODE_COVERAGE_THRESHOLD = 50
+# default code coverage threshold used when no threshold is specified
+# in the configuration file
+CODE_COVERAGE_THRESHOLD = 90
 
 
-def unit_test_coverage_ok(unit_test_coverage):
+def unit_test_coverage_ok(unit_test_coverage, code_coverage_threshold=CODE_COVERAGE_THRESHOLD):
     """Return True only if unit test coverage is above given threshold."""
     if unit_test_coverage is not None:
-        return int(unit_test_coverage["coverage"]) > CODE_COVERAGE_THRESHOLD
+        # check the code coverage against the specified threshold
+        return int(unit_test_coverage["coverage"]) >= code_coverage_threshold
     else:
         return False
 

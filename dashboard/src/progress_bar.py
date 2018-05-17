@@ -6,7 +6,7 @@ def progress_bar_class(p):
     p = int(p)
     if p < 25:
         return "progress-bar-danger"
-    elif p > 90:
+    elif p >= 90:
         return "progress-bar-success"
     else:
         return "progress-bar-warning"

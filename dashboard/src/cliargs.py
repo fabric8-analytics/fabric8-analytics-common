@@ -27,3 +27,7 @@ cli_parser.add_argument('-c', '--clone-repositories',
 cli_parser.add_argument('-d', '--cleanup-repositories',
                         help='cleanup the local clones of all repositories',
                         action='store_true')
+
+cli_parser.add_argument('-t', '--code-coverage-threshold',
+                        help='specify code coverage threshold',
+                        type=int)
