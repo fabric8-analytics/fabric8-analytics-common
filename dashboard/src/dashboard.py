@@ -281,12 +281,12 @@ def parse_maintainability_index(repository):
 
 def compute_status(source_files, linter_checks_total, ignored_pylint_files, docstyle_checks_total,
                    ignored_pydocstyle_files, linter_checks, docstyle_checks, unit_test_coverage,
-                   cyclomatic_complexity, maintainability_index):
+                   cyclomatic_complexity, maintainability_index, code_coverage_threshold):
     """Compute the overall status from various metrics."""
     return source_files == (linter_checks_total + ignored_pylint_files) and \
         source_files == (docstyle_checks_total + ignored_pydocstyle_files) and \
         linter_checks["failed"] == 0 and docstyle_checks["failed"] == 0 and \
-        unit_test_coverage_ok(unit_test_coverage) and \
+        unit_test_coverage_ok(unit_test_coverage, code_coverage_threshold) and \
         cyclomatic_complexity["status"] and \
         maintainability_index["status"]
 
@@ -315,10 +315,10 @@ def remark_linter_vs_docstyle(linter_checks_total, ignored_pylint_files,
     return ""
 
 
-def remark_unit_test_coverage(unit_test_coverage):
+def remark_unit_test_coverage(unit_test_coverage, code_coverage_threshold):
     """Generate remark for unit test coverage problems."""
     if unit_test_coverage is not None:
-        if not unit_test_coverage_ok(unit_test_coverage):
+        if not unit_test_coverage_ok(unit_test_coverage, code_coverage_threshold):
             return "improve code coverage<br>"
         else:
             return ""
@@ -326,7 +326,7 @@ def remark_unit_test_coverage(unit_test_coverage):
         return "unit tests has not been setup<br>"
 
 
-def update_overall_status(results, repository):
+def update_overall_status(results, repository, code_coverage_threshold):
     """Update the overall status of all tested systems (stage, prod)."""
     remarks = ""
 
@@ -346,13 +346,13 @@ def update_overall_status(results, repository):
     status = compute_status(source_files, linter_checks_total, ignored_pylint_files,
                             docstyle_checks_total, ignored_pydocstyle_files, linter_checks,
                             docstyle_checks, unit_test_coverage, cyclomatic_complexity,
-                            maintainability_index)
+                            maintainability_index, code_coverage_threshold)
 
     remarks = remark_linter(source_files, linter_checks_total, ignored_pylint_files) + \
         remark_docstyle(source_files, docstyle_checks_total, ignored_pydocstyle_files) + \
         remark_linter_vs_docstyle(linter_checks_total, ignored_pylint_files,
                                   docstyle_checks_total, ignored_pydocstyle_files) + \
-        remark_unit_test_coverage(unit_test_coverage)
+        remark_unit_test_coverage(unit_test_coverage, code_coverage_threshold)
 
     if linter_checks["failed"] != 0:
         remarks += "linter failed<br>"
@@ -453,7 +453,8 @@ def prepare_data_for_sla_table(results):
 
 def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                                   clone_repositories_enabled, cleanup_repositories_enabled,
-                                  code_quality_table_enabled, ci_jobs_table_enabled):
+                                  code_quality_table_enabled, ci_jobs_table_enabled,
+                                  code_coverage_threshold):
     """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
     for repository in repositories:
 
@@ -488,7 +489,7 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
             results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs, JENKINS_URL,
                                                                              repository)
         if code_quality_table_enabled:
-            update_overall_status(results, repository)
+            update_overall_status(results, repository, code_coverage_threshold)
 
 
 def read_jobs_statuses(filename):
@@ -550,6 +551,11 @@ def production_smoketests_status(ci_jobs):
     return len(total_builds), len(success_builds)
 
 
+def get_code_coverage_threshold(cli_arguments, config):
+    """Get the code coverage threshold that can be specified in the config file or via CLI."""
+    return cli_arguments.code_coverage_threshold or config.get_overall_code_coverage_threshold()
+
+
 def main():
     """Entry point to the QA Dashboard."""
     config = Config()
@@ -588,6 +594,7 @@ def main():
         production_smoketests_status(ci_jobs)
 
     results.sprint_plan_url = config.get_sprint_plan_url()
+    code_coverage_threshold = get_code_coverage_threshold(cli_arguments, config)
 
     for team in teams:
         results.issues_list_url[team] = config.get_list_of_issues_url(team)
@@ -597,7 +604,8 @@ def main():
 
     prepare_data_for_repositories(repositories.repolist, results, ci_jobs, job_statuses,
                                   clone_repositories_enabled, cleanup_repositories_enabled,
-                                  code_quality_table_enabled, ci_jobs_table_enabled)
+                                  code_quality_table_enabled, ci_jobs_table_enabled,
+                                  code_coverage_threshold)
 
     if sla_table_enabled:
         prepare_data_for_sla_table(results)
