@@ -18,6 +18,7 @@ features/api_backbone.feature
 features/gemini.feature
 
 #features/components_in_s3_vertx.feature
+#features/packages_in_s3.feature
 
 # This is workaround to temporary disable integration tests
 #features/disabled.feature
