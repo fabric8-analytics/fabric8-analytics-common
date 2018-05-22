@@ -65,7 +65,7 @@ def check_component_core_data(context, package, version, ecosystem, version2=Non
         "value {r2}".format(r1=actual_release, r2=release)
 
     # the following attributes are expected to be presented for all component toplevel metadata
-    attributes_to_check = ["id", "analyses", "audit", "dependents_count", "latest_version",
+    attributes_to_check = ["id", "analyses", "audit", "dependents_count",
                            "package_info", "subtasks"]
     check_attributes_presence(data, attributes_to_check)
 
