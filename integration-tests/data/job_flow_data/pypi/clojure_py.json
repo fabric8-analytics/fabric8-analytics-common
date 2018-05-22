@@ -1,0 +1,13 @@
+{
+  "flow_arguments": [
+    {
+      "ecosystem": "pypi",
+      "force": true,
+      "force_graph_sync": true,
+      "name": "clojure_py",
+      "recursive_limit": 0,
+      "version": "0.2.4"
+    }
+  ],
+  "flow_name": "bayesianFlow"
+}
