@@ -3,6 +3,9 @@ from behave import given, then, when
 from src.attribute_checks import *
 from src.s3interface import *
 from src.utils import split_comma_separated_list
+import boto3
+import botocore
+import time
 
 
 @then('I should find the correct component core data for package {package} version {version} '
@@ -65,7 +68,7 @@ def check_component_core_data(context, package, version, ecosystem, version2=Non
         "value {r2}".format(r1=actual_release, r2=release)
 
     # the following attributes are expected to be presented for all component toplevel metadata
-    attributes_to_check = ["id", "analyses", "audit", "dependents_count", "latest_version",
+    attributes_to_check = ["id", "analyses", "audit", "dependents_count",
                            "package_info", "subtasks"]
     check_attributes_presence(data, attributes_to_check)
 
@@ -328,3 +331,38 @@ def read_core_data_from_bucket(context, selector, package, version, ecosystem, b
             .format(key=key, ecosystem=ecosystem, package=package, version=version, bucket=bucket)
         raise Exception(m) from e
         context.s3_data = None
+
+
+@when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
+      '{ecosystem} in the AWS S3 database bucket {bucket}')
+def wait_for_component_toplevel_file(context, package, version, ecosystem, bucket):
+    """Wait for the component analysis to finish.
+
+    This function tries to wait for the finish of component (package) analysis by repeatedly
+    reading the 'LastModified' attribute from the {ecosystem}/{package}/{version}.json bucket
+    from the bayesian-core-data.
+    If this attribute is newer than remembered timestamp, the analysis is perceived as done.
+    """
+    timeout = 300 * 60
+    sleep_amount = 10
+
+    key = S3Interface.component_key(ecosystem, package, version)
+
+    start_time = datetime.datetime.now(datetime.timezone.utc)
+
+    for _ in range(timeout // sleep_amount):
+        current_date = datetime.datetime.now(datetime.timezone.utc)
+        try:
+            last_modified = context.s3interface.read_object_metadata(bucket, key,
+                                                                     "LastModified")
+            delta = current_date - last_modified
+            # print(current_date, "   ", last_modified, "   ", delta)
+            if delta.days == 0 and delta.seconds < sleep_amount * 2:
+                # print("done!")
+                read_core_data_from_bucket(context, "component toplevel", package, version,
+                                           ecosystem, bucket)
+                return
+        except ClientError as e:
+            print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the job metadata in S3!')

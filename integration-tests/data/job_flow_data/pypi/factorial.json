@@ -1,0 +1,13 @@
+{
+  "flow_arguments": [
+    {
+      "ecosystem": "pypi",
+      "force": true,
+      "force_graph_sync": true,
+      "name": "factorial",
+      "recursive_limit": 0,
+      "version": "1.0.0"
+    }
+  ],
+  "flow_name": "bayesianFlow"
+}
