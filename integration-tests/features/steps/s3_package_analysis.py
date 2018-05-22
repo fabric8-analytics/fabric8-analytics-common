@@ -4,6 +4,7 @@ from src.attribute_checks import *
 from src.s3interface import *
 import boto3
 import botocore
+import time
 
 
 @then('I should find the correct GitHub details metadata for package {package} '
@@ -202,34 +203,6 @@ def check_package_toplevel_file(context, package, ecosystem):
     check_timestamp(data['finished_at'])
 
 
-@when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
-      '{ecosystem} in the AWS S3 database bucket {bucket}')
-def wait_for_job_toplevel_file(context, package, version, ecosystem, bucket):
-    """Wait for the package analysis to finish."""
-    timeout = 300 * 60
-    sleep_amount = 10
-
-    key = S3Interface.component_key(ecosystem, package, version)
-
-    start_time = datetime.datetime.now(datetime.timezone.utc)
-
-    for _ in range(timeout // sleep_amount):
-        current_date = datetime.datetime.now(datetime.timezone.utc)
-        try:
-            last_modified = context.s3interface.read_object_metadata(bucket, key,
-                                                                     "LastModified")
-            delta = current_date - last_modified
-            # print(current_date, "   ", last_modified, "   ", delta)
-            if delta.days == 0 and delta.seconds < sleep_amount * 2:
-                # print("done!")
-                read_core_data_from_bucket(context, package, version, ecosystem, bucket)
-                return
-        except ClientError as e:
-            print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
-        time.sleep(sleep_amount)
-    raise Exception('Timeout waiting for the job metadata in S3!')
-
-
 @when('I remember timestamps from the last component toplevel metadata')
 def remember_timestamps_from_job_toplevel_data(context):
     """Remember the timestamps for the package analysis."""
@@ -267,3 +240,38 @@ def check_new_timestamps(context):
         "Current metadata are not newer: failed on started_at attributes comparison"
     assert current_finished_at > remembered_finished_at, \
         "Current metadata are not newer: failed on finished_at attributes comparison"
+
+
+@when('I wait for new toplevel data for the package {package} in ecosystem '
+      '{ecosystem} in the AWS S3 database bucket {bucket}')
+def wait_for_package_toplevel_file(context, package, ecosystem, bucket):
+    """Wait for the package analysis to finish.
+
+    This function tries to wait for the finish of component (package) analysis by repeatedly
+    reading the 'LastModified' attribute from the {ecosystem}/{package}.json bucket
+    from the bayesian-core-package-data.
+    If this attribute is newer than remembered timestamp, the analysis is perceived as done.
+    """
+    timeout = 300 * 60
+    sleep_amount = 10
+
+    key = S3Interface.package_key(ecosystem, package)
+
+    start_time = datetime.datetime.now(datetime.timezone.utc)
+
+    for _ in range(timeout // sleep_amount):
+        current_date = datetime.datetime.now(datetime.timezone.utc)
+        try:
+            last_modified = context.s3interface.read_object_metadata(bucket, key,
+                                                                     "LastModified")
+            delta = current_date - last_modified
+            # print(current_date, "   ", last_modified, "   ", delta)
+            if delta.days == 0 and delta.seconds < sleep_amount * 2:
+                # print("done!")
+                read_core_package_data_from_bucket(context, "package toplevel", package,
+                                                   ecosystem, bucket)
+                return
+        except ClientError as e:
+            print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
+        time.sleep(sleep_amount)
+    raise Exception('Timeout waiting for the job metadata in S3!')
