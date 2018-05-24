@@ -34,6 +34,44 @@ It is also possible to trigger Fabric8-Analytics analyses from Jenkins. Please r
 
 We have detailed [documentation](https://github.com/fabric8-analytics/fabric8-analytics-deployment/blob/master/README.md) that describes possibilities of running whole Fabric8-Analytics, doing code changes, running tests etc.
 
+# Subprojects contained in this repository
+
+Several subprojects are contained in this repository. Detailed information about each subproject is included in the corresponding README.md file.
+
+
+## Integration tests
+
+This subproject contains integration tests for the fabric8-analytics services. The tests can be run against existing deployment, or locally via docker-compose.
+
+Integration tests are described in [the following document](integration-tests/README.md)
+
+
+## Performance tests
+
+Basic set of performance tests that measures the component search and stack analysis at this moment.
+
+Performance tests are described in [the following document](perf-tests/README.md)
+
+
+## UI tests
+
+Tests that access OpenShift.io and check whether it is possible to create new space, configure project in such space, and get the stack and license analysis for this project.
+
+UI tests are described in [the following document](ui-tests/README.md)
+
+
+## Database integrity tests
+
+Database integrity tests are described in [the following document](db-integrity-tests/README.md)
+
+
+## QA Dashboard generator
+
+The QA Dashboard and code coverage reporter for the Bayesian project, ie. for all repositories that contain source files.
+
+QA Dashboard is described in [the following document](dashboard/README.md)
+
+
 ### Footnotes
 
 #### Coding standards
