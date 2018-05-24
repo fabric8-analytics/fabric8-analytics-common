@@ -168,6 +168,108 @@ can find them. This may affect subsequent `docker` and `docker-compose` calls**
 Some of the tests may be quite slow, you can skip them by passing
 `--tags=-slow` option to `behave`.
 
+
+## Packages that needs to be imported into database
+
+The following packages needs to be imported into the database for successful test run
+
+### NPM ecosystem
+
+```
+sequence
+array-differ
+array-flatten
+array-map
+array-parallel
+array-reduce
+array-slice
+array-union
+array-uniq
+array-unique
+lodash
+lodash.assign
+lodash.assignin
+lodash._baseuniq
+lodash.bind
+lodash.camelcase
+lodash.clonedeep
+lodash.create
+lodash._createset
+lodash.debounce
+lodash.defaults
+lodash.filter
+lodash.findindex
+lodash.flatten
+lodash.foreach
+lodash.isplainobject
+lodash.mapvalues
+lodash.memoize
+lodash.mergewith
+lodash.once
+lodash.pick
+lodash._reescape
+lodash._reevaluate
+lodash._reinterpolate
+lodash.reject
+lodash._root
+lodash.some
+lodash.tail
+lodash.template
+lodash.union
+lodash.without
+npm
+underscore
+```
+
+### PyPi ecosystem
+
+```
+clojure_py
+requests
+scrapy
+Pillow
+SQLAlchemy
+Twisted
+mechanize
+pywinauto
+click
+scikit-learn
+coverage
+cycler
+numpy
+mock
+nose
+scipy
+matplotlib
+nltk
+pandas
+parsimonious
+httpie
+six
+wheel
+pygments
+setuptools
+```
+
+### Maven ecosystem
+
+```
+io.vertx:vertx-core
+io.vertx:vertx-web
+io.vertx:vertx-jdbc-client
+io.vertx:vertx-rx-java
+io.vertx:vertx-web-client
+io.vertx:vertx-web-templ-freemarker
+io.vertx:vertx-web-templ-handlebars
+io.vertx:vertx-web
+org.springframework:spring-websocket
+org.springframework:spring-messaging
+org.springframework.boot:spring-boot-starter-web
+org.springframework.boot:spring-boot-starter
+org.springframework:spring-websocket
+org.springframework:spring-messaging
+```
+
 ## TODO
 
 - make it possible to run the integration tests from a venv even when docker
