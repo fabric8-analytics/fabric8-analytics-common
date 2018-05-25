@@ -34,6 +34,7 @@ class Results():
         self.smoke_tests_statuses = None
         self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
         self.ci_jobs_links = defaultdict(dict)
+        self.ci_jobs_badges = defaultdict(dict)
         self.ci_jobs_statuses = defaultdict(dict)
         self.sprint = None
         self.sprint_plan_url = None
@@ -49,6 +50,7 @@ class Results():
                    "Smoke tests links: {smoke_tests_links}\n" + \
                    "Smoke tests statuses: {smoke_tests_statuses}\n" + \
                    "CI jobs links: {ci_jobs_links}\n" + \
+                   "CI jobs badges: {ci_jobs_badges}\n" + \
                    "CI jobs status: {ci_jobs_stats}\n" + \
                    "Unit test coverage: {unit_test_coverage}\n"
         return template.format(stage=self.stage,
@@ -60,5 +62,6 @@ class Results():
                                smoke_tests_links=self.smoke_tests_links,
                                smoke_tests_statuses=self.smoke_tests_statuses,
                                ci_jobs_links=self.ci_jobs_links.__repr__(),
+                               ci_jobs_badges=self.ci_jobs_badges.__repr__(),
                                ci_jobs_stats=self.ci_jobs_statuses.__repr__(),
                                unit_test_coverage=self.unit_test_coverage)
