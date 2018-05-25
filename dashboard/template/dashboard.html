@@ -265,14 +265,7 @@
                             % for job_type in ["build_job", "test_job", "pylint_job", "pydoc_job"]:
                                 % if ci_jobs_links[repository][job_type]:
                                     <td style="width:10ex">
-                                    % if ci_jobs_statuses[repository][job_type] == "blue":
-                                        <span class="ci_status boolean ok">&#x2713;</span>
-                                    % elif ci_jobs_statuses[repository][job_type] == "red":
-                                        <span class="ci_status boolean error">&times;</span>
-                                    % else:
-                                        <span class="ci_status boolean error">?</span>
-                                    % endif
-                                    <a href='${ci_jobs_links[repository][job_type]}'>link</a>
+                                    <a href='${ci_jobs_links[repository][job_type]}'><img src='${ci_jobs_badges[repository][job_type]}' alt='badge for CI job'/></a>
                                     </td>
                                 % else:
                                     <td style="width:10ex" class="boolean error">&times;</td>

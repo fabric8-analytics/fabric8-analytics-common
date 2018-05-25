@@ -483,8 +483,10 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
             for job_type in ci_job_types:
                 url = ci_jobs.get_job_url(repository, job_type)
                 name = ci_jobs.get_job_name(repository, job_type)
+                badge = ci_jobs.get_job_badge(repository, job_type)
                 job_status = job_statuses.get(name)
                 results.ci_jobs_links[repository][job_type] = url
+                results.ci_jobs_badges[repository][job_type] = badge
                 results.ci_jobs_statuses[repository][job_type] = job_status
             results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs, JENKINS_URL,
                                                                              repository)
