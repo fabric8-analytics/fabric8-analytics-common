@@ -19,6 +19,10 @@ class CIJobs:
         """Retrieve the URL to the CI front page."""
         return self.config.get('CI', 'jenkins_url')
 
+    def get_badge_prefix(self):
+        """Retrieve the prefix for any badge/icon."""
+        return self.get_ci_url() + "/" + self.config.get('CI', 'badge_prefix')
+
     def get_job_url(self, repository_name, job_type):
         """Retrieve the URL to the CI job for given repository and job type."""
         assert job_type in CIJobs.JOB_TYPES
@@ -42,6 +46,17 @@ class CIJobs:
             #                                                          "fabric8-"])
             url_suffix = self.config.get(repository_name, job_type)
             return url_suffix
+        except (configparser.NoSectionError, configparser.NoOptionError):
+            return None
+
+    def get_job_badge(self, repository_name, job_type):
+        """Return the URL to job badge."""
+        assert job_type in CIJobs.JOB_TYPES
+        try:
+            url_prefix = self.get_badge_prefix()
+            url_suffix = self.config.get(repository_name, job_type)
+            url = url_prefix + "?job=" + url_suffix
+            return url
         except (configparser.NoSectionError, configparser.NoOptionError):
             return None
 
