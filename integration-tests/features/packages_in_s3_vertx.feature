@@ -117,3 +117,16 @@ Feature: Checks the package metadata in AWS S3 database
      Examples: packages
      |package|
      |io.vertx:vertx-core|
+
+
+  @requires_s3_access @requires_bayesian_core_data_bucket @requires_bayesian_core_package_data_bucket @jobs.requires_auth
+  Scenario: Check the package toplevel metadata schema for io.vertx:vertx-core package (startup)
+    Given System is running
+    When I connect to the AWS S3 database
+    Then I should see bayesian-core-package-data bucket
+    When I acquire job API authorization token
+    Then I should get the proper job API authorization token
+    When I post a job metadata job_flow_data/maven/io_vertx_vertx_core.json with state running using authorization token
+    Then I should get 201 status code
+    When I wait for new toplevel data for the package io.vertx:vertx-core in ecosystem maven in the AWS S3 database bucket bayesian-core-package-data
+    Then I should find the correct package toplevel metadata for package io.vertx:vertx-core from ecosystem maven
