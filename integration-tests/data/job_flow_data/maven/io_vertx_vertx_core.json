@@ -1,0 +1,13 @@
+{
+  "flow_arguments": [
+    {
+      "ecosystem": "maven",
+      "force": true,
+      "force_graph_sync": true,
+      "name": "io.vertx:vertx-core",
+      "recursive_limit": 0,
+      "version": "3.5.1"
+    }
+  ],
+  "flow_name": "bayesianFlow"
+}
