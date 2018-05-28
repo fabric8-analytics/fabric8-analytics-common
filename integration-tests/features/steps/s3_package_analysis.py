@@ -202,6 +202,9 @@ def check_package_toplevel_file(context, package, ecosystem):
     check_attribute_presence(data, 'finished_at')
     check_timestamp(data['finished_at'])
 
+    # none - no tests can be done for the 'ecosystem' ATM - there's no info about ecosystem
+    # in the package toplevel metadata
+
 
 @when('I remember timestamps from the last component toplevel metadata')
 def remember_timestamps_from_job_toplevel_data(context):
