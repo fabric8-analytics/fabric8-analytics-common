@@ -266,5 +266,5 @@ Feature: Check the Gremlin instance and its behaviour
      And I should find that the libio_dependents_projects property has numeric value greater than or equal to -1
      And I should find that the libio_dependents_repos property has numeric value greater than or equal to -1
      And I should find that the libio_latest_release property has numeric value greater than or equal to -1
-     And I should find that the libio_latest_version property is set to 3.5.0.Beta1 in the package properties
+     And I should find that the libio_latest_version property is set to 3.5.1 in the package properties
      And I should find that the libio_total_releases property has numeric value greater than or equal to -1
