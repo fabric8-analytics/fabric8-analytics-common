@@ -39,7 +39,7 @@ def oc_got_user_name_p(context):
     assert len(lines) == 1, "Expected one line output"
 
     # check the user name
-    regexp = r"[A-Za-z0-9]+"
+    regexp = r"[A-Za-z0-9:-]+"
     name = lines[0].decode("utf-8")
     assert re.fullmatch(regexp, name)
 
