@@ -102,6 +102,13 @@ def check_status_code(context, status):
     assert context.response.status_code == status
 
 
+@then('I should get {status:d} status code for all calls')
+def check_status_code_for_all_calls(context, status):
+    """Check the HTTP status codes returned by the REST API."""
+    for api_call_result in context.api_call_results:
+        assert api_call_result == status
+
+
 @then('I should receive JSON response containing the {key} key')
 def check_json_response_contains_key(context, key):
     """Check that the JSON response contains given key."""

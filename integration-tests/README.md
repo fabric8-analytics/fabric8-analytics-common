@@ -38,6 +38,9 @@ add new feature tests, simply edit an existing `<name>.feature` file in
   component analysis endpoints under `/api/v1/component-analyses/`
 * [Selfcheck](features/selfcheck.feature): Some checks if the test steps are
   working correctly
+* [Resilient infrastructure](features/resilient_infrastructure.feature): Tests
+  that checks how resilient is the whole infrastructure. These tests use
+  the OpenShift Console that needs to be installed.
 
 ### Older tests that have to be updated
 
@@ -269,6 +272,43 @@ org.springframework.boot:spring-boot-starter
 org.springframework:spring-websocket
 org.springframework:spring-messaging
 ```
+
+## Resilient infrastructure tests
+
+These tests access OpenShift Console ie. the 'oc' command. You have to be logged
+into OpenShift before the tests are run. Also you have to switch to the right project
+because these tests try to restart different pods (so it is not a good idea to
+run such tests against production, for example).
+
+To run the test, you'd need to make sure you are switched to the right project
+in the OpenShift:
+
+    $ oc projects
+
+The selected project is marked by \*, for example:
+
+    *  my-test-project
+       bayesian-preview
+       yet-another-project
+
+To switch to other project use the following command:
+
+    $ oc project <project-name>
+
+For example:
+
+    $ oc project bayesian-preview
+
+Then you can start the resilient infrastructure tests by issuing the following command:
+
+    $ ./runtest.sh --tags resilient.infrastructure 
+
+### Attention
+
+These tests restart different pods, so please make sure you don't run them
+against production environment (given you have enough rights to restart pods
+there, of course)
+
 
 ## TODO
 

@@ -59,7 +59,7 @@ def oc_login(url, username, password, tls_verify=True):
         raise e
 
 
-def oc_delete_pods(selector, namespace=None):
+def oc_delete_pods(selector, namespace=None, force=False):
     """Wrap `oc delete` command.
 
     Selector determines which pods will be deleted.
@@ -73,16 +73,19 @@ def oc_delete_pods(selector, namespace=None):
     and has permissions to delete pods.
 
     Example usage:
-    oc_delete_pods('service=bayesian-pgbouncer'
+    oc_delete_pods('service=bayesian-pgbouncer')
 
     :param selector: str, selector identifying pods that will be deleted
     :param namespace: str, namespace in which `oc delete` command should be executed,
            default: currently selected namespace
+    :param force: bool, immediate deletion of the resources, default: False
     :return: None on success, raises `subprocess.CalledProcessError` on error
     """
-    command = ['oc', 'delete', 'pods', '--selector=', selector]
+    command = ['oc', 'delete', 'pods', '--selector', selector]
     if namespace:
         command.extend(['--namespace', namespace])
+    if force:
+        command.extend(['--force={f}'.format(f=str(force).lower()), '--grace-period=0'])
 
     subprocess.check_call(command)
 
