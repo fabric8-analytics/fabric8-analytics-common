@@ -19,7 +19,12 @@ fabric8-analytics-nvd-toolkit
 fabric8-analytics-auth
 fabric8-gemini-server
 fabric8-analytics-api-gateway
+fabric8-analytics-version-comparator
+fabric8-analytics-ingestion
+fabric8-analytics-npm-insights
 f8a-server-backbone"
+
+pushd repositories
 
 for repository in $REPOSITORIES
 do
@@ -37,4 +42,6 @@ do
     fi
     echo $repository
 done
+
+popd
 
