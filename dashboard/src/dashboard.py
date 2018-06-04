@@ -127,15 +127,15 @@ def clone_repository(repository):
     """Clone the selected repository."""
     print("Cloning the repository {repository}".format(repository=repository))
     prefix = "https://github.com/"
-    command = "git clone --single-branch --depth 1 {prefix}/{repo}.git".format(prefix=prefix,
-                                                                               repo=repository)
+    command = "pushd repositories; git clone --single-branch --depth 1 {prefix}/{repo}.git; popd".\
+        format(prefix=prefix, repo=repository)
     os.system(command)
 
 
 def fetch_repository(repository):
     """Fetch the selected repository."""
     print("Fetching changes from the repository {repository}".format(repository=repository))
-    command = "pushd {repository}; git fetch; popd".format(repository=repository)
+    command = "pushd repositories/{repository}; git fetch; popd".format(repository=repository)
     os.system(command)
 
 
@@ -149,17 +149,17 @@ def clone_or_fetch_repository(repository):
 
 def run_pylint(repository):
     """Run Pylint checker against the selected repository."""
-    command = ("pushd {repo} >> /dev/null;" +
-               "./run-linter.sh > ../{repo}.linter.txt;" +
+    command = ("pushd repositories/{repo} >> /dev/null;" +
+               "./run-linter.sh > ../../{repo}.linter.txt;" +
                "popd >> /dev/null").format(repo=repository)
     os.system(command)
 
 
 def run_docstyle_check(repository):
     """Run PyDocsStyle checker against the selected repository."""
-    command = ("pushd {repo} >> /dev/null;" +
-               "./check-docstyle.sh > ../{repo}.pydocstyle.txt;" +
-               "popd >> /dev/null").format(
+    command = ("pushd repositories/{repo};" +
+               "./check-docstyle.sh > ../../{repo}.pydocstyle.txt;" +
+               "popd").format(
         repo=repository)
     os.system(command)
 
@@ -168,13 +168,14 @@ def run_cyclomatic_complexity_tool(repository):
     """Run Cyclomatic Complexity tool against the selected repository."""
     for i in range(ord('A'), 1 + ord('F')):
         rank = chr(i)
-        command = ("pushd {repo} >> /dev/null;" +
-                   "radon cc -a -s -n {rank} -i venv . |ansi2html.py > ../{repo}.cc.{rank}.html;" +
+        command = ("pushd repositories/{repo} >> /dev/null;" +
+                   "radon cc -a -s -n {rank} -i venv . |ansi2html.py > " +
+                   "../../{repo}.cc.{rank}.html;" +
                    "popd >> /dev/null").format(repo=repository, rank=rank)
         os.system(command)
 
-    command = ("pushd {repo} >> /dev/null;" +
-               "radon cc -s -j -i venv . > ../{repo}.cc.json;" +
+    command = ("pushd repositories/{repo} >> /dev/null;" +
+               "radon cc -s -j -i venv . > ../../{repo}.cc.json;" +
                "popd >> /dev/null").format(repo=repository)
     os.system(command)
 
@@ -183,12 +184,12 @@ def run_maintainability_index(repository):
     """Run Maintainability Index tool against the selected repository."""
     for i in range(ord('A'), 1 + ord('C')):
         rank = chr(i)
-        command = ("pushd {repo};radon mi -s -n {rank} -i venv . | ansi2html.py " +
-                   "> ../{repo}.mi.{rank}.html;popd").format(repo=repository, rank=rank)
+        command = ("pushd repositories/{repo};radon mi -s -n {rank} -i venv . | ansi2html.py " +
+                   "> ../../{repo}.mi.{rank}.html;popd").format(repo=repository, rank=rank)
         os.system(command)
 
-    command = "pushd {repo};radon mi -s -j -i venv . > ../{repo}.mi.json;popd".format(
-        repo=repository)
+    command = "pushd repositories/{repo};radon mi -s -j -i venv . > ../../{repo}.mi.json;popd". \
+        format(repo=repository)
     os.system(command)
 
 
