@@ -46,3 +46,21 @@ def clone_or_fetch_repository(repository, full_history=False):
         fetch_repository(repository)
     else:
         clone_repository(repository, full_history)
+
+
+def get_log(repository):
+    """Retrieve the log for the given repository."""
+    repository = update_repository_name(repository)
+    command = ("pushd repositories/{repo} >> /dev/null; " +
+               "git log --pretty=oneline > ../logs.txt; " +
+               "popd >> /dev/null").format(repo=repository)
+    os.system(command)
+
+
+def checkout(repository, commit):
+    """Perform the GIT checkout in the selected repository."""
+    repository = update_repository_name(repository)
+    command = ("pushd repositories/{repo} >> /dev/null; " +
+               "git checkout {commit}; " +
+               "popd >> /dev/null").format(repo=repository, commit=commit)
+    os.system(command)
