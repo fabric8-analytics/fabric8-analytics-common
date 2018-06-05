@@ -19,13 +19,17 @@ def is_repository_cloned(repository):
     return os.path.isdir("repositories/" + update_repository_name(repository))
 
 
-def clone_repository(repository):
+def clone_repository(repository, full_history):
     """Clone the selected repository."""
     print("Cloning the repository {repository}".format(repository=repository))
     prefix = "https://github.com"
-    command = "pushd repositories; git clone --single-branch --depth 1 {prefix}/{repo}.git; popd".\
-        format(prefix=prefix, repo=repository)
-    os.system(command)
+    if full_history:
+        cmd = "pushd repositories; git clone {prefix}/{repo}.git; popd".\
+              format(prefix=prefix, repo=repository)
+    else:
+        cmd = "pushd repositories; git clone --single-branch --depth 1 {prefix}/{repo}.git; popd".\
+              format(prefix=prefix, repo=repository)
+    os.system(cmd)
 
 
 def fetch_repository(repository):
@@ -36,9 +40,9 @@ def fetch_repository(repository):
     os.system(command)
 
 
-def clone_or_fetch_repository(repository):
+def clone_or_fetch_repository(repository, full_history=False):
     """Clone or fetch the selected repository."""
     if is_repository_cloned(repository):
         fetch_repository(repository)
     else:
-        clone_repository(repository)
+        clone_repository(repository, full_history)
