@@ -1,6 +1,7 @@
 """Git utility functions."""
 
 import os
+import re
 
 
 def update_repository_name(repository):
@@ -48,13 +49,31 @@ def clone_or_fetch_repository(repository, full_history=False):
         clone_repository(repository, full_history)
 
 
-def get_log(repository):
+def create_log(repository):
     """Retrieve the log for the given repository."""
     repository = update_repository_name(repository)
     command = ("pushd repositories/{repo} >> /dev/null; " +
                "git log --pretty=oneline > ../logs.txt; " +
                "popd >> /dev/null").format(repo=repository)
     os.system(command)
+
+
+def read_all_commits(filename):
+    """Read all commits from the given GIT log file."""
+    commits = []
+    with open(filename) as fin:
+        for line in fin:
+            splitted = line.strip().split(" ", 1)
+            commits.append(splitted)
+    commits.reverse()
+    return commits
+
+
+def read_commits(filename, pattern):
+    """Read commits from the given GIT log file that pass the selected pattern."""
+    commits = read_all_commits(filename)
+    # filter commits
+    return [commit for commit in commits if re.fullmatch(pattern, commit[1])]
 
 
 def checkout(repository, commit):
