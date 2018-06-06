@@ -79,6 +79,7 @@ class Config:
         """Get the URL to repository with history data."""
         return self.config.get('repo_with_history_data', 'url')
 
+
 if __name__ == "__main__":
     # execute simple checks, but only if run this module as a script
     config = Config()

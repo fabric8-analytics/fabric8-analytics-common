@@ -30,7 +30,7 @@ DPI = 100
 
 
 # pattern used to check if the given commit contain history data
-COMMIT_MESSAGE_PATTERN = "Dashboard (20\d\d-\d\d-\d\d)"
+COMMIT_MESSAGE_PATTERN = r"Dashboard (20\d\d-\d\d-\d\d)"
 
 
 def read_summary(filename):
