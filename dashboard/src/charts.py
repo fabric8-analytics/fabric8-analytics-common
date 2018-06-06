@@ -18,7 +18,7 @@ def save_graph(fig, imageFile, dpi=DPI):
 
 def pie_chart_for_repository(repository, labels, fractions, colors):
     """Prepare pie chart for given repository, sequence of labels, fractions, and colors."""
-    fig = plt.figure(1, figsize=(1.0 * DEFAULT_WIDTH / DPI, 1.0 * DEFAULT_WIDTH / DPI), dpi=DPI)
+    fig = plt.figure(1, figsize=(1.0 * DEFAULT_WIDTH / DPI, 1.0 * DEFAULT_HEIGHT / DPI), dpi=DPI)
     ax = fig.add_axes([0.06, 0.00, 0.88, 0.88])
     fig.suptitle(repository, fontsize=16)
 
