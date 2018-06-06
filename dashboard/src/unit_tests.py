@@ -42,6 +42,11 @@ def write_unit_test_coverage(unit_test_output, repository):
             fout.write("%s\n" % line)
 
 
+def line_with_unit_test_summary(line):
+    """Check if the given string represents unit test summary."""
+    return line.startswith("TOTAL      ") and line.endswith("%")
+
+
 def read_unit_test_coverage(ci_jobs, jenkins_url, repository):
     """Read and process unit test coverage."""
     url = ci_jobs.get_console_output_url(repository)
@@ -56,7 +61,7 @@ def read_unit_test_coverage(ci_jobs, jenkins_url, repository):
                 if line.startswith("Name  ") and line.endswith("Stmts   Miss  Cover   Missing"):
                     unit_test_output.append(line)
                 # check where the test coverage ends
-                elif line.startswith("TOTAL      ") and line.endswith("%"):
+                elif line_with_unit_test_summary(line):
                     unit_test_output.append(line)
                     write_unit_test_coverage(unit_test_output, repository)
                     return parse_unit_test_statistic(line)
@@ -73,7 +78,7 @@ def read_unit_test_coverage_for_week(repository, week):
             content = fin.readlines()
             for line in content:
                 line = line.strip()
-                if line.startswith("TOTAL      ") and line.endswith("%"):
+                if line_with_unit_test_summary(line):
                     return parse_unit_test_statistic(line)
     except Exception as e:
         return None
