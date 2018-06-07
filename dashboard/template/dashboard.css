@@ -39,6 +39,10 @@ body { padding-top: 100px; }
     display:inline-block;
 }
 
+.inline-block {
+   display: inline-block;
+}
+
   /* Extra small devices (phones, less than 768px) */
   @media (max-width: 1200px) {
     body { padding-top: 100px; }
