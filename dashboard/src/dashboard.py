@@ -199,7 +199,10 @@ def parse_linter_results(filename):
                     total += 1
                     files[source] = False
 
-    return {"files": files,
+    display_results = bool(files)
+
+    return {"display_results": display_results,
+            "files": files,
             "total": total,
             "passed": passed,
             "failed": failed,
@@ -264,16 +267,20 @@ def compute_status(source_files, linter_checks_total, ignored_pylint_files, docs
         maintainability_index["status"]
 
 
-def remark_linter(source_files, linter_checks_total, ignored_pylint_files):
+def remark_linter(source_files, linter_checks_total, ignored_pylint_files, display_results):
     """Generate remark when not all source files are checked by linter."""
-    if source_files != linter_checks_total + ignored_pylint_files:
+    if not display_results:
+        return "linter is not setup<br>"
+    elif source_files != linter_checks_total + ignored_pylint_files:
         return "not all source files are checked by linter<br>"
     return ""
 
 
-def remark_docstyle(source_files, docstyle_checks_total, ignored_pydocstyle_files):
+def remark_docstyle(source_files, docstyle_checks_total, ignored_pydocstyle_files, display_results):
     """Generate remark when not all source files are checked by pydocstyle."""
-    if source_files != docstyle_checks_total + ignored_pydocstyle_files:
+    if not display_results:
+        return "docstyle checker is not setup<br>"
+    elif source_files != docstyle_checks_total + ignored_pydocstyle_files:
         return "not all source files are checked by pydocstyle<br>"
     return ""
 
@@ -321,8 +328,10 @@ def update_overall_status(results, repository, code_coverage_threshold):
                             docstyle_checks, unit_test_coverage, cyclomatic_complexity,
                             maintainability_index, code_coverage_threshold)
 
-    remarks = remark_linter(source_files, linter_checks_total, ignored_pylint_files) + \
-        remark_docstyle(source_files, docstyle_checks_total, ignored_pydocstyle_files) + \
+    remarks = remark_linter(source_files, linter_checks_total, ignored_pylint_files,
+                            linter_checks["display_results"]) + \
+        remark_docstyle(source_files, docstyle_checks_total, ignored_pydocstyle_files,
+                        docstyle_checks["display_results"]) + \
         remark_linter_vs_docstyle(linter_checks_total, ignored_pylint_files,
                                   docstyle_checks_total, ignored_pydocstyle_files) + \
         remark_unit_test_coverage(unit_test_coverage, code_coverage_threshold)

@@ -29,7 +29,7 @@ class PerfTests:
         with open(filename, 'r') as fin:
             csv_content = csv.reader(fin, delimiter=',')
             if skip_first_line:
-                csv_content.next()
+                next(csv_content, None)
             for row in csv_content:
                 output.append(row)
         return output

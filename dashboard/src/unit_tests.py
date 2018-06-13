@@ -3,6 +3,7 @@
 import re
 import requests
 from progress_bar import *
+from jacoco_to_codecov import *
 
 
 # default code coverage threshold used when no threshold is specified
@@ -34,22 +35,58 @@ def parse_unit_test_statistic(line):
         return None
 
 
+def compute_jacoco_test_statistic(project_coverage_report):
+    """Compute test coverage etc. from the CSV data exported from JaCoCo and converted."""
+    java_classes = project_coverage_report.read_java_classes()
+    statements, missed, coverage = ProjectCoverageReport.compute_total(java_classes)
+
+    return {"statements": statements,
+            "missed": missed,
+            "coverage": int(coverage),
+            "progress_bar_class": progress_bar_class(coverage),
+            "progress_bar_width": progress_bar_width(coverage)}
+
+
 def write_unit_test_coverage(unit_test_output, repository):
-    """Write the test coverage to new file."""
+    """Write the test coverage to new file in text format."""
     filename = repository + ".coverage.txt"
     with open(filename, "w") as fout:
         for line in unit_test_output:
             fout.write("%s\n" % line)
 
 
-def line_with_unit_test_summary(line):
+def write_unit_test_coverage_as_csv(unit_test_output, repository):
+    """Write the test coverage to new file in CSV format."""
+    filename = repository + ".coverage.csv"
+    with open(filename, "w") as fout:
+        for line in unit_test_output:
+            fout.write("%s\n" % line)
+
+
+def line_with_jacoco_test_header(line):
+    """Check if the given string represents JaCoCo unit test header."""
+    return line == "Code coverage report BEGIN"
+
+
+def line_with_jacoco_test_footer(line, report_type):
+    """Check if the given string represents JaCoCo unit test footer."""
+    return report_type == "jacoco" and line == "Code coverage report END"
+
+
+def line_with_unit_test_header(line):
+    """Check if the given string represents unit test header."""
+    return line.startswith("Name  ") and line.endswith("Stmts   Miss  Cover   Missing")
+
+
+def line_with_unit_test_summary(line, report_type="pycov"):
     """Check if the given string represents unit test summary."""
-    return line.startswith("TOTAL      ") and line.endswith("%")
+    return report_type == "pycov" and line.startswith("TOTAL      ") and line.endswith("%")
 
 
 def read_unit_test_coverage(ci_jobs, jenkins_url, repository):
     """Read and process unit test coverage."""
     url = ci_jobs.get_console_output_url(repository)
+    report_type = None
     if url is not None:
         response = requests.get(url)
         if response.status_code == 200:
@@ -58,14 +95,28 @@ def read_unit_test_coverage(ci_jobs, jenkins_url, repository):
             for line in content:
                 line = line.strip()
                 # check where the test coverage begins
-                if line.startswith("Name  ") and line.endswith("Stmts   Miss  Cover   Missing"):
+                if line_with_unit_test_header(line):
+                    report_type = "pycov"
                     unit_test_output.append(line)
+                elif line_with_jacoco_test_header(line):
+                    report_type = "jacoco"
+                    # not needed to write the header
+                    # unit_test_output.append(line)
                 # check where the test coverage ends
-                elif line_with_unit_test_summary(line):
+                elif line_with_unit_test_summary(line, report_type):
                     unit_test_output.append(line)
                     write_unit_test_coverage(unit_test_output, repository)
                     return parse_unit_test_statistic(line)
-                elif unit_test_output:
+                # check where the test coverage ends
+                elif line_with_jacoco_test_footer(line, report_type):
+                    # not needed to write the footer
+                    # unit_test_output.append(line)
+                    write_unit_test_coverage_as_csv(unit_test_output, repository)
+                    p = ProjectCoverageReport(repository + ".coverage.csv")
+                    p.convert_code_coverage_report(repository + ".coverage.txt")
+                    return compute_jacoco_test_statistic(p)
+                # now we know we have something to report
+                elif report_type:
                     unit_test_output.append(line)
     return None
 
