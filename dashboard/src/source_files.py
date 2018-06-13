@@ -16,7 +16,7 @@ def parse_line_count(line):
 def get_source_files(repository):
     """Find all source files in the selected repository."""
     command = ("pushd repositories/{repo} > /dev/null; " +
-               "wc -l `find . -path ./venv -prune -o \( -name '*.py' -o -name '*.java' \) " +
+               r"wc -l `find . -path ./venv -prune -o \( -name '*.py' -o -name '*.java' \) " +
                "-print` | head -n -1 > ../../{repo}.count; " +
                "popd > /dev/null").format(repo=repository)
     os.system(command)
