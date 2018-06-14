@@ -60,7 +60,8 @@ def generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydo
                 log.info(repository)
                 generate_details_page_for_repository(repository, results,
                                                      ignored_files_for_pylint.get(repository, []),
-                                                     ignored_files_for_pydocstyle.get(repository, []))
+                                                     ignored_files_for_pydocstyle.get(repository,
+                                                                                      []))
                 generate_charts_page_for_repository(repository, results)
         log.success("Details generated")
     log.success("Output generated")
