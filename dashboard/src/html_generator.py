@@ -1,6 +1,8 @@
 """HTML generator."""
 from mako.template import Template
 
+from fastlog import log
+
 
 def generate_index_page(results):
     """Generate the main (index) HTML page with dashboard content."""
@@ -44,10 +46,21 @@ def generate_charts_page_for_repository(repository, results):
 
 def generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle):
     """Generate all pages with the dashboard and detailed information as well."""
-    generate_index_page(results)
-    if results.code_quality_table_enabled:
-        for repository in results.repositories:
-            generate_details_page_for_repository(repository, results,
-                                                 ignored_files_for_pylint.get(repository, []),
-                                                 ignored_files_for_pydocstyle.get(repository, []))
-            generate_charts_page_for_repository(repository, results)
+    log.info("Generating output")
+
+    with log.indent():
+        log.info("Index page")
+        generate_index_page(results)
+        log.success("Index page generated")
+
+    with log.indent():
+        log.info("Details about repository")
+        if results.code_quality_table_enabled:
+            for repository in results.repositories:
+                log.info(repository)
+                generate_details_page_for_repository(repository, results,
+                                                     ignored_files_for_pylint.get(repository, []),
+                                                     ignored_files_for_pydocstyle.get(repository, []))
+                generate_charts_page_for_repository(repository, results)
+        log.success("Details generated")
+    log.success("Output generated")
