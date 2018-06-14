@@ -9,6 +9,8 @@ import csv
 import shutil
 import re
 
+from fastlog import log
+
 from coreapi import *
 from jobsapi import *
 from configuration import *
@@ -30,14 +32,14 @@ from git_utils import *
 
 def check_environment_variable(env_var_name):
     """Check if the given environment variable exists."""
-    print("Checking: {e} environment variable existence".format(
+    log.info("Checking: {e} environment variable existence".format(
         e=env_var_name))
     if env_var_name not in os.environ:
-        print("Fatal: {e} environment variable has to be specified"
-              .format(e=env_var_name))
+        log.failure("Fatal: {e} environment variable has to be specified"
+                    .format(e=env_var_name))
         sys.exit(1)
     else:
-        print("    ok")
+        log.success("ok")
 
 
 def check_environment_variables():
@@ -121,48 +123,63 @@ JOBS_STATUSES_FILENAME = "jobs.json"
 
 def run_pylint(repository):
     """Run Pylint checker against the selected repository."""
-    command = ("pushd repositories/{repo} >> /dev/null;" +
-               "./run-linter.sh > ../../{repo}.linter.txt;" +
-               "popd >> /dev/null").format(repo=repository)
-    os.system(command)
+    with log.indent():
+        log.info("Running Pylint for the repository " + repository)
+        command = ("pushd repositories/{repo} >> /dev/null;" +
+                   "./run-linter.sh > ../../{repo}.linter.txt;" +
+                   "popd >> /dev/null").format(repo=repository)
+        os.system(command)
+        log.success("Done")
 
 
 def run_docstyle_check(repository):
     """Run PyDocsStyle checker against the selected repository."""
-    command = ("pushd repositories/{repo};" +
-               "./check-docstyle.sh > ../../{repo}.pydocstyle.txt;" +
-               "popd").format(
-        repo=repository)
-    os.system(command)
+    with log.indent():
+        log.info("Running DocStyle checker for the repository " + repository)
+        command = ("pushd repositories/{repo} >> /dev/null;" +
+                   "./check-docstyle.sh > ../../{repo}.pydocstyle.txt;" +
+                   "popd >> /dev/null").format(
+            repo=repository)
+        os.system(command)
+        log.success("Done")
 
 
 def run_cyclomatic_complexity_tool(repository):
     """Run Cyclomatic Complexity tool against the selected repository."""
-    for i in range(ord('A'), 1 + ord('F')):
-        rank = chr(i)
-        command = ("pushd repositories/{repo} >> /dev/null;" +
-                   "radon cc -a -s -n {rank} -i venv . |ansi2html.py > " +
-                   "../../{repo}.cc.{rank}.html;" +
-                   "popd >> /dev/null").format(repo=repository, rank=rank)
-        os.system(command)
+    with log.indent():
+        log.info("Running cyclomatic complexity checker for the repository " + repository)
+        for i in range(ord('A'), 1 + ord('F')):
+            rank = chr(i)
+            command = ("pushd repositories/{repo} >> /dev/null;" +
+                       "radon cc -a -s -n {rank} -i venv . |ansi2html.py > " +
+                       "../../{repo}.cc.{rank}.html;" +
+                       "popd >> /dev/null").format(repo=repository, rank=rank)
+            os.system(command)
 
-    command = ("pushd repositories/{repo} >> /dev/null;" +
-               "radon cc -s -j -i venv . > ../../{repo}.cc.json;" +
-               "popd >> /dev/null").format(repo=repository)
-    os.system(command)
+        command = ("pushd repositories/{repo} >> /dev/null;" +
+                   "radon cc -s -j -i venv . > ../../{repo}.cc.json;" +
+                   "popd >> /dev/null").format(repo=repository)
+        os.system(command)
+        log.success("Done")
 
 
 def run_maintainability_index(repository):
     """Run Maintainability Index tool against the selected repository."""
-    for i in range(ord('A'), 1 + ord('C')):
-        rank = chr(i)
-        command = ("pushd repositories/{repo};radon mi -s -n {rank} -i venv . | ansi2html.py " +
-                   "> ../../{repo}.mi.{rank}.html;popd").format(repo=repository, rank=rank)
-        os.system(command)
+    with log.indent():
+        log.info("Running maintainability index checker for the repository " + repository)
+        for i in range(ord('A'), 1 + ord('C')):
+            rank = chr(i)
+            command = ("pushd repositories/{repo} >> /dev/null;" +
+                       "radon mi -s -n {rank} -i venv . | ansi2html.py " +
+                       "> ../../{repo}.mi.{rank}.html;" +
+                       "popd >> /dev/null").format(repo=repository, rank=rank)
+            os.system(command)
 
-    command = "pushd repositories/{repo};radon mi -s -j -i venv . > ../../{repo}.mi.json;popd". \
-        format(repo=repository)
-    os.system(command)
+        command = ("pushd repositories/{repo} >> /dev/null;" +
+                   "radon mi -s -j -i venv . > ../../{repo}.mi.json;popd >> /dev/null"). \
+            format(repo=repository)
+        os.system(command)
+        log.success("Done")
 
 
 def percentage(part1, part2):
@@ -438,42 +455,51 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                                   code_quality_table_enabled, ci_jobs_table_enabled,
                                   code_coverage_threshold):
     """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
-    for repository in repositories:
+    log.info("Preparing data for QA Dashboard")
+    with log.indent():
+        for repository in repositories:
+            log.info("Repository " + repository)
 
-        # clone or fetch the repository if the cloning/fetching is not disabled via CLI arguments
-        if clone_repositories_enabled:
-            clone_or_fetch_repository(repository)
+            # clone or fetch the repository, but only if the cloning/fetching
+            # is not disabled via CLI arguments
+            if clone_repositories_enabled:
+                clone_or_fetch_repository(repository)
 
-        if code_quality_table_enabled:
-            run_pylint(repository)
-            run_docstyle_check(repository)
-            run_cyclomatic_complexity_tool(repository)
-            run_maintainability_index(repository)
+            if code_quality_table_enabled:
+                run_pylint(repository)
+                run_docstyle_check(repository)
+                run_cyclomatic_complexity_tool(repository)
+                run_maintainability_index(repository)
 
-            results.source_files[repository] = get_source_files(repository)
-            results.repo_linter_checks[repository] = parse_pylint_results(repository)
-            results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
-            results.repo_cyclomatic_complexity[repository] = parse_cyclomatic_complexity(repository)
-            results.repo_maintainability_index[repository] = parse_maintainability_index(repository)
+                results.source_files[repository] = get_source_files(repository)
+                results.repo_linter_checks[repository] = parse_pylint_results(repository)
+                results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
+                results.repo_cyclomatic_complexity[repository] = \
+                    parse_cyclomatic_complexity(repository)
+                results.repo_maintainability_index[repository] = \
+                    parse_maintainability_index(repository)
 
-        # delete_work_files(repository)
+            # delete_work_files(repository)
 
-        if cleanup_repositories_enabled:
-            cleanup_repository(repository)
+            if cleanup_repositories_enabled:
+                cleanup_repository(repository)
 
-        if ci_jobs_table_enabled:
-            for job_type in ci_job_types:
-                url = ci_jobs.get_job_url(repository, job_type)
-                name = ci_jobs.get_job_name(repository, job_type)
-                badge = ci_jobs.get_job_badge(repository, job_type)
-                job_status = job_statuses.get(name)
-                results.ci_jobs_links[repository][job_type] = url
-                results.ci_jobs_badges[repository][job_type] = badge
-                results.ci_jobs_statuses[repository][job_type] = job_status
-            results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs, JENKINS_URL,
-                                                                             repository)
-        if code_quality_table_enabled:
-            update_overall_status(results, repository, code_coverage_threshold)
+            if ci_jobs_table_enabled:
+                for job_type in ci_job_types:
+                    url = ci_jobs.get_job_url(repository, job_type)
+                    name = ci_jobs.get_job_name(repository, job_type)
+                    badge = ci_jobs.get_job_badge(repository, job_type)
+                    job_status = job_statuses.get(name)
+                    results.ci_jobs_links[repository][job_type] = url
+                    results.ci_jobs_badges[repository][job_type] = badge
+                    results.ci_jobs_statuses[repository][job_type] = job_status
+                results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs,
+                                                                                 JENKINS_URL,
+                                                                                 repository)
+            if code_quality_table_enabled:
+                update_overall_status(results, repository, code_coverage_threshold)
+
+    log.success("Data prepared")
 
 
 def read_jobs_statuses(filename):
@@ -518,21 +544,33 @@ def read_ci_jobs_statuses(jenkins_url):
 
 def read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled):
     """Read job statuses from the CI, but only if its necessary."""
+    log.info("Read job statuses")
     if ci_jobs_table_enabled or liveness_table_enabled:
+        log.success("Done")
         return read_ci_jobs_statuses(JENKINS_URL)
     else:
+        log.warning("Disabled")
         return None
 
 
 def production_smoketests_status(ci_jobs):
     """Read total number of remembered builds and succeeded builds as well."""
+    log.info("Read smoketests status")
     job_url = ci_jobs.get_job_url("production", "smoketests")
     api_query = jenkins_api_query_build_statuses(job_url)
     response = requests.get(api_query)
     builds = response.json()["builds"]
     total_builds = [b for b in builds if b["result"] is not None]
     success_builds = [b for b in builds if b["result"] == "SUCCESS"]
-    return len(total_builds), len(success_builds)
+    total_builds_cnt = len(total_builds)
+    success_builds_cnt = len(success_builds)
+
+    with log.indent():
+        log.info("Total builds: {n}".format(n=total_builds_cnt))
+        log.info("Success builds: {n}".format(n=success_builds_cnt))
+
+    log.success("Done")
+    return total_builds_cnt, success_builds_cnt
 
 
 def get_code_coverage_threshold(cli_arguments, config):
@@ -542,20 +580,29 @@ def get_code_coverage_threshold(cli_arguments, config):
 
 def main():
     """Entry point to the QA Dashboard."""
-    config = Config()
-    cli_arguments = cli_parser.parse_args()
-    repositories = Repositories(config)
+    log.setLevel(log.INFO)
+    log.info("Setup")
+    with log.indent():
+        config = Config()
+        cli_arguments = cli_parser.parse_args()
+        repositories = Repositories(config)
 
-    # some CLI arguments are used to DISABLE given feature of the dashboard,
-    # but let's not use double negation everywhere :)
-    ci_jobs_table_enabled = not cli_arguments.disable_ci_jobs
-    code_quality_table_enabled = not cli_arguments.disable_code_quality
-    liveness_table_enabled = not cli_arguments.disable_liveness
-    sla_table_enabled = not cli_arguments.disable_sla
-    clone_repositories_enabled = cli_arguments.clone_repositories
-    cleanup_repositories_enabled = cli_arguments.cleanup_repositories
+        # some CLI arguments are used to DISABLE given feature of the dashboard,
+        # but let's not use double negation everywhere :)
+        ci_jobs_table_enabled = not cli_arguments.disable_ci_jobs
+        code_quality_table_enabled = not cli_arguments.disable_code_quality
+        liveness_table_enabled = not cli_arguments.disable_liveness
+        sla_table_enabled = not cli_arguments.disable_sla
+        clone_repositories_enabled = cli_arguments.clone_repositories
+        cleanup_repositories_enabled = cli_arguments.cleanup_repositories
 
-    check_environment_variables()
+        log.info("Environment variables check")
+        with log.indent():
+            check_environment_variables()
+        log.success("Environment variables check done")
+
+    log.success("Setup done")
+
     results = Results()
 
     # list of repositories to check
@@ -569,15 +616,17 @@ def main():
 
     results.teams = teams
     results.sprint = config.get_sprint()
-    print("Sprint: " + results.sprint)
+    log.info("Sprint: " + results.sprint)
 
     ci_jobs = CIJobs()
+
     job_statuses = read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled)
 
     results.smoke_tests_total_builds, results.smoke_tests_success_builds = \
         production_smoketests_status(ci_jobs)
 
     results.sprint_plan_url = config.get_sprint_plan_url()
+    log.info("Sprint plan URL: " + results.sprint_plan_url)
     code_coverage_threshold = get_code_coverage_threshold(cli_arguments, config)
 
     for team in teams:
