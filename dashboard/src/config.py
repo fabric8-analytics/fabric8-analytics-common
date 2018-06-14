@@ -1,6 +1,7 @@
 """Common configuration."""
 import configparser
 from urllib.parse import urljoin
+from fastlog import log
 
 
 class Config:
@@ -11,7 +12,10 @@ class Config:
     def __init__(self):
         """Read and parse the configuration file."""
         self.config = configparser.ConfigParser()
-        self.config.read(Config.CONFIG_FILE_NAME)
+        with log.indent():
+            log.info("Reading config file")
+            self.config.read(Config.CONFIG_FILE_NAME)
+            log.success("Done")
 
     def get_sprint(self):
         """Return name of current sprint."""
