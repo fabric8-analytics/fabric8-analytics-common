@@ -44,6 +44,8 @@ def fetch_repository(repository):
 def clone_or_fetch_repository(repository, full_history=False):
     """Clone or fetch the selected repository."""
     if is_repository_cloned(repository):
+        # make sure we don't have detached head
+        checkout(repository, "master")
         fetch_repository(repository)
     else:
         clone_repository(repository, full_history)
