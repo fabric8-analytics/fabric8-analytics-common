@@ -41,7 +41,6 @@ Feature: Server API
      Examples: endpoints
          |endpoint|
          |/api/v1|
-         |/api/v1/analyse|
          |/api/v1/component-analyses/<ecosystem>/<package>/<version>|
          |/api/v1/component-search/<package>|
          |/api/v1/generate-file|
