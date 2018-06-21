@@ -41,7 +41,6 @@ Feature: Server API
      Examples: endpoints
          |endpoint|
          |/api/v1|
-         |/api/v1/analyse|
          |/api/v1/component-analyses/<ecosystem>/<package>/<version>|
          |/api/v1/component-search/<package>|
          |/api/v1/generate-file|
@@ -103,8 +102,6 @@ Feature: Server API
 
      Examples: schemas
          |schema|version|
-         |binary_data|1-0-0|
-         |code_metrics|1-0-0|
          |crypto_algorithms|1-0-0|
          |dependency_snapshot|1-0-0|
          |digests|1-0-0|
@@ -116,7 +113,6 @@ Feature: Server API
          |github_details|2-0-0|
          |github_details|2-0-1|
          |keywords_tagging|1-0-0|
-         |languages|1-0-0|
          |metadata|1-0-0|
          |metadata|1-0-1|
          |metadata|1-1-0|
@@ -178,8 +174,6 @@ Feature: Server API
 
      Examples: schemas
          |schema|version|
-         |binary_data|1-0-0|
-         |code_metrics|1-0-0|
          |crypto_algorithms|1-0-0|
          |dependency_snapshot|1-0-0|
          |digests|1-0-0|
@@ -191,7 +185,6 @@ Feature: Server API
          |github_details|2-0-0|
          |github_details|2-0-1|
          |keywords_tagging|1-0-0|
-         |languages|1-0-0|
          |metadata|1-0-0|
          |metadata|1-0-1|
          |metadata|1-1-0|
@@ -275,8 +268,6 @@ Feature: Server API
          |api|stack_analyses|2-1-4|
          |api|stack_analyses|2-2-0|
          |api|version_range_resolver|1-0-0|
-         |component_analyses|binary_data|1-0-0|
-         |component_analyses|code_metrics|1-0-0|
          |component_analyses|crypto_algorithms|1-0-0|
          |component_analyses|dependency_snapshot|1-0-0|
          |component_analyses|digests|1-0-0|
@@ -288,7 +279,6 @@ Feature: Server API
          |component_analyses|github_details|2-0-0|
          |component_analyses|github_details|2-0-1|
          |component_analyses|keywords_tagging|1-0-0|
-         |component_analyses|languages|1-0-0|
          |component_analyses|metadata|1-0-0|
          |component_analyses|metadata|1-0-1|
          |component_analyses|metadata|1-1-0|
