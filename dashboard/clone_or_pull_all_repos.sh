@@ -23,7 +23,8 @@ fabric8-analytics-version-comparator
 fabric8-analytics-ingestion
 fabric8-analytics-npm-insights
 fabric8-analytics-jenkins-plugin
-f8a-server-backbone"
+f8a-server-backbone
+f8a-hpf-insights"
 
 pushd repositories
 
