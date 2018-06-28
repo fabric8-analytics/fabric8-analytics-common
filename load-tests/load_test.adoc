@@ -1,0 +1,28 @@
+[[load_tests]]
+= Load tests
+
+The scripts listed in the sections below help perform a load test.
+
+== Invoking the load test
+. Fire the load in any of the following two ways:
+
+* To simulate almost simultaneous workload use https://pypi.python.org/pypi/requests-futures/0.9.0[future-requests] as follows:
++
+`./run_load_test.py <concurrent request count> <API URL>`
++
+* To generate the load use the http://locust.io[locust] framework as follows:
++
+`locust -f locust-test.py --host=<HOST URL>`
+. Invoke the load
+test from http://localhost:8089
+
+
+== Monitoring the load test
+
+Use the `monitor_load_test.sh` script to monitor the database entry that gets
+created as part of the load test as follows:
+----
+./monitor_load_test.sh <2 *
+concurrent request count>
+----
+NOTE: Do not run the monitor script against Staging or Production as it truncates the tables once the tests are performed.

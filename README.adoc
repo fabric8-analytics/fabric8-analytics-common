@@ -1,0 +1,89 @@
+[[fabric8-analytics-testing]]
+= Fabric8-Analytics Testing
+
+https://ci.centos.org/job/devtools-e2e-fabric8-analytics/[image:https://ci.centos.org/buildStatus/icon?job=devtools-e2e-fabric8-analytics[Build
+Status]]
+
+:icons:
+:toc: macro
+:toc-title:
+:toclevels: 2
+
+toc::[]
+
+
+[[overview]]
+== Overview
+
+Fabric8-Analytics is an open source analytics platform aimed primarily at assisting developers in getting insights and recommendations on the stacks used for developing applications. This platform can be used to get an overview and recommendations for single application components as well.
+
+The following sections describe:
+
+* Tests available for testing your code in Fabric8-Analytics
+* Setting up CI/CD in CentOS for a new project
+* QA dashboard and code coverage reporter
+* Recommended coding standards
+
+
+NOTE: The Fabric8-Analytics project has evolved from two different projects called *Cucos* and *Bayesian*. We are currently in the process of renaming the modules and updating documentation. Till then *Cucos* and *Bayesian* should be considered as synonyms for *Fabric8-Analytics*.
+
+////
+[[using-fabric8-analytics]]
+= Using Fabric8-Analytics
+You can use the following options to interact with Fabric8-Analytics:
+
+* API: To get up and running with the API please see the link:https://github.com/fabric8-analytics/fabric8-analytics-server/blob/master/README.md[API server README].
+* A widget in SonarQube: This is the developer facing integration point. For an in-depth example working with SonarQube see the
+link:https://github.com/fabric8-analytics/examples[examples repository].<Examples repo does not have any content drop this sentence if we have nothing in this repo>
++
+NOTE: A link:https://github.com/fabric8-analytics/fabric8-analytics-sonarqube-plugin[special plugin] needs to be used for scanning the Maven projects.
+
+* link:Fabric8-Analytics
+https://github.com/fabric8-analytics/fabric8-analytics-jenkins-plugin[Fabric8-Analytics Jenkins plugin]: You can trigger Fabric8-Analytics from Jenkins. See link:https://github.com/fabric8-analytics/fabric8-analytics-sonarqube-plugin/blob/master/docs/running_from_jenkins.md[Triggering Fabric8-Analytics scan from Jenkins] for details.
+* Fabric8-Analytics is also built into the link:https://openshift.io[openshift.io]  build pipeline.
+
+[[developing-and-running-the-system]]
+= Developing and Running the System
+
+We have detailed
+https://github.com/fabric8-analytics/fabric8-analytics-deployment/blob/master/README.md[documentation]
+that describes possibilities of running whole Fabric8-Analytics, doing
+code changes, running tests etc.
+////
+
+== Testing Fabric8-Analytics Code
+The following tests can be run to test your code in Fabric8-Analytics. Detailed information about each type of test is included in the corresponding folder in the repository.
+
+* Integration tests: The <<integration_tests>> for fabric8-analytics services can be run against existing deployment, or locally using docker-compose.
+
+* Performance tests: A basic set of <<performance_tests>> measures the component search and stack analysis at this moment.
+
+* UI tests: The <<ui_tests>> access OpenShift.io and check whether it is possible to create a new space, configure the project in that space, and get the stack and license analysis for this project.
+
+* Database integrity tests: Database integrity tests are described in the <<database_integrity_tests,following document>>.
+
+== QA Dashboard generator
+The <<about_qa_dashboard_code_coverage,QA dashboard>> provides a consolidated report on the status of code coverage, performance tests and CI jobs for all the repositories in Fabric8-Analytics that contain source files.
+
+////
+Commenting out below sections as they need to move to relevant sections
+
+== Analytics CI/CD<Move to repo with information on CICD>
+<<about_analytics_cicd>><This readme should be in the appropriate repo in the org>
+
+<Move to a separate doc called coding guidelines in the main starting repo-deployment>
+== Coding standards
+Use the following scripts to check if the code follows PEP 8 and PEP 257 coding standards. These scripts can be run without any arguments:
+
+* `./run-linter.sh` : Use this script to check the indentation, line lengths, variable names, and white space around the operators.
+
+* `./check-docstyle.sh`:  Use this script to check all documentation strings, their presence, and format.
+
+Ensure that you fix any warnings and errors reported by these scripts.
+
+== Code complexity measurement
+Use the following scripts to measure code complexity. These scripts can be run w/o any arguments:
+
+* `./measure-cyclomatic-complexity.sh`: Use this script to measure the  cyclomatic complexity of all the Python sources found in the repository. See this table for further explanation on interpreting the results.
+* `./measure-maintainability-index.sh`:  Use this script to measure the maintainability index of all the Python sources found in the repository. See the explanation of this measurement for more details.
+////
