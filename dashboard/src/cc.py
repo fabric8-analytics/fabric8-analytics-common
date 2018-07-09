@@ -26,6 +26,8 @@ class Results():
         self.improvement = {}
         self.threshold = {}
         self.threshold_pass = {}
+        self.coverage_pp = {}
+        self.coverage_delta_perc = {}
         self.f = lambda number: '{0:.2f}'.format(number)  # function to format floating point number
         self.generated_on = time.strftime('%Y-%m-%d %H:%M:%S')
         self.unit_test_coverage = {}
@@ -65,6 +67,7 @@ def prepare_data_for_repositories(repositories, results, config):
                     results.unit_test_coverage[repository].append(coverage)
 
             update_improvement(results, repository)
+            update_coverage_delta(results, repository)
             update_coverage_threshold_pass(results, repository, config)
     log.info("Improvements")
     with log.indent():
@@ -104,6 +107,35 @@ def update_improvement(results, repository):
         results.improvement[repository] = result
     except Exception as e:
         pass
+
+
+def update_coverage_delta(results, repository):
+    """Update the pp and %."""
+    results.coverage_pp[repository] = ""
+    results.coverage_delta_perc[repository] = ""
+    try:
+        pp, percent = calculate_pp_coverage(results, repository)
+        results.coverage_pp[repository] = int(pp)
+        results.coverage_delta_perc[repository] = int(percent)
+    except Exception as e:
+        pass
+
+
+def calculate_pp_coverage(results, repository):
+    """Calculate the pp coverage for the selected repository."""
+    week0 = float(results.unit_test_coverage[repository][0].get("coverage"))
+    week1 = float(results.unit_test_coverage[repository][1].get("coverage"))
+    if week0 == week1:
+        return 0, 0
+    elif week0 > week1:
+        delta = week0 - week1
+        return delta, 100.0 * delta / week1
+    else:
+        delta = week1 - week0
+        if week0 == 0:
+            return delta, 100.0
+        else:
+            return delta, 100.0 * delta / week0
 
 
 def main():
