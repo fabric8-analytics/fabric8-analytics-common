@@ -10,7 +10,7 @@ The following environment variables can be used to test specific deployments:
 * `F8A_API_URL` - API server URL
 * `F8A_JOB_API_URL` - Jobs service URL
 
-By default, the system running on the localhost is tested. The <tests?> are not containerized currently hence they start and stop Fabric8 Analytics multiple times. Thus the following prerequisites need to be met:
+By default, the system running on the localhost is tested. The integration tests are not containerized currently hence they start and stop Fabric8 Analytics multiple times. Thus the following prerequisites need to be met:
 
 . Configure a Python environment on the host system.
 . Ensure that you are a member of the `docker` group to execute `docker-compose` without `sudo`. For information about setting up and using Docker as a non-root user, see link:https://docs.docker.com/engine/installation/linux/linux-postinstall/[here].
