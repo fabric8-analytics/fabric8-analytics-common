@@ -1,0 +1,145 @@
+[[fabric8-analytics-cicd-how-to]]
+= fabric8-analytics CI/CD how-to
+
+== About fabric8-analytics CI/CD
+
+CentOS CI builds and deploys all fabric8-analytics deployable units.
+The following sections describe the setting up of CI/CD in CentOS for a new project.
+
+.Prerequisite:
+* You must have a Dockerfile for your new project and should be able to deploy the image to OpenShift (that is, you must have the OpenShift template).
+
+If you do not have either of these, refer to the already deployed fabric8-analytics projects.
+
+== Enabling CI/CD for a new project
+
+=== 1. Have CI scripts in your repository
+
+CI looks for certain scripts in your repository. These scripts are
+basically CI job definitions. Common practice in CentOS CI is to have at
+least the following two scripts in your repository:
+
+* https://github.com/fabric8-analytics/fabric8-analytics-pgbouncer/blob/master/cico_run_tests.sh[cico_run_tests.sh]
++
+This script gets executed in CI on every pull request. The script should
+build the docker image (if necessary) and run unit and first level
+integration tests.
+
+* https://github.com/fabric8-analytics/fabric8-analytics-pgbouncer/blob/master/cico_build_deploy.sh[cico_build_deploy.sh]
++
+This script gets executed on every merge to master branch. This script
+should also build the docker image and run unit and integration tests.
+If the tests pass, the script should push the docker image to the
+`push.registry.devshift.net` registry.
+
+It's also common to have following auxiliary script in your repository:
+
+* https://github.com/fabric8-analytics/fabric8-analytics-pgbouncer/blob/master/cico_setup.sh[cico_setup.sh]
++
+Machines in CentOS CI, where all builds and tests run, are always clean, that is there is no docker installed. The purpose of this script is
+to set up the CI environment and provide various helper functions that can
+be used in both `cico_run_tests.sh` and `cico_build_deploy.sh` scripts.
+
+* https://github.com/fabric8-analytics/fabric8-analytics-pgbouncer/blob/master/Makefile[Makefile]
++
+This is optional, it can be used by developers outside CI environment. `cico_*`
+scripts expect that the environment is disposable, but the developer's
+laptop is not.
+
+It's usually a good idea to copy these scripts from an existing repo and
+simply adapt them for your needs.
+
+[[configure-cicd-jobs-in-almightyalmighty-jobs]]
+=== 2. Configure CI/CD jobs in almighty/almighty-jobs
+
+CentOS CI can find out about your project only if you configure a job
+for it through
+https://github.com/almighty/almighty-jobs[almighty/almighty-jobs] GitHub
+repository. Basic templates for fabric8-analytics projects already
+exist, a typical project can simply reuse the following snippets:
+
+For pull requests:
+
+[source,yaml]
+----
+        - '{ci_project}-{git_repo}-fabric8-analytics':    # template reference, keep intact
+            git_organization: fabric8-analytics           # GitHub organization where your project lives
+            git_repo: fabric8-analytics-data-model        # short name of the GitHub repository
+            ci_project: 'devtools'                        # group in CI, keep intact
+            ci_cmd: '/bin/bash cico_run_tests.sh'         # script to run on pull requests
+            timeout: '20m'                                # how long to wait before giving up (reaching the time limit will fail the test/build)
+----
+
+For master branch builds:
+
+[source,yaml]
+----
+        - '{ci_project}-{git_repo}-f8a-build-master':     # template reference, keep intact
+            git_organization: fabric8-analytics           # GitHub organization where your project lives
+            git_repo: fabric8-analytics-data-model        # short name of the GitHub repository
+            ci_project: 'devtools'                        # group in CI, keep intact
+            ci_cmd: '/bin/bash cico_build_deploy.sh'      # script to run on merge to master
+            saas_git: saas-analytics                      # short name of the GitHub repository for tracking deployments; always [saas-analytics](https://github.com/openshiftio/saas-analytics)
+            deployment_units: 'data-importer'             # "name" element from the saas-analytics configuration file, e.g.: https://github.com/openshiftio/saas-analytics/blob/master/bay-services/data-importer.yaml#L4
+            deployment_configs: 'bayesian-data-importer'  # name of the OpenShift deployment config, e.g.: https://github.com/fabric8-analytics/fabric8-analytics-data-model/blob/f058982e7b75dccf97b5adec9ea975530a1731fe/openshift/template.yaml#L29
+            timeout: '20m'                                # how long to wait before giving up (reaching the time limit will fail the test/build)
+----
+
+If the build is successful and the first level tests pass on merge to master builds, then the new image will be automatically deployed to staging
+environment and the E2E tests will run against it. If the E2E tests fail, CI
+will automatically rollback the deployment to previous (working)
+version.
+
+Adjust values, where necessary, and open a PR
+(https://github.com/almighty/almighty-jobs/pull/271/commits/2fe60ee7e0881d026889da2b67313a71869b8c85[example]).
+
+[[configuration-in-deployment-tracking-repository]]
+=== 3. Configuration in deployment tracking repository
+
+A tool called https://github.com/openshiftio/saasherder[saasherder] is
+responsible for all deployments to staging and production. All projects need to have a deployment configuration file in
+https://github.com/openshiftio/saas-analytics/tree/master/bay-services[openshiftio/saas-analytics]
+repository.
+
+It may look like this:
+
+[source,yaml]
+----
+services:
+- hash: 0f6d2d8f2e388d4562a0a029ef9485249e529a9d
+  hash_length: 7
+  name: data-importer
+  environments:                     # deployments can be configured differently in staging and production
+  - name: production
+    parameters:
+      REPLICAS: 4
+  - name: staging
+    parameters:
+      REPLICAS: 1
+  path: /openshift/template.yaml    # path where to find OpenShift template in the repository
+url: https://github.com/fabric8-analytics/fabric8-analytics-data-model/
+----
+
+See the https://github.com/openshiftio/saasherder#service-yaml[official
+docs] for more information.
+
+NOTE: If you want to deploy only your project to staging for now, you can
+set `hash` to `none`.
+
+[[configure-webhooks-in-your-repository]]
+=== 4. Configure webhooks in your repository
+
+The next step is to configure webhooks in your GitHub repository. Please refer to the
+https://wiki.centos.org/QaWiki/CI/GithubIntegration[official CentOS CI
+documentation] for more information.
+
+[[promoting-to-production]]
+== Promoting to production
+
+The version of a service which runs in production is controlled by the `hash` key in the corresponding deployment config file in the
+https://github.com/openshiftio/saas-analytics/tree/master/bay-services[openshiftio/saas-analytics]
+repository.
+
+If you want to promote a new build to production, open a PR
+(https://github.com/openshiftio/saas-analytics/pull/67/commits/215f0f06998f3659d65f6962fb9aa2bcc2fe4db9[example])
+and contact @msrb, @srikrishna, or the Service Delivery team on MatterMost.
