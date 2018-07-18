@@ -41,6 +41,8 @@ class Results():
         self.teams = {}
         self.issues_list_url = {}
         self.unit_test_coverage = {}
+        self.dead_code = {}
+        self.common_errors = {}
 
     def __repr__(self):
         """Return textual representation of all results."""
@@ -52,7 +54,9 @@ class Results():
                    "CI jobs links: {ci_jobs_links}\n" + \
                    "CI jobs badges: {ci_jobs_badges}\n" + \
                    "CI jobs status: {ci_jobs_stats}\n" + \
-                   "Unit test coverage: {unit_test_coverage}\n"
+                   "Unit test coverage: {unit_test_coverage}\n" + \
+                   "Dead code: {dead_code}\n" + \
+                   "Common errors: {common_errors}\n"
         return template.format(stage=self.stage,
                                production=self.production,
                                rs=self.repo_statistics,
@@ -64,4 +68,6 @@ class Results():
                                ci_jobs_links=self.ci_jobs_links.__repr__(),
                                ci_jobs_badges=self.ci_jobs_badges.__repr__(),
                                ci_jobs_stats=self.ci_jobs_statuses.__repr__(),
-                               unit_test_coverage=self.unit_test_coverage)
+                               unit_test_coverage=self.unit_test_coverage,
+                               dead_code=self.dead_code,
+                               common_errors=self.common_errors)

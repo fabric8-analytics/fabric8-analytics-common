@@ -59,9 +59,9 @@
                             <td style="width:16ex">&nbsp;</td>
                         % endif
                         % if improvement[repository] == "better":
-                            <td class="boolean ok">&#x2713;<br />better</td>
+                            <td class="boolean ok">&#x2713;<br />increased by ${coverage_pp[repository]}pp (${coverage_delta_perc[repository]}%)</td>
                         % elif improvement[repository] == "worse":
-                            <td class="boolean error">&times;<br />worse</td>
+                            <td class="boolean error">&times;<br />decreased by ${coverage_pp[repository]}pp (${coverage_delta_perc[repository]}%)</td>
                         % elif improvement[repository] == "same":
                             <td class="boolean ignored">=<br />the same</td>
                         % else:
