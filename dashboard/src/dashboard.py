@@ -321,18 +321,18 @@ def compute_status(source_files, linter_checks_total, ignored_pylint_files, docs
 def remark_linter(source_files, linter_checks_total, ignored_pylint_files, display_results):
     """Generate remark when not all source files are checked by linter."""
     if not display_results:
-        return "linter is not setup<br>"
+        return "<li>linter is not setup</li>"
     elif source_files != linter_checks_total + ignored_pylint_files:
-        return "not all source files are checked by linter<br>"
+        return "<li>not all source files are checked by linter</li>"
     return ""
 
 
 def remark_docstyle(source_files, docstyle_checks_total, ignored_pydocstyle_files, display_results):
     """Generate remark when not all source files are checked by pydocstyle."""
     if not display_results:
-        return "docstyle checker is not setup<br>"
+        return "<li>docstyle checker is not setup</li>"
     elif source_files != docstyle_checks_total + ignored_pydocstyle_files:
-        return "not all source files are checked by pydocstyle<br>"
+        return "<li>not all source files are checked by pydocstyle</li>"
     return ""
 
 
@@ -350,11 +350,12 @@ def remark_unit_test_coverage(unit_test_coverage, code_coverage_threshold):
     """Generate remark for unit test coverage problems."""
     if unit_test_coverage is not None:
         if not unit_test_coverage_ok(unit_test_coverage, code_coverage_threshold):
-            return "improve code coverage<br>"
+            return "<li>improve code coverage</li>"
         else:
             return ""
     else:
-        return "unit tests has not been setup<br>"
+        return "<li>unit tests has not been setup</li>"
+
 
 def dead_code_remark(dead_code):
     """Generate remark for dead code detection."""
@@ -412,24 +413,24 @@ def update_overall_status(results, repository, code_coverage_threshold):
         remark_unit_test_coverage(unit_test_coverage, code_coverage_threshold)
 
     if linter_checks["failed"] != 0:
-        remarks += "linter failed<br>"
+        remarks += "<li>linter failed</li>"
 
     if docstyle_checks["failed"] != 0:
-        remarks += "pydocstyle check failed<br>"
+        remarks += "<li>pydocstyle check failed</li>"
 
     if ignored_pylint_files:
-        remarks += "{n} file{s} ignored by pylint<br>".format(
+        remarks += "<li>{n} file{s} ignored by pylint</li>".format(
             n=ignored_pylint_files, s="s" if ignored_pylint_files > 1 else "")
 
     if ignored_pydocstyle_files:
-        remarks += "{n} file{s} ignored by pydocstyle<br>".format(
+        remarks += "<li>{n} file{s} ignored by pydocstyle</li>".format(
             n=ignored_pydocstyle_files, s="s" if ignored_pydocstyle_files > 1 else "")
 
     if not cyclomatic_complexity["status"]:
-        remarks += "reduce cyclomatic complexity<br>"
+        remarks += "<li>reduce cyclomatic complexity</li>"
 
     if not maintainability_index["status"]:
-        remarks += "improve maintainability index<br>"
+        remarks += "<li>improve maintainability index</li>"
 
     remarks += dead_code_remark(dead_code)
     remarks += common_errors_remark(common_errors)
