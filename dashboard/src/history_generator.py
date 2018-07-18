@@ -26,7 +26,7 @@ COMMIT_MESSAGE_PATTERN = r"Dashboard (20\d\d-\d\d-\d\d)"
 
 
 def diff_two_lists(first, second):
-    """Utility function to create new list with diffs between two other lists."""
+    """Create new list with diffs between two other lists."""
     assert len(first) == len(second)
     return [x - y for x, y in zip(first, second)]
 
