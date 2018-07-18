@@ -75,6 +75,29 @@ def prepare_data_for_code_coverage(coverage_data):
     return labels, fractions, colors
 
 
+def prepare_fractions_from_common_results_struct(results):
+    """Prepare list of fraction values for passed/failed tests."""
+    correct = float(results["passed%"])
+    incorrect = float(results["failed%"])
+    return [correct, incorrect]
+
+
+def prepare_data_for_dead_code_chart(dead_code_measurement):
+    """Prepare data (values, labels, colors) for the dead code measurement chart."""
+    labels = ("without\ndead code", "with\ndead code")
+    fractions = prepare_fractions_from_common_results_struct(dead_code_measurement)
+    colors = ('#40a040', 'red')
+    return labels, fractions, colors
+
+
+def prepare_data_for_common_errors_chart(common_errors):
+    """Prepare data (values, labels, colors) for the common errors chart."""
+    labels = ("without\nerrors", "at least 1\nerror detected")
+    fractions = prepare_fractions_from_common_results_struct(common_errors)
+    colors = ('#40a040', 'red')
+    return labels, fractions, colors
+
+
 def generate_cyclomatic_complexity_chart(repository, cyclomatic_complexity):
     """Generate chart with cyclomatic complexity data for given repository."""
     labels, fractions, colors = prepare_data_for_cyclomatic_complexity_chart(cyclomatic_complexity)
@@ -106,6 +129,28 @@ def generate_code_coverage_chart(repository, code_coverage):
         plt.close(fig)
 
 
+def generate_dead_code_chart(repository, dead_code_measurement):
+    """Generate chart with dead code measurement."""
+    if dead_code_measurement is not None:
+        labels, fractions, colors = prepare_data_for_dead_code_chart(dead_code_measurement)
+        fig, ax = pie_chart_for_repository(repository, labels, fractions, colors)
+
+        filename = "dead_code_{repository}.png".format(repository=repository)
+        save_graph(fig, filename, DPI)
+        plt.close(fig)
+
+
+def generate_common_errors_chart(repository, common_errors):
+    """Generate chart with common errors measurement."""
+    if common_errors is not None:
+        labels, fractions, colors = prepare_data_for_common_errors_chart(common_errors)
+        fig, ax = pie_chart_for_repository(repository, labels, fractions, colors)
+
+        filename = "common_errors_{repository}.png".format(repository=repository)
+        save_graph(fig, filename, DPI)
+        plt.close(fig)
+
+
 def generate_charts(results):
     """Generate all charts for the QA dashboard."""
     for repository in results.repositories:
@@ -115,6 +160,8 @@ def generate_charts(results):
                                              results.repo_maintainability_index[repository])
         generate_code_coverage_chart(repository,
                                      results.unit_test_coverage[repository])
+        generate_dead_code_chart(repository, results.dead_code[repository])
+        generate_common_errors_chart(repository, results.common_errors[repository])
 
 
 if __name__ == "__main__":
@@ -149,3 +196,21 @@ if __name__ == "__main__":
             "progress_bar_class": "something",
             "progress_bar_width": "ignore"}
     generate_code_coverage_chart("fabric8-analytics-something-else", data)
+
+    data = {"display_results": True,
+            "files": 100,
+            "total": 100,
+            "passed": 35,
+            "failed": 65,
+            "passed%": "35",
+            "failed%": "65"}
+    generate_dead_code_chart("fabric8-analytics-something-else", data)
+
+    data = {"display_results": True,
+            "files": 100,
+            "total": 100,
+            "passed": 35,
+            "failed": 65,
+            "passed%": "35",
+            "failed%": "65"}
+    generate_common_errors_chart("fabric8-analytics-something-else", data)
