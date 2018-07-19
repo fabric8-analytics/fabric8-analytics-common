@@ -23,6 +23,7 @@ _API_ENDPOINT = 'api/v1'
 _FABRIC8_ANALYTICS_SERVER = 32000
 _FABRIC8_ANALYTICS_JOBS = 34000
 _FABRIC8_GREMLIN_SERVICE = 80
+_FABRIC8_LICENSE_SERVICE = 80
 
 # Endpoint for jobs debug API
 _JOBS_DEBUG_API = _API_ENDPOINT + "/debug"
@@ -501,6 +502,7 @@ def before_all(context):
     backbone_api_url = _read_url_from_env_var('F8A_BACKBONE_API_URL')
     service_id = _read_url_from_env_var('F8A_SERVICE_ID')
     gemini_api_url = _read_url_from_env_var('F8A_GEMINI_API_URL')
+    license_service_url = _read_url_from_env_var('F8A_LICENSE_SERVICE_URL')
 
     context.running_locally = _running_locally(coreapi_url, jobs_api_url)
     check_test_environment(context, coreapi_url)
@@ -508,6 +510,8 @@ def before_all(context):
     context.coreapi_url = _get_url(context, coreapi_url, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
     context.jobs_api_url = _get_url(context, jobs_api_url, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
     context.gremlin_url = _get_url(context, gremlin_url, "gremlin_url", _FABRIC8_GREMLIN_SERVICE)
+    context.license_service_url = _get_url(context, license_service_url, 'license_service_url',
+                                           _FABRIC8_LICENSE_SERVICE)
 
     context.threescale_url = threescale_url
 
