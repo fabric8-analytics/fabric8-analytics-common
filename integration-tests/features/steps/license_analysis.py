@@ -136,7 +136,7 @@ def check_no_really_unknown_licenses(context):
     really_unknown = check_and_get_attribute(unknown_licenses, "really_unknown")
     assert len(really_unknown) == 0, \
         "There should not be any really unknown licenses reported, " \
-        "but the service returned {c} conflicts" \
+        "but the service returned {c} unknown licenses" \
         .format(c=", ".join(really_unknown))
 
 
