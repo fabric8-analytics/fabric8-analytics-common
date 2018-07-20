@@ -60,6 +60,17 @@ def check_license_analysis_status(context, expected):
         .format(status=status, expected=expected)
 
 
+@then("I should find empty stack license")
+def check_license_analysis_stack_license_empty(context):
+    """Check the computed stack license."""
+    json_data = context.response.json()
+    license = check_and_get_attribute(json_data, "stack_license")
+    assert license is None, \
+        "License service returns {license} stack license, " \
+        "but null value is expected instead" \
+        .format(license=license)
+
+
 @then("I should find that the stack license is {expected}")
 def check_license_analysis_stack_license(context, expected):
     """Check the computed stack license."""
@@ -106,6 +117,17 @@ def check_distinct_license_count(context, expected):
         "has been found".format(expected=expected, found=found)
 
 
+@then("I should not see any distinct licenses")
+def check_no_distinct_licenses(context):
+    """Check distinct licenses from the license service."""
+    json_data = context.response.json()
+    distinct_licenses = check_and_get_attribute(json_data, "distinct_licenses")
+    assert len(distinct_licenses) == 0, \
+        "There should not be any distinct licenses reported, " \
+        "but the service returned {licenses} such licenses" \
+        .format(licenses=", ".join(distinct_licenses))
+
+
 @then("I should find {license} license in distinct licenses")
 def check_distinct_license_existence(context, license):
     """Check if the given license has been returned from the license service."""
@@ -114,3 +136,117 @@ def check_distinct_license_existence(context, license):
     assert distinct_licenses, "Distinct licenses array shall not be empty"
     assert license in distinct_licenses, \
         "Can not find the expected {license} license in distinct licenses".format(license=license)
+
+
+@then("I should not see any component conflicts")
+def check_no_component_conflicts(context):
+    """Check the computed component conflicts."""
+    json_data = context.response.json()
+    unknown_licenses = check_and_get_attribute(json_data, "unknown_licenses")
+    component_conflicts = check_and_get_attribute(unknown_licenses, "component_conflict")
+    assert len(component_conflicts) == 0, \
+        "There should not be any component conflicts reported, " \
+        "but the service returned {c} conflicts" \
+        .format(c=", ".join(component_conflicts))
+
+
+@then("I should not see any really unknown licenses")
+def check_no_really_unknown_licenses(context):
+    """Check the computed really unknown licenses."""
+    json_data = context.response.json()
+    unknown_licenses = check_and_get_attribute(json_data, "unknown_licenses")
+    really_unknown = check_and_get_attribute(unknown_licenses, "really_unknown")
+    assert len(really_unknown) == 0, \
+        "There should not be any really unknown licenses reported, " \
+        "but the service returned {c} unknown licenses" \
+        .format(c=", ".join(really_unknown))
+
+
+def no_package_found(package, version):
+    """Throw an exception, because the given package+version can not be found."""
+    msg = "Could not find expected package {package} version {version}".format(package=package,
+                                                                               version=version)
+    raise Exception(msg)
+
+
+@then("I should find license {license} for the package {package} version {version}")
+def check_license_for_package_version(context, license, package, version):
+    """Check if the given license has been reported for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    assert len(packages) >= 1, "Expecting it least one package in the list"
+
+    for p in packages:
+        if p["package"] == package and p["version"] == version:
+            licenses = p["licenses"]
+            assert license in licenses, ("Can not find expected license " +
+                                         "{license} in {licenses}").format(license=license,
+                                                                           licenses=licenses)
+            # are we here? -> we have found the expected license -> everything's fine
+            return
+
+    # too bad, the package+version were not returned by the license service
+    no_package_found(package, version)
+
+
+@then("I should not find any license for package {package} version {version}")
+def check_license_for_package_version_none(context, package, version):
+    """Check if none license has been reported for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    assert len(packages) >= 1, "Expecting it least one package in the list"
+
+    for p in packages:
+        if p["package"] == package and p["version"] == version:
+            licenses = p["licenses"]
+            assert not licenses, \
+                "None license shall be returned, but {licenses} has been found".format(
+                    license=licenses)
+            # are we here? -> we have found the expected license -> everything's fine
+            return
+
+    # too bad, the package+version were not returned by the license service
+    no_package_found(package, version)
+
+
+def test_attribute_value_in_license_analysis(packages, package, version, attribute_name,
+                                             expected_value, error_message):
+    """Check the value of selected attribute from the given package+version in license analysis."""
+    # packages are returned in an array of dicts
+    # and we need to find the package by its name and version
+    for p in packages:
+        if p["package"] == package and p["version"] == version:
+            license_analysis = check_and_get_attribute(p, "license_analysis")
+            actual_value = check_and_get_attribute(license_analysis, attribute_name)
+            assert actual_value == expected_value, \
+                "Wrong message has been found in the returned license analysis"
+            # are we here? -> we have found the expected attribute value in license analysis
+            # -> everything's fine
+            return
+
+    # too bad, the package+version were not returned by the license service
+    no_package_found(pkg, ver)
+
+
+@then("I should find that representative license has been found for package {pkg} version {ver}")
+def check_license_report_for_package_version(context, pkg, ver):
+    """Check if the given license has been reported for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    assert len(packages) >= 1, "Expecting it least one package in the list"
+    test_attribute_value_in_license_analysis(packages, pkg, ver, "_message",
+                                             "Representative license found",
+                                             "Wrong message has been found in the returned " +
+                                             "license analysis")
+
+
+@then("I should find that license analysis was {status} for package {package} version {version}")
+def check_license_analysis_status_for_package_version(context, status, package, version):
+    """Check the status of license analysis for the package+version."""
+    expected_status = "Successful" if status == "successful" else "Failure"
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    assert len(packages) >= 1, "Expecting it least one package in the list"
+    test_attribute_value_in_license_analysis(packages, package, version, "status",
+                                             expected_status,
+                                             "Wrong license analysis status has been reported")
