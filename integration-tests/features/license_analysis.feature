@@ -38,3 +38,8 @@ Feature: Checks for the license analysis service
       And I should not see any outlier packages
       And I should see one distinct license
       And I should find apache 2.0 license in distinct licenses
+      And I should find license AL2 for the package org.wildfly.swarm:monitor version 2018.3.3
+      And I should find that representative license has been found for package org.wildfly.swarm:monitor version 2018.3.3
+      And I should find that license analysis was successful for package org.wildfly.swarm:monitor version 2018.3.3
+      And I should not see any component conflicts
+      And I should not see any really unknown licenses
