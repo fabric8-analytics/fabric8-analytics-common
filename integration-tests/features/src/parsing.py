@@ -32,3 +32,12 @@ def parse_token_clause(token_clause):
     if use_token is None:
         raise Exception("Wrong clause specified: {t}".format(t=token_clause))
     return use_token
+
+
+def parse_number(number):
+    """Parse the number."""
+    try:
+        return int(number)
+    except (TypeError, ValueError) as e:
+        return {"zero": 0,
+                "one": 1}.get(number, number)
