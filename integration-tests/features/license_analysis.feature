@@ -70,3 +70,20 @@ Feature: Checks for the license analysis service
       And I should find that license analysis was successful for package org.wildfly.swarm:jaxrs version 2018.3.3
       And I should not see any component conflicts
       And I should not see any really unknown licenses
+
+
+  Scenario: Test the license analysis for one unknown Maven package
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file maven_one_unknown_package.json to the license analysis service
+     Then I should get 200 status code
+      And I should find that the license analysis status is failure
+      And I should find empty stack license
+      And I should not see any conflict packages
+      And I should not see any outlier packages
+      And I should not see any distinct licenses
+      And I should not find any license for package foo.bar:baz version 1.2.3.4
+      And I should find that license analysis was not successful for package foo.bar:baz version 1.2.3.4
+      And I should not see any component conflicts
+      And I should not see any really unknown licenses
