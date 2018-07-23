@@ -22,10 +22,11 @@ Feature: Checks for the license analysis service
      Then I should get 200 status code
 
      Examples: filenames
-     |filename|
+     |filename                          |
      |maven_five_different_packages.json|
-     |maven_one_package.json|
-     |maven_three_wildfly_packages.json|
+     |maven_one_package.json            |
+     |maven_one_unknown_package.json    |
+     |maven_three_wildfly_packages.json |
 
 
   Scenario: Test the license analysis for one known Maven package
