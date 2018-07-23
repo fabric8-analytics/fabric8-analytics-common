@@ -56,6 +56,17 @@ def send_the_file_for_license_analysis(context, filename, token="without"):
                                      "license-recommender", use_token)
 
 
+@when("I send the file {filename} to the stack license analysis endpoint of license " +
+      "analysis service")
+@when("I send the file {filename} to the stack license analysis endpoint of license " +
+      "analysis service {token} authorization token")
+def send_the_file_for_stack_license_analysis(context, filename, token="without"):
+    """Test step to send the payload to the stack analysis endpoint of license analysis service."""
+    use_token = parse_token_clause(token)
+    send_payload_to_license_analysis(context, "data/license_analysis_stack_license", filename,
+                                     "stack_license", use_token)
+
+
 @then("I should find that the license analysis status is {expected}")
 def check_license_analysis_status(context, expected):
     """Check the status of license analysis."""

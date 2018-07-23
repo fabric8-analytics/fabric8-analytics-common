@@ -88,3 +88,21 @@ Feature: Checks for the license analysis service
       And I should find that license analysis was not successful for package foo.bar:baz version 1.2.3.4
       And I should not see any component conflicts
       And I should not see any really unknown licenses
+
+
+  Scenario Outline: Smoketest if all JSON files with package stack can be processes by the stack_license endpoint
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file <filename> to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+
+     Examples: filenames
+     |filename|
+     |packages_and_alternate_packages.json     |
+     |packages_components_license_conflict.json|
+     |packages_test_weird_failures.json        |
+     |packages_with_compatible_licenses.json   |
+     |packages_with_stack_license_conflict.json|
+     |packages_with_unknown_license.json       |
+     |package_with_no_license.json             |
