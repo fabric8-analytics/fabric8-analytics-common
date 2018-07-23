@@ -169,12 +169,17 @@ def no_package_found(package, version):
     raise Exception(msg)
 
 
+def check_packages_list(packages):
+    """Check the content of list of packages."""
+    assert len(packages) >= 1, "Expecting it least one package in the list"
+
+
 @then("I should find license {license} for the package {package} version {version}")
 def check_license_for_package_version(context, license, package, version):
     """Check if the given license has been reported for the package+version."""
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")
-    assert len(packages) >= 1, "Expecting it least one package in the list"
+    check_packages_list(packages)
 
     for p in packages:
         if p["package"] == package and p["version"] == version:
@@ -194,7 +199,7 @@ def check_license_for_package_version_none(context, package, version):
     """Check if none license has been reported for the package+version."""
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")
-    assert len(packages) >= 1, "Expecting it least one package in the list"
+    check_packages_list(packages)
 
     for p in packages:
         if p["package"] == package and p["version"] == version:
