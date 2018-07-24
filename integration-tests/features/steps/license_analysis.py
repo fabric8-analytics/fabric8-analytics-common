@@ -37,6 +37,8 @@ def access_license_service(context):
 
 def url_to_endpoint(service_url, endpoint):
     """Construct URL to the selected endpoint."""
+    assert service_url, "Service URL must be specified and should not be empty"
+    assert endpoint, "Endpoint must be spefified and should not be empty"
     url = urljoin(service_url, "/api/v1/")
     return urljoin(url, endpoint)
 
@@ -259,17 +261,33 @@ def test_attribute_value_in_license_analysis(packages, package, version, attribu
             return
 
     # too bad, the package+version were not returned by the license service
-    no_package_found(pkg, ver)
+    no_package_found(package, version)
 
 
-@then("I should find that representative license has been found for package {pkg} version {ver}")
-def check_license_report_for_package_version(context, pkg, ver):
+@then("I should find that representative license has been found for package {package} " +
+      "version {version}")
+def check_license_report_for_package_version(context, package, version):
     """Check if the given license has been reported for the package+version."""
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")
-    assert len(packages) >= 1, "Expecting it least one package in the list"
-    test_attribute_value_in_license_analysis(packages, pkg, ver, "_message",
+    check_packages_list(packages)
+    # check if the _message attribute contain expected content
+    test_attribute_value_in_license_analysis(packages, package, version, "_message",
                                              "Representative license found",
+                                             "Wrong message has been found in the returned " +
+                                             "license analysis")
+
+
+@then("I should find that representative license has not been found for package {package} " +
+      "version {version} with the reason {reason}")
+def check_license_report_for_package_version(context, package, version, reason):
+    """Check if the given license has been reported for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    check_packages_list(packages)
+    # check if the _message attribute contain expected content
+    test_attribute_value_in_license_analysis(packages, package, version, "_message",
+                                             reason,
                                              "Wrong message has been found in the returned " +
                                              "license analysis")
 
@@ -280,7 +298,7 @@ def check_license_analysis_status_for_package_version(context, status, package, 
     expected_status = "Successful" if status == "successful" else "Failure"
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")
-    assert len(packages) >= 1, "Expecting it least one package in the list"
+    check_packages_list(packages)
     test_attribute_value_in_license_analysis(packages, package, version, "status",
                                              expected_status,
                                              "Wrong license analysis status has been reported")
