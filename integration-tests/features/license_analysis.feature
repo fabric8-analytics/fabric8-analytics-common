@@ -114,7 +114,7 @@ Feature: Checks for the license analysis service
      |packages_with_unknown_license.json       |
 
 
-  Scenario: Test the stack license analysis for one package
+  Scenario: Test the stack license analysis for one package with one license
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -132,25 +132,7 @@ Feature: Checks for the license analysis service
       And I should find that license analysis was successful for package p1 version 1.1
 
 
-  Scenario: Test the stack license analysis for one package
-    Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
-     When I send the file package_with_one_license.json to the stack license analysis endpoint of license analysis service 
-     Then I should get 200 status code
-      And I should receive a valid JSON response
-      And I should find that the license analysis status is successful
-      And I should not see any conflict packages
-      And I should see one distinct license
-      And I should find mit license in distinct licenses
-      And I should not see any outlier packages
-      And I should find that the stack license is mit
-      And I should find license MIT for the package p1 version 1.1
-      And I should find that representative license has been found for package p1 version 1.1
-      And I should find that license analysis was successful for package p1 version 1.1
-
-
-  Scenario: Test the stack license analysis for one package
+  Scenario: Test the stack license analysis for one package with two licenses
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -168,3 +150,38 @@ Feature: Checks for the license analysis service
       And I should find license PD for the package p1 version 1.1
       And I should find that representative license has been found for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
+
+
+  Scenario: Test the stack license analysis for one package with two licenses
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file package_with_two_licenses_B.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the license analysis status is successful
+      And I should not see any conflict packages
+      And I should see 2 distinct licenses
+      And I should find gplv2 license in distinct licenses
+      And I should find bsd-new license in distinct licenses
+      And I should not see any outlier packages
+      And I should find that the stack license is gplv2
+      And I should find license BSD for the package p2 version 1.1
+      And I should find license GPL V2 for the package p2 version 1.1
+      And I should find that representative license has been found for package p2 version 1.1
+      And I should find that license analysis was successful for package p2 version 1.1
+
+
+  Scenario: Test the stack license analysis for one package without any license
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file package_with_no_license.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the license analysis status is failure
+      And I should find empty stack license
+      And I should not see any conflict packages
+      And I should not see any distinct licenses
+      And I should not see any outlier packages
+      And I should find that representative license has not been found for package p1 version 1.1 with the reason Input is invalid
