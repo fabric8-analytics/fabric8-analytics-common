@@ -35,6 +35,7 @@ Feature: Checks for the license analysis service
      Then I should get the proper authorization token
      When I send the file maven_one_package.json to the license analysis service
      Then I should get 200 status code
+      And I should receive a valid JSON response
       And I should find that the license analysis status is successful
       And I should find that the stack license is apache 2.0
       And I should not see any conflict packages
@@ -54,6 +55,7 @@ Feature: Checks for the license analysis service
      Then I should get the proper authorization token
      When I send the file maven_three_wildfly_packages.json to the license analysis service
      Then I should get 200 status code
+      And I should receive a valid JSON response
       And I should find that the license analysis status is successful
       And I should find that the stack license is apache 2.0
       And I should not see any conflict packages
@@ -79,6 +81,7 @@ Feature: Checks for the license analysis service
      Then I should get the proper authorization token
      When I send the file maven_one_unknown_package.json to the license analysis service
      Then I should get 200 status code
+      And I should receive a valid JSON response
       And I should find that the license analysis status is failure
       And I should find empty stack license
       And I should not see any conflict packages
@@ -99,10 +102,13 @@ Feature: Checks for the license analysis service
 
      Examples: filenames
      |filename|
+     |package_with_one_license.json            |
+     |package_with_two_licenses_A.json         |
+     |package_with_two_licenses_B.json         |
+     |package_with_no_license.json             |
      |packages_and_alternate_packages.json     |
      |packages_components_license_conflict.json|
      |packages_test_weird_failures.json        |
      |packages_with_compatible_licenses.json   |
      |packages_with_stack_license_conflict.json|
      |packages_with_unknown_license.json       |
-     |package_with_no_license.json             |
