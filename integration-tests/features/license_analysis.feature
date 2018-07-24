@@ -112,3 +112,59 @@ Feature: Checks for the license analysis service
      |packages_with_compatible_licenses.json   |
      |packages_with_stack_license_conflict.json|
      |packages_with_unknown_license.json       |
+
+
+  Scenario: Test the stack license analysis for one package
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file package_with_one_license.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the license analysis status is successful
+      And I should not see any conflict packages
+      And I should see one distinct license
+      And I should find mit license in distinct licenses
+      And I should not see any outlier packages
+      And I should find that the stack license is mit
+      And I should find license MIT for the package p1 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
+      And I should find that license analysis was successful for package p1 version 1.1
+
+
+  Scenario: Test the stack license analysis for one package
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file package_with_one_license.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the license analysis status is successful
+      And I should not see any conflict packages
+      And I should see one distinct license
+      And I should find mit license in distinct licenses
+      And I should not see any outlier packages
+      And I should find that the stack license is mit
+      And I should find license MIT for the package p1 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
+      And I should find that license analysis was successful for package p1 version 1.1
+
+
+  Scenario: Test the stack license analysis for one package
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file package_with_two_licenses_A.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the license analysis status is successful
+      And I should not see any conflict packages
+      And I should see 2 distinct licenses
+      And I should find mit license in distinct licenses
+      And I should find public domain license in distinct licenses
+      And I should not see any outlier packages
+      And I should find that the stack license is mit
+      And I should find license MIT for the package p1 version 1.1
+      And I should find license PD for the package p1 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
+      And I should find that license analysis was successful for package p1 version 1.1
