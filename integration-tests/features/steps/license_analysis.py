@@ -91,6 +91,16 @@ def check_license_analysis_status(context, expected):
         .format(status=status, expected=expected)
 
 
+@then("I should see that the analysis message says \"{message}\"")
+def check_license_analysis_message(context, message):
+    """Check the message for the last license analysis."""
+    json_data = context.response.json()
+    actual = check_and_get_attribute(json_data, "message")
+    assert actual == message, \
+        "License service returns message {actual}, but other message {message} is expected" \
+        .format(actual=actual, message=message)
+
+
 @then("I should find empty stack license")
 def check_license_analysis_stack_license_empty(context):
     """Check the computed stack license."""
