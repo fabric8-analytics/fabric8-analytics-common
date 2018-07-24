@@ -146,6 +146,8 @@ Feature: Checks for the license analysis service
       And I should find public domain license in distinct licenses
       And I should not see any outlier packages
       And I should find that the stack license is mit
+
+      # package p1 version 1.1
       And I should find license MIT for the package p1 version 1.1
       And I should find license PD for the package p1 version 1.1
       And I should find that representative license has been found for package p1 version 1.1
@@ -166,6 +168,8 @@ Feature: Checks for the license analysis service
       And I should find bsd-new license in distinct licenses
       And I should not see any outlier packages
       And I should find that the stack license is gplv2
+
+      # package p2 version 1.1
       And I should find license BSD for the package p2 version 1.1
       And I should find license GPL V2 for the package p2 version 1.1
       And I should find that representative license has been found for package p2 version 1.1
@@ -198,6 +202,8 @@ Feature: Checks for the license analysis service
       And I should find that the stack license is gplv2
       And I should not see any conflict packages
       And I should not see any outlier packages
+
+      # distinct licenses check
       And I should see 4 distinct licenses
       And I should find public domain license in distinct licenses
       And I should find mit license in distinct licenses
@@ -214,4 +220,75 @@ Feature: Checks for the license analysis service
       And I should find license BSD for the package p2 version 1.1
       And I should find license GPL V2 for the package p2 version 1.1
       And I should find that representative license has been found for package p2 version 1.1
+      And I should find that license analysis was successful for package p2 version 1.1
+
+
+  Scenario: Test the stack license analysis for two packages that have license conflict
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file packages_components_license_conflict.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the license analysis failed because of component conflict
+      And I should see that the analysis message says "No declared licenses found for 0 component(s)."
+      And I should find empty stack license
+      And I should not see any conflict packages
+      And I should not see any outlier packages
+
+      # distinct licenses check
+      And I should see 4 distinct licenses
+      And I should find public domain license in distinct licenses
+      And I should find gplv2 license in distinct licenses
+      And I should find gplv3+ license in distinct licenses
+      And I should find apache 2.0 license in distinct licenses
+
+      # package p1 version 1.1
+      And I should find license APACHE for the package p1 version 1.1
+      And I should find license PD for the package p1 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
+      And I should find that license analysis was successful for package p1 version 1.1
+
+      # package p2 version 1.1
+      And I should find license GPL V2 for the package p2 version 1.1
+      And I should find license GPL V3+ for the package p2 version 1.1
+      And I should find that representative license has not been found for package p2 version 1.1 with the reason Some licenses are in conflict
+      And I should find that license analysis was conflict for package p2 version 1.1
+      And I should find the gplv2 license in conflict licenses for the package p2 version 1.1
+      And I should find the gplv3+ license in conflict licenses for the package p2 version 1.1
+
+
+  Scenario: Test the stack license analysis for two packages that have stack conflict
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file packages_with_stack_license_conflict.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the license analysis failed because of stack conflict
+      And I should find empty stack license
+      And I should not see any outlier packages
+
+      # distinct licenses check
+      And I should see 4 distinct licenses
+      And I should find gplv2 license in distinct licenses
+      And I should find gplv3+ license in distinct licenses
+      And I should find bsd-new license in distinct licenses
+      And I should find apache 2.0 license in distinct licenses
+
+      # conflict packages check
+      And I should see one group of conflict packages
+      And I should see the license gplv3+ for package p1 in the first group of conflict packages
+      And I should see the license gplv2 for package p2 in the first group of conflict packages
+
+      # package p1 version 1.1
+      And I should find license APACHE for the package p1 version 1.1
+      And I should find license GPL V3+ for the package p1 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
+      And I should find that license analysis was successful for package p1 version 1.1
+
+      # package p2 version 1.1
+      And I should find license BSD for the package p2 version 1.1
+      And I should find license GPL V2 for the package p2 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
       And I should find that license analysis was successful for package p2 version 1.1
