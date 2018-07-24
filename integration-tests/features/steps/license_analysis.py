@@ -101,6 +101,18 @@ def check_license_analysis_message(context, message):
         .format(actual=actual, message=message)
 
 
+@then("I should find that the license analysis failed because of stack conflict")
+def check_license_analysis_status_stack_conflict_expected(context):
+    """Check the status of license analysis - stack conflict is expected."""
+    check_license_analysis_status(context, "stackconflict")
+
+
+@then("I should find that the license analysis failed because of component conflict")
+def check_license_analysis_status_component_conflict_expected(context):
+    """Check the status of license analysis - component conflict is expected."""
+    check_license_analysis_status(context, "componentconflict")
+
+
 @then("I should find empty stack license")
 def check_license_analysis_stack_license_empty(context):
     """Check the computed stack license."""
@@ -302,13 +314,45 @@ def check_license_report_for_package_version(context, package, version, reason):
                                              "license analysis")
 
 
+def resolve_expected_status(status):
+    """Resolve expected status, that are to be checked for the selected package + version."""
+    expected_statuses = {"successful": "Successful",
+                         "conflict": "Conflict"}
+    return expected_statuses.get(status, "Failure")
+
+
 @then("I should find that license analysis was {status} for package {package} version {version}")
 def check_license_analysis_status_for_package_version(context, status, package, version):
     """Check the status of license analysis for the package+version."""
-    expected_status = "Successful" if status == "successful" else "Failure"
+    expected_status = resolve_expected_status(status)
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")
     check_packages_list(packages)
     test_attribute_value_in_license_analysis(packages, package, version, "status",
                                              expected_status,
                                              "Wrong license analysis status has been reported")
+
+
+@then("I should find the {license} license in conflict licenses for the package " +
+      "{package} version {version}")
+def check_license_analysis_conflicts_for_package_version(context, license, package, version):
+    """Check the conflicts of license analysis for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    check_packages_list(packages)
+    # packages are returned in an array of dicts
+    # and we need to find the package by its name and version
+    for p in packages:
+        if p["package"] == package and p["version"] == version:
+            license_analysis = check_and_get_attribute(p, "license_analysis")
+            conflict_licenses_list = check_and_get_attribute(license_analysis, "conflict_licenses")
+            for conflict_licenses in conflict_licenses_list:
+                assert license in conflict_licenses, \
+                    "The license {license} is expected in conflict_licenses {licenses}".format(
+                        license=license, licenses=conflict_licenses)
+                # are we here? -> we have found the expected attribute value in license analysis
+                # -> everything's fine
+                return
+
+    # too bad, the package+version were not returned by the license service
+    no_package_found(package, version)
