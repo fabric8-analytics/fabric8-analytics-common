@@ -109,6 +109,13 @@ def check_status_code_for_all_calls(context, status):
         assert api_call_result == status
 
 
+@then('I should receive a valid JSON response')
+def check_json_response_is_valid(context):
+    """Check that the response contains valid JSON."""
+    content = context.response.json()
+    assert isinstance(content, list) or isinstance(content, dict)
+
+
 @then('I should receive JSON response containing the {key} key')
 def check_json_response_contains_key(context, key):
     """Check that the JSON response contains given key."""

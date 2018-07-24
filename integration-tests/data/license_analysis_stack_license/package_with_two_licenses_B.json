@@ -1,0 +1,9 @@
+{
+        "packages": [
+            {
+                "package": "p2",
+                "version": "1.1",
+                "licenses": ["BSD", "GPL V2"]
+            }
+        ]
+}
