@@ -11,6 +11,17 @@ from src.authorization_tokens import *
 from src.attribute_checks import *
 
 
+LICENSE_ANALYSIS_PAYLOAD_DIRECTORY = "data/license_analysis"
+
+# endpoint name for the license analysis
+LICENSE_RECOMMENDER_ENDPOINT = "license-recommender"
+
+STACK_LICENSE_PAYLOAD_DIRECTORY = "data/license_analysis_stack_license"
+
+# endpoint name for the stack license analysis
+STACK_LICENSE_ENDPOINT = "stack_license"
+
+
 @when("I access the license analysis service")
 def access_license_service(context):
     """Access the licence analysis service."""
@@ -52,8 +63,8 @@ def send_payload_to_license_analysis(context, directory, filename, endpoint, use
 def send_the_file_for_license_analysis(context, filename, token="without"):
     """Test step to send the selected file to the license analysis service."""
     use_token = parse_token_clause(token)
-    send_payload_to_license_analysis(context, "data/license_analysis", filename,
-                                     "license-recommender", use_token)
+    send_payload_to_license_analysis(context, LICENSE_ANALYSIS_PAYLOAD_DIRECTORY, filename,
+                                     LICENSE_RECOMMENDER_ENDPOINT, use_token)
 
 
 @when("I send the file {filename} to the stack license analysis endpoint of license " +
@@ -63,8 +74,8 @@ def send_the_file_for_license_analysis(context, filename, token="without"):
 def send_the_file_for_stack_license_analysis(context, filename, token="without"):
     """Test step to send the payload to the stack analysis endpoint of license analysis service."""
     use_token = parse_token_clause(token)
-    send_payload_to_license_analysis(context, "data/license_analysis_stack_license", filename,
-                                     "stack_license", use_token)
+    send_payload_to_license_analysis(context, STACK_LICENSE_PAYLOAD_DIRECTORY, filename,
+                                     STACK_LICENSE_ENDPOINT, use_token)
 
 
 @then("I should find that the license analysis status is {expected}")
