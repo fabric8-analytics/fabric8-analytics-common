@@ -146,6 +146,45 @@ def check_no_conflict_packages(context):
         .format(p=", ".join(conflict_packages))
 
 
+@then("I should see one group of conflict packages")
+@then("I should see {expected} groups of conflict packages")
+def check_has_conflict_packages(context, expected="one"):
+    """Check the computed conflict packages."""
+    json_data = context.response.json()
+    expected = parse_number(expected)
+    conflict_packages = check_and_get_attribute(json_data, "conflict_packages")
+    actual = len(conflict_packages)
+    assert actual == expected, \
+        "There should be {expected} conflict packages reported, " \
+        "but the service returned {actual} conflicting packages" \
+        .format(expected=expected, actual=actual)
+
+
+@then("I should see the license {license} for package {package} in the {order} group of conflict " +
+      "packages")
+def check_conflict_package_in_a_list(context, license, package, order):
+    """Check the computed conflict license existence."""
+    json_data = context.response.json()
+    order = parse_number(order)
+    conflict_packages = check_and_get_attribute(json_data, "conflict_packages")
+
+    # preliminary check the number of conflict packages
+    assert len(conflict_packages) >= order, "At least {n} groups of conflicting packages  expected"
+
+    group = conflict_packages[order]
+
+    # check if the package belongs to selected group
+    assert package in group, "Package {package} is expected in the {order} group".format(
+        package=package, order=order)
+
+    actual_license = group[package]
+
+    # time to check the license tied to selected package
+    assert actual_license == license, \
+        "The expected license {license} is different from actual license {actual}".format(
+            license=license, actual=actual_license)
+
+
 @then("I should not see any outlier packages")
 def check_no_outlier_packages(context):
     """Check the computed outlier packages."""

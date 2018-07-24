@@ -40,4 +40,5 @@ def parse_number(number):
         return int(number)
     except (TypeError, ValueError) as e:
         return {"zero": 0,
-                "one": 1}.get(number, number)
+                "one": 1,
+                "first": 0}.get(number, number)
