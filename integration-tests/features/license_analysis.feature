@@ -101,7 +101,7 @@ Feature: Checks for the license analysis service
      Then I should get 200 status code
 
      Examples: filenames
-     |filename|
+     |filename                                 |
      |package_with_one_license.json            |
      |package_with_two_licenses_A.json         |
      |package_with_two_licenses_B.json         |
@@ -114,19 +114,63 @@ Feature: Checks for the license analysis service
      |packages_with_unknown_license.json       |
 
 
+  Scenario Outline: Check the stack license computation for all correct input files
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file <filename> to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the stack license is <license>
+
+     Examples: filenames with stack computation results
+     |filename                                          |license |
+     |package_with_one_license.json                     |mit     |
+     |package_with_two_licenses_A.json                  |mit     |
+     |package_with_two_licenses_B.json                  |gplv2   |
+     |packages_and_alternate_packages.json              |gplv2   |
+     |packages_with_compatible_licenses.json            |gplv2   |
+     |package_with_four_licenses.json                   |gplv2   |
+     |package_with_three_licenses_A.json                |bsd-new |
+     |package_with_three_licenses_B.json                |gplv2   |
+
+
+  Scenario Outline: Check the stack license computation for all input files where the stack license can't be figured out
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file <filename> to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find empty stack license
+
+     Examples: filenames
+     |filename                                  |
+     |package_with_no_license.json              |
+     |packages_components_license_conflict.json |
+     |packages_with_stack_license_conflict.json |
+     |packages_with_unknown_license.json        |
+
+
   Scenario: Test the stack license analysis for one package with one license
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
      When I send the file package_with_one_license.json to the stack license analysis endpoint of license analysis service 
      Then I should get 200 status code
+
+      # overall status
       And I should receive a valid JSON response
       And I should find that the license analysis status is successful
       And I should not see any conflict packages
       And I should see one distinct license
       And I should find mit license in distinct licenses
       And I should not see any outlier packages
+
+      # stack license
       And I should find that the stack license is mit
+
+      # package p1 version 1.1
       And I should find license MIT for the package p1 version 1.1
       And I should find that representative license has been found for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
@@ -138,14 +182,20 @@ Feature: Checks for the license analysis service
      Then I should get the proper authorization token
      When I send the file package_with_two_licenses_A.json to the stack license analysis endpoint of license analysis service 
      Then I should get 200 status code
+
+      # overall status
       And I should receive a valid JSON response
       And I should find that the license analysis status is successful
       And I should not see any conflict packages
+      And I should not see any outlier packages
+
+      # stack license
+      And I should find that the stack license is mit
+
+      # distinct licenses check
       And I should see 2 distinct licenses
       And I should find mit license in distinct licenses
       And I should find public domain license in distinct licenses
-      And I should not see any outlier packages
-      And I should find that the stack license is mit
 
       # package p1 version 1.1
       And I should find license MIT for the package p1 version 1.1
@@ -163,11 +213,15 @@ Feature: Checks for the license analysis service
       And I should receive a valid JSON response
       And I should find that the license analysis status is successful
       And I should not see any conflict packages
+      And I should not see any outlier packages
+
+      # stack license
+      And I should find that the stack license is gplv2
+
+      # distinct licenses check
       And I should see 2 distinct licenses
       And I should find gplv2 license in distinct licenses
       And I should find bsd-new license in distinct licenses
-      And I should not see any outlier packages
-      And I should find that the stack license is gplv2
 
       # package p2 version 1.1
       And I should find license BSD for the package p2 version 1.1
@@ -176,19 +230,83 @@ Feature: Checks for the license analysis service
       And I should find that license analysis was successful for package p2 version 1.1
 
 
+  Scenario: Test the stack license analysis for one package with three licenses, variant A
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file package_with_three_licenses_A.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+
+      # overall status
+      And I should receive a valid JSON response
+      And I should find that the license analysis status is successful
+      And I should not see any conflict packages
+      And I should not see any outlier packages
+
+      # stack license
+      And I should find that the stack license is bsd-new
+
+      # distinct licenses check
+      And I should see 3 distinct licenses
+      And I should find mit license in distinct licenses
+      And I should find public domain license in distinct licenses
+      And I should find bsd-new license in distinct licenses
+
+      # package p1 version 1.1
+      And I should find license MIT for the package p1 version 1.1
+      And I should find license BSD for the package p1 version 1.1
+      And I should find license PD for the package p1 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
+      And I should find that license analysis was successful for package p1 version 1.1
+
+
+  Scenario: Test the stack license analysis for one package with three licenses, variant B
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file package_with_three_licenses_B.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+
+      # overall status
+      And I should receive a valid JSON response
+      And I should find that the license analysis status is successful
+      And I should not see any conflict packages
+      And I should not see any outlier packages
+
+      # stack license
+      And I should find that the stack license is gplv2
+
+      # distinct licenses check
+      And I should see 3 distinct licenses
+      And I should find gplv2 license in distinct licenses
+      And I should find public domain license in distinct licenses
+      And I should find bsd-new license in distinct licenses
+
+      # package p1 version 1.1
+      And I should find license GPL V2 for the package p1 version 1.1
+      And I should find license BSD for the package p1 version 1.1
+      And I should find license PD for the package p1 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
+      And I should find that license analysis was successful for package p1 version 1.1
+
+
   Scenario: Test the stack license analysis for one package without any license
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
      When I send the file package_with_no_license.json to the stack license analysis endpoint of license analysis service 
      Then I should get 200 status code
+
+      # overall status
       And I should receive a valid JSON response
       And I should find that the license analysis status is failure
-      And I should find empty stack license
       And I should not see any conflict packages
       And I should not see any distinct licenses
       And I should not see any outlier packages
       And I should find that representative license has not been found for package p1 version 1.1 with the reason Input is invalid
+
+      # stack license
+      And I should find empty stack license
 
 
   Scenario: Test the stack license analysis for two packages with compatible licenses
@@ -197,11 +315,15 @@ Feature: Checks for the license analysis service
      Then I should get the proper authorization token
      When I send the file packages_with_compatible_licenses.json to the stack license analysis endpoint of license analysis service 
      Then I should get 200 status code
+
+      # overall status
       And I should receive a valid JSON response
       And I should find that the license analysis status is successful
-      And I should find that the stack license is gplv2
       And I should not see any conflict packages
       And I should not see any outlier packages
+
+      # stack license
+      And I should find that the stack license is gplv2
 
       # distinct licenses check
       And I should see 4 distinct licenses
@@ -229,12 +351,16 @@ Feature: Checks for the license analysis service
      Then I should get the proper authorization token
      When I send the file packages_components_license_conflict.json to the stack license analysis endpoint of license analysis service 
      Then I should get 200 status code
+
+      # overall status
       And I should receive a valid JSON response
       And I should find that the license analysis failed because of component conflict
       And I should see that the analysis message says "No declared licenses found for 0 component(s)."
-      And I should find empty stack license
       And I should not see any conflict packages
       And I should not see any outlier packages
+
+      # stack license
+      And I should find empty stack license
 
       # distinct licenses check
       And I should see 4 distinct licenses
@@ -264,10 +390,14 @@ Feature: Checks for the license analysis service
      Then I should get the proper authorization token
      When I send the file packages_with_stack_license_conflict.json to the stack license analysis endpoint of license analysis service 
      Then I should get 200 status code
+
+      # overall status
       And I should receive a valid JSON response
       And I should find that the license analysis failed because of stack conflict
-      And I should find empty stack license
       And I should not see any outlier packages
+
+      # stack license
+      And I should find empty stack license
 
       # distinct licenses check
       And I should see 4 distinct licenses
