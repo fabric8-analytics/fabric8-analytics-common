@@ -101,7 +101,7 @@ Feature: Checks for the license analysis service
      Then I should get 200 status code
 
      Examples: filenames
-     |filename|
+     |filename                                 |
      |package_with_one_license.json            |
      |package_with_two_licenses_A.json         |
      |package_with_two_licenses_B.json         |
@@ -112,6 +112,27 @@ Feature: Checks for the license analysis service
      |packages_with_compatible_licenses.json   |
      |packages_with_stack_license_conflict.json|
      |packages_with_unknown_license.json       |
+
+
+  Scenario Outline: Check the stack license computation for all correct input files
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file <filename> to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find that the stack license is <license>
+
+     Examples: filenames with stack computation results
+     |filename                                          |license |
+     |package_with_one_license.json                     |mit     |
+     |package_with_two_licenses_A.json                  |mit     |
+     |package_with_two_licenses_B.json                  |gplv2   |
+     |packages_and_alternate_packages.json              |gplv2   |
+     |packages_with_compatible_licenses.json            |gplv2   |
+     |package_with_four_licenses.json                   |gplv2   |
+     |package_with_three_licenses_A.json                |bsd-new |
+     |package_with_three_licenses_B.json                |gplv2   |
 
 
   Scenario: Test the stack license analysis for one package with one license
