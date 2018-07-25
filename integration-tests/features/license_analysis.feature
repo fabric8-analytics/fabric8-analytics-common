@@ -135,6 +135,23 @@ Feature: Checks for the license analysis service
      |package_with_three_licenses_B.json                |gplv2   |
 
 
+  Scenario Outline: Check the stack license computation for all input files where the stack license can't be figured out
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file <filename> to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should find empty stack license
+
+     Examples: filenames
+     |filename                                  |
+     |package_with_no_license.json              |
+     |packages_components_license_conflict.json |
+     |packages_with_stack_license_conflict.json |
+     |packages_with_unknown_license.json        |
+
+
   Scenario: Test the stack license analysis for one package with one license
     Given System is running
      When I acquire the authorization token
