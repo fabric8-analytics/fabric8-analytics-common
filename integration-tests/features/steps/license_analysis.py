@@ -317,8 +317,25 @@ def test_attribute_value_in_license_analysis(packages, package, version, attribu
         if p["package"] == package and p["version"] == version:
             license_analysis = check_and_get_attribute(p, "license_analysis")
             actual_value = check_and_get_attribute(license_analysis, attribute_name)
-            assert actual_value == expected_value, \
-                "Wrong message has been found in the returned license analysis"
+            assert actual_value == expected_value, error_message
+            # are we here? -> we have found the expected attribute value in license analysis
+            # -> everything's fine
+            return
+
+    # too bad, the package+version were not returned by the license service
+    no_package_found(package, version)
+
+
+def test_attribute_value_in_license_analysis_list(packages, package, version, attribute_name,
+                                                  expected_value, error_message):
+    """Check the value of selected attribute from the given package+version in license analysis."""
+    # packages are returned in an array of dicts
+    # and we need to find the package by its name and version
+    for p in packages:
+        if p["package"] == package and p["version"] == version:
+            license_analysis = check_and_get_attribute(p, "license_analysis")
+            actual_values = check_and_get_attribute(license_analysis, attribute_name)
+            assert expected_value in actual_values, error_message
             # are we here? -> we have found the expected attribute value in license analysis
             # -> everything's fine
             return
@@ -449,6 +466,19 @@ def check_no_outliner_licenses_for_package_version(context, package, version):
     test_attribute_value_in_license_analysis(packages, package, version, "outlier_licenses",
                                              [],
                                              "No outlier licenses expected in the analysis")
+
+
+@then("I should find outlier license {license} for the package {package} version {version}")
+def check_outliner_license_for_package_version(context, license, package, version):
+    """Check the outlier licenses for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    check_packages_list(packages)
+    # check if the 'outlier_licenses' attribute contain expected content
+    error_message = "License {license} can not be found in outlier license list".format(
+        license=license)
+    test_attribute_value_in_license_analysis_list(packages, package, version, "outlier_licenses",
+                                                  license, error_message)
 
 
 @then("I should find data structure with information about license filter")
