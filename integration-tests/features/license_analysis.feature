@@ -353,7 +353,7 @@ Feature: Checks for the license analysis service
       And I should find that license analysis was successful for package p1 version 1.1
       And I should not see any unknown licenses for the package p1 version 1.1
       And I should not see any conflict licenses for the package p1 version 1.1
-      And I should not see any outlier licenses for the package p1 version 1.1
+      And I should find outlier license gplv2 for the package p1 version 1.1
 
       # license filter part
       And I should find data structure with information about license filter
@@ -365,6 +365,54 @@ Feature: Checks for the license analysis service
       And I should not see any compatible packages in companion packages dictionary in license filter data structure
       And I should not see any conflict packages in companion packages dictionary in license filter data structure
       And I should not see any unknown license packages in companion packages dictionary in license filter data structure
+
+
+  Scenario: Test the stack license analysis for package with four licenses
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I send the file package_with_four_licenses.json to the stack license analysis endpoint of license analysis service 
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+
+      # overall status
+      And I should receive a valid JSON response
+      And I should find that the license analysis status is successful
+      And I should not see any conflict packages
+      And I should not see any outlier packages
+
+      # stack license
+      And I should find that the stack license is gplv2
+
+      # distinct licenses check
+      And I should see 4 distinct licenses
+      And I should find gplv2 license in distinct licenses
+      And I should find public domain license in distinct licenses
+      And I should find bsd-new license in distinct licenses
+      And I should find mit license in distinct licenses
+
+      # package p1 version 1.1
+      And I should find license GPL V2 for the package p1 version 1.1
+      And I should find license BSD for the package p1 version 1.1
+      And I should find license PD for the package p1 version 1.1
+      And I should find that representative license has been found for package p1 version 1.1
+      And I should find that the representative license is gplv2 for package p1 version 1.1
+      And I should find that license analysis was successful for package p1 version 1.1
+      And I should not see any unknown licenses for the package p1 version 1.1
+      And I should not see any conflict licenses for the package p1 version 1.1
+      And I should find outlier license gplv2 for the package p1 version 1.1
+
+      # license filter part
+      And I should find data structure with information about license filter
+      And I should find alternate packages dictionary in license filter data structure
+      And I should find companion packages dictionary in license filter data structure
+      And I should not see any compatible packages in alternate packages dictionary in license filter data structure
+      And I should not see any conflict packages in alternate packages dictionary in license filter data structure
+      And I should not see any unknown license packages in alternate packages dictionary in license filter data structure
+      And I should not see any compatible packages in companion packages dictionary in license filter data structure
+      And I should not see any conflict packages in companion packages dictionary in license filter data structure
+      And I should not see any unknown license packages in companion packages dictionary in license filter data structure
+
 
   Scenario: Test the stack license analysis for one package without any license
     Given System is running
