@@ -181,6 +181,17 @@ Feature: Checks for the license analysis service
       And I should not see any conflict licenses for the package p1 version 1.1
       And I should not see any outlier licenses for the package p1 version 1.1
 
+      # license filter part
+      And I should find data structure with information about license filter
+      And I should find alternate packages dictionary in license filter data structure
+      And I should find companion packages dictionary in license filter data structure
+      And I should not see any compatible packages in alternate packages dictionary in license filter data structure
+      And I should not see any conflict packages in alternate packages dictionary in license filter data structure
+      And I should not see any unknown license packages in alternate packages dictionary in license filter data structure
+      And I should not see any compatible packages in companion packages dictionary in license filter data structure
+      And I should not see any conflict packages in companion packages dictionary in license filter data structure
+      And I should not see any unknown license packages in companion packages dictionary in license filter data structure
+
 
   Scenario: Test the stack license analysis for one package with two licenses, variant A
     Given System is running
@@ -213,6 +224,17 @@ Feature: Checks for the license analysis service
       And I should not see any conflict licenses for the package p1 version 1.1
       And I should not see any outlier licenses for the package p1 version 1.1
 
+      # license filter part
+      And I should find data structure with information about license filter
+      And I should find alternate packages dictionary in license filter data structure
+      And I should find companion packages dictionary in license filter data structure
+      And I should not see any compatible packages in alternate packages dictionary in license filter data structure
+      And I should not see any conflict packages in alternate packages dictionary in license filter data structure
+      And I should not see any unknown license packages in alternate packages dictionary in license filter data structure
+      And I should not see any compatible packages in companion packages dictionary in license filter data structure
+      And I should not see any conflict packages in companion packages dictionary in license filter data structure
+      And I should not see any unknown license packages in companion packages dictionary in license filter data structure
+
 
   Scenario: Test the stack license analysis for one package with two licenses, variant B
     Given System is running
@@ -242,6 +264,17 @@ Feature: Checks for the license analysis service
       And I should not see any unknown licenses for the package p2 version 1.1
       And I should not see any conflict licenses for the package p2 version 1.1
       And I should not see any outlier licenses for the package p2 version 1.1
+
+      # license filter part
+      And I should find data structure with information about license filter
+      And I should find alternate packages dictionary in license filter data structure
+      And I should find companion packages dictionary in license filter data structure
+      And I should not see any compatible packages in alternate packages dictionary in license filter data structure
+      And I should not see any conflict packages in alternate packages dictionary in license filter data structure
+      And I should not see any unknown license packages in alternate packages dictionary in license filter data structure
+      And I should not see any compatible packages in companion packages dictionary in license filter data structure
+      And I should not see any conflict packages in companion packages dictionary in license filter data structure
+      And I should not see any unknown license packages in companion packages dictionary in license filter data structure
 
 
   Scenario: Test the stack license analysis for one package with three licenses, variant A
@@ -277,6 +310,17 @@ Feature: Checks for the license analysis service
       And I should not see any conflict licenses for the package p1 version 1.1
       And I should not see any outlier licenses for the package p1 version 1.1
 
+      # license filter part
+      And I should find data structure with information about license filter
+      And I should find alternate packages dictionary in license filter data structure
+      And I should find companion packages dictionary in license filter data structure
+      And I should not see any compatible packages in alternate packages dictionary in license filter data structure
+      And I should not see any conflict packages in alternate packages dictionary in license filter data structure
+      And I should not see any unknown license packages in alternate packages dictionary in license filter data structure
+      And I should not see any compatible packages in companion packages dictionary in license filter data structure
+      And I should not see any conflict packages in companion packages dictionary in license filter data structure
+      And I should not see any unknown license packages in companion packages dictionary in license filter data structure
+
 
   Scenario: Test the stack license analysis for one package with three licenses, variant B
     Given System is running
@@ -311,6 +355,16 @@ Feature: Checks for the license analysis service
       And I should not see any conflict licenses for the package p1 version 1.1
       And I should not see any outlier licenses for the package p1 version 1.1
 
+      # license filter part
+      And I should find data structure with information about license filter
+      And I should find alternate packages dictionary in license filter data structure
+      And I should find companion packages dictionary in license filter data structure
+      And I should not see any compatible packages in alternate packages dictionary in license filter data structure
+      And I should not see any conflict packages in alternate packages dictionary in license filter data structure
+      And I should not see any unknown license packages in alternate packages dictionary in license filter data structure
+      And I should not see any compatible packages in companion packages dictionary in license filter data structure
+      And I should not see any conflict packages in companion packages dictionary in license filter data structure
+      And I should not see any unknown license packages in companion packages dictionary in license filter data structure
 
   Scenario: Test the stack license analysis for one package without any license
     Given System is running
