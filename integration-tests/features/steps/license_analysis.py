@@ -10,6 +10,8 @@ from src.utils import *
 from src.authorization_tokens import *
 from src.attribute_checks import *
 
+from common import *
+
 
 LICENSE_ANALYSIS_PAYLOAD_DIRECTORY = "data/license_analysis"
 
@@ -332,7 +334,7 @@ def check_license_report_for_package_version(context, package, version):
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")
     check_packages_list(packages)
-    # check if the _message attribute contain expected content
+    # check if the '_message' attribute contain expected content
     test_attribute_value_in_license_analysis(packages, package, version, "_message",
                                              "Representative license found",
                                              "Wrong message has been found in the returned " +
@@ -346,7 +348,7 @@ def check_license_report_for_package_version(context, package, version, reason):
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")
     check_packages_list(packages)
-    # check if the _message attribute contain expected content
+    # check if the '_message' attribute contain expected content
     test_attribute_value_in_license_analysis(packages, package, version, "_message",
                                              reason,
                                              "Wrong message has been found in the returned " +
@@ -367,6 +369,7 @@ def check_license_analysis_status_for_package_version(context, status, package, 
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")
     check_packages_list(packages)
+    # check if the 'status' attribute contain expected content
     test_attribute_value_in_license_analysis(packages, package, version, "status",
                                              expected_status,
                                              "Wrong license analysis status has been reported")
@@ -395,3 +398,56 @@ def check_license_analysis_conflicts_for_package_version(context, license, packa
 
     # too bad, the package+version were not returned by the license service
     no_package_found(package, version)
+
+
+@then("I should find that the representative license is {license} for package " +
+      "{package} version {version}")
+def check_representative_license_for_package_version(context, license, package, version):
+    """Check the representative license for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    check_packages_list(packages)
+
+    error_message = "Wrong representative license has been found, " \
+                    "expected license is '{expected}'".format(expected=license)
+    # check if the '_representative_licenses' attribute contain expected content
+    test_attribute_value_in_license_analysis(packages, package, version, "_representative_licenses",
+                                             license, error_message)
+
+
+@then("I should not see any unknown licenses for the package {package} version {version}")
+def check_no_unknown_licenses_for_package_version(context, package, version):
+    """Check the unknown licenses for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    check_packages_list(packages)
+    # check if the 'unknown_licenses' attribute contain expected content
+    test_attribute_value_in_license_analysis(packages, package, version, "unknown_licenses",
+                                             [],
+                                             "No unknown licenses expected in the analysis")
+
+
+@then("I should not see any conflict licenses for the package {package} version {version}")
+def check_no_conflict_licenses_for_package_version(context, package, version):
+    """Check the unknown licenses for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    check_packages_list(packages)
+    # check if the 'unknown_licenses' attribute contain expected content
+    test_attribute_value_in_license_analysis(packages, package, version, "conflict_licenses",
+                                             [],
+                                             "No conflict licenses expected in the analysis")
+
+
+@then("I should not see any outlier licenses for the package {package} version {version}")
+def check_no_outliner_licenses_for_package_version(context, package, version):
+    """Check the outlier licenses for the package+version."""
+    json_data = context.response.json()
+    packages = check_and_get_attribute(json_data, "packages")
+    check_packages_list(packages)
+    # check if the 'outlier_licenses' attribute contain expected content
+    test_attribute_value_in_license_analysis(packages, package, version, "outlier_licenses",
+                                             [],
+                                             "No outlier licenses expected in the analysis")
+
+
