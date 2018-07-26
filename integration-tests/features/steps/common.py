@@ -257,7 +257,26 @@ def find_null_value_under_the_path(context, path):
     jsondata = context.response.json()
     assert jsondata is not None
     v = get_value_using_path(jsondata, path)
-    assert v is None
+    assert v is None, "None/null is expected, but {value} has been found".format(value=v)
+
+
+@then('I should find a list under the path {path} in the JSON response')
+def find_list_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert type(v) == list, "A list is expected, but {value} has been found".format(value=v)
+
+
+@then('I should find an empty list under the path {path} in the JSON response')
+def find_empty_list_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v == [], "Empty list is expected, but value {v} with type {t} has been found" \
+                    .format(v=v, t=type(v))
 
 
 @then('I should find the timestamp value under the path {path} in the JSON response')
