@@ -279,6 +279,26 @@ def find_empty_list_under_the_path(context, path):
                     .format(v=v, t=type(v))
 
 
+@then('I should find a dictionary under the path {path} in the JSON response')
+def find_dictionary_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert type(v) == dict, "A dictionary is expected, but value {v} with type {t} has been found" \
+                            .format(v=v, t=type(v))
+
+
+@then('I should find an empty dictionary under the path {path} in the JSON response')
+def find_empty_dictionary_under_the_path(context, path):
+    """Check if the value (attribute) can be found in the JSON output."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    v = get_value_using_path(jsondata, path)
+    assert v == {}, "An empty dictionary is expected, but value {v} with type {t} has been found" \
+                    .format(v=v, t=type(v))
+
+
 @then('I should find the timestamp value under the path {path} in the JSON response')
 def find_timestamp_value_under_the_path(context, path):
     """Check if the value (attribute) can be found in the JSON output."""
