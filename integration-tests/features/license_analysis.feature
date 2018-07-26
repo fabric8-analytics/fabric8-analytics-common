@@ -163,20 +163,23 @@ Feature: Checks for the license analysis service
       And I should receive a valid JSON response
       And I should find that the license analysis status is successful
       And I should not see any conflict packages
-      And I should see one distinct license
-      And I should find mit license in distinct licenses
       And I should not see any outlier packages
 
       # stack license
       And I should find that the stack license is mit
 
+      # distict license(s)
+      And I should see one distinct license
+      And I should find mit license in distinct licenses
+
       # package p1 version 1.1
       And I should find license MIT for the package p1 version 1.1
       And I should find that representative license has been found for package p1 version 1.1
+      And I should find that the representative license is mit for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
 
 
-  Scenario: Test the stack license analysis for one package with two licenses
+  Scenario: Test the stack license analysis for one package with two licenses, variant A
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -201,10 +204,11 @@ Feature: Checks for the license analysis service
       And I should find license MIT for the package p1 version 1.1
       And I should find license PD for the package p1 version 1.1
       And I should find that representative license has been found for package p1 version 1.1
+      And I should find that the representative license is mit for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
 
 
-  Scenario: Test the stack license analysis for one package with two licenses
+  Scenario: Test the stack license analysis for one package with two licenses, variant B
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -257,6 +261,7 @@ Feature: Checks for the license analysis service
       And I should find license BSD for the package p1 version 1.1
       And I should find license PD for the package p1 version 1.1
       And I should find that representative license has been found for package p1 version 1.1
+      And I should find that the representative license is bsd-new for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
 
 
@@ -287,6 +292,7 @@ Feature: Checks for the license analysis service
       And I should find license BSD for the package p1 version 1.1
       And I should find license PD for the package p1 version 1.1
       And I should find that representative license has been found for package p1 version 1.1
+      And I should find that the representative license is gplv2 for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
 
 
