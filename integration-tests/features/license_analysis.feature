@@ -177,6 +177,9 @@ Feature: Checks for the license analysis service
       And I should find that representative license has been found for package p1 version 1.1
       And I should find that the representative license is mit for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
+      And I should not see any unknown licenses for the package p1 version 1.1
+      And I should not see any conflict licenses for the package p1 version 1.1
+      And I should not see any outlier licenses for the package p1 version 1.1
 
 
   Scenario: Test the stack license analysis for one package with two licenses, variant A
@@ -206,6 +209,9 @@ Feature: Checks for the license analysis service
       And I should find that representative license has been found for package p1 version 1.1
       And I should find that the representative license is mit for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
+      And I should not see any unknown licenses for the package p1 version 1.1
+      And I should not see any conflict licenses for the package p1 version 1.1
+      And I should not see any outlier licenses for the package p1 version 1.1
 
 
   Scenario: Test the stack license analysis for one package with two licenses, variant B
@@ -231,7 +237,11 @@ Feature: Checks for the license analysis service
       And I should find license BSD for the package p2 version 1.1
       And I should find license GPL V2 for the package p2 version 1.1
       And I should find that representative license has been found for package p2 version 1.1
+      And I should find that the representative license is gplv2 for package p2 version 1.1
       And I should find that license analysis was successful for package p2 version 1.1
+      And I should not see any unknown licenses for the package p2 version 1.1
+      And I should not see any conflict licenses for the package p2 version 1.1
+      And I should not see any outlier licenses for the package p2 version 1.1
 
 
   Scenario: Test the stack license analysis for one package with three licenses, variant A
@@ -263,6 +273,9 @@ Feature: Checks for the license analysis service
       And I should find that representative license has been found for package p1 version 1.1
       And I should find that the representative license is bsd-new for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
+      And I should not see any unknown licenses for the package p1 version 1.1
+      And I should not see any conflict licenses for the package p1 version 1.1
+      And I should not see any outlier licenses for the package p1 version 1.1
 
 
   Scenario: Test the stack license analysis for one package with three licenses, variant B
@@ -294,6 +307,9 @@ Feature: Checks for the license analysis service
       And I should find that representative license has been found for package p1 version 1.1
       And I should find that the representative license is gplv2 for package p1 version 1.1
       And I should find that license analysis was successful for package p1 version 1.1
+      And I should not see any unknown licenses for the package p1 version 1.1
+      And I should not see any conflict licenses for the package p1 version 1.1
+      And I should not see any outlier licenses for the package p1 version 1.1
 
 
   Scenario: Test the stack license analysis for one package without any license
