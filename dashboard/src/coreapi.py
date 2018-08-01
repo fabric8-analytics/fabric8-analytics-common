@@ -1,6 +1,5 @@
 """Module with class representing core (server) API."""
 from api import *
-import time
 
 
 class CoreApi(Api):

@@ -1,6 +1,5 @@
 """Module with class representing common API."""
 import requests
-import os
 
 
 class Api:
