@@ -2,7 +2,7 @@ Feature: Dependency Editor Categories Search API behaviour
 
   Scenario: Check that the API entry point
     Given System is running
-    When I access /api/v1/categories/springboot
+    When I access /api/v1/categories/springboot without valid access token
     Then I should get 401 status code
 
 
@@ -44,7 +44,7 @@ Feature: Dependency Editor Categories Search API behaviour
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
-    When I search for the runtime wildflyswarm
+    When I search for the runtime thronetail
     Then I should get 200 status code
      And I should receive JSON response with the request_id
      And I should find categories are none

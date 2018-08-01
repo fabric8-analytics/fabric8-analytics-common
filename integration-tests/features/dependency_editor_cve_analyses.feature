@@ -23,4 +23,5 @@ Feature: Dependency Editor CVE Analyses API behaviour
      And I should receive JSON response
      And I should find the attribute request_id equals to request_id passed in request
      And I should find the result with the list of package, version and cve
-     And I should find stack_highest_cvss equals to -1 if there is no CVEs in stack
+     And I should find stack_highest_cvss equals to -1
+     And I should not find CVEs in stack
