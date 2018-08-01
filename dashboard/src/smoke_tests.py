@@ -1,5 +1,4 @@
 """Module with class that handle smoke test results."""
-import csv
 
 
 class SmokeTests:

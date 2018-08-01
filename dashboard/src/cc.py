@@ -1,11 +1,8 @@
 """Code coverage page generator."""
 
 from mako.template import Template
-import os
 import sys
 import time
-import shutil
-import re
 
 from repositories import Repositories
 from source_files import *

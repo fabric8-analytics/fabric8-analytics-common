@@ -1,13 +1,11 @@
 """The main module of the QA Dashboard."""
 import json
-import time
 import datetime
 import os
 import sys
 import requests
 import csv
 import shutil
-import re
 
 from fastlog import log
 

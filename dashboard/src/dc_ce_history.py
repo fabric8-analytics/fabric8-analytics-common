@@ -5,10 +5,8 @@ QA Dashboard and its data.
 """
 
 import re
-from repositories import Repositories
 from config import *
 import git_utils
-import unit_tests
 import history_generator
 
 

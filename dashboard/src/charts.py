@@ -4,7 +4,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager as fm
-import numpy as np
 
 DEFAULT_WIDTH = 400
 DEFAULT_HEIGHT = 400

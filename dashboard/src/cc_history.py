@@ -8,7 +8,6 @@ QA Dashboard and its data.
 """
 
 
-from repositories import Repositories
 from config import *
 import git_utils
 import unit_tests

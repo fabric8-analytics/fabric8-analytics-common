@@ -1,8 +1,5 @@
 """Module with class representing jobs API."""
 from api import *
-import time
-import datetime
-import json
 
 
 class JobsApi(Api):
