@@ -558,7 +558,6 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                     results.ci_jobs_badges[repository][job_type] = badge
                     results.ci_jobs_statuses[repository][job_type] = job_status
                 results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs,
-                                                                                 JENKINS_URL,
                                                                                  repository)
             if code_quality_table_enabled:
                 update_overall_status(results, repository, code_coverage_threshold)

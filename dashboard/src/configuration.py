@@ -1,6 +1,6 @@
 """Configuration for the Dashboard."""
-from server_configuration import *
-from s3_configuration import *
+from server_configuration import ServerConfiguration
+from s3_configuration import S3Configuration
 
 
 class Configuration():

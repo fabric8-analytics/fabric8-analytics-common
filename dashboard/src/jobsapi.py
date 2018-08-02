@@ -1,5 +1,8 @@
 """Module with class representing jobs API."""
-from api import *
+
+import requests
+
+from api import Api
 
 
 class JobsApi(Api):

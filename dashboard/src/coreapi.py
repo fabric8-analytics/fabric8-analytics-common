@@ -1,5 +1,7 @@
 """Module with class representing core (server) API."""
-from api import *
+import requests
+
+from api import Api
 
 
 class CoreApi(Api):
