@@ -102,7 +102,7 @@ def log_report_type(report_type):
         log.info("{report_type} report detected".format(report_type=report_type))
 
 
-def read_unit_test_coverage(ci_jobs, jenkins_url, repository):
+def read_unit_test_coverage(ci_jobs, repository):
     """Read and process unit test coverage."""
     log.info("Reading unit test coverage")
     url = ci_jobs.get_console_output_url(repository)
