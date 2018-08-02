@@ -468,7 +468,7 @@ def retrieve_access_token(refresh_token, auth_service_url):
     url = urljoin(auth_service_url, _AUTH_ENDPOINT)
     response = requests.post(url, json=payload)
 
-    assert response, "Error communicating with the OSIO AUTH service"
+    assert response is not None and response.ok, "Error communicating with the OSIO AUTH service"
     data = response.json()
 
     # check the basic structure of the response
