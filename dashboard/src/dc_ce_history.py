@@ -26,7 +26,24 @@ def parse_summary(line, pattern):
         return None
 
 
-def read_summary(filename, summary_postfix, summary_pattern):
+def line_with_check_passed(line, prefix):
+    """Check if the processed line contains dead code measurement summary that passed."""
+    return line.startswith(prefix)
+
+
+def parse_check_passed(line, pattern):
+    """Parse the line containing dead code measurement summary that passed."""
+    pattern = re.compile(pattern)
+    match = pattern.match(line)
+    if len(match.groups()) == 1:
+        return {"files_with_issues": 0,
+                "total_files": match.group(1)}
+    else:
+        return None
+
+
+def read_summary(filename, summary_postfix, summary_pattern, check_passed_prefix,
+                 check_passed_pattern):
     """Read dead code summary from the file containing dead code or common errors report."""
     try:
         # it is ok if the file does not exist - the history data don't have to be
@@ -35,7 +52,9 @@ def read_summary(filename, summary_postfix, summary_pattern):
             for line in fin:
                 if line_with_summary(line.strip(), summary_postfix):
                     return parse_summary(line, summary_pattern)
-    except Exception:
+                elif line_with_check_passed(line.strip(), check_passed_prefix):
+                    return parse_check_passed(line, check_passed_pattern)
+    except Exception as e:
         return None
 
 
@@ -52,6 +71,7 @@ def get_filename_with_common_errors_stats(hist_repo, repo_to_measure):
 
 
 def read_history(hist_repo, commits, repo_to_measure, summary_postfix, summary_pattern,
+                 checks_passed_prefix, checks_passed_pattern,
                  get_filename_function):
     """Read dead code history for the selected repository."""
     git_utils.checkout(hist_repo, "master")
@@ -65,7 +85,8 @@ def read_history(hist_repo, commits, repo_to_measure, summary_postfix, summary_p
         commit_hash = commit[0]
         commit_date = history_generator.get_commit_date(commit[1])
         git_utils.checkout(hist_repo, commit_hash)
-        summary = read_summary(filename, summary_postfix, summary_pattern)
+        summary = read_summary(filename, summary_postfix, summary_pattern, checks_passed_prefix,
+                               checks_passed_pattern)
         if summary is not None:
             summary["date"] = commit_date
             history.append(summary)
@@ -109,6 +130,8 @@ def generate_graph_with_dead_code(hist_repo, commits, repo_to_measure):
     dead_code_history = read_history(hist_repo, commits, repo_to_measure,
                                      'seems to contain dead code and/or unused imports',
                                      r'(\d+) source files out of (\d+) files seems',
+                                     'All checks passed for',
+                                     r'All checks passed for (\d+) source files',
                                      get_filename_with_dead_code_stats)
 
     # there's no need to generate graph with no value or with only one value
@@ -124,6 +147,8 @@ def generate_graph_with_common_errors(hist_repo, commits, repo_to_measure):
     common_errors_history = read_history(hist_repo, commits, repo_to_measure,
                                          'files needs to be checked and fixed',
                                          r'(\d+) source files out of (\d+) files needs',
+                                         'All checks passed for',
+                                         r'All checks passed for (\d+) source files',
                                          get_filename_with_common_errors_stats)
 
     # there's no need to generate graph with no value or with only one value
