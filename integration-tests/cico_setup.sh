@@ -4,7 +4,7 @@
 load_jenkins_vars() {
     if [ -e "jenkins-env" ]; then
         cat jenkins-env \
-          | grep -E "(F8A_API_URL|F8A_JOB_API_URL|F8A_GREMLIN_URL|F8A_3SCALE_URL|F8A_BACKBONE_API_URL|F8A_SERVICE_ID|F8A_GEMINI_API_URL|F8A_LICENSE_SERVICE_URL|RECOMMENDER_API_TOKEN|JENKINS_URL|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId)=" \
+          | grep -E "(F8A_API_URL|OSIO_AUTH_SERVICE|F8A_JOB_API_URL|F8A_GREMLIN_URL|F8A_3SCALE_URL|F8A_BACKBONE_API_URL|F8A_SERVICE_ID|F8A_GEMINI_API_URL|F8A_LICENSE_SERVICE_URL|RECOMMENDER_API_TOKEN|RECOMMENDER_REFRESH_TOKEN|JENKINS_URL|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId)=" \
           | sed 's/^/export /g' \
           > ~/.jenkins-env
         source ~/.jenkins-env
@@ -30,3 +30,4 @@ F8A_BACKBONE_API_URL=${F8A_BACKBONE_API_URL:-http://f8a-server-backbone-bayesian
 F8A_SERVICE_ID=${F8A_SERVICE_ID:-2555417755633}
 F8A_GEMINI_API_URL=${F8A_GEMINI_API_URL:-http://gemini.api.prod-preview.openshift.io/}
 F8A_LICENSE_SERVICE_URL=${F8A_LICENSE_SERVICE_URL:-https://license-analysis.api.prod-preview.openshift.io}
+OSIO_AUTH_SERVICE=${OSIO_AUTH_SERVICE:-https://auth.prod-preview.openshift.io}
