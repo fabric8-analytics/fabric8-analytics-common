@@ -1,13 +1,12 @@
 """Code coverage page generator."""
 
 from mako.template import Template
-import sys
 import time
 
 from repositories import Repositories
-from source_files import *
-from unit_tests import *
-from config import *
+from source_files import get_source_files
+from unit_tests import read_unit_test_coverage_for_week
+from config import Config
 
 from fastlog import log
 

@@ -8,7 +8,7 @@ QA Dashboard and its data.
 """
 
 
-from config import *
+from config import Config
 import git_utils
 import unit_tests
 import history_generator

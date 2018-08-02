@@ -5,7 +5,7 @@ QA Dashboard and its data.
 """
 
 import re
-from config import *
+from config import Config
 import git_utils
 import history_generator
 

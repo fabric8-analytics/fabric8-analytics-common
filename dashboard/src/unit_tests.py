@@ -2,8 +2,8 @@
 
 import re
 import requests
-from progress_bar import *
-from jacoco_to_codecov import *
+from progress_bar import progress_bar_class, progress_bar_width
+from jacoco_to_codecov import ProjectCoverageReport
 from fastlog import log
 
 
