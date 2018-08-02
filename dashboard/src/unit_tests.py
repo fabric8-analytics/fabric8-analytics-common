@@ -154,5 +154,5 @@ def read_unit_test_coverage_for_week(repository, week):
                 line = line.strip()
                 if line_with_unit_test_summary(line):
                     return parse_unit_test_statistic(line)
-    except Exception as e:
+    except Exception:
         return None

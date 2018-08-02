@@ -23,7 +23,7 @@ def read_summary(filename):
             for line in fin:
                 if unit_tests.line_with_unit_test_summary(line.strip()):
                     return unit_tests.parse_unit_test_statistic(line)
-    except Exception as e:
+    except Exception:
         return None
 
 

@@ -101,7 +101,7 @@ def update_improvement(results, repository):
         else:
             result = "better"
         results.improvement[repository] = result
-    except Exception as e:
+    except Exception:
         pass
 
 
@@ -113,7 +113,7 @@ def update_coverage_delta(results, repository):
         pp, percent = calculate_pp_coverage(results, repository)
         results.coverage_pp[repository] = int(pp)
         results.coverage_delta_perc[repository] = int(percent)
-    except Exception as e:
+    except Exception:
         pass
 
 

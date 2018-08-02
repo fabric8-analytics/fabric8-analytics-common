@@ -35,7 +35,7 @@ def read_summary(filename, summary_postfix, summary_pattern):
             for line in fin:
                 if line_with_summary(line.strip(), summary_postfix):
                     return parse_summary(line, summary_pattern)
-    except Exception as e:
+    except Exception:
         return None
 
 
