@@ -28,10 +28,18 @@ def acquire_authorization_token(context):
 
     The token is read from the environment variable or is to be generated from
     the given .pem file (private key).
+
+    Alternatively the REFRESH_TOKEN (offline token) can be used to get
+    the temporary access token - it should be done just once in environment.py.
     """
     recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
     # log.info ("TOKEN: {}\n\n".format(recommender_token))
-    if recommender_token is not None:
+
+    # if access_token has been acquired via refresh/offline token, let's use it
+    # (and don't call AUTH API several times - it is not encouraged)
+    if context.access_token is not None:
+        context.token = context.access_token
+    elif recommender_token is not None:
         context.token = recommender_token
     else:
         generate_authorization_token(context, DEFAULT_AUTHORIZATION_TOKEN_FILENAME)
