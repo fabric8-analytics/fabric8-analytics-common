@@ -16,4 +16,5 @@ docker run -t \
     -e F8A_GEMINI_API_URL=${F8A_GEMINI_API_URL} \
     -e F8A_LICENSE_SERVICE_URL=${F8A_LICENSE_SERVICE_URL} \
     ${RECOMMENDER_API_TOKEN:+-e RECOMMENDER_API_TOKEN=${RECOMMENDER_API_TOKEN}} \
+    ${RECOMMENDER_REFRESH_TOKEN:+-e RECOMMENDER_REFRESH_TOKEN=${RECOMMENDER_REFRESH_TOKEN}} \
     f8a-e2e-tests --tags=-jobs.requires_auth --tags=-requires.openshift.console.access --no-color $@
