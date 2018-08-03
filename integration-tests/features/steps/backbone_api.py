@@ -51,7 +51,7 @@ def check_valid_response(context, worker):
 def verify_database_entry(context, worker):
     """Check if backbone API call creates a database entry."""
     worker_name = '{}_v2'.format(worker)
-    recommender_token = os.environ.get("RECOMMENDER_API_TOKEN")
+    recommender_token = context.token
 
     headers = {'Authorization': 'Bearer {}'.format(recommender_token)}
     url = '{}/api/v1/stack-analyses/{}/_debug'.format(context.coreapi_url,
