@@ -16,7 +16,7 @@ class CSVReporter:
         self.writer = csv.writer(self.fout)
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, _type, _value, _traceback):
         """Close the CSV writer."""
         if self.fout:
             self.fout.close()
