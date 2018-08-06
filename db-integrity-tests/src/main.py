@@ -1,7 +1,6 @@
 """The main module of the database integrity tests."""
 
 import sys
-import re
 
 from s3interface import S3Interface
 from s3configuration import S3Configuration
