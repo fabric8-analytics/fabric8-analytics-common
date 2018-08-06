@@ -5,8 +5,6 @@ import botocore
 from botocore.exceptions import ClientError
 import json
 
-from s3configuration import S3Configuration
-
 
 class S3Interface():
     """Interface to the AWS S3 database."""
