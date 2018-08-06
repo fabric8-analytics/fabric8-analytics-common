@@ -1,8 +1,8 @@
 # Order of the features in this file is significant, so shuffle them carefully.
-features/smoketest.feature
+## temporary: features/smoketest.feature
 features/server_api.feature
-features/jobs_api.feature
-features/jobs_debug_api.feature
+## temporary: features/jobs_api.feature
+## temporary: features/jobs_debug_api.feature
 #features/ecosystems.feature
 features/component_search.feature
 features/components.feature
@@ -12,8 +12,8 @@ features/user_feedback.feature
 features/selfcheck.feature
 #features/regression_tests.feature
 features/user_tag.feature
-features/gremlin.feature
-features/three_scale.feature
+## temporary: features/gremlin.feature
+## temporary: features/three_scale.feature
 features/api_backbone.feature
 #features/gemini.feature
 features/resilient_infrastructure.feature
