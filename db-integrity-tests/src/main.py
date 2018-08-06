@@ -1,16 +1,15 @@
 """The main module of the database integrity tests."""
 
 import sys
-import re
 
 from s3interface import S3Interface
 from s3configuration import S3Configuration
 from gremlin_configuration import GremlinConfiguration
 from gremlin_interface import GremlinInterface
-from cliargs import *
-from utils import *
+from cliargs import cli_parser
+from utils import store_list
+# from utils import read_list  # needed to dummy read (to selfcheck)
 from csv_reporter import CSVReporter
-from schema_validator import *
 from core_package_checker import CorePackageChecker
 from component_versions_checker import ComponentVersionsChecker
 
@@ -127,6 +126,7 @@ def check_package_versions_in_ecosystem(s3interface, csvReporter, ecosystem):
     for package_name in packages:
         component_versions_checker = ComponentVersionsChecker(s3interface, ecosystem, package_name)
         all_jsons = component_versions_checker.read_metadata_list()
+        assert all_jsons
         directories, version_jsons, versions, metadata_list = \
             component_versions_checker.read_versions()
 

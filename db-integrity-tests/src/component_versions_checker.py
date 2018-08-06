@@ -53,7 +53,7 @@ class ComponentVersionsChecker(Checker):
                                                       self.ecosystem, self.package_name,
                                                       update_names=False, remove_prefix=True)
             return jsons
-        except ClientError as e:
+        except ClientError:
             return "S3-related error"
         except Exception as e:
             return str(e)
@@ -146,7 +146,7 @@ class ComponentVersionsChecker(Checker):
             self.check_attributes_presence(data, attributes_to_check)
 
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -164,6 +164,7 @@ class ComponentVersionsChecker(Checker):
             self.check_attributes_presence(summary, ["blank_lines", "code_lines", "comment_lines",
                                                      "total_files", "total_lines"])
             details = data["details"]
+            assert details
             #
             #
             # 'details': {   'languages': [   {   'blank_lines': 433,
@@ -178,7 +179,7 @@ class ComponentVersionsChecker(Checker):
             #                                    'language': 'Python',
             #
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -199,7 +200,7 @@ class ComponentVersionsChecker(Checker):
             runtime_count = self.check_and_get_attribute(dependency_counts, "runtime")
             assert int(runtime_count) >= 0
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -218,7 +219,7 @@ class ComponentVersionsChecker(Checker):
             assert len(details) >= 0
             # TODO: list of maps
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -235,7 +236,7 @@ class ComponentVersionsChecker(Checker):
             #  no schema to check (yet?)
             #  tracked here: https://github.com/openshiftio/openshift.io/issues/1074
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -251,9 +252,10 @@ class ComponentVersionsChecker(Checker):
             self.check_attributes_presence(data, ["details", "summary", "schema"])
             self.check_schema_attribute(data, "metadata", "3-2-0")
             details = data["details"]
+            assert details
             # TODO: list of maps
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -275,7 +277,7 @@ class ComponentVersionsChecker(Checker):
             for cve in summary:
                 self.check_cve_value(cve)
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -291,7 +293,7 @@ class ComponentVersionsChecker(Checker):
             self.check_schema_attribute(data, "source_licenses", "3-0-0")
             self.check_attributes_presence(data, ["details", "summary", "schema"])
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -309,7 +311,7 @@ class ComponentVersionsChecker(Checker):
             leftovers = jsons - expected
             assert not leftovers, ",".join(leftovers)
             return "none"
-        except ClientError as e:
+        except ClientError:
             return "S3-related error"
         except Exception as e:
             return str(e)

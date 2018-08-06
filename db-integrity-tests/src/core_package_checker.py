@@ -59,7 +59,7 @@ class CorePackageChecker(Checker):
             self.check_schema_attribute(data, "github_details",
                                         CorePackageChecker.GITHUB_DETAILS_SCHEMA_VERSION)
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -77,7 +77,7 @@ class CorePackageChecker(Checker):
             self.check_attribute_presence(details, "package_name")
             self.check_attribute_presence(details, "repository_description")
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -91,7 +91,7 @@ class CorePackageChecker(Checker):
             self.check_release_attribute(data)
             self.check_status_attribute(data)
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -107,7 +107,7 @@ class CorePackageChecker(Checker):
             details = self.get_details_node(data)
             self.check_attribute_presence(details, "master")
             return "OK"
-        except ClientError as e:
+        except ClientError:
             return "N/A"
         except Exception as e:
             return str(e)
@@ -129,7 +129,7 @@ class CorePackageChecker(Checker):
             leftovers = jsons - expected
             assert not leftovers, ",".join(leftovers)
             return "none"
-        except ClientError as e:
+        except ClientError:
             return "S3-related error"
         except Exception as e:
             return str(e)
