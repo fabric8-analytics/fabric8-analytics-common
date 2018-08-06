@@ -54,7 +54,7 @@ def read_summary(filename, summary_postfix, summary_pattern, check_passed_prefix
                     return parse_summary(line, summary_pattern)
                 elif line_with_check_passed(line.strip(), check_passed_prefix):
                     return parse_check_passed(line, check_passed_pattern)
-    except Exception as e:
+    except Exception:
         return None
 
 
