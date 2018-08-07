@@ -13,7 +13,7 @@ features/selfcheck.feature
 #features/regression_tests.feature
 features/user_tag.feature
 ## temporary: features/gremlin.feature
-## temporary: features/three_scale.feature
+features/three_scale.feature
 features/api_backbone.feature
 #features/gemini.feature
 features/resilient_infrastructure.feature
