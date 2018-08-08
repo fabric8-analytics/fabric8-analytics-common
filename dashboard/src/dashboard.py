@@ -9,23 +9,23 @@ import shutil
 
 from fastlog import log
 
-from coreapi import *
-from jobsapi import *
-from configuration import *
-from results import *
-from html_generator import *
-from perf_tests import *
-from smoke_tests import *
-from sla import *
-from ci_jobs import *
-from cliargs import *
-from config import *
+from coreapi import CoreApi
+from jobsapi import JobsApi
+from configuration import Configuration
+from results import Results
+from html_generator import generate_dashboard
+from perf_tests import PerfTests
+from smoke_tests import SmokeTests
+from sla import SLA
+from ci_jobs import CIJobs
+from cliargs import cli_parser
+from config import Config
 from repositories import Repositories
-from progress_bar import *
-from source_files import *
-from unit_tests import *
-from charts import *
-from git_utils import *
+from progress_bar import progress_bar_class, progress_bar_width
+from source_files import get_source_files
+from unit_tests import unit_test_coverage_ok, read_unit_test_coverage
+from charts import generate_charts
+from git_utils import clone_or_fetch_repository
 
 
 def check_environment_variable(env_var_name):
