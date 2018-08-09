@@ -1,8 +1,7 @@
 """Module with functions that read data and metadata from the S3 and retrieve durations."""
 
-from s3interface import *
-from duration import *
-from botocore.exceptions import *
+from duration import Duration
+from botocore.exceptions import ClientError
 
 
 def read_component_analysis_from_core_data(s3, ecosystem, component, version):

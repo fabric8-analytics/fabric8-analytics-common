@@ -1,10 +1,13 @@
 """Module with class representing core (server) API."""
 from urllib.parse import urljoin
 
-from api import *
+import requests
 import time
 import datetime
 import json
+import os
+
+from api import Api
 
 
 class CoreApi(Api):

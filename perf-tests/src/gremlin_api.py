@@ -3,10 +3,10 @@
 import re
 import requests
 
-from api import *
+from api import Api
 
-from gremlin_package_generator import *
-from gremlin_query import *
+from gremlin_package_generator import GremlinPackageGenerator
+from gremlin_query import GremlinQuery
 
 
 class GremlinApi(Api):
@@ -128,6 +128,6 @@ class GremlinApi(Api):
             assert data is not None
             self.check_valid_gremlin_response_data(data)
             return True
-        except e:
+        except Exception as e:
             print(e)
             return False

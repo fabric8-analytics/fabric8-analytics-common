@@ -1,6 +1,7 @@
 """AWS S3 Interface used by tests."""
 import boto3
 import botocore
+from botocore.exceptions import ClientError
 import json
 
 
