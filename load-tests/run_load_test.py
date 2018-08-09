@@ -17,13 +17,13 @@ print("TEST START TIME: {}".format(start_time))
 
 try:
     total_threads = int(sys.argv[1])
-except IndexError as e:
+except IndexError:
     total_threads = int(os.getenv('TOTAL_THREAD_COUNT', '10'))
     pass
 
 try:
     api_url = sys.argv[2]
-except IndexError as e:
+except IndexError:
     api_url = os.getenv('RECOMMENDER_API_URL')
     pass
 
