@@ -176,8 +176,8 @@ def read_core_package_data_from_bucket(context, selector, package, ecosystem, bu
     except Exception as e:
         m = "Can not read {key} for the E/P {ecosystem} {package} from bucket {bucket}"\
             .format(key=key, ecosystem=ecosystem, package=package, bucket=bucket)
-        raise Exception(m) from e
         context.s3_data = None
+        raise Exception(m) from e
 
 
 @then('I should find the correct package toplevel metadata for package {package} '

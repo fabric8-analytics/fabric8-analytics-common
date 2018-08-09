@@ -329,8 +329,8 @@ def read_core_data_from_bucket(context, selector, package, version, ecosystem, b
     except Exception as e:
         m = "Can not read {key} for the E/P/V {ecosystem} {package} {version} from bucket {bucket}"\
             .format(key=key, ecosystem=ecosystem, package=package, version=version, bucket=bucket)
-        raise Exception(m) from e
         context.s3_data = None
+        raise Exception(m) from e
 
 
 @when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
