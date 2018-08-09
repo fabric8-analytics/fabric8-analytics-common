@@ -1,6 +1,9 @@
 """Test steps that are related to authorization tokens for the server API and jobs API."""
 import os
 import datetime
+import json
+
+from behave import when, then
 
 import jwt
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm

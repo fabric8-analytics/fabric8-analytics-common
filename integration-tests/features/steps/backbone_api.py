@@ -8,8 +8,7 @@ import uuid
 
 from behave import given, then, when
 
-from src.json_utils import *
-from src.authorization_tokens import *
+from src.json_utils import check_id_value_in_json_response
 
 
 @given('backbone service is running')
