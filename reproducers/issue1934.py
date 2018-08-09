@@ -1,7 +1,5 @@
 """Reproducer for the issue https://github.com/openshiftio/openshift.io/issues/1619."""
 
-import os
-import sys
 import requests
 
 URL = "http://STAGE_DATABASE"
