@@ -82,7 +82,7 @@ def generate_space_prefix():
     unique for given user (if not, the index will be updated).
     """
     localtime = time.localtime()
-    return time.strftime("test%Y-%m-%d-")
+    return time.strftime("test%Y-%m-%d-", localtime)
 
 
 def space_name(prefix, index):
