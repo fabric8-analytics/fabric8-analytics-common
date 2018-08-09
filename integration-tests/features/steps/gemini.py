@@ -3,9 +3,8 @@
 
 """Tests gemini api endpoints."""
 import requests
-import json
 
-from behave import given, then, when
+from behave import given, when
 
 from src.parsing import *
 from src.json_utils import *

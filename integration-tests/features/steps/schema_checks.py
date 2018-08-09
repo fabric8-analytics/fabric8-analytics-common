@@ -1,6 +1,6 @@
 """Data structures validation against schemas."""
 
-from behave import given, then, when
+from behave import then
 
 # package-related schemas
 from src.schemas.package_toplevel import PACKAGE_TOPLEVEL_SCHEMA

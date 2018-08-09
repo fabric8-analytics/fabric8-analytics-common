@@ -5,10 +5,8 @@
 import requests
 import json
 import uuid
-import os
 
 from behave import given, then, when
-from urllib.parse import urljoin
 
 from src.json_utils import *
 from src.authorization_tokens import *

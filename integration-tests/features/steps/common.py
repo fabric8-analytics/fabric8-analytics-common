@@ -1,19 +1,13 @@
 """Common test steps and checks."""
-import string
 import datetime
 import json
 import time
 import os
-import re
 
 from behave import given, then, when
-from urllib.parse import urljoin
 import jsonschema
 import requests
-import uuid
 
-import botocore
-from botocore.exceptions import ClientError
 from src.attribute_checks import *
 from src.MockedResponse import *
 from src.s3interface import *

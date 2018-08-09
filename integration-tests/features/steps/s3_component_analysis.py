@@ -1,10 +1,8 @@
 """Definitions of tests for component metadata stored in the AWS S3 database."""
-from behave import given, then, when
+from behave import then, when
 from src.attribute_checks import *
 from src.s3interface import *
 from src.utils import split_comma_separated_list
-import boto3
-import botocore
 import time
 
 

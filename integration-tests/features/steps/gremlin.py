@@ -1,10 +1,8 @@
 """Tests for Gremlin database."""
-import os
 import requests
 import pprint
 
-from behave import given, then, when
-from urllib.parse import urljoin
+from behave import then, when
 from semantic_version import Version
 import time
 from src.json_utils import *

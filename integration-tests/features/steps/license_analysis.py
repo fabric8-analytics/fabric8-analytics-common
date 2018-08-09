@@ -2,7 +2,7 @@
 
 import requests
 
-from behave import given, then, when
+from behave import then, when
 from urllib.parse import urljoin
 
 from src.parsing import *

@@ -1,9 +1,7 @@
 """Definitions of tests for packages metadata stored in the AWS S3 database."""
-from behave import given, then, when
+from behave import then, when
 from src.attribute_checks import *
 from src.s3interface import *
-import boto3
-import botocore
 import time
 
 
