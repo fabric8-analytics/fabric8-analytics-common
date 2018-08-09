@@ -1,26 +1,21 @@
 """Main module with performance tests interface."""
 
-import json
 import time
-import datetime
-import subprocess
 import os.path
 import sys
 import queue
 import threading
-import pprint
 import csv
 
-from coreapi import *
-from jobsapi import *
-from gremlin_api import *
+from coreapi import CoreApi
+from jobsapi import JobsApi
+from gremlin_api import GremlinApi
 import benchmarks
 import graph
-from s3interface import *
-import measurements
-from duration import *
+from s3interface import S3Interface
+from duration import Duration
 
-from cliargs import *
+from cliargs import cli_parser
 
 SEQUENCED_BENCHMARKS_DEFAULT_COUNT = 30
 BREATHE_PAUSE = 5

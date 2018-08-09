@@ -1,11 +1,11 @@
 """Module with class representing jobs API."""
-from api import *
+from api import Api
 import time
 import datetime
 import json
-import botocore
+import requests
 from botocore.exceptions import ClientError
-from componentgenerator import *
+from componentgenerator import ComponentGenerator
 
 
 class JobsApi(Api):
@@ -80,12 +80,12 @@ class JobsApi(Api):
             }
 
     @staticmethod
-    def dump_job_data(s3, bucket, key):
+    def dump_job_data(s3, bucket, key, ecosystem, package, version):
         """Dump the job data read from the S3 database to a file."""
         data = s3.read_object(bucket, key)
         timestamp_str = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")
-        filename = "s3_data_{e}_{c}_{v}_{t}.json".format(e=ecosystem,
-                                                         c=component,
+        filename = "s3_data_{e}_{p}_{v}_{t}.json".format(e=ecosystem,
+                                                         p=package,
                                                          v=version,
                                                          t=timestamp_str)
         with open(filename, 'w') as fout:
@@ -126,9 +126,9 @@ class JobsApi(Api):
                 if delta.days == 0 and delta.seconds < sleep_amount * 2:
                     print("done!", thread_id, "   ", key)
                     if self._dump_json_responses:
-                        JobsApi.dump_job_data(s3, bucket, key)
+                        JobsApi.dump_job_data(s3, bucket, key, ecosystem, package, version)
                     return True
-            except ClientError as e:
+            except ClientError:
                 print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
             time.sleep(sleep_amount)
 
@@ -141,6 +141,7 @@ class JobsApi(Api):
     def component_analysis(self, i, s3, thread_id=None,
                            ecosystem=None, component=None, version=None):
         """Start the component analysis and wait for its finish."""
+        assert i >= 0
         if ecosystem is None or component is None or version is None:
             ecosystem, component, version = next(self.componentGeneratorForPypi)
         s3.connect()
