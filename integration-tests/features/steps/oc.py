@@ -23,7 +23,7 @@ def oc_show_status(context):
     """Run the 'oc whoami' and check the exit code."""
     try:
         context.oc_result = oc_run_command("whoami")
-    except (CalledProcessError, FileNotFoundError) as e:
+    except (CalledProcessError, FileNotFoundError):
         # nothing we can do ATM
         raise
 
@@ -50,7 +50,7 @@ def check_status_of_all_deployments(context):
     try:
         result = oc_run_command("get", "deploymentconfigs", "--output", "json")
         context.oc_result = json.loads(result)
-    except (CalledProcessError, FileNotFoundError) as e:
+    except (CalledProcessError, FileNotFoundError):
         # nothing we can do ATM
         raise
 
@@ -73,7 +73,7 @@ def check_status_of_service(context, service):
     try:
         result = oc_run_command("get", "service", service, "--output", "json")
         context.oc_result = json.loads(result)
-    except (CalledProcessError, FileNotFoundError) as e:
+    except (CalledProcessError, FileNotFoundError):
         # nothing we can do ATM
         raise
 
@@ -105,7 +105,7 @@ def oc_get_pods_for_service(context, service_name):
     try:
         result = oc_run_command("get", "pods", "--selector", selector, "--output", "json")
         context.oc_result = json.loads(result)
-    except (CalledProcessError, FileNotFoundError) as e:
+    except (CalledProcessError, FileNotFoundError):
         # nothing we can do ATM
         raise
 

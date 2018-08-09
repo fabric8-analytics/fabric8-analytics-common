@@ -1,5 +1,5 @@
 """Functions related to the interface to the AWS S3 database."""
-from src.s3interface import *
+from behave import then, when
 
 
 @when('I connect to the AWS S3 database')

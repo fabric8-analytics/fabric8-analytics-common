@@ -1,5 +1,5 @@
 """Basic checks for the server API."""
-from behave import given, then, when
+from behave import then, when
 import requests
 import time
 

@@ -1,8 +1,7 @@
 """Package git stats schema in the S3 database."""
 
-from pytest_voluptuous import S, Partial, Exact
-from voluptuous import Invalid, Url, Any, Optional
-from voluptuous.validators import All, Length
+from pytest_voluptuous import S
+from voluptuous import Any, Optional
 
 from .predicates import *
 from .common import *

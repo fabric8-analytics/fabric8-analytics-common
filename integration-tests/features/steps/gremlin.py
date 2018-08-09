@@ -1,13 +1,12 @@
 """Tests for Gremlin database."""
-import os
 import requests
 import pprint
 
-from behave import given, then, when
-from urllib.parse import urljoin
+from behave import then, when
 from semantic_version import Version
 import time
-from src.json_utils import *
+from src.attribute_checks import check_and_get_attribute, check_attribute_presence, check_cve_value
+from src.json_utils import check_request_id_value_in_json_response
 from src.utils import split_comma_separated_list
 from src.graph_db_query import Query
 
@@ -43,7 +42,7 @@ def gremlin_search_vertexes_for_the_ecosystem(context, ecosystem):
 
 
 @when('I ask Gremlin to find all versions of the package {package:S} in the ecosystem {ecosystem}')
-def gremlin_find_package(context, package, ecosystem):
+def gremlin_find_all_versions_of_package(context, package, ecosystem):
     """Try to find all versions of the given package in the selected ecosystem."""
     query = Query().has("ecosystem", ecosystem).has("name", package).out("has_version")
     post_query(context, query)
@@ -391,6 +390,7 @@ def check_package_versions_structure(context):
     # check all n items found in data
     for item in data:
         labelValue = check_and_get_attribute(item, "label")
+        assert labelValue is not None
         # the following check is blocked by: 1934
         # assert labelValue == "vertex" or labelValue == "Version"
         properties = check_and_get_attribute(item, "properties")
@@ -548,6 +548,7 @@ def test_github_related_properties(properties, expected_properties=False):
 def test_vertex_label(properties, expected_value):
     """Check the property 'vertex_label'."""
     value = get_node_value(properties, "vertex_label")
+    assert value is not None
     check_string_property_value(properties, "vertex_label", expected_value)
 
 

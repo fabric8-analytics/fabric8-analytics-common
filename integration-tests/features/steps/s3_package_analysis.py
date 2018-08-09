@@ -1,9 +1,7 @@
 """Definitions of tests for packages metadata stored in the AWS S3 database."""
-from behave import given, then, when
+from behave import then, when
 from src.attribute_checks import *
-from src.s3interface import *
-import boto3
-import botocore
+from src.s3interface import S3Interface
 import time
 
 
@@ -178,8 +176,8 @@ def read_core_package_data_from_bucket(context, selector, package, ecosystem, bu
     except Exception as e:
         m = "Can not read {key} for the E/P {ecosystem} {package} from bucket {bucket}"\
             .format(key=key, ecosystem=ecosystem, package=package, bucket=bucket)
-        raise Exception(m) from e
         context.s3_data = None
+        raise Exception(m) from e
 
 
 @then('I should find the correct package toplevel metadata for package {package} '
@@ -274,7 +272,7 @@ def wait_for_package_toplevel_file(context, package, ecosystem, bucket):
                 read_core_package_data_from_bucket(context, "package toplevel", package,
                                                    ecosystem, bucket)
                 return
-        except ClientError as e:
+        except ClientError:
             print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
         time.sleep(sleep_amount)
     raise Exception('Timeout waiting for the job metadata in S3!')

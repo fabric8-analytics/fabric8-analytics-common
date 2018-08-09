@@ -3,7 +3,7 @@ import requests
 import time
 import os
 
-from behave import given, then, when
+from behave import then, when
 from urllib.parse import urljoin
 import jsonschema
 

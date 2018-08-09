@@ -1,10 +1,8 @@
 """Definitions of tests for component metadata stored in the AWS S3 database."""
-from behave import given, then, when
+from behave import then, when
 from src.attribute_checks import *
 from src.s3interface import *
 from src.utils import split_comma_separated_list
-import boto3
-import botocore
 import time
 
 
@@ -331,8 +329,8 @@ def read_core_data_from_bucket(context, selector, package, version, ecosystem, b
     except Exception as e:
         m = "Can not read {key} for the E/P/V {ecosystem} {package} {version} from bucket {bucket}"\
             .format(key=key, ecosystem=ecosystem, package=package, version=version, bucket=bucket)
-        raise Exception(m) from e
         context.s3_data = None
+        raise Exception(m) from e
 
 
 @when('I wait for new toplevel data for the package {package} version {version} in ecosystem '
@@ -364,7 +362,7 @@ def wait_for_component_toplevel_file(context, package, version, ecosystem, bucke
                 read_core_data_from_bucket(context, "component toplevel", package, version,
                                            ecosystem, bucket)
                 return
-        except ClientError as e:
+        except ClientError:
             print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
         time.sleep(sleep_amount)
     raise Exception('Timeout waiting for the job metadata in S3!')
