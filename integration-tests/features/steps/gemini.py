@@ -46,8 +46,8 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
             'git-url': context.url,
             'git-sha': context.sha
         }
-        context.response = requests.post('{}/{}'.format(context.gemini_api_url, endpoint),
-                                         json=content, headers=headers)
+        url = '{}/{}'.format(context.gemini_api_url, endpoint)
+        context.response = requests.post(url, json=content, headers=headers)
     else:
         api_url = "{api_url}/{endpoint}?git-url={git_url}&git-sha={git_sha}".format(
             api_url=context.gemini_api_url,
