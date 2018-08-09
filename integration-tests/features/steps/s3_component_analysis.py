@@ -362,7 +362,7 @@ def wait_for_component_toplevel_file(context, package, version, ecosystem, bucke
                 read_core_data_from_bucket(context, "component toplevel", package, version,
                                            ecosystem, bucket)
                 return
-        except ClientError as e:
+        except ClientError:
             print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
         time.sleep(sleep_amount)
     raise Exception('Timeout waiting for the job metadata in S3!')

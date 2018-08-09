@@ -389,6 +389,7 @@ def check_package_versions_structure(context):
     # check all n items found in data
     for item in data:
         labelValue = check_and_get_attribute(item, "label")
+        assert labelValue is not None
         # the following check is blocked by: 1934
         # assert labelValue == "vertex" or labelValue == "Version"
         properties = check_and_get_attribute(item, "properties")
@@ -546,6 +547,7 @@ def test_github_related_properties(properties, expected_properties=False):
 def test_vertex_label(properties, expected_value):
     """Check the property 'vertex_label'."""
     value = get_node_value(properties, "vertex_label")
+    assert value is not None
     check_string_property_value(properties, "vertex_label", expected_value)
 
 

@@ -21,7 +21,7 @@ def timestamp_p(value):
     try:
         # try to parse the input value
         datetime.datetime.strptime(value, timeformat)
-    except ValueError as e:
+    except ValueError:
         raise Invalid("invalid datetime value {value}".format(value=value))
 
 

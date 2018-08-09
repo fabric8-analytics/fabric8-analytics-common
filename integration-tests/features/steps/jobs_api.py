@@ -274,6 +274,7 @@ def get_jobs_count(context):
     """Return job count read from the JSON response."""
     jsondata = context.response.json()
     jobs = jsondata['jobs']
+    assert jobs is not None
     return jsondata['jobs_count']
 
 

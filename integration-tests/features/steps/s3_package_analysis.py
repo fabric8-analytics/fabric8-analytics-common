@@ -272,7 +272,7 @@ def wait_for_package_toplevel_file(context, package, ecosystem, bucket):
                 read_core_package_data_from_bucket(context, "package toplevel", package,
                                                    ecosystem, bucket)
                 return
-        except ClientError as e:
+        except ClientError:
             print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
         time.sleep(sleep_amount)
     raise Exception('Timeout waiting for the job metadata in S3!')

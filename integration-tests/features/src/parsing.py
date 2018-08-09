@@ -38,7 +38,7 @@ def parse_number(number):
     """Parse the number."""
     try:
         return int(number)
-    except (TypeError, ValueError) as e:
+    except (TypeError, ValueError):
         return {"zero": 0,
                 "one": 1,
                 "first": 0}.get(number, number)
