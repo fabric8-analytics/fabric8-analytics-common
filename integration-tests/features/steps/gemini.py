@@ -6,9 +6,8 @@ import requests
 
 from behave import given, when
 
-from src.parsing import *
-from src.json_utils import *
-from src.authorization_tokens import *
+from src.parsing import parse_token_clause
+from src.authorization_tokens import authorization
 
 
 @given('Gemini service is running')
@@ -19,13 +18,13 @@ def running_gemini_api(context):
 
 @given('Gemini service git url is {url}')
 def set_git_url(context, url):
-    """Set git url for test."""
+    """Set Git URL for test."""
     context.url = url
 
 
 @given('Gemini service git sha is {sha}')
-def set_git_url(context, sha):
-    """Set git sha for test."""
+def set_git_sha(context, sha):
+    """Set Git SHA for test."""
     context.sha = sha
 
 

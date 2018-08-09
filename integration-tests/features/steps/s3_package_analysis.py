@@ -1,7 +1,7 @@
 """Definitions of tests for packages metadata stored in the AWS S3 database."""
 from behave import then, when
 from src.attribute_checks import *
-from src.s3interface import *
+from src.s3interface import S3Interface
 import time
 
 

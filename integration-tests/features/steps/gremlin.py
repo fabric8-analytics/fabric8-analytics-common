@@ -5,7 +5,8 @@ import pprint
 from behave import then, when
 from semantic_version import Version
 import time
-from src.json_utils import *
+from src.attribute_checks import check_and_get_attribute, check_attribute_presence, check_cve_value
+from src.json_utils import check_request_id_value_in_json_response
 from src.utils import split_comma_separated_list
 from src.graph_db_query import Query
 
@@ -41,7 +42,7 @@ def gremlin_search_vertexes_for_the_ecosystem(context, ecosystem):
 
 
 @when('I ask Gremlin to find all versions of the package {package:S} in the ecosystem {ecosystem}')
-def gremlin_find_package(context, package, ecosystem):
+def gremlin_find_all_versions_of_package(context, package, ecosystem):
     """Try to find all versions of the given package in the selected ecosystem."""
     query = Query().has("ecosystem", ecosystem).has("name", package).out("has_version")
     post_query(context, query)

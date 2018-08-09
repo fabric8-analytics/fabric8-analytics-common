@@ -7,9 +7,7 @@ import requests
 from behave import given, then, when
 from urllib.parse import urljoin
 
-from src.parsing import *
-from src.utils import *
-from src.authorization_tokens import *
+from src.authorization_tokens import authorization
 
 
 @given('Master tag list api is running')

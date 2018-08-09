@@ -8,8 +8,8 @@ import json
 from behave import given, then, when
 from urllib.parse import urljoin
 
-from src.attribute_checks import *
-from src.authorization_tokens import *
+from src.attribute_checks import check_attribute_presence, check_and_get_attribute
+from src.authorization_tokens import authorization
 
 
 @given('3scale staging pod is running')
