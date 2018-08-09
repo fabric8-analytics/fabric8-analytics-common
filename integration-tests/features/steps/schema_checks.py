@@ -22,7 +22,7 @@ from src.schemas.component_keywords_tagging import COMPONENT_KEYWORDS_TAGGING_SC
 
 
 @then(u'I should find that the metadata conformns to component_toplevel schema')
-def check_component_metadata_schema(context):
+def check_component_toplevel_metadata_schema(context):
     """Check if the component toplevel metadata conformns to schema."""
     json_data = context.s3_data
     assert COMPONENT_TOPLEVEL_SCHEMA == json_data
