@@ -29,7 +29,7 @@ def gremlin_search_package_in_ecosystem(ecosystem, package):
             print("latest_version attribute does not exist!!!")
             print()
             return 1
-    except Exception as e:
+    except Exception:
         print("none")
 
 

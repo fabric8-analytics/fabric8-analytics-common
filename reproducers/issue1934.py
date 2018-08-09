@@ -17,7 +17,7 @@ def gremlin_search_package_in_ecosystem(ecosystem, package):
         for e in data["result"]["data"]:
             print(e["label"])
         print()
-    except Exception as e:
+    except Exception:
         print("none")
 
 
