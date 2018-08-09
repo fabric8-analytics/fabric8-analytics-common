@@ -127,7 +127,7 @@ class JobsApi(Api):
                     if self._dump_json_responses:
                         JobsApi.dump_job_data(s3, bucket, key)
                     return True
-            except ClientError as e:
+            except ClientError:
                 print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
             time.sleep(sleep_amount)
 
@@ -140,6 +140,7 @@ class JobsApi(Api):
     def component_analysis(self, i, s3, thread_id=None,
                            ecosystem=None, component=None, version=None):
         """Start the component analysis and wait for its finish."""
+        assert i >= 0
         if ecosystem is None or component is None or version is None:
             ecosystem, component, version = next(self.componentGeneratorForPypi)
         s3.connect()

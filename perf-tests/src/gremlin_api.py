@@ -104,15 +104,17 @@ class GremlinApi(Api):
             "version", version)
         return self.post_query(query)
 
-    def package_query(self, i, thread=None):
+    def package_query(self, i, _thread=None):
         """Query the package metadata stored in the graph database."""
+        assert i >= 0
         ecosystem, package = next(self._package_generator)
         # print(ecosystem, package)
         response = self.query_package(ecosystem, package)
         return response
 
-    def package_version_query(self, i, thread=None):
+    def package_version_query(self, i, _thread=None):
         """Query the package+version metadata stored in the graph database."""
+        assert i >= 0
         ecosystem, package, version = next(self._package_version_generator)
         print(ecosystem, package, version)
         response = self.query_package_version(ecosystem, package, version)

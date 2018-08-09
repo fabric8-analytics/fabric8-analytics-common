@@ -226,7 +226,6 @@ def generate_wait_times_graph(title, name, values):
 def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, avg_times,
                                     width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT):
     """Generate graph with timings of any measurement(s)."""
-    labels = range(1, 1 + len(pauses))
     fig = create_statistic_graph(title, "seconds", pauses, min_times, max_times, avg_times,
                                  "#", width, height)
     save_graph(fig, name + ".png")
@@ -236,7 +235,6 @@ def generate_timing_statistic_graph(title, name, pauses, min_times, max_times, a
 def generate_timing_threads_statistic_graph(title, name, threads, min_times, max_times,
                                             avg_times):
     """Generate graph with timings per thread of any measurement(s)."""
-    labels = range(1, 1 + len(threads))
     fig = create_statistic_graph(title, "seconds", threads, min_times, max_times, avg_times,
                                  "# concurrent analysis")
     save_graph(fig, name + ".png")
