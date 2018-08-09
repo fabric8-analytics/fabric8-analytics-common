@@ -2,13 +2,10 @@
 
 import json
 import time
-import datetime
-import subprocess
 import os.path
 import sys
 import queue
 import threading
-import pprint
 import csv
 
 from coreapi import *

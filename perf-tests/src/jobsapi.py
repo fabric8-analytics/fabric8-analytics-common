@@ -3,7 +3,6 @@ from api import *
 import time
 import datetime
 import json
-import botocore
 from botocore.exceptions import ClientError
 from componentgenerator import *
 
