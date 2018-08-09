@@ -1,7 +1,5 @@
 """Reproducer for the issue https://github.com/openshiftio/openshift.io/issues/1619."""
 
-import os
-import sys
 import requests
 
 URL = "http://STAGE_DATABASE"
@@ -19,7 +17,7 @@ def gremlin_search_package_in_ecosystem(ecosystem, package):
         for e in data["result"]["data"]:
             print(e["label"])
         print()
-    except Exception as e:
+    except Exception:
         print("none")
 
 
