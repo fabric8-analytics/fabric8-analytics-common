@@ -3,8 +3,8 @@
 from pytest_voluptuous import S
 from voluptuous import Url, Any, Optional
 
-from .predicates import *
-from .common import *
+from .predicates import posint_p, posint_zero_p
+from .common import AUDIT, STATUS
 
 
 # see [deployment]-bayesian-core-data/maven/io.vertx.vertx-core
@@ -115,7 +115,7 @@ LICENSE = S({"category": CATEGORY,
 LICENSES = S({str: LICENSE})
 
 
-# TODO: posint_p or posin_zero_p for empty project?
+# TODO: posint_p or posint_zero_p for empty project?
 OSLC_STATS = S({"All files": posint_p,
                 "Conflicts (global)": posint_zero_p,
                 "Conflicts (ref)": posint_zero_p,
@@ -124,7 +124,7 @@ OSLC_STATS = S({"All files": posint_p,
                 "Source files": posint_p})
 
 
-# TODO: posint_p or posin_zero_p?
+# TODO: posint_p or posint_zero_p?
 LICENSE_STATS = S({"count": posint_p,
                    "license_name": str,
                    "variant_id": str})

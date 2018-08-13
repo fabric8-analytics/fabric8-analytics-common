@@ -3,8 +3,7 @@
 from pytest_voluptuous import S
 from voluptuous import Any, Optional
 
-from .predicates import *
-from .common import *
+from .common import AUDIT, STATUS
 
 
 # see [deployment]-bayesian-core-data/maven/io.vertx.vertx-core
