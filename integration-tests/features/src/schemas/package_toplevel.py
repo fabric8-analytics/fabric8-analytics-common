@@ -2,8 +2,7 @@
 
 from pytest_voluptuous import S
 
-from .predicates import *
-from .common import *
+from .predicates import posint_p, timestamp_p
 
 
 # see [deployment]-bayesian-core-data/maven/io.vertx.vertx-core

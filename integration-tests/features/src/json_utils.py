@@ -2,7 +2,7 @@
 import string
 import pprint
 
-from src.attribute_checks import *
+from src.attribute_checks import check_attribute_presence, check_timestamp, check_uuid
 
 
 def get_value_using_path(obj, path):
