@@ -199,49 +199,26 @@ def check_stack_analyses_response(context, url):
     jsonschema.validate(resp_json, schema)
 
 
-@when('I download and parse outlier probability threshold value')
-def download_and_parse_outlier_probability_threshold_value(context):
-    """Download and parse outlier probability threshold value.
+def check_frequency_count(usage_outliers, package_name):
+    """Check the frequency count attribute.
 
-    This Special step that is needed to get the stack analysis outlier
-    probability threshold.
+    Try to find frequency count value for given package and check that
+    the value is within permitted range.
     """
-    content = download_file_from_url(STACK_ANALYSIS_CONSTANT_FILE_URL)
-    context.outlier_probability_threshold = parse_float_value_from_text_stream(
-        content, STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME)
-
-
-@then('I should have outlier probability threshold value between {min:f} and {max:f}')
-def check_outlier_probability_threshold_value(context, min, max):
-    """Check that the outlier probability falls between selected range."""
-    v = context.outlier_probability_threshold
-    assert v is not None
-    assert v >= min
-    assert v <= max
-
-
-def check_outlier_probability(usage_outliers, package_name, threshold_value):
-    """Check the outlier probability.
-
-    Try to find outlier probability for given package is found and that
-    its probability is within permitted range.
-    """
-    # NOTE: there's a typo in the attribute name (issue #73)
-    # the following line should be updated after the issue ^^^ will be fixed
-    outlier_probability_attribute = "outlier_prbability"
+    frequency_count_attribute = "frequency_count"
 
     for usage_outlier in usage_outliers:
         if usage_outlier["package_name"] == package_name:
-            assert outlier_probability_attribute in usage_outlier, \
+            assert frequency_count_attribute in usage_outlier, \
                 "'%s' attribute is expected in the node, " \
-                "found: %s attributes " % (outlier_probability_attribute,
+                "found: %s attributes " % (frequency_count_attribute,
                                            ", ".join(usage_outlier.keys()))
-            probability = usage_outlier[outlier_probability_attribute]
-            assert probability is not None
+            value = usage_outlier[frequency_count_attribute]
+            assert value is not None
             v = float(probability)
-            assert v >= threshold_value and v <= 1.0, \
-                "outlier_prbability value should fall within %f..1.0 range, "\
-                "found %f value instead" % (threshold_value, v)
+            assert v >= 0, \
+                "frequency_count value should be greater than or equal to zero, "\
+                "found %f value instead" % (v)
             return
     raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
 
@@ -250,11 +227,10 @@ def check_outlier_probability(usage_outliers, package_name, threshold_value):
 def stack_analysis_check_outliers(context, component):
     """Check the outlier record in the stack analysis."""
     json_data = context.response.json()
-    threshold = context.outlier_probability_threshold
     # log.info('Usage outlier threshold: %r' % threshold)
     path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
-    check_outlier_probability(usage_outliers, component, threshold)
+    check_frequency_count(usage_outliers, component)
 
 
 @then('I should find that total {count} outliers are reported')
