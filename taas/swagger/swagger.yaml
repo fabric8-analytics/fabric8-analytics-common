@@ -1,0 +1,79 @@
+---
+swagger: "2.0"
+info:
+  description: "This is an implementation of so called Test as a Service. This service\
+    \ can be used to run specified test on a platform like OpenShift etc"
+  version: "1.0.0"
+  title: "Tests as a Service"
+  contact:
+    email: "ptisnovs@redhat.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+basePath: "/api/v1"
+tags:
+- name: "Test"
+  description: "Operations related to tests"
+- name: "Service settings"
+  description: "The service settings"
+schemes:
+- "https"
+- "http"
+paths:
+  /liveness:
+    get:
+      tags: [Service settings]
+      operationId: "taas.get_liveness"
+      summary: "Get service liveness"
+      responses:
+        200:
+          description: Service is alive
+  /readiness:
+    get:
+      tags: [Service settings]
+      operationId: "taas.get_readiness"
+      summary: "Get service readiness"
+      responses:
+        200:
+          description: Service is ready
+  /tests:
+    get:
+      tags:
+      - "Test"
+      summary: "List all tests available"
+      description: "List all tests that are available. Specifically, return all available feature files."
+      operationId: "taas.get_all_tests"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Successful operation"
+  /run-test/{testname}:
+    post:
+      tags:
+      - "Test"
+      summary: "Start the specified test feature"
+      description: "Start the specified test feature, return 200 if the test pass, return 500 in case of any failure."
+      operationId: "taas.run_test"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "testname"
+        in: "path"
+        description: "The name of test (feature file) that are to be started. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Invalid test name supplied"
+        404:
+          description: "The specified test was not found"
+        500:
+          description: "Test failure"
+definitions: {}
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
