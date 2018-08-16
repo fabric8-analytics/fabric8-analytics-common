@@ -3,8 +3,6 @@ Feature: Check the implementation of test steps
   @selfcheck
   Scenario: Check the updated stack analysis response
     Given data directory exists
-    When I download and parse outlier probability threshold value
-    Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/updated_stack_analysis_v2.json file
     Then I should get a valid request ID
      And I should receive JSON response containing the started_at key
@@ -41,8 +39,6 @@ Feature: Check the implementation of test steps
   @selfcheck
   Scenario: Check that the stack analysis response for the springboot.xml
     Given data directory exists
-    When I download and parse outlier probability threshold value
-    Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/mock_stack_analysis_v2_springboot.json file
     Then I should receive JSON response with the correct timestamp in attribute started_at
     Then I should receive JSON response with the correct timestamp in attribute finished_at
@@ -58,8 +54,6 @@ Feature: Check the implementation of test steps
   @selfcheck
   Scenario: Check that the stack analysis response for the vertx.xml
     Given data directory exists
-    When I download and parse outlier probability threshold value
-    Then I should have outlier probability threshold value between 0.0 and 1.0
     When I mock API response by data/mock_stack_analysis_v2_vertx.json file
     Then I should receive JSON response with the correct timestamp in attribute started_at
     Then I should receive JSON response with the correct timestamp in attribute finished_at
