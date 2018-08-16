@@ -61,7 +61,7 @@ def run_test(testname):
     if result == 0:
         return {"Status": "ok"}, 200
     else:
-        return {"Status": "error"}, 200
+        return {"Status": "error"}, 500
 
 
 def main():
