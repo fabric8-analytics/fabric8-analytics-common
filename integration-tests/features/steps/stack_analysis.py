@@ -205,6 +205,11 @@ def check_frequency_count(usage_outliers, package_name):
     Try to find frequency count value for given package and check that
     the value is within permitted range.
     """
+    # TODO: uncomment this after the https://github.com/openshiftio/openshift.io/issues/843
+    # will be merged
+    if True:
+        pass
+
     frequency_count_attribute = "frequency_count"
 
     for usage_outlier in usage_outliers:
@@ -215,9 +220,10 @@ def check_frequency_count(usage_outliers, package_name):
                                            ", ".join(usage_outlier.keys()))
             value = usage_outlier[frequency_count_attribute]
             assert value is not None
-            v = float(probability)
+            v = int(value)
+            # check if the value represents non-negative integer
             assert v >= 0, \
-                "frequency_count value should be greater than or equal to zero, "\
+                "frequency_count must represent non-negative integer" \
                 "found %f value instead" % (v)
             return
     raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
@@ -227,7 +233,6 @@ def check_frequency_count(usage_outliers, package_name):
 def stack_analysis_check_outliers(context, component):
     """Check the outlier record in the stack analysis."""
     json_data = context.response.json()
-    # log.info('Usage outlier threshold: %r' % threshold)
     path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     check_frequency_count(usage_outliers, component)
@@ -246,12 +251,11 @@ def check_outlier_count(context, count=2):
 def check_outlier_validity(context):
     """Check the outlier validity in the stack analysis."""
     json_data = context.response.json()
-    threshold = 0.9
     path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     for usage_outlier in usage_outliers:
         # log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
-        check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
+        check_frequency_count(usage_outliers, usage_outlier["package_name"])
 
 
 @then('I should find that greater than {min_count} companions are reported')
