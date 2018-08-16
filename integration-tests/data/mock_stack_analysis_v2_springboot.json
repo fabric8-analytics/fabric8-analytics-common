@@ -35,7 +35,7 @@
                 "manifest_file_path": "/home/ptisnovs/bayesian",
                 "usage_outliers": [
                     {
-                        "outlier_prbability": 0.9946994392096471,
+                        "frequency_count": 0.9946994392096471,
                         "package_name": "org.springframework:spring-websocket",
                         "topic_list": [
                             "spring-websocket",
@@ -45,7 +45,7 @@
                         ]
                     },
                     {
-                        "outlier_prbability": 0.9943960372835428,
+                        "frequency_count": 0.9943960372835428,
                         "package_name": "org.springframework:spring-messaging",
                         "topic_list": [
                             "spring-messaging",

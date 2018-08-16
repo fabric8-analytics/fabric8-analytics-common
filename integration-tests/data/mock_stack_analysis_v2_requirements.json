@@ -40,7 +40,7 @@
                 "manifest_file_path": "/home/ptisnovs/bayesian",
                 "usage_outliers": [
                     {
-                        "outlier_prbability": 0.9973132776431288,
+                        "frequency_count": 0.9973132776431288,
                         "package_name": "parsimonious",
                         "topic_list": [
                             "language",
@@ -48,7 +48,7 @@
                         ]
                     },
                     {
-                        "outlier_prbability": 0.9967029256794977,
+                        "frequency_count": 0.9967029256794977,
                         "package_name": "httpie",
                         "topic_list": [
                             "http",
