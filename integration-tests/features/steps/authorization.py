@@ -10,7 +10,13 @@ from jwt.contrib.algorithms.pycrypto import RSAAlgorithm
 
 DEFAULT_AUTHORIZATION_TOKEN_FILENAME = "private_key.pem"
 
-jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
+# try to register the SHA256 algorithm, but because the algorithm might be
+# already registered (which is ok), don't fail in such situation
+try:
+    jwt.register_algorithm('RS256', RSAAlgorithm(RSAAlgorithm.SHA256))
+except ValueError as e:
+    print("Warning: the following exception occured during SHA256 algorithm " +
+          "initialization: {msg}".format(msg=e))
 
 
 @then('I should get the proper authorization token')
