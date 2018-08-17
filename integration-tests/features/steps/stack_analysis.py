@@ -205,11 +205,6 @@ def check_frequency_count(usage_outliers, package_name):
     Try to find frequency count value for given package and check that
     the value is within permitted range.
     """
-    # TODO: uncomment this after the https://github.com/openshiftio/openshift.io/issues/843
-    # will be merged
-    if True:
-        pass
-
     frequency_count_attribute = "frequency_count"
 
     for usage_outlier in usage_outliers:
