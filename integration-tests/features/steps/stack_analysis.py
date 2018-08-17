@@ -214,12 +214,17 @@ def check_frequency_count(usage_outliers, package_name):
                 "found: %s attributes " % (frequency_count_attribute,
                                            ", ".join(usage_outlier.keys()))
             value = usage_outlier[frequency_count_attribute]
-            assert value is not None
-            v = int(value)
-            # check if the value represents non-negative integer
-            assert v >= 0, \
-                "frequency_count must represent non-negative integer" \
-                "found %f value instead" % (v)
+            assert value is not None, \
+                "Value of '%s' attribute should be set, but it is null" % frequency_count_attribute
+            try:
+                v = int(value)
+                # check if the value represents non-negative integer
+                assert v >= 0, \
+                    "frequency_count must represent non-negative integer" \
+                    "found %f value instead" % (v)
+            except ValueError:
+                raise Exception("Invalid value {v} found in {a} attribute for the package {p}".
+                                format(v=value, a=frequency_count_attribute, p=package_name))
             return
     raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
 
