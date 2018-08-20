@@ -28,6 +28,12 @@ def set_git_sha(context, sha):
     context.sha = sha
 
 
+@given('Gemini service epv list is {epv_list}')
+def set_epv_list(context, epv_list):
+    """Set epv_list for test."""
+    context.epv_list = epv_list
+
+
 @when('I {method} to Gemini API {endpoint}')
 @when('I {method} to Gemini API {endpoint} {token} authorization token')
 def call_backbone_api(context, method="get", endpoint="/api/v1/register", token="without"):
@@ -44,6 +50,10 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
             'git-url': context.url,
             'git-sha': context.sha
         }
+        if endpoint == "/api/v1/user-repo/notify":
+            content.update({
+                "epv_list": context.epv_list
+            })
         url = '{}/{}'.format(context.gemini_api_url, endpoint)
         context.response = requests.post(url, json=content, headers=headers)
     else:
