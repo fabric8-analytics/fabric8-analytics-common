@@ -603,7 +603,7 @@ def check_stack_analyses_request_id(context):
 
 
 @then("I should find the status attribute set to success")
-def check_stack_analyses_request_id(context):
+def check_stack_analyses_request_status_attribute(context):
     """Check if the status is set to success in the JSON response."""
     response = context.response
     json_data = response.json()

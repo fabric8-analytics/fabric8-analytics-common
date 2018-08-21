@@ -281,10 +281,9 @@ def get_jobs_count(context):
 
 
 @then('I should see {num:d} jobs')
-def check_jobs(context, num):
+def check_jobs_count(context, num):
     """Check the number of jobs."""
     jobs_count = get_jobs_count(context)
-    assert len(jobs) == num
     assert jobs_count == num
 
 
@@ -296,7 +295,7 @@ def check_jobs(context):
 
 
 @then('I should see N+{num:d} jobs')
-def check_jobs(context, num):
+def check_jobs_count_plus_one(context, num):
     """Check the relative jobs count and remember the number of jobs."""
     assert context.jobs_count is not None, \
         "Please use 'I should see N jobs' test step first"

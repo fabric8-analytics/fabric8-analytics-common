@@ -163,7 +163,7 @@ def check_component_analysis_existence(context, component, ecosystem):
 
 
 @then('I should not find the analysis for the {component} from ecosystem {ecosystem}')
-def check_component_analysis_nonexistence(context, component, ecosystem):
+def check_component_analysis_nonexistence_in_ecosystem(context, component, ecosystem):
     """Check that the given component can not be found in the selected ecosystem."""
     json_data = context.response.json()
     search_results = json_data['result']
@@ -176,7 +176,7 @@ def check_component_analysis_nonexistence(context, component, ecosystem):
 
 
 @then('I should not find the analysis for the {component} in any ecosystem')
-def check_component_analysis_nonexistence(context, component):
+def check_component_analysis_nonexistence_in_any_ecosystem(context, component):
     """Check that the given component can not be found in any ecosystem."""
     json_data = context.response.json()
     search_results = json_data['result']
