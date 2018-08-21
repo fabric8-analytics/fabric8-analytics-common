@@ -160,8 +160,8 @@ def oc_pods_in_state_negative(context, state):
     """Check state for all pods for the given service."""
     states = get_pod_states(context)
     for pod_name, pod_state in states.items():
-        assert pod_state != state, "Pod {name} is in wrong state {state}".format(name=name,
-                                                                                 state=state)
+        assert pod_state != state, "Pod {name} is in wrong state {state}".format(name=pod_name,
+                                                                                 state=pod_state)
 
 
 @when(u'I wait for the service {service_name} to restart with timeout set to {timeout:d} minutes')
