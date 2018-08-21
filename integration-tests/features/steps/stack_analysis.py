@@ -329,7 +329,7 @@ def stack_analysis_check_companion_packages(context):
 
 
 @then('I should get {field_name} field in stack report')
-def verify_stack_level_field_presence(context, field_name):
+def verify_stack_level_field_presence_in_stack_report(context, field_name):
     """Check that the given field can be found in the stack report."""
     json_data = context.response.json()
     path = 'result/0/user_stack_info'
@@ -338,7 +338,7 @@ def verify_stack_level_field_presence(context, field_name):
 
 
 @then('I should find {field_name} field in recommendation')
-def verify_stack_level_field_presence(context, field_name):
+def verify_stack_level_field_presence_in_recommendation(context, field_name):
     """Check that the given field can be found in the recommendation."""
     json_data = context.response.json()
     path = 'result/0/recommendation'
@@ -367,7 +367,7 @@ def find_replacements(alternates, component, version):
 
 @then('I should find that the component {component} version {version} can be replaced by '
       'component {replaced_by} version {replacement_version}')
-def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
+def stack_analysis_check_replaces(context, component, version, replaced_by, replacement_version):
     """Check that the component is replaced by the given package and version."""
     json_data = context.response.json()
     path = "result/0/recommendation/alternate"
@@ -387,7 +387,7 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
 @then('I should find that the component {component} version {version} has only one replacement')
 @then('I should find that the component {component} version {version} has '
       '{expected_replacements:d} replacements')
-def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
+def stack_analysis_check_replaces_count(context, component, version, expected_replacements=1):
     """Check that the component is replaced only once in the alternate analysis."""
     json_data = context.response.json()
     path = "result/0/recommendation/alternate"
