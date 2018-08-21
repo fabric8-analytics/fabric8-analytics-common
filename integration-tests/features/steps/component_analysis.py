@@ -1,12 +1,14 @@
 """Tests for API endpoints that performs component search and component analysis."""
 import requests
 
+import time
+
 from behave import given, then, when
 from urllib.parse import urljoin
 
-from src.parsing import *
-from src.utils import *
-from src.authorization_tokens import *
+from src.parsing import parse_token_clause
+from src.utils import split_comma_separated_list
+from src.authorization_tokens import authorization
 
 
 @given('Component search service is running')
@@ -161,7 +163,7 @@ def check_component_analysis_existence(context, component, ecosystem):
 
 
 @then('I should not find the analysis for the {component} from ecosystem {ecosystem}')
-def check_component_analysis_nonexistence(context, component, ecosystem):
+def check_component_analysis_nonexistence_in_ecosystem(context, component, ecosystem):
     """Check that the given component can not be found in the selected ecosystem."""
     json_data = context.response.json()
     search_results = json_data['result']
@@ -174,7 +176,7 @@ def check_component_analysis_nonexistence(context, component, ecosystem):
 
 
 @then('I should not find the analysis for the {component} in any ecosystem')
-def check_component_analysis_nonexistence(context, component):
+def check_component_analysis_nonexistence_in_any_ecosystem(context, component):
     """Check that the given component can not be found in any ecosystem."""
     json_data = context.response.json()
     search_results = json_data['result']

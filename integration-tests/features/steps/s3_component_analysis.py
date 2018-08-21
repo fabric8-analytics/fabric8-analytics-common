@@ -1,9 +1,19 @@
 """Definitions of tests for component metadata stored in the AWS S3 database."""
-from behave import then, when
-from src.attribute_checks import *
-from src.s3interface import *
-from src.utils import split_comma_separated_list
+
 import time
+import datetime
+
+from behave import then, when
+from botocore.exceptions import ClientError
+
+from src.attribute_checks import check_and_get_attribute, check_summary_attribute
+from src.attribute_checks import check_schema_attribute, check_status_attribute
+from src.attribute_checks import check_release_attribute, check_audit_metadata, get_details_node
+from src.attribute_checks import check_timestamp, check_attribute_presence
+from src.attribute_checks import check_attributes_presence, release_string
+
+from src.s3interface import S3Interface
+from src.utils import split_comma_separated_list
 
 
 @then('I should find the correct component core data for package {package} version {version} '

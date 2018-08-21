@@ -7,11 +7,12 @@ from behave import then, when
 from urllib.parse import urljoin
 import jsonschema
 
-from src.attribute_checks import *
-from src.parsing import *
-from src.utils import *
-from src.json_utils import *
-from src.authorization_tokens import *
+from src.attribute_checks import check_attribute_presence, check_cve_value
+from src.parsing import parse_token_clause
+from src.utils import split_comma_separated_list
+from src.json_utils import check_id_value_in_json_response
+from src.json_utils import get_value_using_path
+from src.authorization_tokens import authorization
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -328,7 +329,7 @@ def stack_analysis_check_companion_packages(context):
 
 
 @then('I should get {field_name} field in stack report')
-def verify_stack_level_field_presence(context, field_name):
+def verify_stack_level_field_presence_in_stack_report(context, field_name):
     """Check that the given field can be found in the stack report."""
     json_data = context.response.json()
     path = 'result/0/user_stack_info'
@@ -337,7 +338,7 @@ def verify_stack_level_field_presence(context, field_name):
 
 
 @then('I should find {field_name} field in recommendation')
-def verify_stack_level_field_presence(context, field_name):
+def verify_stack_level_field_presence_in_recommendation(context, field_name):
     """Check that the given field can be found in the recommendation."""
     json_data = context.response.json()
     path = 'result/0/recommendation'
@@ -366,7 +367,7 @@ def find_replacements(alternates, component, version):
 
 @then('I should find that the component {component} version {version} can be replaced by '
       'component {replaced_by} version {replacement_version}')
-def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
+def stack_analysis_check_replaces(context, component, version, replaced_by, replacement_version):
     """Check that the component is replaced by the given package and version."""
     json_data = context.response.json()
     path = "result/0/recommendation/alternate"
@@ -386,7 +387,7 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
 @then('I should find that the component {component} version {version} has only one replacement')
 @then('I should find that the component {component} version {version} has '
       '{expected_replacements:d} replacements')
-def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
+def stack_analysis_check_replaces_count(context, component, version, expected_replacements=1):
     """Check that the component is replaced only once in the alternate analysis."""
     json_data = context.response.json()
     path = "result/0/recommendation/alternate"
@@ -602,7 +603,7 @@ def check_stack_analyses_request_id(context):
 
 
 @then("I should find the status attribute set to success")
-def check_stack_analyses_request_id(context):
+def check_stack_analyses_request_status_attribute(context):
     """Check if the status is set to success in the JSON response."""
     response = context.response
     json_data = response.json()

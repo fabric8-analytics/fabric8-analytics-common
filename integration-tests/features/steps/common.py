@@ -1,6 +1,5 @@
 """Common test steps and checks."""
 import datetime
-import json
 import time
 import os
 
@@ -8,13 +7,11 @@ from behave import given, then, when
 import jsonschema
 import requests
 
-from src.attribute_checks import *
-from src.MockedResponse import *
-from src.s3interface import *
-from src.utils import *
-from src.json_utils import *
-from src.parsing import *
-from src.authorization_tokens import *
+from src.attribute_checks import check_timestamp
+from src.MockedResponse import MockedResponse
+from src.json_utils import is_empty_json_response, is_empty_json_response_from_s3
+from src.json_utils import check_id_value_in_json_response, check_timestamp_in_json_response
+from src.json_utils import get_value_using_path
 
 
 # Do not remove - kept for debugging
@@ -175,7 +172,7 @@ def check_incomplete_analysis_result(res, ecosystem, package, version):
     check_datetime(res["started_at"])
 
 
-def check_analyzers_with_standard_schema(res, analyzers_keys):
+def check_analyzers_with_standard_schema(context, res, analyzers_keys):
     """Check analyzers with standard schema."""
     analyzers_with_standard_schema = set(analyzers_keys)
     analyzers_with_standard_schema -= context.NONSTANDARD_ANALYSIS_FORMATS
@@ -186,7 +183,7 @@ def check_analyzers_with_standard_schema(res, analyzers_keys):
         assert a_keys.issuperset({"details", "status", "summary"}), a_keys
 
 
-def check_complete_analysis_result(res, ecosystem, package, version):
+def check_complete_analysis_result(context, res, ecosystem, package, version):
     """Check complete analysis result for given ecosystem, package, and version."""
     check_datetime(res["finished_at"])
     analyzers_keys = context.get_expected_component_analyses(ecosystem)
@@ -194,7 +191,7 @@ def check_complete_analysis_result(res, ecosystem, package, version):
     missing, unexpected = context.compare_analysis_sets(actual_keys, analyzers_keys)
     err_str = 'unexpected analyses: {}, missing analyses: {}'
     assert not missing and not unexpected, err_str.format(unexpected, missing)
-    check_analyzers_with_standard_schema(res, analyzers_keys)
+    check_analyzers_with_standard_schema(context, res, analyzers_keys)
 
 
 @then('I should see {state} analysis result for {ecosystem}/{package}/{version}')
@@ -204,7 +201,7 @@ def check_analysis_result(context, state, ecosystem, package, version):
     if state == 'incomplete':
         check_incomplete_analysis_result(res, ecosystem, package, version)
     elif state == 'complete':
-        check_complete_analysis_result(res, ecosystem, package, version)
+        check_complete_analysis_result(context, res, ecosystem, package, version)
 
 
 @then('Result of {ecosystem}/{package}/{version} should be valid')
