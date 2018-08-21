@@ -1,12 +1,14 @@
 """Tests for API endpoints that performs component search and component analysis."""
 import requests
 
+import time
+
 from behave import given, then, when
 from urllib.parse import urljoin
 
-from src.parsing import *
-from src.utils import *
-from src.authorization_tokens import *
+from src.parsing import parse_token_clause
+from src.utils import split_comma_separated_list
+from src.authorization_tokens import authorization
 
 
 @given('Component search service is running')

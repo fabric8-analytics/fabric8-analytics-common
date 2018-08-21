@@ -1,16 +1,16 @@
 """Tests for license analysis service."""
 
 import requests
+import os
 
 from behave import then, when
 from urllib.parse import urljoin
 
-from src.parsing import *
-from src.utils import *
-from src.authorization_tokens import *
-from src.attribute_checks import *
+from src.parsing import parse_number, parse_token_clause
+from src.authorization_tokens import authorization
+from src.attribute_checks import check_and_get_attribute
 
-from common import *
+from common import find_dictionary_under_the_path, find_empty_list_under_the_path
 
 
 LICENSE_ANALYSIS_PAYLOAD_DIRECTORY = "data/license_analysis"

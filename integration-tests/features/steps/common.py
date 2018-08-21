@@ -1,6 +1,5 @@
 """Common test steps and checks."""
 import datetime
-import json
 import time
 import os
 
@@ -8,13 +7,11 @@ from behave import given, then, when
 import jsonschema
 import requests
 
-from src.attribute_checks import *
-from src.MockedResponse import *
-from src.s3interface import *
-from src.utils import *
-from src.json_utils import *
-from src.parsing import *
-from src.authorization_tokens import *
+from src.attribute_checks import check_timestamp
+from src.MockedResponse import MockedResponse
+from src.json_utils import is_empty_json_response, is_empty_json_response_from_s3
+from src.json_utils import check_id_value_in_json_response, check_timestamp_in_json_response
+from src.json_utils import get_value_using_path
 
 
 # Do not remove - kept for debugging

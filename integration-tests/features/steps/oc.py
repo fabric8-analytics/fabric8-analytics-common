@@ -2,8 +2,8 @@
 
 from behave import given, then, when
 
-from src.utils import *
-from src.attribute_checks import *
+from src.utils import which, oc_run_command, oc_delete_pods
+from src.attribute_checks import check_and_get_attribute
 
 from subprocess import CalledProcessError
 import json

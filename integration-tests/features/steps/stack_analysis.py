@@ -7,11 +7,12 @@ from behave import then, when
 from urllib.parse import urljoin
 import jsonschema
 
-from src.attribute_checks import *
-from src.parsing import *
-from src.utils import *
-from src.json_utils import *
-from src.authorization_tokens import *
+from src.attribute_checks import check_attribute_presence, check_cve_value
+from src.parsing import parse_token_clause
+from src.utils import split_comma_separated_list
+from src.json_utils import check_id_value_in_json_response
+from src.json_utils import get_value_using_path
+from src.authorization_tokens import authorization
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
