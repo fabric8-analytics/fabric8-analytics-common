@@ -6,7 +6,7 @@ import uuid
 from behave import given, then, when
 from urllib.parse import urljoin
 
-from src.authorization import authorization
+from src.authorization_tokens import authorization
 from src.attribute_checks import check_timestamp, check_job_token_attributes
 from src.parsing import parse_token_clause
 from src.authorization_tokens import jobs_api_authorization
