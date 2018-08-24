@@ -297,11 +297,25 @@ def common_errors_remark(common_errors):
         return "<li>setup common errors detection tool</li>"
 
 
+def get_source_files_count(results, repository):
+    """Perform some magic to get number of source files."""
+    # all metainformations about source files
+    source_files = results.source_files[repository]
+
+    if len(source_files["extensions"]) == 1:
+        return source_files["count"]
+    elif "py" in source_files["extensions"]:
+        return source_files["files_per_extension"]["py"]
+    else:
+        return source_files["files_per_extension"]["java"]
+
+
 def update_overall_status(results, repository, code_coverage_threshold):
     """Update the overall status of all tested systems (stage, prod)."""
     remarks = ""
 
-    source_files = results.source_files[repository]["count"]
+    source_files = get_source_files_count(results, repository)
+
     linter_checks = results.repo_linter_checks[repository]
     docstyle_checks = results.repo_docstyle_checks[repository]
     unit_test_coverage = results.unit_test_coverage[repository]
