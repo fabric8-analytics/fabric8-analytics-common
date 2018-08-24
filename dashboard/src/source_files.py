@@ -15,6 +15,15 @@ def parse_line_count(line):
     return int(line_count), filename
 
 
+def get_file_extension(filename):
+    """Get the file extension for any fil ename."""
+    extension = os.path.splitext(filename)[1]
+    if extension.startswith("."):
+        return extension[1:]
+    else:
+        return extension
+
+
 def get_source_files(repository):
     """Find all source files in the selected repository."""
     log.info("Getting source files")
@@ -27,6 +36,8 @@ def get_source_files(repository):
     line_counts = {}
     total_lines = 0
     count = 0
+    extensions = set()
+    files_per_extension = {}
 
     with log.indent():
         with open("{repo}.count".format(repo=repository)) as fin:
@@ -35,6 +46,15 @@ def get_source_files(repository):
                     log.debug(line)
                 count += 1
                 line_count, filename = parse_line_count(line)
+                extension = get_file_extension(filename)
+
+                # register possibly new extension
+                extensions.add(extension)
+
+                # update file count for such extension
+                files_per_extension[extension] = files_per_extension.get(extension, 0) + 1
+
+                # register file name + line count
                 filenames.append(filename)
                 line_counts[filename] = line_count
                 total_lines += line_count
@@ -46,5 +66,7 @@ def get_source_files(repository):
 
     return {"count": count,
             "filenames": filenames,
+            "extensions": extensions,
+            "files_per_extension": files_per_extension,
             "line_counts": line_counts,
             "total_lines": total_lines}
