@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   description: "This is an implementation of so called Test as a Service. This service\
-    \ can be used to run specified test on a platform like OpenShift etc"
+    \ can be used to run specified test on a platform like OpenShift etc."
   version: "1.0.0"
   title: "Tests as a Service"
   contact:

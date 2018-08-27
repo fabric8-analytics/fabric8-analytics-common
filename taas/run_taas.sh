@@ -2,13 +2,14 @@
 
 export NOVENV=0
 function prepare_venv() {
-    virtualenv -p python3 venv && source venv/bin/activate && python3 "$(which pip3)" install -r taas/requirements.txt
+    virtualenv -p python3 venv && source venv/bin/activate && python3 "$(which pip3)" install -r requirements.txt
 }
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
 
 DIR=$(pwd)
-pushd ../integration_tests/
+echo $DIR
+pushd ../integration-tests/
 PYTHONDONTWRITEBYTECODE=1 python3 "${DIR}"/taas.py
 popd

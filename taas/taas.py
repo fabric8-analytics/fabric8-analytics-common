@@ -24,14 +24,19 @@ def get_file_list(directory, suffix):
     return sorted(files)
 
 
+def health_check():
+    """Check the health status of the service."""
+    return {}, 200
+
+
 def get_readiness():
     """Get TaaS service readiness."""
-    return {}, 200
+    return health_check()
 
 
 def get_liveness():
     """Get TaaS service liveness."""
-    return {}, 200
+    return health_check()
 
 
 def get_all_tests():
