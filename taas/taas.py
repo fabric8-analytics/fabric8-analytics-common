@@ -5,21 +5,36 @@
 import connexion
 from behave.__main__ import main as behave_main
 
-from os import listdir
+from tempfile import mktemp
+
+from os import listdir, remove
 from os.path import isfile, join
 
 TEST_DIR = "features"
 TEST_SUFFIX = ".feature"
 
 
+def read_files_from_directory(directory):
+    """Read all files from given directory."""
+    return [f for f in listdir(directory) if isfile(join(directory, f))]
+
+
+def files_with_suffix(files, suffix):
+    """Filter files with given suffix."""
+    return [f for f in files if f.endswith(suffix)]
+
+
+def remove_suffix(files, suffix):
+    """Remove suffix from files."""
+    return [f[:-len(suffix)] for f in files]
+
+
 def get_file_list(directory, suffix):
     """Get list of files from selected directory that has the specified suffix."""
     # read list of files
-    files = [f for f in listdir(directory) if isfile(join(directory, f))]
-    # filter it
-    files = [f for f in files if f.endswith(suffix)]
-    # remove suffix
-    files = [f[:-len(suffix)] for f in files]
+    files = read_files_from_directory(directory)
+    files = files_with_suffix(files, suffix)
+    files = remove_suffix(files, suffix)
     # and finally return sorted version of the list
     return sorted(files)
 
@@ -49,6 +64,31 @@ def get_all_tests():
                 "Reason": e.__str__()}, 500
 
 
+def run_behave(testname):
+    """Run the Behave machinery, read overall test result, capture log file."""
+    test_specification = "{dir}/{test}{suffix}".format(dir=TEST_DIR, test=testname,
+                                                       suffix=TEST_SUFFIX)
+    logfile = mktemp()
+    print("Logfile: {logfile}".format(logfile=logfile))
+
+    output_specification = "--outfile={logfile}".format(logfile=logfile)
+    result = behave_main([test_specification, output_specification])
+    print("Test result: {result}:".format(result=result))
+
+    try:
+        log = None
+
+        with open(logfile, "r") as fin:
+            log = fin.read()
+
+        remove(logfile)
+        return result, log
+
+    except Exception as e:
+        print("Exception occured: ", e)
+        return 2, None
+
+
 def run_test(testname):
     """Run the specified tests."""
     if not testname:
@@ -61,10 +101,10 @@ def run_test(testname):
         return {"Status": "error",
                 "Reason": "The specified test was not found"}, 404
 
-    result = behave_main("{dir}/{test}{suffix}".format(dir=TEST_DIR, test=testname,
-                                                       suffix=TEST_SUFFIX))
+    result, log = run_behave(testname)
+
     if result == 0:
-        return {"Status": "ok"}, 200
+        return {"Status": "ok", "Log": log}, 200
     else:
         return {"Status": "error"}, 500
 
