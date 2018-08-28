@@ -14,14 +14,27 @@ TEST_DIR = "features"
 TEST_SUFFIX = ".feature"
 
 
+def read_files_from_directory(directory):
+    """Read all files from given directory."""
+    return [f for f in listdir(directory) if isfile(join(directory, f))]
+
+
+def files_with_suffix(files, suffix):
+    """Filter files with given suffix."""
+    return [f for f in files if f.endswith(suffix)]
+
+
+def remove_suffix(files, suffix):
+    """Remove suffix from files."""
+    return [f[:-len(suffix)] for f in files]
+
+
 def get_file_list(directory, suffix):
     """Get list of files from selected directory that has the specified suffix."""
     # read list of files
-    files = [f for f in listdir(directory) if isfile(join(directory, f))]
-    # filter it
-    files = [f for f in files if f.endswith(suffix)]
-    # remove suffix
-    files = [f[:-len(suffix)] for f in files]
+    files = read_files_from_directory(directory)
+    files = files_with_suffix(files, suffix)
+    files = remove_suffix(files, suffix)
     # and finally return sorted version of the list
     return sorted(files)
 
