@@ -1,8 +1,18 @@
 """Definitions of tests for packages metadata stored in the AWS S3 database."""
-from behave import then, when
-from src.attribute_checks import *
-from src.s3interface import S3Interface
+
 import time
+import datetime
+
+from behave import then, when
+from botocore.exceptions import ClientError
+
+from src.parsing import parse_timestamp
+from src.attribute_checks import check_and_get_attribute
+from src.attribute_checks import check_schema_attribute, check_status_attribute
+from src.attribute_checks import check_release_attribute, check_audit_metadata, get_details_node
+from src.attribute_checks import check_timestamp, check_attribute_presence
+
+from src.s3interface import S3Interface
 
 
 @then('I should find the correct GitHub details metadata for package {package} '

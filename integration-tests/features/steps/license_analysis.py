@@ -1,16 +1,16 @@
 """Tests for license analysis service."""
 
 import requests
+import os
 
 from behave import then, when
 from urllib.parse import urljoin
 
-from src.parsing import *
-from src.utils import *
-from src.authorization_tokens import *
-from src.attribute_checks import *
+from src.parsing import parse_number, parse_token_clause
+from src.authorization_tokens import authorization
+from src.attribute_checks import check_and_get_attribute
 
-from common import *
+from common import find_dictionary_under_the_path, find_empty_list_under_the_path
 
 
 LICENSE_ANALYSIS_PAYLOAD_DIRECTORY = "data/license_analysis"
@@ -25,13 +25,13 @@ STACK_LICENSE_ENDPOINT = "stack_license"
 
 
 @when("I access the license analysis service")
-def access_license_service(context):
+def access_license_service_without_authorization_token(context):
     """Access the licence analysis service."""
     context.response = requests.get(context.license_service_url)
 
 
 @when("I access the license analysis service with authorization token")
-def access_license_service(context):
+def access_license_service_with_authorization_token(context):
     """Access the licence analysis service using the authorization token."""
     context.response = requests.get(context.license_service_url,
                                     headers=authorization(context))
@@ -360,7 +360,7 @@ def check_license_report_for_package_version(context, package, version):
 
 @then("I should find that representative license has not been found for package {package} " +
       "version {version} with the reason {reason}")
-def check_license_report_for_package_version(context, package, version, reason):
+def check_license_report_for_package_version_with_reason(context, package, version, reason):
     """Check if the given license has been reported for the package+version."""
     json_data = context.response.json()
     packages = check_and_get_attribute(json_data, "packages")

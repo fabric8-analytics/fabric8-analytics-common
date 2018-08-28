@@ -1,9 +1,5 @@
 Feature: Analyse API functionality check
 
-  Scenario: Read outlier probability threshold value
-    When I download and parse outlier probability threshold value
-    Then I should have outlier probability threshold value between 0.0 and 1.0
-
   @production
   Scenario: Check that the API entry point
     Given System is running

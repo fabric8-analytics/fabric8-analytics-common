@@ -7,11 +7,12 @@ from behave import then, when
 from urllib.parse import urljoin
 import jsonschema
 
-from src.attribute_checks import *
-from src.parsing import *
-from src.utils import *
-from src.json_utils import *
-from src.authorization_tokens import *
+from src.attribute_checks import check_attribute_presence, check_cve_value
+from src.parsing import parse_token_clause
+from src.utils import split_comma_separated_list
+from src.json_utils import check_id_value_in_json_response
+from src.json_utils import get_value_using_path
+from src.authorization_tokens import authorization
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -199,49 +200,32 @@ def check_stack_analyses_response(context, url):
     jsonschema.validate(resp_json, schema)
 
 
-@when('I download and parse outlier probability threshold value')
-def download_and_parse_outlier_probability_threshold_value(context):
-    """Download and parse outlier probability threshold value.
+def check_frequency_count(usage_outliers, package_name):
+    """Check the frequency count attribute.
 
-    This Special step that is needed to get the stack analysis outlier
-    probability threshold.
+    Try to find frequency count value for given package and check that
+    the value is within permitted range.
     """
-    content = download_file_from_url(STACK_ANALYSIS_CONSTANT_FILE_URL)
-    context.outlier_probability_threshold = parse_float_value_from_text_stream(
-        content, STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME)
-
-
-@then('I should have outlier probability threshold value between {min:f} and {max:f}')
-def check_outlier_probability_threshold_value(context, min, max):
-    """Check that the outlier probability falls between selected range."""
-    v = context.outlier_probability_threshold
-    assert v is not None
-    assert v >= min
-    assert v <= max
-
-
-def check_outlier_probability(usage_outliers, package_name, threshold_value):
-    """Check the outlier probability.
-
-    Try to find outlier probability for given package is found and that
-    its probability is within permitted range.
-    """
-    # NOTE: there's a typo in the attribute name (issue #73)
-    # the following line should be updated after the issue ^^^ will be fixed
-    outlier_probability_attribute = "outlier_prbability"
+    frequency_count_attribute = "frequency_count"
 
     for usage_outlier in usage_outliers:
         if usage_outlier["package_name"] == package_name:
-            assert outlier_probability_attribute in usage_outlier, \
+            assert frequency_count_attribute in usage_outlier, \
                 "'%s' attribute is expected in the node, " \
-                "found: %s attributes " % (outlier_probability_attribute,
+                "found: %s attributes " % (frequency_count_attribute,
                                            ", ".join(usage_outlier.keys()))
-            probability = usage_outlier[outlier_probability_attribute]
-            assert probability is not None
-            v = float(probability)
-            assert v >= threshold_value and v <= 1.0, \
-                "outlier_prbability value should fall within %f..1.0 range, "\
-                "found %f value instead" % (threshold_value, v)
+            value = usage_outlier[frequency_count_attribute]
+            assert value is not None, \
+                "Value of '%s' attribute should be set, but it is null" % frequency_count_attribute
+            try:
+                v = int(value)
+                # check if the value represents non-negative integer
+                assert v >= 0, \
+                    "frequency_count must represent non-negative integer" \
+                    "found %f value instead" % (v)
+            except ValueError:
+                raise Exception("Invalid value {v} found in {a} attribute for the package {p}".
+                                format(v=value, a=frequency_count_attribute, p=package_name))
             return
     raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
 
@@ -250,11 +234,9 @@ def check_outlier_probability(usage_outliers, package_name, threshold_value):
 def stack_analysis_check_outliers(context, component):
     """Check the outlier record in the stack analysis."""
     json_data = context.response.json()
-    threshold = context.outlier_probability_threshold
-    # log.info('Usage outlier threshold: %r' % threshold)
     path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
-    check_outlier_probability(usage_outliers, component, threshold)
+    check_frequency_count(usage_outliers, component)
 
 
 @then('I should find that total {count} outliers are reported')
@@ -270,12 +252,11 @@ def check_outlier_count(context, count=2):
 def check_outlier_validity(context):
     """Check the outlier validity in the stack analysis."""
     json_data = context.response.json()
-    threshold = 0.9
     path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     for usage_outlier in usage_outliers:
         # log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
-        check_outlier_probability(usage_outliers, usage_outlier["package_name"], threshold)
+        check_frequency_count(usage_outliers, usage_outlier["package_name"])
 
 
 @then('I should find that greater than {min_count} companions are reported')
@@ -348,7 +329,7 @@ def stack_analysis_check_companion_packages(context):
 
 
 @then('I should get {field_name} field in stack report')
-def verify_stack_level_field_presence(context, field_name):
+def verify_stack_level_field_presence_in_stack_report(context, field_name):
     """Check that the given field can be found in the stack report."""
     json_data = context.response.json()
     path = 'result/0/user_stack_info'
@@ -357,7 +338,7 @@ def verify_stack_level_field_presence(context, field_name):
 
 
 @then('I should find {field_name} field in recommendation')
-def verify_stack_level_field_presence(context, field_name):
+def verify_stack_level_field_presence_in_recommendation(context, field_name):
     """Check that the given field can be found in the recommendation."""
     json_data = context.response.json()
     path = 'result/0/recommendation'
@@ -386,7 +367,7 @@ def find_replacements(alternates, component, version):
 
 @then('I should find that the component {component} version {version} can be replaced by '
       'component {replaced_by} version {replacement_version}')
-def stack_analysis_check_replaces(json_data, component, version, replaced_by, replacement_version):
+def stack_analysis_check_replaces(context, component, version, replaced_by, replacement_version):
     """Check that the component is replaced by the given package and version."""
     json_data = context.response.json()
     path = "result/0/recommendation/alternate"
@@ -406,7 +387,7 @@ def stack_analysis_check_replaces(json_data, component, version, replaced_by, re
 @then('I should find that the component {component} version {version} has only one replacement')
 @then('I should find that the component {component} version {version} has '
       '{expected_replacements:d} replacements')
-def stack_analysis_check_replaces_count(json_data, component, version, expected_replacements=1):
+def stack_analysis_check_replaces_count(context, component, version, expected_replacements=1):
     """Check that the component is replaced only once in the alternate analysis."""
     json_data = context.response.json()
     path = "result/0/recommendation/alternate"
@@ -622,7 +603,7 @@ def check_stack_analyses_request_id(context):
 
 
 @then("I should find the status attribute set to success")
-def check_stack_analyses_request_id(context):
+def check_stack_analyses_request_status_attribute(context):
     """Check if the status is set to success in the JSON response."""
     response = context.response
     json_data = response.json()

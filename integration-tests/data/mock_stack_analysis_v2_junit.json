@@ -127,7 +127,7 @@
                 "manifest_file_path": "/home/ptisnovs/bayesian",
                 "usage_outliers": [
                     {
-                        "outlier_prbability": 0.9912856374394844,
+                        "frequency_count": 50,
                         "package_name": "junit:junit",
                         "topic_list": [
                             "testing",

@@ -292,7 +292,7 @@
                 "manifest_file_path": "pom.xml",
                 "usage_outliers": [
                     {
-                        "outlier_prbability": 0.9151901277396074,
+                        "frequency_count": 99,
                         "package_name": "io.vertx:vertx-web",
                         "topic_list": [
                             "http",

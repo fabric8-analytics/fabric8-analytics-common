@@ -3,10 +3,10 @@ from behave import then, when
 import requests
 import time
 
-from src.utils import *
-from src.authorization_tokens import *
-from src.attribute_checks import *
-from src.schema_validator import *
+from src.utils import split_comma_separated_list
+from src.authorization_tokens import authorization
+from src.attribute_checks import check_and_get_attribute
+from src.schema_validator import validate_schema
 
 
 @when('I access {url:S}')
