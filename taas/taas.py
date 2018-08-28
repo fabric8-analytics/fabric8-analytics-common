@@ -5,7 +5,9 @@
 import connexion
 from behave.__main__ import main as behave_main
 
-from os import listdir
+from tempfile import mktemp
+
+from os import listdir, remove
 from os.path import isfile, join
 
 TEST_DIR = "features"
@@ -49,6 +51,31 @@ def get_all_tests():
                 "Reason": e.__str__()}, 500
 
 
+def run_behave(testname):
+    """Run the Behave machinery, read overall test result, capture log file."""
+    test_specification = "{dir}/{test}{suffix}".format(dir=TEST_DIR, test=testname,
+                                                       suffix=TEST_SUFFIX)
+    logfile = mktemp()
+    print("Logfile: {logfile}".format(logfile=logfile))
+
+    output_specification = "--outfile={logfile}".format(logfile=logfile)
+    result = behave_main([test_specification, output_specification])
+    print("Test result: {result}:".format(result=result))
+
+    try:
+        log = None
+
+        with open(logfile, "r") as fin:
+            log = fin.read()
+
+        remove(logfile)
+        return result, log
+
+    except Exception as e:
+        print("Exception occured: ", e)
+        return 2, None
+
+
 def run_test(testname):
     """Run the specified tests."""
     if not testname:
@@ -61,10 +88,10 @@ def run_test(testname):
         return {"Status": "error",
                 "Reason": "The specified test was not found"}, 404
 
-    result = behave_main("{dir}/{test}{suffix}".format(dir=TEST_DIR, test=testname,
-                                                       suffix=TEST_SUFFIX))
+    result, log = run_behave(testname)
+
     if result == 0:
-        return {"Status": "ok"}, 200
+        return {"Status": "ok", "Log": log}, 200
     else:
         return {"Status": "error"}, 500
 
