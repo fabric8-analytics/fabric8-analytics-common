@@ -7,10 +7,13 @@ RUN yum install -y epel-release && \
     yum clean all && \
     rm -rf /var/cache/yum && \
     pip3 install virtualenv && \
+    pip3 install --upgrade pip && \
     mkdir /taas
 
 COPY ./ /taas
 
 WORKDIR /taas/taas
 
-CMD ["./run_taas.sh"]
+RUN pip3 install -r requirements.txt
+
+CMD ["./run_taas_in_docker.sh"]
