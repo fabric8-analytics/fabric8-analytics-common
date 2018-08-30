@@ -71,6 +71,8 @@ paths:
           description: "Invalid test name supplied"
         404:
           description: "The specified test was not found"
+        405:
+          description: "Not allowed - the test has not been enabled"
         500:
           description: "Test failure"
 definitions: {}
