@@ -9,6 +9,7 @@ from tempfile import mktemp
 
 from os import listdir, remove
 from os.path import isfile, join
+from sys import argv
 
 TEST_DIR = "features"
 TEST_SUFFIX = ".feature"
@@ -101,12 +102,33 @@ def run_test(testname):
         return {"Status": "error",
                 "Reason": "The specified test was not found"}, 404
 
+    enabled_tests = try_to_read_enabled_tests(argv)
+
+    if testname not in enabled_tests:
+        return {"Status": "not allowed",
+                "Reason": "You can not run the test specified"}, 405
+
     result, log = run_behave(testname)
 
     if result == 0:
         return {"Status": "ok", "Log": log}, 200
     else:
         return {"Status": "error"}, 500
+
+
+def try_to_read_enabled_tests(argv):
+    """Try to read all enabled tests."""
+    if len(argv) > 1:
+        return read_enabled_tests(argv[1])
+    else:
+        return []
+
+
+def read_enabled_tests(filename):
+    """Read list of enabled tests from specified file."""
+    with open(filename) as fin:
+        content = fin.readlines()
+        return [line.strip() for line in content]
 
 
 def main():
