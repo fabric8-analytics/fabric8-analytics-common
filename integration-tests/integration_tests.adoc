@@ -1,7 +1,7 @@
 [[integration-tests-for-bayesian-core-api]]
 = Integration tests for Bayesian core API
 
-This repository contains integration tests for the fabric8-analytics services.
+This directory contains integration tests for the fabric8-analytics services.
 
 The tests can be run against existing deployment, or locally by using docker-compose.
 

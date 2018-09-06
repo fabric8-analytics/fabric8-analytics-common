@@ -1,0 +1,29 @@
+[[e2e-test]]
+= E2E test
+
+.Prerequisite
+
+Get your Openshift.io authentication token:
+
+. In the link:http://openshift.io[openshift.io] home page, click on your username displayed on the upper-right of the screen.
+. Select *Profile* from the options, and then click btn:[Edit Profile] to get your token.
+
+.Procedure
+Run end to end tests against your deployment:
+
+. Clone the link:https://github.com/fabric8-analytics/fabric8-analytics-common/tree/master/integration-tests[E2E
+tests] repository using `git clone git@github.com:fabric8-analytics/fabric8-analytics-common.git`, if you have not done so already.
+
+. Configure the `RECOMMENDER_API_TOKEN` variable in your `env.sh` file with the Openshift.io authentication token to prepare your environment:
++
+[source,shell]
+----
+source env.sh
+----
+. Run the tests in the same terminal window:
++
+[source,shell]
+----
+cd fabric8-analytics-common/integration-tests/
+./runtest.sh
+----
