@@ -10,6 +10,8 @@ import git_utils
 import history_generator
 import csv
 
+STARTING_DATE = "2018-06-01"
+
 
 def line_with_summary(line, summary_postfix):
     """Check if the processed line contains dead code measurement summary."""
@@ -300,13 +302,15 @@ def generate_csv_with_all_history(repositories, commits, filename, all_data):
             writer.writerow(row)
 
 
-def generate_graph_with_all_history(repositories, commits, filename, title, all_data):
+def generate_graph_with_all_history(repositories, commits, filename, title, all_data,
+                                    starting_date):
+    """Generate graph with the whole history of common issues/dead code for all repositories."""
     history = []
     ignore_old_commits = True
 
     for commit in commits:
         commit_date = history_generator.get_commit_date(commit[1])
-        if commit_date == "2018-06-01":
+        if commit_date == starting_date:
             ignore_old_commits = False
 
         if not ignore_old_commits:
@@ -344,13 +348,13 @@ def main():
         generate_csv_with_dead_code(repository, dead_code_history)
         generate_csv_with_common_errors(repository, common_errors_history)
 
-    generate_graph_with_all_history(repositories, commits, "all_common_errors.png", 
+    generate_graph_with_all_history(repositories, commits, "all_common_errors.png",
                                     "Common errors across all repositories",
-                                    all_common_errors)
+                                    all_common_errors, STARTING_DATE)
 
     generate_graph_with_all_history(repositories, commits, "all_dead_code.png",
                                     "Dead code across all repositories",
-                                    all_dead_code)
+                                    all_dead_code, STARTING_DATE)
 
     generate_csv_with_all_history(repositories, commits, "all_common_errors.csv", all_common_errors)
     generate_csv_with_all_history(repositories, commits, "all_dead_code.csv", all_dead_code)
