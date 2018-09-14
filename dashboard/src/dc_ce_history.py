@@ -200,6 +200,7 @@ def generate_csv_with_common_errors(repo_to_measure, common_errors_history):
 
 
 def find_repo_data_for_commit(commit_date, records):
+    """Find code metrics data in repodata for given commit date."""
     if records is None:
         return "", "", ""
     for i in records:
@@ -237,6 +238,7 @@ def get_date_row(repositories):
 
 
 def get_repodata_row_for_commit(commit_date, repositories, all_data):
+    """Retrieve repodata for all repositories for selected commit."""
     row = []
     row.append(commit_date)
     for repository in repositories:
@@ -248,6 +250,7 @@ def get_repodata_row_for_commit(commit_date, repositories, all_data):
 
 
 def generate_csv_with_all_history(repositories, commits, filename, all_data):
+    """Generate CSV file with all history data."""
     with open(filename, 'w') as fout:
         writer = csv.writer(fout)
         writer.writerow(get_csv_header(repositories))
