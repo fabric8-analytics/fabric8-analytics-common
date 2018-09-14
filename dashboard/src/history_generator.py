@@ -107,6 +107,8 @@ def draw_graph(title, filename, history, plot_function):
         step = 2
         if items > 40:
             step = 3
+            if items > 60:
+                step = 4
     setup_ticks(step)
 
     # add a legend to the graph
