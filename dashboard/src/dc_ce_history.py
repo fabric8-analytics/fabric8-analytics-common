@@ -115,6 +115,11 @@ def plot_series_to_graph(ax, history, all_files_label, incorrect_files_label, co
     ax.plot(x_axis, correct, "g-", label=correct_files_label)
 
 
+def plot_common_series_to_graph(ax, history):
+    """Plot all data series onto the graph."""
+    plot_series_to_graph(ax, history, "All files", "With issue", "Without issue")
+
+
 def plot_dead_code_series_to_graph(ax, history):
     """Plot all data series onto the graph."""
     plot_series_to_graph(ax, history, "All files", "Detected dead code", "Files w/o dead code")
@@ -268,6 +273,20 @@ def get_repodata_row_for_commit(commit_date, repositories, all_data):
     return row
 
 
+def summary_for_commit(commit_date, repositories, all_data):
+    """Compute summary for given date."""
+    sumtotal = 0
+    sumissues = 0
+    sumcorrect = 0
+    for repository in repositories:
+        total, issues, correct = find_repo_data_for_commit(commit_date, all_data[repository])
+        sumtotal += total
+        sumissues += issues
+        sumcorrect += correct
+
+    return sumtotal, sumissues, sumcorrect
+
+
 def generate_csv_with_all_history(repositories, commits, filename, all_data):
     """Generate CSV file with all history data."""
     with open(filename, 'w') as fout:
@@ -279,6 +298,25 @@ def generate_csv_with_all_history(repositories, commits, filename, all_data):
             commit_date = history_generator.get_commit_date(commit[1])
             row = get_repodata_row_for_commit(commit_date, repositories, all_data)
             writer.writerow(row)
+
+
+def generate_graph_with_all_history(repositories, commits, filename, title, all_data):
+    history = []
+    ignore_old_commits = True
+
+    for commit in commits:
+        commit_date = history_generator.get_commit_date(commit[1])
+        if commit_date == "2018-06-01":
+            ignore_old_commits = False
+
+        if not ignore_old_commits:
+            total, issues, correct = summary_for_commit(commit_date, repositories, all_data)
+            history.append({"date": commit_date,
+                            "total_files": total,
+                            "files_with_issues": issues})
+
+    history_generator.draw_graph(title, filename, history,
+                                 plot_common_series_to_graph)
 
 
 def main():
@@ -305,6 +343,14 @@ def main():
 
         generate_csv_with_dead_code(repository, dead_code_history)
         generate_csv_with_common_errors(repository, common_errors_history)
+
+    generate_graph_with_all_history(repositories, commits, "all_common_errors.png", 
+                                    "Common errors across all repositories",
+                                    all_common_errors)
+
+    generate_graph_with_all_history(repositories, commits, "all_dead_code.png",
+                                    "Dead code across all repositories",
+                                    all_dead_code)
 
     generate_csv_with_all_history(repositories, commits, "all_common_errors.csv", all_common_errors)
     generate_csv_with_all_history(repositories, commits, "all_dead_code.csv", all_dead_code)
