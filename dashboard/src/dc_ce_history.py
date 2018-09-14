@@ -165,6 +165,39 @@ def generate_graph_with_common_errors(repo_to_measure, common_errors_history):
                                      plot_common_errors_series_to_graph)
 
 
+def issues_data(record):
+    """Retrieve issues data from record."""
+    total = int(record["total_files"])
+    issues = int(record["files_with_issues"])
+    correct = total - issues
+    return total, issues, correct
+
+
+def generate_csv(filename, history):
+    """Generate CVS file for given repository."""
+    with open(filename, 'w') as fout:
+        writer = csv.writer(fout)
+        writer.writerow(["Date", "Total sources", "Sources with issues", "Correct sources"])
+        for i in history:
+            date = i["date"]
+            total, issues, correct = issues_data(i)
+            writer.writerow([date, total, issues, correct])
+
+
+def generate_csv_with_dead_code(repo_to_measure, dead_code_history):
+    """Generate CVS file with dead code history for given repository."""
+    if dead_code_history is not None:
+        filename = "dead_code_history_{repo}.csv".format(repo=repo_to_measure)
+        generate_csv(filename, dead_code_history)
+
+
+def generate_csv_with_common_errors(repo_to_measure, common_errors_history):
+    """Generate CVS file with common errors history for given repository."""
+    if common_errors_history is not None:
+        filename = "common_errors_history_{repo}.csv".format(repo=repo_to_measure)
+        generate_csv(filename, common_errors_history)
+
+
 def main():
     """Entry point to the dead code history generator."""
     config = Config()
@@ -181,6 +214,9 @@ def main():
 
         generate_graph_with_dead_code(repository, dead_code_history)
         generate_graph_with_common_errors(repository, common_errors_history)
+
+        generate_csv_with_dead_code(repository, dead_code_history)
+        generate_csv_with_common_errors(repository, common_errors_history)
 
 
 if __name__ == "__main__":
