@@ -125,15 +125,28 @@ def plot_common_errors_series_to_graph(ax, history):
                          "Files w/o common errors")
 
 
-def generate_graph_with_dead_code(hist_repo, commits, repo_to_measure):
-    """Generate graph with the overall dead code for the selected repository."""
-    dead_code_history = read_history(hist_repo, commits, repo_to_measure,
-                                     'seems to contain dead code and/or unused imports',
-                                     r'(\d+) source files out of (\d+) files seems',
-                                     'All checks passed for',
-                                     r'All checks passed for (\d+) source files',
-                                     get_filename_with_dead_code_stats)
+def read_dead_code_history(hist_repo, commits, repo_to_measure):
+    """Read dead code history for given repository."""
+    return read_history(hist_repo, commits, repo_to_measure,
+                        'seems to contain dead code and/or unused imports',
+                        r'(\d+) source files out of (\d+) files seems',
+                        'All checks passed for',
+                        r'All checks passed for (\d+) source files',
+                        get_filename_with_dead_code_stats)
 
+
+def read_common_errors_history(hist_repo, commits, repo_to_measure):
+    """Read common errors history for given repository."""
+    return read_history(hist_repo, commits, repo_to_measure,
+                        'files needs to be checked and fixed',
+                        r'(\d+) source files out of (\d+) files needs',
+                        'All checks passed for',
+                        r'All checks passed for (\d+) source files',
+                        get_filename_with_common_errors_stats)
+
+
+def generate_graph_with_dead_code(repo_to_measure, dead_code_history):
+    """Generate graph with the overall dead code for the selected repository."""
     # there's no need to generate graph with no value or with only one value
     if dead_code_history is not None and len(dead_code_history) >= 1:
         title = "Dead code history for the " + repo_to_measure
@@ -142,15 +155,8 @@ def generate_graph_with_dead_code(hist_repo, commits, repo_to_measure):
                                      plot_dead_code_series_to_graph)
 
 
-def generate_graph_with_common_errors(hist_repo, commits, repo_to_measure):
+def generate_graph_with_common_errors(repo_to_measure, common_errors_history):
     """Generate graph with the overall common errors statistic for the selected repository."""
-    common_errors_history = read_history(hist_repo, commits, repo_to_measure,
-                                         'files needs to be checked and fixed',
-                                         r'(\d+) source files out of (\d+) files needs',
-                                         'All checks passed for',
-                                         r'All checks passed for (\d+) source files',
-                                         get_filename_with_common_errors_stats)
-
     # there's no need to generate graph with no value or with only one value
     if common_errors_history is not None and len(common_errors_history) >= 1:
         title = "Common errors history for the " + repo_to_measure
@@ -164,12 +170,17 @@ def main():
     config = Config()
     hist_repo = config.get_repo_with_history_data()
     history_generator.prepare_hist_repository(hist_repo)
+    repositories = config.get_repolist()
 
     # generate graph for all supported repositories
-    for repository in config.get_repolist():
+    for repository in repositories:
         commits = history_generator.read_history_commits()
-        generate_graph_with_dead_code(hist_repo, commits, repository)
-        generate_graph_with_common_errors(hist_repo, commits, repository)
+
+        dead_code_history = read_dead_code_history(hist_repo, commits, repository)
+        common_errors_history = read_common_errors_history(hist_repo, commits, repository)
+
+        generate_graph_with_dead_code(repository, dead_code_history)
+        generate_graph_with_common_errors(repository, common_errors_history)
 
 
 if __name__ == "__main__":
