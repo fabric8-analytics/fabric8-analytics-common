@@ -8,6 +8,7 @@ import re
 from config import Config
 import git_utils
 import history_generator
+import csv
 
 
 def line_with_summary(line, summary_postfix):
@@ -198,11 +199,74 @@ def generate_csv_with_common_errors(repo_to_measure, common_errors_history):
         generate_csv(filename, common_errors_history)
 
 
+def find_repo_data_for_commit(commit_date, records):
+    if records is None:
+        return "", "", ""
+    for i in records:
+        if i["date"] == commit_date:
+            return issues_data(i)
+    # fallback - the first date data
+    if len(records) >= 1:
+        i = records[0]
+        return issues_data(i)
+    else:
+        return -1, -1, -1
+
+
+def get_csv_header(repositories):
+    """Generate CSV header."""
+    row = ["Repository"]
+
+    for repository in repositories:
+        row.append(repository)
+        row.append("")
+        row.append("")
+
+    return row
+
+
+def get_date_row(repositories):
+    """Generate row with dates."""
+    row = ["Date"]
+    for repository in repositories:
+        row.append("Sources")
+        row.append("Issues")
+        row.append("Correct")
+
+    return row
+
+
+def get_repodata_row_for_commit(commit_date, repositories, all_data):
+    row = []
+    row.append(commit_date)
+    for repository in repositories:
+        total, issues, correct = find_repo_data_for_commit(commit_date, all_data[repository])
+        row.append(total)
+        row.append(issues)
+        row.append(correct)
+    return row
+
+
+def generate_csv_with_all_history(repositories, commits, filename, all_data):
+    with open(filename, 'w') as fout:
+        writer = csv.writer(fout)
+        writer.writerow(get_csv_header(repositories))
+        writer.writerow(get_date_row(repositories))
+
+        for commit in commits:
+            commit_date = history_generator.get_commit_date(commit[1])
+            row = get_repodata_row_for_commit(commit_date, repositories, all_data)
+            writer.writerow(row)
+
+
 def main():
     """Entry point to the dead code history generator."""
     config = Config()
     hist_repo = config.get_repo_with_history_data()
     history_generator.prepare_hist_repository(hist_repo)
+    all_dead_code = {}
+    all_common_errors = {}
+
     repositories = config.get_repolist()
 
     # generate graph for all supported repositories
@@ -211,12 +275,17 @@ def main():
 
         dead_code_history = read_dead_code_history(hist_repo, commits, repository)
         common_errors_history = read_common_errors_history(hist_repo, commits, repository)
+        all_dead_code[repository] = dead_code_history
+        all_common_errors[repository] = common_errors_history
 
         generate_graph_with_dead_code(repository, dead_code_history)
         generate_graph_with_common_errors(repository, common_errors_history)
 
         generate_csv_with_dead_code(repository, dead_code_history)
         generate_csv_with_common_errors(repository, common_errors_history)
+
+    generate_csv_with_all_history(repositories, commits, "all_common_errors.csv", all_common_errors)
+    generate_csv_with_all_history(repositories, commits, "all_dead_code.csv", all_dead_code)
 
 
 if __name__ == "__main__":
