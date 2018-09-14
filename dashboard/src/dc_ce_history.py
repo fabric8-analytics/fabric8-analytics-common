@@ -211,7 +211,7 @@ def find_repo_data_for_commit(commit_date, records):
         i = records[0]
         return issues_data(i)
     else:
-        return -1, -1, -1
+        return 0, 0, 0
 
 
 def get_csv_header(repositories):
@@ -223,6 +223,9 @@ def get_csv_header(repositories):
         row.append("")
         row.append("")
 
+    row.append("Summary")
+    row.append("")
+    row.append("")
     return row
 
 
@@ -234,6 +237,11 @@ def get_date_row(repositories):
         row.append("Issues")
         row.append("Correct")
 
+    # one more for summary
+    row.append("Sources")
+    row.append("Issues")
+    row.append("Correct")
+
     return row
 
 
@@ -241,11 +249,22 @@ def get_repodata_row_for_commit(commit_date, repositories, all_data):
     """Retrieve repodata for all repositories for selected commit."""
     row = []
     row.append(commit_date)
+    sumtotal = 0
+    sumissues = 0
+    sumcorrect = 0
     for repository in repositories:
         total, issues, correct = find_repo_data_for_commit(commit_date, all_data[repository])
         row.append(total)
         row.append(issues)
         row.append(correct)
+        sumtotal += total
+        sumissues += issues
+        sumcorrect += correct
+
+    # summary
+    row.append(sumtotal)
+    row.append(sumissues)
+    row.append(sumcorrect)
     return row
 
 
