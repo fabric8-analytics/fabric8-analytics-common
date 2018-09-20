@@ -25,3 +25,4 @@ requests==2.18.4
 s3transfer==0.1.11        # via boto3
 six==1.10.0               # via cycler, matplotlib, python-dateutil
 urllib3==1.22             # via requests
+svgwrite
