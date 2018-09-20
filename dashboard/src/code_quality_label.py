@@ -258,7 +258,6 @@ def main():
     container, ymax = generate_labels(500, 500, MARKS, 8, 50, 50)
 
     table = Table([(0, ymax + 50)], 50, 250)  # length_of_columns should be half of width
-    text = Element([(1000, 500)], 'text', '', text='test')
     table.elements = {'test': 'test', 'score': '59', 'foobar': 99}
     container.add(table)
     drawing.add(container)
