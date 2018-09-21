@@ -1,5 +1,7 @@
 """Code quality label generator."""
 
+from fastlog import log
+
 import svgwrite
 
 MARKS = ['A+++', 'A++', 'A+', 'A', 'B', 'C', 'D', 'E', 'F']
@@ -250,6 +252,133 @@ class Table(Element):
             dwg.add(first_column)
             dwg.add(second_column)
             counter += 1
+
+
+def percentage_to_mark(percentage):
+    """Transform percentage values to mark label."""
+    thresholds = {
+        99: 'A+++',
+        95: 'A++',
+        90: 'A+',
+        80: 'B',
+        70: 'C',
+        60: 'D',
+        50: 'E',
+        40: 'F'
+    }
+    for threshold, mark in thresholds.items():
+        if percentage >= threshold:
+            return mark
+    return 'F'
+
+
+def weight_pp(perc):
+    """Compute the weighted percentage. The gravity is near 0%."""
+    if perc > 75.0:
+        return perc
+    elif perc > 50.0:
+        return perc * 0.75
+    else:
+        return perc * 0.5
+
+
+def perc(part, total):
+    """Compute percentage."""
+    return weight_pp(100.0 * part / total)
+
+
+def calculate_overall_percentage(pp):
+    """Calculate overall percentage."""
+    print(pp)
+    return sum(pp) / len(pp)
+
+
+def generate_quality_label_for_repository(repository, results):
+    """Generate quality label for selected repository."""
+    if not results.repo_linter_checks[repository]["display_results"]:
+        return
+
+    # raw input data
+    files = len(results.source_files[repository]["line_counts"])
+    linter = len(results.repo_linter_checks[repository]["files"])
+    docstyle = len(results.repo_docstyle_checks[repository]["files"])
+
+    if results.unit_test_coverage[repository] is not None:
+        test_coverage = results.unit_test_coverage[repository]["coverage"]
+    else:
+        test_coverage = None
+
+    common_issues = results.common_errors[repository]["failed"]
+    dead_code = results.dead_code[repository]["failed"]
+    cyclomatic_complexity = results.repo_cyclomatic_complexity[repository]
+    maintainability_index = results.repo_maintainability_index[repository]
+
+    # percentages and marks
+    linter_perc = perc(linter, files)
+    linter_mark = percentage_to_mark(linter_perc)
+
+    docstyle_perc = perc(docstyle, files)
+    docstyle_mark = percentage_to_mark(docstyle_perc)
+
+    if test_coverage is not None:
+        test_coverage_perc = weight_pp(int(test_coverage))
+        test_coverage_mark = percentage_to_mark(test_coverage_perc)
+    else:
+        test_coverage_mark = "N/A"
+
+    common_issues_perc = perc(files - common_issues, files)
+    common_issues_mark = percentage_to_mark(common_issues_perc)
+
+    dead_code_perc = perc(files - dead_code, files)
+    dead_code_mark = percentage_to_mark(dead_code_perc)
+
+    cc_sum = sum(cyclomatic_complexity.values())
+    cc_perc = perc(cyclomatic_complexity["A"], cc_sum)
+    cc_mark = percentage_to_mark(cc_perc)
+
+    mi_sum = sum(maintainability_index.values())
+    mi_perc = perc(maintainability_index["A"], mi_sum)
+    mi_mark = percentage_to_mark(mi_perc)
+
+    if test_coverage is not None:
+        overall_perc = calculate_overall_percentage([linter_perc, docstyle_perc, test_coverage_perc,
+                                                     common_issues_perc, dead_code_perc,
+                                                     cc_perc, mi_perc])
+    else:
+        overall_perc = calculate_overall_percentage([linter_perc, docstyle_perc,
+                                                     common_issues_perc, dead_code_perc,
+                                                     cc_perc, mi_perc])
+
+    overall_mark = percentage_to_mark(overall_perc)
+    overall_mark_index = MARKS.index(overall_mark)
+
+    drawing = RootElement(filename=repository + ".svg")
+    container, ymax = generate_labels(500, 500, MARKS, overall_mark_index, 50, 50)
+
+    table = Table([(0, ymax + 50)], 50, 250)
+    table.elements = {'Score': int(overall_perc),
+                      'Overall': overall_mark,
+                      'Coverage': test_coverage_mark,
+                      'Common issues': common_issues_mark,
+                      'Dead code': dead_code_mark,
+                      'Linter': linter_mark,
+                      'Documentation': docstyle_mark,
+                      'Code complexity': cc_mark,
+                      'Maintainability index': mi_mark}
+
+    container.add(table)
+    drawing.add(container)
+    drawing.build()
+
+
+def generate_quality_labels(results):
+    """Generate quality labels for all repositories."""
+    with log.indent():
+        log.info("Generate quality labels")
+        for repository in results.repositories:
+            log.info(repository)
+            generate_quality_label_for_repository(repository, results)
+        log.success("Quality labels generated")
 
 
 def main():
