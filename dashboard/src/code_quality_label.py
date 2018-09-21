@@ -295,6 +295,7 @@ def calculate_overall_percentage(pp):
 
 def generate_quality_label_for_repository(repository, results):
     """Generate quality label for selected repository."""
+    # some repositories don't have any Python code, so we don't have proper metrics for them ATM
     if not results.repo_linter_checks[repository]["display_results"]:
         return
 
