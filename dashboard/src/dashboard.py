@@ -14,6 +14,7 @@ from jobsapi import JobsApi
 from configuration import Configuration
 from results import Results
 from html_generator import generate_dashboard
+from code_quality_label import generate_quality_labels
 from perf_tests import PerfTests
 from smoke_tests import SmokeTests
 from sla import SLA
@@ -645,6 +646,7 @@ def main():
 
     generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
     generate_charts(results)
+    generate_quality_labels(results)
 
 
 if __name__ == "__main__":
