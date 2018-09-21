@@ -8,6 +8,7 @@ from behave import given, when
 
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
+import os
 
 
 @given('Gemini service is running')
@@ -34,6 +35,32 @@ def set_epv_list(context, epv_list):
     context.epv_list = epv_list
 
 
+@given('Gemini service dependency files are set')
+def set_dependency_files(context):
+    """Set dependency_files for test."""
+    path_to_direct_file = os.path.abspath('data/gemini_scan_data/direct-dependencies.txt')
+    path_to_transitive_file = os.path.abspath('data/gemini_scan_data/transitive-dependencies.txt')
+    context.dependency_files = list()
+    with open(path_to_direct_file, 'rb') as f:
+        context.dependency_files.append((
+            "dependencyFile[]",
+            (
+                'direct-dependencies.txt',
+                f.read(),
+                'text/plain'
+            )
+        ))
+    with open(path_to_transitive_file, 'rb') as f:
+        context.dependency_files.append((
+            "dependencyFile[]",
+            (
+                'transitive-dependencies.txt',
+                f.read(),
+                'text/plain'
+            )
+        ))
+
+
 @when('I {method} to Gemini API {endpoint}')
 @when('I {method} to Gemini API {endpoint} {token} authorization token')
 def call_backbone_api(context, method="get", endpoint="/api/v1/register", token="without"):
@@ -50,11 +77,15 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
             'git-url': context.url,
             'git-sha': context.sha
         }
+
         if endpoint == "/api/v1/user-repo/notify":
             content.update({
                 "epv_list": context.epv_list
             })
         url = '{}/{}'.format(context.gemini_api_url, endpoint)
+        if endpoint == '/api/v1/user-repo/scan':
+            context.response = requests.post(url, data=content,
+                                             files=context.dependency_files)
         context.response = requests.post(url, json=content, headers=headers)
     else:
         api_url = "{api_url}/{endpoint}?git-url={git_url}&git-sha={git_sha}".format(
