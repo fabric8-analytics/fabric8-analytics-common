@@ -293,6 +293,14 @@ def calculate_overall_percentage(pp):
     return sum(pp) / len(pp)
 
 
+def format_mark_percentage(mark, pp):
+    """Format mark and percentage."""
+    if mark == "N/A":
+        return "N/A"
+    else:
+        return "{mark}  ({pp}%)".format(mark=mark, pp=int(pp))
+
+
 def generate_quality_label_for_repository(repository, results):
     """Generate quality label for selected repository."""
     # some repositories don't have any Python code, so we don't have proper metrics for them ATM
@@ -325,6 +333,7 @@ def generate_quality_label_for_repository(repository, results):
         test_coverage_perc = weight_pp(int(test_coverage))
         test_coverage_mark = percentage_to_mark(test_coverage_perc)
     else:
+        test_coverage_perc = "N/A"
         test_coverage_mark = "N/A"
 
     common_issues_perc = perc(files - common_issues, files)
@@ -357,15 +366,16 @@ def generate_quality_label_for_repository(repository, results):
     container, ymax = generate_labels(500, 500, MARKS, overall_mark_index, 50, 50)
 
     table = Table([(0, ymax + 50)], 50, 250)
-    table.elements = {'Score': int(overall_perc),
+    table.elements = {'Score': str(int(overall_perc)) + " / 100",
                       'Overall': overall_mark,
-                      'Coverage': test_coverage_mark,
-                      'Common issues': common_issues_mark,
-                      'Dead code': dead_code_mark,
-                      'Linter': linter_mark,
-                      'Documentation': docstyle_mark,
-                      'Code complexity': cc_mark,
-                      'Maintainability index': mi_mark}
+                      'Coverage': format_mark_percentage(test_coverage_mark, test_coverage_perc),
+                      'Common issues': format_mark_percentage(common_issues_mark,
+                                                              common_issues_perc),
+                      'Dead code': format_mark_percentage(dead_code_mark, dead_code_perc),
+                      'Linter': format_mark_percentage(linter_mark, linter_perc),
+                      'Documentation': format_mark_percentage(docstyle_mark, docstyle_perc),
+                      'Code complexity': format_mark_percentage(cc_mark, cc_perc),
+                      'Maintainability index': format_mark_percentage(mi_mark, mi_perc)}
 
     container.add(table)
     drawing.add(container)
