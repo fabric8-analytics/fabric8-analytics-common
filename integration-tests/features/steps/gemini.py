@@ -84,9 +84,12 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
             })
         url = '{}/{}'.format(context.gemini_api_url, endpoint)
         if endpoint == '/api/v1/user-repo/scan':
+            headers.pop('Content-Type', None)
+            headers.pop('Accept', None)
             context.response = requests.post(url, data=content,
-                                             files=context.dependency_files)
-        context.response = requests.post(url, json=content, headers=headers)
+                                             files=context.dependency_files, headers=headers)
+        else:
+            context.response = requests.post(url, json=content, headers=headers)
     else:
         api_url = "{api_url}/{endpoint}?git-url={git_url}&git-sha={git_sha}".format(
             api_url=context.gemini_api_url,
