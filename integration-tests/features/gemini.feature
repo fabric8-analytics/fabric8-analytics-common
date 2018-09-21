@@ -26,6 +26,7 @@ Feature: Gemini Analytics API
     Given Gemini service is running
         And Gemini service git url is https://github.com/jitpack/maven-simple
         And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
+        And Gemini service dependency files are set
     When I post to Gemini API api/v1/user-repo/scan
     Then I should get 401 status code
     When I acquire the authorization token
