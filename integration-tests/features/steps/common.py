@@ -119,6 +119,14 @@ def check_json_value_under_key(context, key, value):
     assert context.response.json().get(key) == value
 
 
+@then('I should find the text "{text}" stored under the key {key}')
+def check_json_value_text_under_key(context, text, key):
+    """Check that the JSON response contains given value under selected key."""
+    assert context.response.json().get(key)
+    value = context.response.json().get(key)
+    assert text in value
+
+
 @then('I should receive JSON response with the correct id')
 def check_id_in_json_response(context):
     """Check the ID attribute in the JSON response.
