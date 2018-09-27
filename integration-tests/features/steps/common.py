@@ -114,6 +114,7 @@ def check_json_response_contains_key(context, key):
 
 
 @then('I should receive JSON response with the {key} key set to {value}')
+@then('I should find that the {key} is set to {value} in the JSON response')
 def check_json_value_under_key(context, key, value):
     """Check that the JSON response contains given value under selected key."""
     assert context.response.json().get(key) == value
