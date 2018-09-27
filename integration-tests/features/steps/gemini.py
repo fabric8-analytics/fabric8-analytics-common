@@ -4,10 +4,11 @@
 """Tests gemini api endpoints."""
 import requests
 
-from behave import given, when
+from behave import given, when, then
 
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
+from src.attribute_checks import check_and_get_attribute
 import os
 
 
@@ -97,3 +98,21 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
             git_url=context.url,
             git_sha=context.sha)
         context.response = requests.get(api_url, headers=headers)
+
+
+@then('I should find {cves} CVEs for package {p} version {v} from ecosystem {e} in dependencies')
+def check_cves_for_epv(context, cves, p, v, e):
+    """Check number of CVEs reported for given e/p/v in dependencies."""
+    response = context.response.json()
+    depencencies = check_and_get_attribute(response, "dependencies")
+
+    for dependency in depencencies:
+        cve_count = check_and_get_attribute(dependency, "cve_count")
+        ecosystem = check_and_get_attribute(dependency, "ecosystem")
+        package = check_and_get_attribute(dependency, "name")
+        version = check_and_get_attribute(dependency, "version")
+        if ecosystem == e and package == p and version == v:
+            assert int(cve_count) == int(cves), \
+                "{exp} CVEs expected, but {found} was found".format(exp=cves, found=cve_count)
+            return
+    raise Exception("{e}/{p}/{v} was not found".format(e=e, p=p, v=v))
