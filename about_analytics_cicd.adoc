@@ -133,6 +133,11 @@ The next step is to configure webhooks in your GitHub repository. Please refer t
 https://wiki.centos.org/QaWiki/CI/GithubIntegration[official CentOS CI
 documentation] for more information.
 
+[[configure-webhooks-in-your-repository]]
+=== 5. Request quay.io image repository
+
+Create issue in the https://gitlab.cee.redhat.com/[housekeeping] repository for centos and rhel based images.
+
 [[promoting-to-production]]
 == Promoting to production
 
