@@ -87,3 +87,19 @@ def check_api_token(context):
         print(context.kerb_request)
         raise
     assert j["token"]
+
+
+@when("I acquire the user_key")
+def acquire_user_key(context):
+    """Acquire the user_key.
+
+    The user_key is read from the environment variable
+    """
+    three_scale_preview_user_key = os.environ.get("THREE_SCALE_PREVIEW_USER_KEY")
+    context.three_scale_preview_user_key = three_scale_preview_user_key
+
+
+@then('I should get the proper user_key')
+def is_proper_user_key_for_three_scale_preview(context):
+    """Check if the test has user_key for three scale API."""
+    assert context.three_scale_preview_user_key is not None
