@@ -18,6 +18,7 @@ features/three_scale.feature
 features/gemini.feature
 features/resilient_infrastructure.feature
 features/three_scale_stack_analyses.feature
+features/three_scale_component_analyses.feature
 
 features/auth_reproducers.feature
 
