@@ -286,6 +286,16 @@ def _is_3scale_staging_running(threescale_url, accepted_codes={200, 401}):
     return False
 
 
+def _is_3scale_preview_running(context, accepted_codes={200, 403, 401}):
+    try:
+        res = requests.post(context.threescale_preview_url)
+        if res.status_code in accepted_codes:
+            return True
+    except requests.exceptions.ConnectionError:
+        pass
+    return False
+
+
 def _is_backbone_api_running(backbone_api_url, accepted_codes={200}):
     try:
         url = '%s/api/v1/readiness' % backbone_api_url
@@ -362,7 +372,7 @@ def _add_slash(url):
 
 def _get_api_url(context, attribute, port):
     return _add_slash(context.config.userdata.get(attribute,
-                      'http://localhost:{port}/'.format(port=port)))
+                                                  'http://localhost:{port}/'.format(port=port)))
 
 
 def _send_json_file(endpoint, filename, custom_headers=None):
@@ -501,6 +511,7 @@ def before_all(context):
     context.wait_for_jobs_debug_api_service = _wait_for_jobs_debug_api_service
     context.wait_for_component_search_service = _wait_for_component_search_service
     context.is_3scale_staging_running = _is_3scale_staging_running
+    context.is_3scale_preview_running = _is_3scale_preview_running
     context.is_backbone_api_running = _is_backbone_api_running
     context.is_gemini_api_running = _is_gemini_api_running
 
@@ -535,6 +546,7 @@ def before_all(context):
     jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
     gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
     threescale_url = _read_url_from_env_var('F8A_3SCALE_URL')
+    threescale_preview_url = _read_url_from_env_var('F8A_THREE_SCALE_PREVIEW_URL')
     backbone_api_url = _read_url_from_env_var('F8A_BACKBONE_API_URL')
     service_id = _read_url_from_env_var('F8A_SERVICE_ID')
     gemini_api_url = _read_url_from_env_var('F8A_GEMINI_API_URL')
@@ -550,6 +562,8 @@ def before_all(context):
                                            _FABRIC8_LICENSE_SERVICE)
 
     context.threescale_url = threescale_url
+
+    context.threescale_preview_url = threescale_preview_url
 
     context.backbone_api_url = backbone_api_url
 
