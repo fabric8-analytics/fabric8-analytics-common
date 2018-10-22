@@ -133,7 +133,7 @@ def wait_for_stack_analysis_completion(context, user_key="without", rate=1):
 
 @then("I should get {response_txt} text response")
 def check_rate_limit_response(context, response_txt):
-    """Check the rate limit response text."""
+    """Verify the response text."""
     assert response_txt == context.response.text
 
 
