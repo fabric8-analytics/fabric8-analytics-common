@@ -89,8 +89,8 @@ def check_api_token(context):
     assert j["token"]
 
 
-@when("I acquire the user_key")
-def acquire_user_key(context):
+@when("I acquire the use_key for 3scale")
+def acquire_user_key_for_3scale(context):
     """Acquire the user_key.
 
     The user_key is read from the environment variable

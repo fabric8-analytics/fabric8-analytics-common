@@ -1,19 +1,19 @@
 Feature: Component Search API Through 3Scale Gateway
 
-  Scenario: Check the component analyses functionality for existent maven dependency through 3scale gateway
+  Scenario: Check the component analyses functionality for existent npm dependency through 3scale gateway
     Given System is running
     Given Three scale preview service is running
     When I wait 60 seconds
-    When I acquire the user_key
+    When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I start component analyses maven/ch.qos.logback:logback-core/1.1.10 with user_key
+    When I start component analyses npm/sequence/2.2.0 with user_key
     Then I should get 200 status code
 
-  Scenario: Check that the component-analyses returns limits exceeded for maven ecosystem
+  Scenario: Check that the component-analyses returns limits exceeded for npm ecosystem
     Given System is running
     Given Three scale preview service is running
-    When I acquire the user_key
+    When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I start component analyses maven/ch.qos.logback:logback-core/1.1.10 15 times in a minute with user_key
+    When I start component analyses npm/sequence/2.2.0 40 times in a minute with user_key
     Then I should get 429 status code
      And I should get Limits exceeded text response
