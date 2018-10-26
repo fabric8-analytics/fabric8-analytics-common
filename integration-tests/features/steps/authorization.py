@@ -70,7 +70,8 @@ def generate_authorization_token(context, private_key):
         payload = {
             'exp': expiry,
             'iat': datetime.datetime.utcnow(),
-            'sub': userid
+            'sub': userid,
+            'username': userid
         }
         token = jwt.encode(payload, key=private_key, algorithm='RS256')
         decoded = token.decode('utf-8')
