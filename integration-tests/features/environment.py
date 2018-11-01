@@ -448,6 +448,7 @@ def check_test_environment(context, coreapi_url):
         if coreapi_url:
             _check_env_for_remote_tests("F8A_API_URL")
             _check_env_for_remote_tests("F8A_JOB_API_URL")
+            _check_env_for_remote_tests("F8A_GEMINI_API_URL")
     else:
         print("Note: integration tests are running against existing deployment")
         _check_api_tokens_presence()
