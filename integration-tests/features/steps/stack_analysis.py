@@ -13,6 +13,7 @@ from src.utils import split_comma_separated_list
 from src.json_utils import check_id_value_in_json_response
 from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization
+from src.stack_analysis_common import contains_alternate_node
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -21,13 +22,6 @@ STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
 
 STACK_ANALYSIS_OUTLIER_PROBABILITY_CONSTANT_NAME = \
     "KRONOS_OUTLIER_PROBABILITY_THRESHOLD_VALUE"
-
-
-def contains_alternate_node(json_resp):
-    """Check for the existence of alternate node in the stack analysis."""
-    result = json_resp.get('result')
-    return bool(result) and isinstance(result, list) \
-        and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
 
 
 @when("I wait for stack analysis to finish")

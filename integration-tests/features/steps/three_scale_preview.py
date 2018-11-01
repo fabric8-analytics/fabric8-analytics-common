@@ -6,6 +6,7 @@ import time
 from behave import when, then, given
 from urllib.parse import urljoin
 from src.parsing import parse_token_clause
+from src.stack_analysis_common import contains_alternate_node
 
 
 def threescale_preview_endpoint_url(context, endpoint, epv=[]):
@@ -57,13 +58,6 @@ def send_manifest_to_stack_analyses(context, manifest, name, endpoint, user_key,
     else:
         response = requests.post(endpoint, files=files)
     context.response = response
-
-
-def contains_alternate_node(json_resp):
-    """Check for the existence of alternate node in the stack analysis."""
-    result = json_resp.get('result')
-    return bool(result) and isinstance(result, list) \
-        and (result[0].get('recommendation', {}) or {}).get('alternate', None) is not None
 
 
 @given('Three scale preview service is running')
