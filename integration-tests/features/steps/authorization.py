@@ -23,12 +23,14 @@ except ValueError as e:
 def is_proper_authorization_token_for_server_api(context):
     """Check if the test has any authorization token for server API."""
     assert context.token is not None
+    # TODO: check the token content
 
 
 @then('I should get the proper job API authorization token')
 def is_proper_authorization_token_for_jobs_api(context):
     """Check if the test has any authorization token for the Jobs API."""
     assert context.jobs_api_token is not None
+    # TODO: check the token content
 
 
 @when('I acquire the authorization token')
@@ -92,7 +94,7 @@ def check_api_token(context):
 
 @when("I acquire the use_key for 3scale")
 def acquire_user_key_for_3scale(context):
-    """Acquire the user_key.
+    """Acquire the user_key for 3scale.
 
     The user_key is read from the environment variable
     """
@@ -104,3 +106,4 @@ def acquire_user_key_for_3scale(context):
 def is_proper_user_key_for_three_scale_preview(context):
     """Check if the test has user_key for three scale API."""
     assert context.three_scale_preview_user_key is not None
+    # TODO: check the key content
