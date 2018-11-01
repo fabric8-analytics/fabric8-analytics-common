@@ -188,7 +188,7 @@ def _teardown_system(context):
         subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
 
-def _post_startup(context, started_all, wait_for_server):
+def _post_startup(started_all, wait_for_server):
     """Post startup actions."""
     if started_all:
         # let's give the whole system a while to breathe
@@ -225,7 +225,7 @@ def _wait_for_system(context, wait_for_server=60):
             if _is_running(context):
                 started_all = True
                 break
-    _post_startup(context, started_all, wait_for_server)
+    _post_startup(started_all, wait_for_server)
 
 
 def _wait_for_api(context, wait_for_service, check_function):
