@@ -343,6 +343,10 @@ def _is_component_search_service_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT +
                            "/component-search/any-component")
 
+def _is_running_cve_bydate_ecosystem_api(context):
+    return _is_api_running(context.coreapi_url + _API_ENDPOINT+
+                            "/cves/bydate")
+
 
 def _is_master_tag_list_service_running(context):
     return _is_api_running(context.coreapi_url + _API_ENDPOINT +
