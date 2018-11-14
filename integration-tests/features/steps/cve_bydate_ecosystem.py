@@ -1,4 +1,7 @@
-"""Tests for API endpoints that performs fetching of CVE information by date and further by ecosystem."""
+"""Tests for API endpoints that performs fetching of CVE information.
+
+Fetching is done by date and further by ecosystem.
+"""
 
 from behave import given, then, when
 from urllib.parse import urljoin
@@ -7,8 +10,9 @@ import requests
 
 @given('cve_bydate_ecosystem service is running')
 def running_cve_bydate_ecosystem_api(context):
-    """Checks if API is running."""
+    """Check if API is running."""
     return context.is_cve_bydate_ecosystem_service_running(context)
+
 
 def perform_bydate_ecosystem_search(context, date, ecosystem):
     """Call API endpoint to search for ecosystem."""
@@ -19,6 +23,7 @@ def perform_bydate_ecosystem_search(context, date, ecosystem):
     url = urljoin(context.coreapi_url, path)
     context.response = requests.get(url)
 
+
 @when('I search for {date} date')
 @when("I search for {date} date and {ecosystem} ecosystem")
 def search_for_ecosystem(context, date, ecosystem=None):
@@ -28,7 +33,7 @@ def search_for_ecosystem(context, date, ecosystem=None):
 
 @then('I should receive an empty JSON response')
 def empty_JSON_response(context):
-    """Check whether the received JSON response is empty"""
+    """Check whether the received JSON response is empty."""
     response = context.response
     assert response
     assert 'count' in response
@@ -36,5 +41,4 @@ def empty_JSON_response(context):
     assert 'add' in response
     assert len(response['add']) == 0
     assert 'remove' in response
-    assert len(response['remove'])==0
-
+    assert len(response['remove']) == 0
