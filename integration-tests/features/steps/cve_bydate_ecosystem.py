@@ -31,7 +31,7 @@ def search_for_ecosystem(context, date, ecosystem=None):
     perform_bydate_ecosystem_search(context, date, ecosystem)
 
 
-@then('I should receive an empty JSON response')
+@then('I should receive an empty response')
 def empty_JSON_response(context):
     """Check whether the received JSON response is empty."""
     response = context.response
