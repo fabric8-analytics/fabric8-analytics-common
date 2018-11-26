@@ -1,26 +1,29 @@
 # Order of the features in this file is significant, so shuffle them carefully.
 ## temporary: features/smoketest.feature
-features/server_api.feature
+#features/server_api.feature
 ## temporary: features/jobs_api.feature
 ## temporary: features/jobs_debug_api.feature
 #features/ecosystems.feature
-features/component_search.feature
-features/components.feature
-features/stack_analyses.feature
-features/user_feedback.feature
+#features/component_search.feature
+#features/components.feature
+#features/stack_analyses.feature
+#features/user_feedback.feature
 #features/versions.feature
-features/selfcheck.feature
+#features/selfcheck.feature
 #features/regression_tests.feature
-features/user_tag.feature
+#features/user_tag.feature
 ## temporary: features/gremlin.feature
-features/three_scale.feature
+#features/three_scale.feature
 #features/api_backbone.feature
-#features/gemini.feature
-features/resilient_infrastructure.feature
-features/three_scale_stack_analyses.feature
-features/three_scale_component_analyses.feature
+features/gemini.feature
+features/gemini.feature
+features/gemini.feature
+features/gemini.feature
+#features/resilient_infrastructure.feature
+#features/three_scale_stack_analyses.feature
+#features/three_scale_component_analyses.feature
 
-features/auth_reproducers.feature
+#features/auth_reproducers.feature
 
 #features/components_in_s3_vertx.feature
 #features/packages_in_s3.feature
