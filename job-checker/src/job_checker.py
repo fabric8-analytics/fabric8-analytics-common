@@ -97,7 +97,7 @@ def main():
                         failures = 0
                         for b in builds:
                             if b["result"] != "SUCCESS":
-                                failures+=1
+                                failures += 1
                             else:
                                 break
                         if failures >= FAILURE_THRESHOLD:
