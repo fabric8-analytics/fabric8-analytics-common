@@ -18,7 +18,7 @@ Feature: Dependency Editor CVE Analyses API behaviour
     When I acquire the authorization token
     Then I should get the proper authorization token
     When I send valid input with list of packages and versions, ecosystem and request_id with authorization token 
-    When I wait 20 seconds
+     And I wait 20 seconds
     Then I should get 200 status code
      And I should receive JSON response
      And I should find the attribute request_id equals to request_id passed in request

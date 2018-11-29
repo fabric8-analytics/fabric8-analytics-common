@@ -29,7 +29,7 @@ Feature: Checks the component metadata in AWS S3 database
   Scenario: Check that the component toplevel metadata are updated properly
     Given System is running
     When I wait 30 seconds
-    When I connect to the AWS S3 database
+     And I connect to the AWS S3 database
     Then I should see bayesian-core-data bucket
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
@@ -42,7 +42,7 @@ Feature: Checks the component metadata in AWS S3 database
   Scenario: Check that the analysis had really been performed based on timestamps tests
     Given System is running
     When I wait 30 seconds
-    When I connect to the AWS S3 database
+     And I connect to the AWS S3 database
     Then I should see bayesian-core-data bucket
     When I acquire job API authorization token
     Then I should get the proper job API authorization token
@@ -67,9 +67,9 @@ Feature: Checks the component metadata in AWS S3 database
     Then I should find the correct keywords tagging metadata for package clojure_py from ecosystem pypi
     When I read libraries io metadata for the package clojure_py in ecosystem pypi from the AWS S3 database bucket bayesian-core-package-data
     Then I should find the correct libraries io metadata for package clojure_py from ecosystem pypi
-     and I should find that the latest package version 0.2.4 was published on Apr 10, 2012
-     and I should find that the recent package version 0.1.0g was published on Mar 8, 2012
-     and I should find that the recent package version 0.2.0 was published on Apr 10, 2012
-     and I should find that the recent package version 0.2.1 was published on Apr 10, 2012
-     and I should find that the recent package version 0.2.2 was published on Apr 10, 2012
-     and I should find that the recent package version 0.2.3 was published on Apr 10, 2012
+     And I should find that the latest package version 0.2.4 was published on Apr 10, 2012
+     And I should find that the recent package version 0.1.0g was published on Mar 8, 2012
+     And I should find that the recent package version 0.2.0 was published on Apr 10, 2012
+     And I should find that the recent package version 0.2.1 was published on Apr 10, 2012
+     And I should find that the recent package version 0.2.2 was published on Apr 10, 2012
+     And I should find that the recent package version 0.2.3 was published on Apr 10, 2012
