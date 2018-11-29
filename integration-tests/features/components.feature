@@ -11,7 +11,7 @@ Feature: Components API V1
     Given System is running
     Given Component search service is running
     When I wait 60 seconds
-    When I search for component sequence without authorization token
+     And I search for component sequence without authorization token
     Then I should get 401 status code
 
   @requires_authorization_token @production
@@ -62,7 +62,7 @@ Feature: Components API V1
     Then I should get the proper authorization token
     When I search for component component_that_really_do_not_exist with authorization token
     Then I should get 200 status code
-    Then I should see 0 components
+     And I should see 0 components
 
   @production
   Scenario: Check that component analyses endpoint checks if all resources are specified
