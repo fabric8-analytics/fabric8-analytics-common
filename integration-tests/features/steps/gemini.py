@@ -85,6 +85,9 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
             })
         url = '{}/{}'.format(context.gemini_api_url, endpoint)
         if endpoint == '/api/v1/user-repo/scan':
+            content.update({
+                "ecosystem": "maven"
+            })
             headers.pop('Content-Type', None)
             headers.pop('Accept', None)
             context.response = requests.post(url, data=content,
