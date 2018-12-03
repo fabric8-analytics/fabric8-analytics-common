@@ -1,6 +1,6 @@
 # Order of the features in this file is significant, so shuffle them carefully.
 ## temporary: features/smoketest.feature
-features/server_api.feature
+# features/server_api.feature
 ## temporary: features/jobs_api.feature
 ## temporary: features/jobs_debug_api.feature
 #features/ecosystems.feature
