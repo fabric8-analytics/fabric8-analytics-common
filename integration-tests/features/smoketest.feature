@@ -7,12 +7,6 @@ Feature: Smoke test
     Then I should get 200 status code
 
   @smoketest @production
-  Scenario: Check the /schemas entry point
-    Given System is running
-    When I access /api/v1/schemas/
-    Then I should get 200 status code
-
-  @smoketest @production
   Scenario: Check the /system/version entry point
     Given System is running
     When I access /api/v1/system/version/
