@@ -1,6 +1,6 @@
 #!/bin/bash
 
-directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests db-integrity-tests taas job-checker"
+directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests db-integrity-tests taas job-checker baf"
 pass=0
 fail=0
 

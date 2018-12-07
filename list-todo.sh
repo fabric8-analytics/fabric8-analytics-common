@@ -1,6 +1,6 @@
 #!/bin/bash
 
-directories="dashboard db-integrity-tests integration-tests perf-tests reproducers ui-tests taas"
+directories="dashboard db-integrity-tests integration-tests perf-tests reproducers ui-tests taas baf"
 
 # checks for the whole directories
 for directory in $directories
