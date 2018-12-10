@@ -10,6 +10,8 @@ def main():
     log.info("Setup")
     with log.indent():
         cli_arguments = cli_parser.parse_args()
+        generate_html = cli_arguments.html
+        log.info("HTML generator: " + ("enabled" if generate_html else "disabled"))
 
 
 if __name__ == "__main__":
