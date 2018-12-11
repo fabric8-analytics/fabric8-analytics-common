@@ -1,16 +1,10 @@
 """The main module of the e2e test checker."""
 
-import json
-import datetime
-import os
-import sys
-import requests
-
 from fastlog import log
 
 from config import Config
-from ci_jobs import *
-from mm_client import *
+from ci_jobs import read_build_history, read_build_cause, read_changes
+from mm_client import login_and_send_message
 
 
 def read_last_processed():
