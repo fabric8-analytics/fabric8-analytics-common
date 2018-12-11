@@ -4,5 +4,8 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+fastlog==1.0.0b1
+mako==1.0.7
+markupsafe==1.0           # via mako
 requests==2.18.4
 urllib3==1.22             # via requests
