@@ -1,6 +1,5 @@
 """Simple and dirty Jenkins interface."""
 
-import configparser
 from urllib.parse import urljoin
 
 from fastlog import log

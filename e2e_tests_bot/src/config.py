@@ -1,7 +1,6 @@
 """Common configuration."""
 
 import configparser
-from urllib.parse import urljoin
 from fastlog import log
 
 
