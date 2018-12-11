@@ -111,3 +111,5 @@ openshift/env.sh
 
 html/
 latex/
+
+baf/run_my.sh
