@@ -38,9 +38,9 @@ def check_api_tokens_presence():
     """Check if API token is present in environment variable(s)."""
     # we need RECOMMENDER_API_TOKEN or RECOMMENDER_REFRESH_TOKEN to be set
     if not os.environ.get("RECOMMENDER_REFRESH_TOKEN"):
-        _missing_api_token_warning("RECOMMENDER_API_TOKEN")
+        missing_api_token_warning("RECOMMENDER_API_TOKEN")
     else:
-        _missing_api_token_warning("RECOMMENDER_REFRESH_TOKEN")
+        missing_api_token_warning("RECOMMENDER_REFRESH_TOKEN")
 
 
 def setup():
@@ -50,6 +50,7 @@ def setup():
         cli_arguments = cli_parser.parse_args()
         generate_html = cli_arguments.html
 
+        check_api_tokens_presence()
         license_service_url = read_url_from_env_var("OSIO_AUTH_SERVICE")
         refresh_token = os.environ.get("RECOMMENDER_REFRESH_TOKEN")
 

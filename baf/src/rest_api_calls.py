@@ -1,7 +1,6 @@
 """REST API calls implementation."""
 
 import requests
-from fastlog import log
 
 
 def authorization(token):
