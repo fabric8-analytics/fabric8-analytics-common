@@ -1,6 +1,7 @@
 """REST API calls implementation."""
 
 import requests
+import json
 
 
 def authorization(token):
@@ -13,8 +14,9 @@ def authorization(token):
 
 def send_payload(url, payload, access_token):
     """Send payload to the REST API endpoint using POST HTTP method."""
+    json_payload = json.dumps(payload)
     if access_token:
-        response = requests.post(url, data=payload, headers=authorization(access_token))
+        response = requests.post(url, data=json_payload, headers=authorization(access_token))
     else:
-        response = requests.post(url, data=payload)
+        response = requests.post(url, data=json_payload)
     return response

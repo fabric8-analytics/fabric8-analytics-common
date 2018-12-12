@@ -1,2 +1,2 @@
 "Server","Prefix","Endpoint","Method","Payload","Comment"
-"F8A_SERVER_API_URL","api/v1","license-recommender","POST","payloads/server/license_analysis/",""
+"F8A_SERVER_API_URL","api/v1","license-recommender","POST","payloads/server/license_analysis/maven_one_package.json",""
