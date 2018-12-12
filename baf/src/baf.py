@@ -2,11 +2,7 @@
 
 from fastlog import log
 import json
-import random
-import string
 import os
-import requests
-from urllib.parse import *
 from pprint import pprint
 from rest_api_calls import send_payload
 from csv_reader import read_csv_as_dicts
