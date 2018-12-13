@@ -8,6 +8,70 @@ import requests
 _AUTH_ENDPOINT = "/api/token/refresh"
 
 
+def check_access_token_attribute(token_structure):
+    """Additional check for the access_token attribute."""
+    assert "access_token" in token_structure
+
+    item = token_structure["access_token"]
+    assert isinstance(item, str)
+
+    # 200 chars is quite conservative
+    assert len(token_structure["access_token"]) > 200
+
+
+def check_token_type_attribute(token_structure):
+    """Additional check for the token_type attribute."""
+    assert "token_type" in token_structure
+    item = token_structure["token_type"]
+
+    assert isinstance(item, str)
+    # we don't know about any other token type
+    assert item == "Bearer"
+
+
+def check_expires_in_attribute(token_structure):
+    """Additional check for the expires_in attribute."""
+    assert "token_type" in token_structure
+    item = token_structure["expires_in"]
+
+    assert isinstance(item, int)
+    assert item > 0
+
+
+def check_refresh_expires_in_attribute(token_structure):
+    """Additional check for the refresh_expires_in attribute."""
+    assert "token_type" in token_structure
+    item = token_structure["refresh_expires_in"]
+
+    assert isinstance(item, int)
+    assert item > 0
+
+
+def check_not_before_policy_attribute(token_structure):
+    """Additional check for the not-before-policy attribute."""
+    assert "token_type" in token_structure
+    item = token_structure["not-before-policy"]
+
+    assert isinstance(item, int)
+    assert item >= 0
+
+
+def get_and_check_token_structure(data):
+    """Get the token structure from returned data and check the basic format."""
+    assert "token" in data
+    token_structure = data["token"]
+
+    assert "expires_in" in token_structure
+
+    check_access_token_attribute(token_structure)
+    check_token_type_attribute(token_structure)
+    check_expires_in_attribute(token_structure)
+    check_refresh_expires_in_attribute(token_structure)
+    check_not_before_policy_attribute(token_structure)
+
+    return token_structure
+
+
 def retrieve_access_token(refresh_token, auth_service_url):
     """Retrieve temporary access token by using refresh/offline token."""
     log.info("Trying to retrieve access token")
@@ -26,12 +90,7 @@ def retrieve_access_token(refresh_token, auth_service_url):
     data = response.json()
 
     # check the basic structure of the response
-    assert "token" in data
-    token_structure = data["token"]
-
-    assert "access_token" in token_structure
-    assert "token_type" in token_structure
-    assert "expires_in" in token_structure
+    token_structure = get_and_check_token_structure(data)
 
     log.info("Token seems to be correct")
 
