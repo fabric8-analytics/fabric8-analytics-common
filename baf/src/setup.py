@@ -26,13 +26,13 @@ def read_url_from_env_var(env_var_name):
 def missing_api_token_warning(env_var_name):
     """Print warning or basic info about missing API token."""
     if os.environ.get(env_var_name):
-        print("OK: {name} environment is set and will be used as "
-              "authorization token".format(name=env_var_name))
+        log.success("OK: {name} environment is set and will be used as "
+                    "authorization token".format(name=env_var_name))
     else:
-        print("Warning: the {name} environment variable is not"
-              " set.\n"
-              "Most tests that require authorization will probably fail".format(
-                  name=env_var_name))
+        log.warning("Warning: the {name} environment variable is not"
+                    " set.\n"
+                    "Most tests that require authorization will probably fail".format(
+                        name=env_var_name))
 
 
 def check_api_tokens_presence():
@@ -52,6 +52,21 @@ def yes_no(string):
 def enabled_disabled(b):
     """Convert boolean value to 'enabled' or 'disabled'."""
     return "enabled" if b else "disabled"
+
+
+def get_access_token(dry_run, refresh_token, license_service_url):
+    """Get the access token if possible."""
+    if not dry_run:
+        log.info("Auth. token generation")
+        with log.indent():
+            # we can retrieve access token by using refresh/offline token
+            access_token = retrieve_access_token(refresh_token, license_service_url)
+            if access_token is None:
+                sys.exit(-1)
+            log.success("Success")
+    else:
+        access_token = None
+    return access_token
 
 
 def setup():
@@ -82,16 +97,7 @@ def setup():
         log.info("Refresh token:    " + ("set" if refresh_token else "not set"))
         log.info("Success")
 
-    if not dry_run:
-        log.info("Auth. token generation")
-        with log.indent():
-            # we can retrieve access token by using refresh/offline token
-            access_token = retrieve_access_token(refresh_token, license_service_url)
-            if access_token is None:
-                sys.exit(-1)
-            log.success("Success")
-    else:
-        access_token = None
+    access_token = get_access_token(dry_run, refresh_token, license_service_url)
 
     return {"access_token": access_token,
             "generate_html": generate_html,
