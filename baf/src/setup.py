@@ -58,28 +58,41 @@ def setup():
     log.info("Setup")
     with log.indent():
         cli_arguments = cli_parser.parse_args()
+        dry_run = cli_arguments.dry
         generate_html = cli_arguments.html
+        generate_csv = cli_arguments.csv
 
-        check_api_tokens_presence()
-        license_service_url = read_url_from_env_var("OSIO_AUTH_SERVICE")
-        refresh_token = os.environ.get("RECOMMENDER_REFRESH_TOKEN")
+        if not dry_run:
+            check_api_tokens_presence()
+            license_service_url = read_url_from_env_var("OSIO_AUTH_SERVICE")
+            refresh_token = os.environ.get("RECOMMENDER_REFRESH_TOKEN")
 
-        if not license_service_url:
-            log.error("OSIO_AUTH_SERVICE is not set")
-            os.exit(-1)
+            if not license_service_url:
+                log.error("OSIO_AUTH_SERVICE is not set")
+                sys.exit(-1)
+        else:
+            license_service_url = "N/A"
+            refresh_token = None
 
-        log.info("HTML generator: " + ("enabled" if generate_html else "disabled"))
+        log.info("Dry run:          " + enabled_disabled(dry_run))
+        log.info("HTML generator:   " + enabled_disabled(generate_html))
+        log.info("CSV generator:    " + enabled_disabled(generate_csv))
         log.info("Auth service URL: " + license_service_url)
-        log.info("Refresh token: " + ("set" if refresh_token else "not set"))
+        log.info("Refresh token:    " + ("set" if refresh_token else "not set"))
         log.info("Success")
 
-    log.info("Auth. token generation")
-    with log.indent():
-        # we can retrieve access token by using refresh/offline token
-        access_token = retrieve_access_token(refresh_token, license_service_url)
-        if access_token is None:
-            os.exit(-1)
-        log.success("Success")
+    if not dry_run:
+        log.info("Auth. token generation")
+        with log.indent():
+            # we can retrieve access token by using refresh/offline token
+            access_token = retrieve_access_token(refresh_token, license_service_url)
+            if access_token is None:
+                sys.exit(-1)
+            log.success("Success")
+    else:
+        access_token = None
 
     return {"access_token": access_token,
-            "generate_html": generate_html}
+            "generate_html": generate_html,
+            "generate_csv": generate_csv,
+            "dry_run": dry_run}
