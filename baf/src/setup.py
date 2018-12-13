@@ -43,6 +43,16 @@ def check_api_tokens_presence():
         missing_api_token_warning("RECOMMENDER_REFRESH_TOKEN")
 
 
+def yes_no(string):
+    """Parse 'yes' and 'Yes' strings to True, all other values to False."""
+    return string is not None and string in {"yes", "Yes"}
+
+
+def enabled_disabled(b):
+    """Convert boolean value to 'enabled' or 'disabled'."""
+    return "enabled" if b else "disabled"
+
+
 def setup():
     """Perform BAF setup."""
     log.info("Setup")
