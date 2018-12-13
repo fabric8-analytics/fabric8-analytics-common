@@ -1,10 +1,10 @@
 """The main module of the Bayesian API Fuzzer."""
 
+import sys
 from fastlog import log
 from csv_reader import read_csv_as_dicts
 from setup import setup
 
-from cliargs import cli_parser
 from fuzzer import run_test
 
 

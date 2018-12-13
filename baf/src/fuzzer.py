@@ -5,7 +5,6 @@ from pprint import pprint
 
 import json
 import os
-import sys
 
 from setup import add_slash, yes_no, enabled_disabled
 from rest_api_calls import send_payload
@@ -67,7 +66,7 @@ def run_test(cfg, test):
         if test["Method"] == "POST":
             log.info("POSTing data")
             response = send_payload(url, original_json, cfg["access_token"])
-            assert response.status_code == 200
+            assert response.status_code == expected_status
             print(response)
             print(response.json())
 

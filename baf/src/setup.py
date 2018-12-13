@@ -1,6 +1,7 @@
 """Setup for the BAF tests."""
 
 import os
+import sys
 from fastlog import log
 
 from cliargs import cli_parser
