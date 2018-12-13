@@ -10,6 +10,14 @@
 [[running]]
 == Running BAF
 
+ baf.py [-h] [-u URL] [-D] [-H] [-C]
+ optional arguments:
+   -h, --help         show this help message and exit
+   -u URL, --url URL  specify URL to test
+   -D, --dry          dry run (do not call REST API)
+   -H, --html         generate report in HTML format
+   -C, --csv          generate report in CSV format
+
 [[Reports]]
 == Reports
 
