@@ -1,2 +1,4 @@
-"Server","Prefix","Endpoint","Method","Payload","Comment"
-"F8A_SERVER_API_URL","api/v1","license-recommender","POST","payloads/server/license_analysis/maven_one_package.json",""
+"Name","Server","Prefix","Endpoint","Method","Payload","Add items","Remove items","Change types","Mutate payload","Expected status","Comment"
+"Basic license analysis test","F8A_SERVER_API_URL","api/v1","license-recommendation","POST","payloads/server/license_analysis/maven_one_package.json","no","no","no","no",200,""
+"Negative license analysis test","F8A_SERVER_API_URL","api/v1","license-recommendation","POST","payloads/server/license_analysis/maven_one_package.json","yes","yes","yes","no",200,""
+"Fuzzing license analysis test","F8A_SERVER_API_URL","api/v1","license-recommendation","POST","payloads/server/license_analysis/maven_one_package.json","yes","yes","yes","yes",200,""
