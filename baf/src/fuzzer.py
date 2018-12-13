@@ -5,6 +5,8 @@ from pprint import pprint
 
 import json
 import os
+import itertools
+import copy
 
 from setup import add_slash, yes_no, enabled_disabled
 from rest_api_calls import send_payload
@@ -40,6 +42,53 @@ def construct_url(test):
     return url
 
 
+def perform_test(url, dry_run, payload, cfg, expected_status):
+    if dry_run:
+        log.info("(dry run)")
+        pprint(payload)
+    else:
+        if test["Method"] == "POST":
+            log.info("POSTing data")
+            response = send_payload(url, payload, cfg["access_token"])
+            assert response.status_code == expected_status
+
+
+def run_tests_with_removed_items_one_iteration(url, dry_run, original_payload, cfg,
+                                               expected_status, items_count, remove_flags):
+    """One iteration for the run_tests_with_removed_items()."""
+    keys = list(original_payload.keys())
+    # deep copy
+    new_payload = copy.deepcopy(original_payload)
+    for i in range(items_count):
+        remove_flag = remove_flags[i]
+        if remove_flag:
+            key = keys[i]
+            log.info("Removing item #{n} with key '{k}' from payload".format(n=i, k=key))
+            del new_payload[key]
+    perform_test(url, dry_run, new_payload, cfg, expected_status)
+
+
+def run_tests_with_removed_items(url, dry_run, original_payload, cfg, expected_status):
+    """Run tests with items removed from the original payload."""
+    iteration = 0
+    with log.indent():
+        items_count = len(original_payload)
+        # lexicographics ordering
+        remove_flags_list = list(itertools.product([True, False], repeat=items_count))
+        # the last item contains (False, False, False...) and we are not interesting
+        # in removing ZERO items
+        remove_flags_list = remove_flags_list[:-1]
+
+        with log.indent():
+            log.info("Iteration #{n}".format(n=iteration))
+            with log.indent():
+                for remove_flags in remove_flags_list:
+                    run_tests_with_removed_items_one_iteration(url, dry_run, original_payload,
+                                                               cfg, expected_status, items_count,
+                                                               remove_flags)
+            iteration += 1
+
+
 def run_test(cfg, test):
     """Run one selected test."""
     url = construct_url(test)
@@ -59,15 +108,11 @@ def run_test(cfg, test):
     log.info("Mutate payload operation:   " + enabled_disabled(mutate_payload))
     log.info("Original payload file:      " + filename)
 
-    original_json = load_json(filename)
-    pprint(original_json)
+    original_payload = load_json(filename)
+    perform_test(url, dry_run, original_payload, cfg, expected_status)
 
-    if not dry_run:
-        if test["Method"] == "POST":
-            log.info("POSTing data")
-            response = send_payload(url, original_json, cfg["access_token"])
-            assert response.status_code == expected_status
-            print(response)
-            print(response.json())
+    if remove_items:
+        log.info("Run tests with items removed from original payload")
+        run_tests_with_removed_items(url, dry_run, original_payload, cfg, expected_status)
 
     log.success("Finished")
