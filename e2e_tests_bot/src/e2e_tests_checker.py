@@ -82,7 +82,7 @@ def main():
     last_build, last_build_status, total_builds_cnt, success_builds_cnt = \
         read_build_history(master_build_url)
 
-    if last_build >= last_processed_build:
+    if last_build > last_processed_build:
         log.info("New build(s) detected!")
         with log.indent():
             process_new_build(config, last_build, last_build_status, jenkins_url, master_build_url)
