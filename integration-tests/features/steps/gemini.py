@@ -9,7 +9,9 @@ from behave import given, when, then
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
 from src.attribute_checks import check_and_get_attribute
+from src.utils import read_data_gemini
 import os
+import json
 
 
 @given('Gemini service is running')
@@ -72,6 +74,7 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
         headers = authorization(context)
     headers['Content-Type'] = 'application/json'
     headers['Accept'] = 'application/json'
+    headers['git-url'] = "https://github.com/heroku/node-js-sample.git"
 
     if method == 'post':
         content = {
@@ -85,13 +88,11 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
             })
         url = '{}/{}'.format(context.gemini_api_url, endpoint)
         if endpoint == '/api/v1/user-repo/scan':
-            content.update({
-                "ecosystem": "maven"
-            })
-            headers.pop('Content-Type', None)
+            content = read_data_gemini()
+            headers['git-url'] = "https://github.com/heroku/node-js-sample.git"
             headers.pop('Accept', None)
-            context.response = requests.post(url, data=content,
-                                             files=context.dependency_files, headers=headers)
+            context.response = requests.post(url, data=json.dumps(content),
+                                             headers=headers)
         else:
             context.response = requests.post(url, json=content, headers=headers)
     else:
