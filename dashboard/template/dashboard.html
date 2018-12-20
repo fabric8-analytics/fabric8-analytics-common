@@ -254,7 +254,7 @@ Please note that only semantical problems are reported; problems with style are 
                                 % if dead_code[repository]["failed"] == 0:
                                     <td class="numeric ok"><a href="${repository}.common_errors.txt" class="numeric ok">ok</a></td>
                                 % else:
-                                    <td class="numeric error"><a href="${repository}.dead_code.txt" class="numeric error">${dead_code[repository]["failed"]}</a></td>
+                                    <td class="numeric error error_highlight"><a href="${repository}.dead_code.txt" class="numeric error">${dead_code[repository]["failed"]}</a></td>
                                 % endif
                             % else:
                                 <td class="ignored" style="text-align:right">&times;</td>
@@ -265,7 +265,7 @@ Please note that only semantical problems are reported; problems with style are 
                                 % if common_errors[repository]["failed"] == 0:
                                     <td class="numeric ok"><a href="${repository}.common_errors.txt" class="numeric ok">ok</a></td>
                                 % else:
-                                    <td class="numeric error"><a href="${repository}.common_errors.txt" class="numeric error">${common_errors[repository]["failed"]}</a></td>
+                                    <td class="numeric error error_highlight"><a href="${repository}.common_errors.txt" class="numeric error">${common_errors[repository]["failed"]}</a></td>
                                 % endif
                             % else:
                                 <td class="ignored" style="text-align:right">&times;</td>
@@ -278,7 +278,7 @@ Please note that only semantical problems are reported; problems with style are 
 
                             % for rank in ["D", "E", "F"]:
                                 % if repo_cyclomatic_complexity[repository][rank] > 0:
-                                    <td class="numeric error" style="width:3ex;padding-left:0px;padding-right:2px;"><a href="${repository}.cc.${rank}.html" class="numeric error">${repo_cyclomatic_complexity[repository][rank]}</a></td>
+                                    <td class="numeric error error_highlight" style="width:3ex;padding-left:0px;padding-right:2px;"><a href="${repository}.cc.${rank}.html" class="numeric error">${repo_cyclomatic_complexity[repository][rank]}</a></td>
                                 % else:
                                     <td class="numeric ok" style="width:3ex;padding-left:0px;padding-right:2px;"><a href="${repository}.cc.${rank}.html" class="numeric ok">${repo_cyclomatic_complexity[repository][rank]}</a></td>
                                 % endif
@@ -289,7 +289,7 @@ Please note that only semantical problems are reported; problems with style are 
 
                             % for rank in ["B", "C"]:
                                 % if repo_maintainability_index[repository][rank] > 0:
-                                    <td class="numeric error" style="width:3ex;padding-left:0px;padding-right:2px;"><a href="${repository}.mi.${rank}.html" class="numeric error">${repo_maintainability_index[repository][rank]}</a></td>
+                                    <td class="numeric error error_highlight" style="width:3ex;padding-left:0px;padding-right:2px;"><a href="${repository}.mi.${rank}.html" class="numeric error">${repo_maintainability_index[repository][rank]}</a></td>
                                 % else:
                                     <td class="numeric ok" style="width:3ex;padding-left:0px;padding-right:2px;"><a href="${repository}.mi.${rank}.html" class="numeric ok">${repo_maintainability_index[repository][rank]}</a></td>
                                 % endif
