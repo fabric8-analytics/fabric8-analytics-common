@@ -191,9 +191,14 @@ Please note that only semantical problems are reported; problems with style are 
                         <tr><th>&nbsp;</th><th>Files</th><th>Total lines</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Pass</th><th>Fail</th><th>Pass %</th><th>Stmts.</th><th>Missed</th><th>Covered</th><th>&nbsp;</th><th>&nbsp;</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>A</th><th>B</th><th>C</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
                     % for repository in repositories:
                         <tr>
+                            <!-- Column 'Repository' -->
                             <td style="width:33ex"><a href="${repo_prefix}${repository}">${repository}</a></td>
+
+                            <!-- Two columns 'Source files' (Files + Total lines) -->
                             <td class="numeric" style="width:7ex"><a href="repository_${repository}.html">${source_files[repository]["count"]}</a></td>
                             <td class="numeric" style="width:7ex">${source_files[repository]["total_lines"]}</td>
+
+                            <!-- Three columns 'Linter results' (Pass + Fail + Pass%) -->
                             % if repo_linter_checks[repository]["display_results"]:
                                 <td class="numeric ok" style="width:6ex">${repo_linter_checks[repository]["passed"]}</td>
                                 <td class="numeric error" style="width:6ex">${repo_linter_checks[repository]["failed"]}</td>
@@ -209,6 +214,8 @@ Please note that only semantical problems are reported; problems with style are 
                                 <td class="na" style="width:6ex">N/A</td>
                                 <td class="na" style="width:16ex">N/A</td>
                             % endif
+
+                            <!-- Three columns 'Pydocstyle results' (Pass + Fail + Pass%) -->
                             % if repo_docstyle_checks[repository]["display_results"]:
                                 <td class="numeric ok" style="width:6ex">${repo_docstyle_checks[repository]["passed"]}</td>
                                 <td class="numeric error" style="width:6ex">${repo_docstyle_checks[repository]["failed"]}</td>
@@ -224,6 +231,8 @@ Please note that only semantical problems are reported; problems with style are 
                                 <td class="na" style="width:6ex">N/A</td>
                                 <td class="na" style="width:16ex">N/A</td>
                             % endif
+
+                            <!-- Three columns 'Code coverage' (Stmts. + Missed + Covered) -->
                             % if unit_test_coverage[repository] is not None:
                                 <td class="numeric ok" style="width:6ex">${unit_test_coverage[repository]["statements"]}</td>
                                 <td class="numeric error" style="width:6ex">${unit_test_coverage[repository]["missed"]}</td>
@@ -240,6 +249,7 @@ Please note that only semantical problems are reported; problems with style are 
                                 <td style="width:16ex">&nbsp;</td>
                             % endif
 
+                            <!-- One column 'Dead code' -->
                             % if dead_code[repository] is not None and dead_code[repository]["display_results"]:
                                 % if dead_code[repository]["failed"] == 0:
                                     <td class="numeric ok"><a href="${repository}.common_errors.txt" class="numeric ok">ok</a></td>
@@ -250,6 +260,7 @@ Please note that only semantical problems are reported; problems with style are 
                                 <td class="ignored" style="text-align:right">&times;</td>
                             % endif
 
+                            <!-- One column 'Common issues' -->
                             % if common_errors[repository] is not None and common_errors[repository]["display_results"]:
                                 % if common_errors[repository]["failed"] == 0:
                                     <td class="numeric ok"><a href="${repository}.common_errors.txt" class="numeric ok">ok</a></td>
@@ -260,6 +271,7 @@ Please note that only semantical problems are reported; problems with style are 
                                 <td class="ignored" style="text-align:right">&times;</td>
                             % endif
 
+                            <!-- Six columns 'Cyclomatic Complexity' -->
                             % for rank in ["A", "B", "C"]:
                                 <td class="numeric ignored" style="width:3ex;padding-left:0px;padding-right:2px;"><a href="${repository}.cc.${rank}.html" class="numeric ignored">${repo_cyclomatic_complexity[repository][rank]}</a></td>
                             % endfor
@@ -272,6 +284,7 @@ Please note that only semantical problems are reported; problems with style are 
                                 % endif
                             % endfor
 
+                            <!-- Four columns 'Maintainability Index' -->
                             <td class="numeric ignored" style="width:3ex;padding-left:0px;padding-right:2px;"><a href="${repository}.mi.A.html" class="numeric ignored">${repo_maintainability_index[repository]["A"]}</a></td>
 
                             % for rank in ["B", "C"]:
@@ -282,6 +295,7 @@ Please note that only semantical problems are reported; problems with style are 
                                 % endif
                             % endfor
 
+                            <!-- One column 'Overall status' -->
                             <td nowrap><a href="charts_${repository}.html"><img src="line_chart.gif" alt="Charts for the ${repository} repository" /></a>
                                 <a href="${repository}.svg"><img src="label.png" alt="Code quality label for the ${repository} repository" /></a></td>
                             % if overall_status[repository]:
@@ -290,6 +304,7 @@ Please note that only semantical problems are reported; problems with style are 
                                 <td class="boolean error" style="width:6ex;">&times;</td>
                             % endif
 
+                            <!-- One column 'Remark' -->
                             % if remarks[repository]:
                                 <td class="remark_todo" style="width:27ex"><ol>${remarks[repository]}</ol></td>
                             % else:
