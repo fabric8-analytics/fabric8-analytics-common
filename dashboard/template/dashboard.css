@@ -33,6 +33,9 @@ body { padding-top: 100px; }
 .error {
     color:#800000;
 }
+.error_highlight {
+    background-color:#ffd0d0;
+}
 .ignored {
     color:#808080;
 }
@@ -50,6 +53,10 @@ ol {
     padding-left:2ex;
 }
 tbody tr:hover td.remark_todo {
+    background:#ee9090;
+}
+
+tbody tr:hover td.error_highlight {
     background:#ee9090;
 }
 
