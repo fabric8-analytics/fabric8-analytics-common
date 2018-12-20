@@ -8,21 +8,18 @@ from setup import setup
 from fuzzer import run_test
 
 
-def run_all_tests(cfg, tests):
+def run_all_loaded_tests(cfg, fuzzer_settings, tests):
     """Run all tests read from CSV file."""
     i = 1
     for test in tests:
         log.info("Starting test #{n} with name '{desc}'".format(n=i, desc=test["Name"]))
         with log.indent():
-            run_test(cfg, test)
+            run_test(cfg, fuzzer_settings, test)
         i += 1
 
 
-def main():
-    """Entry point to the Bayesian API Fuzzer."""
-    log.setLevel(log.INFO)
-    cfg = setup()
-
+def start_tests(cfg, fuzzer_settings):
+    """Start all tests using the already loaded configuration and fuzzer settings."""
     log.info("Run tests")
     with log.indent():
         tests = read_csv_as_dicts("tests.csv")
@@ -30,10 +27,30 @@ def main():
             log.error("No tests loaded!")
             sys.exit(-1)
         if len(tests) == 1:
-            log.info("Loaded 1 test")
+            log.success("Loaded 1 test")
         else:
-            log.info("Loaded {n} tests".format(n=len(tests)))
-        run_all_tests(cfg, tests)
+            log.success("Loaded {n} tests".format(n=len(tests)))
+        run_all_loaded_tests(cfg, fuzzer_settings, tests)
+
+
+def read_fuzzer_settings(filename):
+    """Read fuzzer settings from the CSV file."""
+    log.info("Read fuzzer settings")
+    with log.indent():
+        fuzzer_settings = read_csv_as_dicts(filename)
+        if len(fuzzer_settings) == 1:
+            log.success("Loaded 1 setting")
+        else:
+            log.success("Loaded {n} settings".format(n=len(fuzzer_settings)))
+    return fuzzer_settings
+
+
+def main():
+    """Entry point to the Bayesian API Fuzzer."""
+    log.setLevel(log.INFO)
+    cfg = setup()
+    fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
+    start_tests(cfg, fuzzer_settings)
 
 
 if __name__ == "__main__":
