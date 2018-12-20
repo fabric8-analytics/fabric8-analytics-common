@@ -160,7 +160,43 @@ def run_tests_with_changed_items(url, http_method, dry_run, original_payload, cf
                     iteration += 1
 
 
-def run_test(cfg, test):
+def get_fuzzer_setting(fuzzer_settings, fuzzer_setting_name):
+    """Read the fuzzer setting from the list of dict."""
+    for fuzzer_setting in fuzzer_settings:
+        if "Name" in fuzzer_setting and fuzzer_setting["Name"] == fuzzer_setting_name:
+            return fuzzer_setting
+    return None
+
+
+def log_fuzzer_setting(fuzzer_setting):
+    """Display basic information about fuzzer settings."""
+    log.info("Fuzzer setting:")
+    with log.indent():
+        log.info("Iteration deep: " + fuzzer_setting["Iteration deep"])
+        log.info("List length in range from {n} to {m}".format(
+            n=fuzzer_setting["List min length"],
+            m=fuzzer_setting["List max length"]))
+        log.info("Dict length in range from {n} to {m}".format(
+            n=fuzzer_setting["Dictionary min length"],
+            m=fuzzer_setting["Dictionary max length"]))
+        log.info("Dict keys length in range from {n} to {m}".format(
+            n=fuzzer_setting["Min dictionary key length"],
+            m=fuzzer_setting["Max dictionary key length"]))
+        log.info("Strings length in range from {n} to {m}".format(
+            n=fuzzer_setting["Min string length"],
+            m=fuzzer_setting["Max string length"]))
+        log.info("Dictionary characters:                  " +
+                 fuzzer_setting["Dictionary characters"])
+        log.info("String characters:                      " + fuzzer_setting["String characters"])
+        log.info("Allow NaN in floats:                    " + fuzzer_setting["Allow NaN"])
+        log.info("Allow Inf in floats:                    " + fuzzer_setting["Allow Inf"])
+        log.info("Generate strings for SQL injection:     " +
+                 fuzzer_setting["SQL injection strings"])
+        log.info("Generate strings for Gremlin injection: " +
+                 fuzzer_setting["Gremlin injection strings"])
+
+
+def run_test(cfg, fuzzer_settings, test):
     """Run one selected test."""
     url = construct_url(test)
     log.info("URL to test:                " + url)
@@ -178,11 +214,21 @@ def run_test(cfg, test):
     mutate_payload = yes_no(test["Mutate payload"])
     filename = test["Payload"]
 
+    fuzzer_setting_name = test["Fuzzer setting"]
+
     log.info("Add items operation:        " + enabled_disabled(add_items))
     log.info("Remove items operation:     " + enabled_disabled(remove_items))
     log.info("Change item type operation: " + enabled_disabled(change_types))
     log.info("Mutate payload operation:   " + enabled_disabled(mutate_payload))
     log.info("Original payload file:      " + filename)
+    log.info("Fuzzer setting name:        " + fuzzer_setting_name)
+
+    fuzzer_setting = get_fuzzer_setting(fuzzer_settings, fuzzer_setting_name)
+    if fuzzer_setting_name is None:
+        log.error("Test configuration error: fuzzer setting does not exist")
+        return
+
+    log_fuzzer_setting(fuzzer_setting)
 
     original_payload = load_json(filename)
     if not any([add_items, remove_items, change_types, mutate_payload]):

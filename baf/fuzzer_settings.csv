@@ -1,0 +1,2 @@
+"Name","Iteration deep","List min length","List max length","Dictionary min length","Dictionary max length","Min dictionary key length","Max dictionary key length","Min string length","Max string length","Dictionary characters","String characters","Allow NaN","Allow Inf","SQL injection strings","Gremlin injection strings"
+"normal","2","4","6","4","6","8","12","10","20","lowercase+uppercase","lowercase+uppercase+punctuation+space","no","no","no","no"
