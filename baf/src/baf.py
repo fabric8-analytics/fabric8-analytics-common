@@ -6,20 +6,23 @@ from csv_reader import read_csv_as_dicts
 from setup import setup
 
 from fuzzer import run_test
+from results import Results
+from report_generator import generate_reports
 
 
-def run_all_loaded_tests(cfg, fuzzer_settings, tests):
+def run_all_loaded_tests(cfg, fuzzer_settings, tests, results):
     """Run all tests read from CSV file."""
     i = 1
     for test in tests:
         log.info("Starting test #{n} with name '{desc}'".format(n=i, desc=test["Name"]))
         with log.indent():
-            run_test(cfg, fuzzer_settings, test)
+            run_test(cfg, fuzzer_settings, test, results)
         i += 1
 
 
-def start_tests(cfg, fuzzer_settings):
+def start_tests(cfg, fuzzer_settings, results):
     """Start all tests using the already loaded configuration and fuzzer settings."""
+
     log.info("Run tests")
     with log.indent():
         tests = read_csv_as_dicts("tests.csv")
@@ -30,7 +33,7 @@ def start_tests(cfg, fuzzer_settings):
             log.success("Loaded 1 test")
         else:
             log.success("Loaded {n} tests".format(n=len(tests)))
-        run_all_loaded_tests(cfg, fuzzer_settings, tests)
+        run_all_loaded_tests(cfg, fuzzer_settings, tests, results)
 
 
 def read_fuzzer_settings(filename):
@@ -50,7 +53,9 @@ def main():
     log.setLevel(log.INFO)
     cfg = setup()
     fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
-    start_tests(cfg, fuzzer_settings)
+    results = Results()
+    start_tests(cfg, fuzzer_settings, results)
+    generate_reports(results)
 
 
 if __name__ == "__main__":
