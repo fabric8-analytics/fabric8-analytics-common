@@ -10,6 +10,8 @@ export F8A_API_URL_PROD=https://recommender.api.openshift.io
 export F8A_JOB_API_URL_STAGE=http://bayesian-jobs-bayesian-preview.b6ff.rh-idev.openshiftapps.com
 export F8A_JOB_API_URL_PROD=http://bayesian-jobs-bayesian-production.09b5.dsaas.openshiftapps.com
 
+export F8A_SERVER_API_URL=$F8A_API_URL_STAGE
+
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
 python3 -B src/baf.py $@
