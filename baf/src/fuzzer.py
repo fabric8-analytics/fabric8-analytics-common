@@ -1,7 +1,6 @@
 """API fuzzer logic."""
 
 from fastlog import log
-from pprint import pprint
 
 import json
 import os
@@ -27,8 +26,8 @@ def fuzz(data):
     rdg = RandomPayloadGenerator()
     new_key = rdg.generate_random_key_for_dict(data)
     new_data = rdg.generate_random_payload(restrict_types=(list, dict))
-    # print(new_key)
-    # pprint(new_data)
+    print(new_key)
+    print(new_data)
 
 
 def construct_url(test):

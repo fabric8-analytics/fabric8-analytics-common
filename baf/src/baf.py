@@ -22,7 +22,6 @@ def run_all_loaded_tests(cfg, fuzzer_settings, tests, results):
 
 def start_tests(cfg, fuzzer_settings, results):
     """Start all tests using the already loaded configuration and fuzzer settings."""
-
     log.info("Run tests")
     with log.indent():
         tests = read_csv_as_dicts("tests.csv")
