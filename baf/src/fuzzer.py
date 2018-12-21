@@ -252,12 +252,16 @@ def run_test(cfg, fuzzer_settings, test, results):
     try:
         original_payload = load_json(filename)
     except Exception:
-        results.add_test_result(test, TestResult.CONFIGURATION_ERROR, 
+        # JSON does not exist or can't be decoded
+        results.add_test_result(test, TestResult.CONFIGURATION_ERROR,
                                 cause="cannot load JSON payload", data=filename)
         return
 
+    # test whether user configured just regular REST API call test
     if not any([add_items, remove_items, change_types, mutate_payload]):
-        perform_test(url, http_method, dry_run, original_payload, cfg, expected_status, test, results)
+        # run the test with the original payload, that won't be altered in any way
+        perform_test(url, http_method, dry_run, original_payload, cfg, expected_status, test,
+                     results)
 
     if remove_items:
         log.info("Run tests with items removed from original payload")
