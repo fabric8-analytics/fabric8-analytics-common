@@ -46,7 +46,7 @@ Feature: Gemini Analytics API
     When I post to Gemini API /api/v1/user-repo/scan with authorization token
     Then I should get 200 status code
      And I should find that the status is set to success in the JSON response
-     And I should find the text "https://github.com/jitpack/maven-simple" stored under the key summary
+     And I should find the text "https://github.com/heroku/node-js-sample.git" stored under the key summary
 
 
   Scenario: Check the Gemini API /api/v1/user-repo/notify response
