@@ -1,5 +1,6 @@
 """Unsorted utility functions used in integration tests."""
 import os
+import json
 import requests
 import subprocess
 
@@ -99,3 +100,11 @@ def oc_run_command(*args):
     command.extend(args)
 
     return subprocess.check_output(command)
+
+
+def read_data_gemini():
+    """Help function to read sample payload."""
+    with open('data/scan-test-data.json') as f:
+        data = json.load(f)
+
+    return data
