@@ -46,7 +46,7 @@ This is optional, it can be used by developers outside CI environment. `cico_*`
 scripts expect that the environment is disposable, but the developer's
 laptop is not.
 
-It's usually a good idea to copy these scripts from an existing repo and
+It's usually a good idea to copy these scripts from an existing repository and
 simply adapt them for your needs.
 
 [[configure-cicd-jobs-in-almightyalmighty-jobs]]
@@ -136,7 +136,7 @@ documentation] for more information.
 [[configure-webhooks-in-your-repository]]
 === 5. Request quay.io image repository
 
-Create issue in the https://gitlab.cee.redhat.com/[housekeeping] repository for centos and rhel based images.
+Create issue in the https://gitlab.cee.redhat.com/[housekeeping] repository for CentOS and RHEL based images.
 
 [[promoting-to-production]]
 == Promoting to production

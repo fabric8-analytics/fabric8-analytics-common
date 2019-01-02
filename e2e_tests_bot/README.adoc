@@ -1,0 +1,20 @@
+[[e2e tests bot]]]
+= e2e tests bot
+
+[[preliminary-info]]
+== Preliminary info
+
+[[setup]]
+== Setup
+
+[[running]]
+== Running bot
+
+[[Reports]]
+== Reports
+
+[[known-issues]]
+== Known issues
+
+[[TODO]]
+== TODO
