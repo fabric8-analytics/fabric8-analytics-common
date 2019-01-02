@@ -54,7 +54,7 @@ def main():
     fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
     results = Results()
     start_tests(cfg, fuzzer_settings, results)
-    generate_reports(results)
+    generate_reports(results, cfg)
 
 
 if __name__ == "__main__":
