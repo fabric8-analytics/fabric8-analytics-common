@@ -49,7 +49,7 @@ def perform_test(url, http_method, dry_run, payload, cfg, expected_status, test,
     # pprint(payload)
     if dry_run:
         log.info("(dry run)")
-        results.add_test_result(test, TestResult.DRY_RUN)
+        results.add_test_result(test, url, TestResult.DRY_RUN)
     else:
         if http_method == "POST":
             log.info("POSTing data")
@@ -58,10 +58,12 @@ def perform_test(url, http_method, dry_run, payload, cfg, expected_status, test,
             log.info("HTTP status code {code}".format(code=status_code))
             if status_code == expected_status:
                 log.success("Success")
-                results.add_test_result(test, TestResult.SUCCESS)
+                results.add_test_result(test, url, TestResult.SUCCESS,
+                                        status_code=status_code, payload=payload)
             else:
                 log.error("Fail")
-                results.add_test_result(test, TestResult.FAILURE)
+                results.add_test_result(test, url, TestResult.FAILURE,
+                                        status_code=status_code, payload=payload)
 
 
 def run_tests_with_removed_items_one_iteration(url, http_method, dry_run, original_payload,
@@ -210,7 +212,7 @@ def run_test(cfg, fuzzer_settings, test, results):
     url = construct_url(test)
 
     if url is None:
-        results.add_test_result(test, TestResult.CONFIGURATION_ERROR,
+        results.add_test_result(test, None, TestResult.CONFIGURATION_ERROR,
                                 cause="can not construct URL to API",
                                 data=test["Prefix"])
         return
@@ -243,7 +245,7 @@ def run_test(cfg, fuzzer_settings, test, results):
 
     if fuzzer_setting_name is None:
         log.error("Test configuration error: fuzzer setting does not exist")
-        results.add_test_result(test, TestResult.CONFIGURATION_ERROR,
+        results.add_test_result(test, None, TestResult.CONFIGURATION_ERROR,
                                 cause="fuzzer setting does not exist", data=fuzzer_setting_name)
         return
 
@@ -253,7 +255,7 @@ def run_test(cfg, fuzzer_settings, test, results):
         original_payload = load_json(filename)
     except Exception:
         # JSON does not exist or can't be decoded
-        results.add_test_result(test, TestResult.CONFIGURATION_ERROR,
+        results.add_test_result(test, None, TestResult.CONFIGURATION_ERROR,
                                 cause="cannot load JSON payload", data=filename)
         return
 
