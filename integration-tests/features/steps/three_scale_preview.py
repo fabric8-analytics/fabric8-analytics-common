@@ -78,6 +78,13 @@ def npm_manifest_stack_analysis(context, manifest, version=3, user_key="without"
                                     endpoint, use_user_key, rate)
 
 
+def pause_between_stack_analysis_requests(sleep_amount, rate):
+    """Perform a pause between two stack analysis requests."""
+    if rate > 1:
+        sleep_amount = 0  # to get rate limit exceeded we have to overload API calls
+    time.sleep(sleep_amount)
+
+
 @when("I call stack analysis {rate:d} times in a minute {user_key} user_key")
 @when("I wait for stack analysis to finish {user_key} user_key")
 def wait_for_stack_analysis_completion(context, user_key="without", rate=1):
@@ -100,8 +107,6 @@ def wait_for_stack_analysis_completion(context, user_key="without", rate=1):
     url = urljoin(threescale_preview_endpoint_url(context, 'stack-analyses'), id)
 
     for _ in range((timeout // sleep_amount) + rate):
-        if rate > 1:
-            sleep_amount = 0  # to get rate limit exceeded we have to overload API calls
         if use_user_key:
             context.response = requests.get(
                 url, params={'user_key': context.three_scale_preview_user_key})
@@ -120,7 +125,7 @@ def wait_for_stack_analysis_completion(context, user_key="without", rate=1):
             break
         elif status_code != 202:
             raise Exception('Bad HTTP status code {c}'.format(c=status_code))
-        time.sleep(sleep_amount)
+        pause_between_stack_analysis_requests(sleep_amount, rate)
     else:
         raise Exception('Timeout waiting for the stack analysis results')
 
