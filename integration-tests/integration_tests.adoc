@@ -27,7 +27,7 @@ To add new feature tests:
 
 * link:features/smoketest.feature[Smoke tests]: Smoke tests for checking if main API endpoints are available and work as expected.
 * link:features/server_api.feature[Server API]: API tests for the server module.
-* link:features/jobs_api.feature[Jobs API]: API tests for the jobsmodule.
+* link:features/jobs_api.feature[Jobs API]: API tests for the jobs module.
 * link:features/stack_analyses_v2.feature[Stack analysis v2]: API tests
 for the stack analysis endpoint `/api/v2/stack-analyses/`.
 * link:features/components.feature[Component analysis]: API tests for
@@ -90,7 +90,7 @@ The available attributes include:
 * `resource_manager`: A link:https://docs.python.org/3/library/contextlib.html#contextlib.ExitStack[contextlib.ExitStack] instance for registering resources to be cleaned up at the end up of the current test scenario.
 * `docker_compose_path`: A list of Docker compose files defining the default configuration when running under Docker Compose.
 
-The context lifecycle policies defined by `behave` ensure that any changes to these attributes in step definitions remain in effect only until the end of the current scenario.
+The context life cycle policies defined by `behave` ensure that any changes to these attributes in step definitions remain in effect only until the end of the current scenario.
 
 == Host environment
 
@@ -238,7 +238,7 @@ org.springframework:spring-messaging
 == Resilient infrastructure tests
 Run the resilient infrastructure tests as follows:
 
-. Ensure that you have logged into OpenShift before the tests are run. These tests access OpenShift Console ie. the `oc` command.
+. Ensure that you have logged into OpenShift before the tests are run. These tests access OpenShift Console i.e.. the `oc` command.
 . Switch to the right project.
 +
 IMPORTANT: These tests restart different pods, so ensure that you do not run them against the production environment.
