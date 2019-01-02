@@ -34,7 +34,7 @@ You can use the following options to interact with Fabric8-Analytics:
 
 * API: To get up and running with the API please see the link:https://github.com/fabric8-analytics/fabric8-analytics-server/blob/master/README.md[API server README].
 * A widget in SonarQube: This is the developer facing integration point. For an in-depth example working with SonarQube see the
-link:https://github.com/fabric8-analytics/examples[examples repository].<Examples repo does not have any content drop this sentence if we have nothing in this repo>
+link:https://github.com/fabric8-analytics/examples[examples repository].<Examples repository does not have any content drop this sentence if we have nothing in this repository>
 +
 NOTE: A link:https://github.com/fabric8-analytics/fabric8-analytics-sonarqube-plugin[special plugin] needs to be used for scanning the Maven projects.
 
@@ -68,8 +68,8 @@ The <<about_qa_dashboard_code_coverage,QA dashboard>> provides a consolidated re
 ////
 Commenting out below sections as they need to move to relevant sections
 
-== Analytics CI/CD<Move to repo with information on CICD>
-<<about_analytics_cicd>><This readme should be in the appropriate repo in the org>
+== Analytics CI/CD<Move to repository with information on CICD>
+<<about_analytics_cicd>><This README should be in the appropriate repository in the org>
 
 <Move to a separate doc called coding guidelines in the main starting repo-deployment>
 == Coding standards
