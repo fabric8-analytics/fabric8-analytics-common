@@ -1,7 +1,5 @@
 """Report generator from BAF."""
 
-import csv
-
 
 def generate_text_report(results):
     """Generate text report with all BAF tests."""
@@ -21,3 +19,5 @@ def generate_text_report(results):
 def generate_reports(results, cfg):
     """Generate reports with all BAF tests."""
     generate_text_report(results)
+    # cfg contain information whether to generate HTML and/or CSV outputs
+    print(cfg)
