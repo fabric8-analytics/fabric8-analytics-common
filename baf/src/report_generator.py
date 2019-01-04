@@ -1,6 +1,7 @@
 """Report generator from BAF."""
 
 import csv
+import xml.etree.cElementTree as ET
 
 
 def generate_text_report(results, filename):
@@ -57,7 +58,24 @@ def generate_tsv_report(results, filename):
 
 def generate_xml_report(results, filename):
     """Generate XML report with all BAF tests."""
-    print(filename)
+    root = ET.Element("test-results")
+
+    for result in results.tests:
+        test = result["Test"]
+        status_code = str(result["Status code"]) or "N/A"
+        payload = str(result["Payload"]) or "N/A"
+
+        r = ET.SubElement(root, "result")
+        ET.SubElement(r, "test-name").text = test["Name"]
+        ET.SubElement(r, "endpoint").text = result["Url"]
+        ET.SubElement(r, "method").text = test["Method"]
+        ET.SubElement(r, "expected-status").text = test["Expected status"]
+        ET.SubElement(r, "actual-status").text = status_code
+        ET.SubElement(r, "test-result").text = result["Result"]
+        ET.SubElement(r, "payload-result").text = payload
+
+    tree = ET.ElementTree(root)
+    tree.write(filename)
 
 
 def generate_reports(results, cfg):
