@@ -42,8 +42,17 @@ def generate_csv_report(results, filename):
 
 def generate_tsv_report(results, filename):
     """Generate TSV report with all BAF tests."""
-    #with open(filename, 'w', encoding='utf8', newline='') as tsv_file:
-    print(filename)
+    with open(filename, 'w', encoding='utf8', newline='') as fout:
+        csv_writer = csv.writer(fout, delimiter='\t', lineterminator='\n')
+        csv_writer.writerow(["Test name", "Endpoint", "Method",
+                             "Expected status", "Actual status", "Test result", "Payload"])
+        for result in results.tests:
+            test = result["Test"]
+            status_code = str(result["Status code"]) or "N/A"
+            payload = str(result["Payload"]) or "N/A"
+            csv_writer.writerow([test["Name"], result["Url"], test["Method"],
+                                 test["Expected status"], status_code, result["Result"],
+                                 payload])
 
 
 def generate_xml_report(results, filename):
