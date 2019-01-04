@@ -25,6 +25,7 @@ def generate_html_report(results, filename):
     """Generate HTML report with all BAF tests."""
     root = ET.Element("html")
     head = ET.SubElement(root, "head")
+    ET.SubElement(head, "title").text = "Bayesian API Fuzzer test results"
     body = ET.SubElement(root, "body")
     ET.SubElement(body, "h1").text = "Test results"
     table = ET.SubElement(body, "table")
