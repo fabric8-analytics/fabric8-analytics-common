@@ -49,7 +49,12 @@ def generate_html_report(results, filename):
         tr = ET.SubElement(table, "tr")
 
         ET.SubElement(tr, "td").text = test["Name"]
-        ET.SubElement(tr, "td").text = result["Url"]
+
+        url_cell = ET.SubElement(tr, "td")
+        url = ET.SubElement(url_cell, "a")
+        url.text = result["Url"]
+        url.attrib["href"] = result["Url"]
+
         ET.SubElement(tr, "td").text = test["Method"]
         ET.SubElement(tr, "td").text = test["Expected status"]
         ET.SubElement(tr, "td").text = status_code

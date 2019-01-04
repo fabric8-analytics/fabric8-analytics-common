@@ -14,7 +14,7 @@ class Results():
         result = {}
         result["Test"] = test
         result["Url"] = url
-        result["Result"] = str(test_result)
+        result["Result"] = str(test_result.name)
         result["Cause"] = cause
         result["Payload"] = payload
         result["Data"] = data
