@@ -23,7 +23,40 @@ def generate_text_report(results, filename):
 
 def generate_html_report(results, filename):
     """Generate HTML report with all BAF tests."""
-    print(filename)
+    root = ET.Element("html")
+    head = ET.SubElement(root, "head")
+    body = ET.SubElement(root, "body")
+    ET.SubElement(body, "h1").text = "Test results"
+    table = ET.SubElement(body, "table")
+    table.attrib["border"] = "1"
+
+    tr = ET.SubElement(table, "tr")
+
+    ET.SubElement(tr, "th").text = "Test name"
+    ET.SubElement(tr, "th").text = "URL"
+    ET.SubElement(tr, "th").text = "Method"
+    ET.SubElement(tr, "th").text = "Expected status"
+    ET.SubElement(tr, "th").text = "Actual status"
+    ET.SubElement(tr, "th").text = "Result"
+    ET.SubElement(tr, "th").text = "Payload"
+
+    for result in results.tests:
+        test = result["Test"]
+        status_code = str(result["Status code"]) or "N/A"
+        payload = str(result["Payload"]) or "N/A"
+
+        tr = ET.SubElement(table, "tr")
+
+        ET.SubElement(tr, "td").text = test["Name"]
+        ET.SubElement(tr, "td").text = result["Url"]
+        ET.SubElement(tr, "td").text = test["Method"]
+        ET.SubElement(tr, "td").text = test["Expected status"]
+        ET.SubElement(tr, "td").text = status_code
+        ET.SubElement(tr, "td").text = result["Result"]
+        ET.SubElement(tr, "td").text = payload
+
+    tree = ET.ElementTree(root)
+    tree.write(filename, method="html")
 
 
 def generate_csv_report(results, filename):
