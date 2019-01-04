@@ -75,8 +75,11 @@ def setup():
     with log.indent():
         cli_arguments = cli_parser.parse_args()
         dry_run = cli_arguments.dry
+        generate_text = cli_arguments.text
         generate_html = cli_arguments.html
         generate_csv = cli_arguments.csv
+        generate_tsv = cli_arguments.tsv
+        generate_xml = cli_arguments.xml
 
         if not dry_run:
             check_api_tokens_presence()
@@ -91,8 +94,11 @@ def setup():
             refresh_token = None
 
         log.info("Dry run:          " + enabled_disabled(dry_run))
+        log.info("Text generator:   " + enabled_disabled(generate_text))
         log.info("HTML generator:   " + enabled_disabled(generate_html))
         log.info("CSV generator:    " + enabled_disabled(generate_csv))
+        log.info("TSV generator:    " + enabled_disabled(generate_tsv))
+        log.info("XML generator:    " + enabled_disabled(generate_xml))
         log.info("Auth service URL: " + license_service_url)
         log.info("Refresh token:    " + ("set" if refresh_token else "not set"))
         log.info("Success")
@@ -101,5 +107,8 @@ def setup():
 
     return {"access_token": access_token,
             "generate_html": generate_html,
+            "generate_text": generate_text,
             "generate_csv": generate_csv,
+            "generate_tsv": generate_tsv,
+            "generate_xml": generate_xml,
             "dry_run": dry_run}
