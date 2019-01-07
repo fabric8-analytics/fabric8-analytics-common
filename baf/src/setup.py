@@ -4,7 +4,6 @@ import os
 import sys
 from fastlog import log
 
-from cliargs import cli_parser
 from auth import retrieve_access_token
 
 # The following endpoint is used to get the access token from OSIO AUTH service
@@ -69,7 +68,7 @@ def get_access_token(dry_run, refresh_token, license_service_url):
     return access_token
 
 
-def setup():
+def setup(cli_arguments):
     """Perform BAF setup."""
     log.info("Setup")
     with log.indent():

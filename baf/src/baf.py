@@ -4,6 +4,7 @@ import sys
 from fastlog import log
 from csv_reader import read_csv_as_dicts
 from setup import setup
+from cliargs import cli_parser
 
 from fuzzer import run_test
 from results import Results
@@ -50,7 +51,8 @@ def read_fuzzer_settings(filename):
 def main():
     """Entry point to the Bayesian API Fuzzer."""
     log.setLevel(log.INFO)
-    cfg = setup()
+    cli_arguments = cli_parser.parse_args()
+    cfg = setup(cli_arguments)
     fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
     results = Results()
     start_tests(cfg, fuzzer_settings, results)
