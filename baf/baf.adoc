@@ -18,11 +18,17 @@ You need to provide environment variables with URL to servers. Names of those va
 
  baf.py [-h] [-u URL] [-D] [-H] [-C]
  optional arguments:
-   -h, --help         show this help message and exit
-   -u URL, --url URL  specify URL to test
-   -D, --dry          dry run (do not call REST API)
-   -H, --html         generate report in HTML format
-   -C, --csv          generate report in CSV format
+   -h, --help            show this help message and exit
+   -v, --version         show version information
+   -i INPUT, --input INPUT
+   -u URL, --url URL     specify URL to test
+   -D, --dry             dry run (do not call REST API)
+   -t TEXT, --text TEXT  generate report in plain text format
+   -H HTML, --html HTML  generate report in HTML format
+   -C CSV, --csv CSV     generate report in CSV format
+   -T TSV, --tsv TSV     generate report in TSV format
+   -X XML, --xml XML     generate report in XML format
+
 
 [[Reports]]
 == Reports
