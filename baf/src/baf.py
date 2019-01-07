@@ -11,6 +11,10 @@ from results import Results
 from report_generator import generate_reports
 
 
+VERSION_MAJOR = 1
+VERSION_MINOR = 0
+
+
 def run_all_loaded_tests(cfg, fuzzer_settings, tests, results):
     """Run all tests read from CSV file."""
     i = 1
@@ -48,15 +52,24 @@ def read_fuzzer_settings(filename):
     return fuzzer_settings
 
 
+def show_version():
+    """Show BAF version."""
+    print("BAF version {major}.{minor}".format(major=VERSION_MAJOR, minor=VERSION_MINOR))
+
+
 def main():
     """Entry point to the Bayesian API Fuzzer."""
     log.setLevel(log.INFO)
     cli_arguments = cli_parser.parse_args()
-    cfg = setup(cli_arguments)
-    fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
-    results = Results()
-    start_tests(cfg, fuzzer_settings, results)
-    generate_reports(results, cfg)
+    if cli_arguments.version:
+        show_version()
+        sys.exit(0)
+    else:
+        cfg = setup(cli_arguments)
+        fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
+        results = Results()
+        start_tests(cfg, fuzzer_settings, results)
+        generate_reports(results, cfg)
 
 
 if __name__ == "__main__":

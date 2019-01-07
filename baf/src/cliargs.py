@@ -4,6 +4,10 @@ import argparse
 
 cli_parser = argparse.ArgumentParser()
 
+cli_parser.add_argument('-v', '--version',
+                        help='show version information',
+                        action='store_true')
+
 cli_parser.add_argument('-u', '--url',
                         help='specify URL to test',
                         action='store')
