@@ -8,6 +8,10 @@ cli_parser.add_argument('-v', '--version',
                         help='show version information',
                         action='store_true')
 
+cli_parser.add_argument('-i', '--input',
+                        help='specify input file with test descriptions',
+                        action='store')
+
 cli_parser.add_argument('-u', '--url',
                         help='specify URL to test',
                         action='store')

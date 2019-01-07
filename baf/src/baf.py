@@ -29,7 +29,7 @@ def start_tests(cfg, fuzzer_settings, results):
     """Start all tests using the already loaded configuration and fuzzer settings."""
     log.info("Run tests")
     with log.indent():
-        tests = read_csv_as_dicts("tests.csv")
+        tests = read_csv_as_dicts(cfg["input_file"])
         if not tests or len(tests) == 0:
             log.error("No tests loaded!")
             sys.exit(-1)
