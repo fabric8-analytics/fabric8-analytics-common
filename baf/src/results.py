@@ -1,5 +1,12 @@
 """Results gathered from tests."""
 
+from json import dumps
+
+
+def pretty_print(payload):
+    """Perform a pretty printing of the input payload."""
+    return dumps(payload, indent=4)
+
 
 class Results():
     """Class representing results gathered from tests."""
@@ -17,6 +24,7 @@ class Results():
         result["Result"] = str(test_result.name)
         result["Cause"] = cause
         result["Payload"] = payload
+        result["Payload_pp"] = pretty_print(payload)
         result["Data"] = data
         result["Status code"] = status_code
         self.tests.append(result)
