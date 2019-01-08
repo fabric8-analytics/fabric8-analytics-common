@@ -1,7 +1,9 @@
 """Report generator from BAF."""
 
 import csv
+import time
 import xml.etree.cElementTree as ET
+from mako.template import Template
 
 
 def generate_text_report(results, filename):
@@ -21,48 +23,24 @@ def generate_text_report(results, filename):
             print(output, file=fout)
 
 
+def generate_timestamp():
+    """Generate timestamp in human readable format."""
+    return time.strftime('%Y-%m-%d %H:%M:%S')
+
+
 def generate_html_report(results, filename):
     """Generate HTML report with all BAF tests."""
-    root = ET.Element("html")
-    head = ET.SubElement(root, "head")
-    ET.SubElement(head, "title").text = "Bayesian API Fuzzer test results"
-    body = ET.SubElement(root, "body")
-    ET.SubElement(body, "h1").text = "Test results"
-    table = ET.SubElement(body, "table")
-    table.attrib["border"] = "1"
+    template = Template(filename="templates/results.html")
 
-    tr = ET.SubElement(table, "tr")
+    data_for_template = {}
+    data_for_template["results"] = results.tests
+    data_for_template["generated_on"] = generate_timestamp()
 
-    ET.SubElement(tr, "th").text = "Test name"
-    ET.SubElement(tr, "th").text = "URL"
-    ET.SubElement(tr, "th").text = "Method"
-    ET.SubElement(tr, "th").text = "Expected status"
-    ET.SubElement(tr, "th").text = "Actual status"
-    ET.SubElement(tr, "th").text = "Result"
-    ET.SubElement(tr, "th").text = "Payload"
+    # generate HTML page using the provided data
+    generated_page = template.render(**data_for_template)
 
-    for result in results.tests:
-        test = result["Test"]
-        status_code = str(result["Status code"]) or "N/A"
-        payload = str(result["Payload"]) or "N/A"
-
-        tr = ET.SubElement(table, "tr")
-
-        ET.SubElement(tr, "td").text = test["Name"]
-
-        url_cell = ET.SubElement(tr, "td")
-        url = ET.SubElement(url_cell, "a")
-        url.text = result["Url"]
-        url.attrib["href"] = result["Url"]
-
-        ET.SubElement(tr, "td").text = test["Method"]
-        ET.SubElement(tr, "td").text = test["Expected status"]
-        ET.SubElement(tr, "td").text = status_code
-        ET.SubElement(tr, "td").text = result["Result"]
-        ET.SubElement(tr, "td").text = payload
-
-    tree = ET.ElementTree(root)
-    tree.write(filename, method="html")
+    with open(filename, "w") as fout:
+        fout.write(generated_page)
 
 
 def generate_csv_report(results, filename):
