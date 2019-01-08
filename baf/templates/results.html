@@ -22,18 +22,75 @@
                 </div>
             </nav>
 
+            <h2>Table of content</h2>
+            <ol>
+                <li><a href="#config">Configuration</a></li>
+                <li><a href="#spec">Test specifications</a></li>
+                <li><a href="#results">Test results</a></li>
+                <li><a href="#stat">Statistic</a></li>
+            </ol>
+
             <a name="config"></a>
             <div style="padding-top:70px"></div>
             <div class="panel panel-primary">
                 <div class="panel-heading">Configuration</div>
                 <table class="table table-condensed table-hover table-bordered" rules="all">
-                    <tr><td>Dry run</td><td>${configuration["dry_run"]}</td></tr>
-                    <tr><td>HTML output</td><td>${configuration["generate_html"]}</td></tr>
-                    <tr><td>Text output</td><td>${configuration["generate_text"]}</td></tr>
-                    <tr><td>CSV output</td><td>${configuration["generate_csv"]}</td></tr>
-                    <tr><td>TSV output</td><td>${configuration["generate_tsv"]}</td></tr>
-                    <tr><td>XML output</td><td>${configuration["generate_xml"]}</td></tr>
-                    <tr><td>Input file with tests</td><td>${configuration["input_file"]}</td></tr>
+                    <tr>
+                        <td style="width:30ex">Dry run</td>
+                        % if configuration['dry_run']:
+                            <td class='yes'>enabled</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>HTML output</td>
+                        % if configuration['generate_html'] is not None:
+                            <td class='value'>${configuration["generate_html"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>Text output</td>
+                        % if configuration['generate_text'] is not None:
+                            <td class='value'>${configuration["generate_text"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>CSV output</td>
+                        % if configuration['generate_csv'] is not None:
+                            <td class='value'>${configuration["generate_csv"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>TSV output</td>
+                        % if configuration['generate_tsv'] is not None:
+                            <td class='value'>${configuration["generate_tsv"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>XML output</td>
+                        % if configuration['generate_xml'] is not None:
+                            <td class='value'>${configuration["generate_xml"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>Input file with tests</td>
+                        % if configuration['input_file'] is not None:
+                            <td class='value'>${configuration["input_file"]}</td>
+                        % else:
+                            <td class='no'>not specified</td>
+                        % endif
+                    </tr>
                 </table>
             </div>
 
@@ -108,6 +165,20 @@
                 % endfor
                 </table>
             </div>
+
+            <a name="stat"></a>
+            <div style="padding-top:70px"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Statistic</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr><td style="width:30ex">Tests</td><td>${statistic["tests"]}</td></tr>
+                    <tr><td>Passed</td><td class='ok'>${statistic["passed"]}</td></tr>
+                    <tr><td>Failed</td><td class='error'>${statistic["failed"]}</td></tr>
+                    <tr><td>Success rate</td><td>${statistic["success_rate"]}</td></tr>
+                    <tr><td>Total time</td><td>${statistic["total_time"]}</td></tr>
+                </table>
+            </div>
+
             <div style='height:100px'></div>
             <div>Author: Pavel Tisnovsky &lt;<a href="mailto:ptisnovs@redhat.com">ptisnovs@redhat.com</a>&gt;</div>
             <div>Generated on: ${generated_on}</div>
