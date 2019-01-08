@@ -1,7 +1,10 @@
 """Report generator from BAF."""
 
 import csv
+import time
+from fastlog import log
 import xml.etree.cElementTree as ET
+from mako.template import Template
 
 
 def generate_text_report(results, filename):
@@ -21,48 +24,49 @@ def generate_text_report(results, filename):
             print(output, file=fout)
 
 
-def generate_html_report(results, filename):
+def generate_timestamp():
+    """Generate timestamp in human readable format."""
+    return time.strftime('%Y-%m-%d %H:%M:%S')
+
+
+def get_test_statistic(results):
+    """Compute basic test statistic."""
+    tests = len(results.tests)
+    passed = len(list(r for r in results.tests if r["Success"]))
+    failed = tests - passed
+
+    if tests > 0:
+        success_rate = str(100.0 * passed / tests) + "%"
+    else:
+        success_rate = "N/A"
+
+    return tests, passed, failed, success_rate
+
+
+def generate_html_report(tests, results, filename, cfg, total_time):
     """Generate HTML report with all BAF tests."""
-    root = ET.Element("html")
-    head = ET.SubElement(root, "head")
-    ET.SubElement(head, "title").text = "Bayesian API Fuzzer test results"
-    body = ET.SubElement(root, "body")
-    ET.SubElement(body, "h1").text = "Test results"
-    table = ET.SubElement(body, "table")
-    table.attrib["border"] = "1"
+    template = Template(filename="templates/results.html")
 
-    tr = ET.SubElement(table, "tr")
+    statistic = {}
+    all_tests, passed, failed, success_rate = get_test_statistic(results)
+    statistic["tests"] = all_tests
+    statistic["passed"] = passed
+    statistic["failed"] = failed
+    statistic["success_rate"] = success_rate
+    statistic["total_time"] = "{0:.2f} s".format(total_time)
 
-    ET.SubElement(tr, "th").text = "Test name"
-    ET.SubElement(tr, "th").text = "URL"
-    ET.SubElement(tr, "th").text = "Method"
-    ET.SubElement(tr, "th").text = "Expected status"
-    ET.SubElement(tr, "th").text = "Actual status"
-    ET.SubElement(tr, "th").text = "Result"
-    ET.SubElement(tr, "th").text = "Payload"
+    data_for_template = {}
+    data_for_template["configuration"] = cfg
+    data_for_template["tests"] = tests
+    data_for_template["results"] = results.tests
+    data_for_template["generated_on"] = generate_timestamp()
+    data_for_template["statistic"] = statistic
 
-    for result in results.tests:
-        test = result["Test"]
-        status_code = str(result["Status code"]) or "N/A"
-        payload = str(result["Payload"]) or "N/A"
+    # generate HTML page using the provided data
+    generated_page = template.render(**data_for_template)
 
-        tr = ET.SubElement(table, "tr")
-
-        ET.SubElement(tr, "td").text = test["Name"]
-
-        url_cell = ET.SubElement(tr, "td")
-        url = ET.SubElement(url_cell, "a")
-        url.text = result["Url"]
-        url.attrib["href"] = result["Url"]
-
-        ET.SubElement(tr, "td").text = test["Method"]
-        ET.SubElement(tr, "td").text = test["Expected status"]
-        ET.SubElement(tr, "td").text = status_code
-        ET.SubElement(tr, "td").text = result["Result"]
-        ET.SubElement(tr, "td").text = payload
-
-    tree = ET.ElementTree(root)
-    tree.write(filename, method="html")
+    with open(filename, "w") as fout:
+        fout.write(generated_page)
 
 
 def generate_csv_report(results, filename):
@@ -117,16 +121,23 @@ def generate_xml_report(results, filename):
     tree.write(filename)
 
 
-def generate_reports(results, cfg):
+def generate_reports(tests, results, cfg, total_time):
     """Generate reports with all BAF tests."""
-    # cfg contain information whether to generate HTML, CSV, TSV etc. outputs
-    if cfg["generate_text"]:
-        generate_text_report(results, cfg["generate_text"])
-    if cfg["generate_html"]:
-        generate_html_report(results, cfg["generate_html"])
-    if cfg["generate_csv"]:
-        generate_csv_report(results, cfg["generate_csv"])
-    if cfg["generate_tsv"]:
-        generate_tsv_report(results, cfg["generate_tsv"])
-    if cfg["generate_xml"]:
-        generate_xml_report(results, cfg["generate_xml"])
+    log.info("Generate reports")
+    with log.indent():
+        # cfg contains information whether to generate HTML, CSV, TSV etc. outputs
+        if cfg["generate_text"]:
+            log.info("Text report")
+            generate_text_report(results, cfg["generate_text"])
+        if cfg["generate_html"]:
+            log.info("HTML report")
+            generate_html_report(tests, results, cfg["generate_html"], cfg, total_time)
+        if cfg["generate_csv"]:
+            log.info("CSV report")
+            generate_csv_report(results, cfg["generate_csv"])
+        if cfg["generate_tsv"]:
+            log.info("TSV report")
+            generate_tsv_report(results, cfg["generate_tsv"])
+        if cfg["generate_xml"]:
+            log.info("XML report")
+            generate_xml_report(results, cfg["generate_xml"])

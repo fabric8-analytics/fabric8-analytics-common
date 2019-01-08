@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Bayesian API Fuzzer test results</title>
+        <meta name="Author" content="Pavel Tisnovsky" />
+        <meta name="Generator" content="BAF" />
+        <meta http-equiv="Content-type"  content="text/html; charset=utf-8"/>
+        <link href="bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="baf.css" rel="stylesheet" type="text/css" />
+        <script src="bootstrap.min.js" type="text/javascript"></script>
+    </head>
+    <body style="padding-top:70px">
+        <div class="container" style="width:95%">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container-fluid"><div class="row">
+                    <div class="col-md-4">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="/">Bayesian REST API Fuzzy Tests</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <h2>Table of content</h2>
+            <ol>
+                <li><a href="#config">Configuration</a></li>
+                <li><a href="#spec">Test specifications</a></li>
+                <li><a href="#results">Test results</a></li>
+                <li><a href="#stat">Statistic</a></li>
+            </ol>
+
+            <a name="config"></a>
+            <div style="padding-top:70px"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Configuration</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr>
+                        <td style="width:30ex">Dry run</td>
+                        % if configuration['dry_run']:
+                            <td class='yes'>enabled</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>HTML output</td>
+                        % if configuration['generate_html'] is not None:
+                            <td class='value'>${configuration["generate_html"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>Text output</td>
+                        % if configuration['generate_text'] is not None:
+                            <td class='value'>${configuration["generate_text"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>CSV output</td>
+                        % if configuration['generate_csv'] is not None:
+                            <td class='value'>${configuration["generate_csv"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>TSV output</td>
+                        % if configuration['generate_tsv'] is not None:
+                            <td class='value'>${configuration["generate_tsv"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>XML output</td>
+                        % if configuration['generate_xml'] is not None:
+                            <td class='value'>${configuration["generate_xml"]}</td>
+                        % else:
+                            <td class='no'>disabled</td>
+                        % endif
+                    </tr>
+                    <tr>
+                        <td>Input file with tests</td>
+                        % if configuration['input_file'] is not None:
+                            <td class='value'>${configuration["input_file"]}</td>
+                        % else:
+                            <td class='no'>not specified</td>
+                        % endif
+                    </tr>
+                </table>
+            </div>
+
+            <a name="spec"></a>
+            <div style="padding-top:70px"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Test specifications</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr>
+                        <th style="width:26ex">Test name</th>
+                        <th>Server</th>
+                        <th>Prefix</th>
+                        <th>Endpoint</th>
+                        <th>Method</th>
+                        <th>Payload</th>
+                        <th>Add items</th>
+                        <th>Remove items</th>
+                        <th>Change types</th>
+                        <th>Mutate payload</th>
+                        <th>Expected status</th>
+                        <th>Fuzzer setting</th>
+                        <th>Comment</th>
+                    </tr>
+                % for test in tests:
+                    <tr>
+                        <td>${test["Name"]}</td>
+                        <td>${test["Server"]}</td>
+                        <td>${test["Prefix"]}</td>
+                        <td>${test["Endpoint"]}</td>
+                        <td>${test["Method"]}</td>
+                        <td>${test["Payload"]}</td>
+                        <td>${test["Add items"]}</td>
+                        <td>${test["Remove items"]}</td>
+                        <td>${test["Change types"]}</td>
+                        <td>${test["Mutate payload"]}</td>
+                        <td>${test["Expected status"]}</td>
+                        <td>${test["Fuzzer setting"]}</td>
+                        <td>${test["Comment"]}</td>
+                    </tr>
+                % endfor
+                </table>
+            </div>
+
+            <a name="results"></a>
+            <div style="padding-top:70px"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Test results</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr>
+                        <th style="width:26ex">Test name</th>
+                        <th style="width:36ex">URL</th>
+                        <th>Method</th>
+                        <th>Expected status</th>
+                        <th>Actual status</th>
+                        <th>Result</th>
+                        <th>Payload</th>
+                    </tr>
+                % for result in results:
+                    <tr>
+                        <td>${result["Test"]["Name"]}</td>
+                        <td><a href="${result['Url']}">${result['Url']}</a></td>
+                        <td>${result['Test']['Method']}</td>
+                        <td>${result['Test']['Expected status']}</td>
+                        <td>${result['Status code']}</td>
+                        % if result['Result'] == "SUCCESS":
+                            <td class='ok'>${result['Result']}</td>
+                        % else:
+                            <td class='error'>${result['Result']}</td>
+                        % endif
+                        <td><pre>${result['Payload_pp'] | h}</pre></td>
+                    </tr>
+                % endfor
+                </table>
+            </div>
+
+            <a name="stat"></a>
+            <div style="padding-top:70px"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Statistic</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr><td style="width:30ex">Tests</td><td>${statistic["tests"]}</td></tr>
+                    <tr><td>Passed</td><td class='ok'>${statistic["passed"]}</td></tr>
+                    <tr><td>Failed</td><td class='error'>${statistic["failed"]}</td></tr>
+                    <tr><td>Success rate</td><td>${statistic["success_rate"]}</td></tr>
+                    <tr><td>Total time</td><td>${statistic["total_time"]}</td></tr>
+                </table>
+            </div>
+
+            <div style='height:100px'></div>
+            <div>Author: Pavel Tisnovsky &lt;<a href="mailto:ptisnovs@redhat.com">ptisnovs@redhat.com</a>&gt;</div>
+            <div>Generated on: ${generated_on}</div>
+        </div>
+    </body>
+</html>
+

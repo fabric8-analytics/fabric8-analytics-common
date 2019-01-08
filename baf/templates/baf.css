@@ -1,0 +1,93 @@
+body { padding-top: 100px; }
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover, 
+.navbar-inverse .navbar-nav > .active > a:focus {
+    color: black;
+    background-color: #a0a0a0;
+    font-size: 150%;
+}
+.navbar-inverse .navbar-nav > li a,
+.navbar-inverse .navbar-nav > li > a:hover, 
+.navbar-inverse .navbar-nav > li > a:focus {
+    color: white;
+   // background-color: #a0a0a0;
+    font-size: 150%;
+}
+.boolean {
+    width:15ex;
+    //font-size:150%;
+}
+.column {
+    width:12ex;
+}
+.numeric {
+    text-align:right;
+}
+.na {
+    text-align:right;
+}
+.ok {
+    color:#008000;
+}
+.error {
+    color:#800000;
+}
+.value {
+    color:#008080;
+}
+.no {
+    color:#800040;
+}
+.error_highlight {
+    background-color:#ffd0d0;
+}
+.ignored {
+    color:#808080;
+}
+
+.remark_todo {
+    background-color:#ffc0c0;
+}
+
+.remark_ok {
+    background-color:#c0ffc0;
+}
+
+ol {
+    margin:0px;
+    padding-left:2ex;
+}
+tbody tr:hover td.remark_todo {
+    background:#ee9090;
+}
+
+tbody tr:hover td.error_highlight {
+    background:#ee9090;
+}
+
+.ci_status {
+    width:3ex;
+    display:inline-block;
+}
+
+.inline-block {
+   display: inline-block;
+}
+
+  /* Extra small devices (phones, less than 768px) */
+  @media (max-width: 1200px) {
+    body { padding-top: 100px; }
+  }
+
+  @media (max-width: 992px) {
+    body { padding-top: 160px; }
+  }
+
+  @media (max-width: 768px) {
+    body { padding-top: 240px; }
+  }
+
+.with-margin {
+    margin:1px;
+}
