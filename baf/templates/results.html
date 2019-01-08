@@ -16,11 +16,27 @@
                 <div class="container-fluid"><div class="row">
                     <div class="col-md-4">
                         <div class="navbar-header">
-                            <a class="navbar-brand" href="/">BAF results</a>
+                            <a class="navbar-brand" href="/">Bayesian REST API Fuzzy Tests</a>
                         </div>
                     </div>
                 </div>
             </nav>
+
+            <a name="config"></a>
+            <div style="padding-top:70px"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Configuration</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr><td>Dry run</td><td>${configuration["dry_run"]}</td></tr>
+                    <tr><td>HTML output</td><td>${configuration["generate_html"]}</td></tr>
+                    <tr><td>Text output</td><td>${configuration["generate_text"]}</td></tr>
+                    <tr><td>CSV output</td><td>${configuration["generate_csv"]}</td></tr>
+                    <tr><td>TSV output</td><td>${configuration["generate_tsv"]}</td></tr>
+                    <tr><td>XML output</td><td>${configuration["generate_xml"]}</td></tr>
+                    <tr><td>Input file with tests</td><td>${configuration["input_file"]}</td></tr>
+                </table>
+            </div>
+
             <div class="panel panel-primary">
                 <div class="panel-heading">Test results</div>
                 <table class="table table-condensed table-hover table-bordered" rules="all">

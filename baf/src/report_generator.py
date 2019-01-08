@@ -28,11 +28,13 @@ def generate_timestamp():
     return time.strftime('%Y-%m-%d %H:%M:%S')
 
 
-def generate_html_report(results, filename):
+def generate_html_report(tests, results, filename, cfg):
     """Generate HTML report with all BAF tests."""
     template = Template(filename="templates/results.html")
 
     data_for_template = {}
+    data_for_template["configuration"] = cfg
+    data_for_template["tests"] = tests
     data_for_template["results"] = results.tests
     data_for_template["generated_on"] = generate_timestamp()
 
@@ -101,7 +103,7 @@ def generate_reports(results, cfg):
     if cfg["generate_text"]:
         generate_text_report(results, cfg["generate_text"])
     if cfg["generate_html"]:
-        generate_html_report(results, cfg["generate_html"])
+        generate_html_report(results, cfg["generate_html"], cfg)
     if cfg["generate_csv"]:
         generate_csv_report(results, cfg["generate_csv"])
     if cfg["generate_tsv"]:
