@@ -33,6 +33,12 @@ body { padding-top: 100px; }
 .error {
     color:#800000;
 }
+.value {
+    color:#008080;
+}
+.no {
+    color:#800040;
+}
 .error_highlight {
     background-color:#ffd0d0;
 }
