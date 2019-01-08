@@ -1,6 +1,7 @@
 """The main module of the Bayesian API Fuzzer."""
 
 import sys
+from time import time
 from fastlog import log
 from csv_reader import read_csv_as_dicts
 from setup import setup
@@ -68,8 +69,10 @@ def main():
         fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
         results = Results()
         tests = read_csv_as_dicts(cfg["input_file"])
+        t1 = time()
         start_tests(cfg, fuzzer_settings, tests, results)
-        generate_reports(tests, results, cfg)
+        t2 = time()
+        generate_reports(tests, results, cfg, t2 - t1)
 
 
 if __name__ == "__main__":

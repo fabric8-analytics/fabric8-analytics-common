@@ -29,15 +29,38 @@ def generate_timestamp():
     return time.strftime('%Y-%m-%d %H:%M:%S')
 
 
-def generate_html_report(tests, results, filename, cfg):
+def get_test_statistic(results):
+    """Compute basic test statistic."""
+    tests = len(results.tests)
+    passed = len(list(r for r in results.tests if r["Success"]))
+    failed = tests - passed
+
+    if tests > 0:
+        success_rate = str(100.0 * passed / tests) + "%"
+    else:
+        success_rate = "N/A"
+
+    return tests, passed, failed, success_rate
+
+
+def generate_html_report(tests, results, filename, cfg, total_time):
     """Generate HTML report with all BAF tests."""
     template = Template(filename="templates/results.html")
+
+    statistic = {}
+    all_tests, passed, failed, success_rate = get_test_statistic(results)
+    statistic["tests"] = all_tests
+    statistic["passed"] = passed
+    statistic["failed"] = failed
+    statistic["success_rate"] = success_rate
+    statistic["total_time"] = "{0:.2f} s".format(total_time)
 
     data_for_template = {}
     data_for_template["configuration"] = cfg
     data_for_template["tests"] = tests
     data_for_template["results"] = results.tests
     data_for_template["generated_on"] = generate_timestamp()
+    data_for_template["statistic"] = statistic
 
     # generate HTML page using the provided data
     generated_page = template.render(**data_for_template)
@@ -98,7 +121,7 @@ def generate_xml_report(results, filename):
     tree.write(filename)
 
 
-def generate_reports(tests, results, cfg):
+def generate_reports(tests, results, cfg, total_time):
     """Generate reports with all BAF tests."""
     log.info("Generate reports")
     with log.indent():
@@ -108,7 +131,7 @@ def generate_reports(tests, results, cfg):
             generate_text_report(results, cfg["generate_text"])
         if cfg["generate_html"]:
             log.info("HTML report")
-            generate_html_report(tests, results, cfg["generate_html"], cfg)
+            generate_html_report(tests, results, cfg["generate_html"], cfg, total_time)
         if cfg["generate_csv"]:
             log.info("CSV report")
             generate_csv_report(results, cfg["generate_csv"])

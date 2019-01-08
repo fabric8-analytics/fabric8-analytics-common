@@ -1,6 +1,7 @@
 """Results gathered from tests."""
 
 from json import dumps
+from test_result import TestResult
 
 
 def pretty_print(payload):
@@ -21,6 +22,7 @@ class Results():
         result = {}
         result["Test"] = test
         result["Url"] = url
+        result["Success"] = test_result == TestResult.SUCCESS
         result["Result"] = str(test_result.name)
         result["Cause"] = cause
         result["Payload"] = payload
