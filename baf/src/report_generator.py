@@ -2,6 +2,7 @@
 
 import csv
 import time
+from fastlog import log
 import xml.etree.cElementTree as ET
 from mako.template import Template
 
@@ -97,16 +98,23 @@ def generate_xml_report(results, filename):
     tree.write(filename)
 
 
-def generate_reports(results, cfg):
+def generate_reports(tests, results, cfg):
     """Generate reports with all BAF tests."""
-    # cfg contain information whether to generate HTML, CSV, TSV etc. outputs
-    if cfg["generate_text"]:
-        generate_text_report(results, cfg["generate_text"])
-    if cfg["generate_html"]:
-        generate_html_report(results, cfg["generate_html"], cfg)
-    if cfg["generate_csv"]:
-        generate_csv_report(results, cfg["generate_csv"])
-    if cfg["generate_tsv"]:
-        generate_tsv_report(results, cfg["generate_tsv"])
-    if cfg["generate_xml"]:
-        generate_xml_report(results, cfg["generate_xml"])
+    log.info("Generate reports")
+    with log.indent():
+        # cfg contains information whether to generate HTML, CSV, TSV etc. outputs
+        if cfg["generate_text"]:
+            log.info("Text report")
+            generate_text_report(results, cfg["generate_text"])
+        if cfg["generate_html"]:
+            log.info("HTML report")
+            generate_html_report(tests, results, cfg["generate_html"], cfg)
+        if cfg["generate_csv"]:
+            log.info("CSV report")
+            generate_csv_report(results, cfg["generate_csv"])
+        if cfg["generate_tsv"]:
+            log.info("TSV report")
+            generate_tsv_report(results, cfg["generate_tsv"])
+        if cfg["generate_xml"]:
+            log.info("XML report")
+            generate_xml_report(results, cfg["generate_xml"])

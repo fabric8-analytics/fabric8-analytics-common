@@ -37,6 +37,48 @@
                 </table>
             </div>
 
+            <a name="spec"></a>
+            <div style="padding-top:70px"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Test specifications</div>
+                <table class="table table-condensed table-hover table-bordered" rules="all">
+                    <tr>
+                        <th style="width:26ex">Test name</th>
+                        <th>Server</th>
+                        <th>Prefix</th>
+                        <th>Endpoint</th>
+                        <th>Method</th>
+                        <th>Payload</th>
+                        <th>Add items</th>
+                        <th>Remove items</th>
+                        <th>Change types</th>
+                        <th>Mutate payload</th>
+                        <th>Expected status</th>
+                        <th>Fuzzer setting</th>
+                        <th>Comment</th>
+                    </tr>
+                % for test in tests:
+                    <tr>
+                        <td>${test["Name"]}</td>
+                        <td>${test["Server"]}</td>
+                        <td>${test["Prefix"]}</td>
+                        <td>${test["Endpoint"]}</td>
+                        <td>${test["Method"]}</td>
+                        <td>${test["Payload"]}</td>
+                        <td>${test["Add items"]}</td>
+                        <td>${test["Remove items"]}</td>
+                        <td>${test["Change types"]}</td>
+                        <td>${test["Mutate payload"]}</td>
+                        <td>${test["Expected status"]}</td>
+                        <td>${test["Fuzzer setting"]}</td>
+                        <td>${test["Comment"]}</td>
+                    </tr>
+                % endfor
+                </table>
+            </div>
+
+            <a name="results"></a>
+            <div style="padding-top:70px"></div>
             <div class="panel panel-primary">
                 <div class="panel-heading">Test results</div>
                 <table class="table table-condensed table-hover table-bordered" rules="all">

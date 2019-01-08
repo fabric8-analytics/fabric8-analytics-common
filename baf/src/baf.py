@@ -25,11 +25,10 @@ def run_all_loaded_tests(cfg, fuzzer_settings, tests, results):
         i += 1
 
 
-def start_tests(cfg, fuzzer_settings, results):
+def start_tests(cfg, fuzzer_settings, tests, results):
     """Start all tests using the already loaded configuration and fuzzer settings."""
     log.info("Run tests")
     with log.indent():
-        tests = read_csv_as_dicts(cfg["input_file"])
         if not tests or len(tests) == 0:
             log.error("No tests loaded!")
             sys.exit(-1)
@@ -68,8 +67,9 @@ def main():
         cfg = setup(cli_arguments)
         fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
         results = Results()
-        start_tests(cfg, fuzzer_settings, results)
-        generate_reports(results, cfg)
+        tests = read_csv_as_dicts(cfg["input_file"])
+        start_tests(cfg, fuzzer_settings, tests, results)
+        generate_reports(tests, results, cfg)
 
 
 if __name__ == "__main__":
