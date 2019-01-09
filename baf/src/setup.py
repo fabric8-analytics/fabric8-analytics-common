@@ -68,6 +68,11 @@ def get_access_token(dry_run, refresh_token, license_service_url):
     return access_token
 
 
+def refresh_token_as_str(refresh_token):
+    """Convert refresh token settings (set/not set) into string."""
+    return "set" if refresh_token else "not set"
+
+
 def setup(cli_arguments):
     """Perform BAF setup."""
     log.info("Setup")
@@ -100,7 +105,7 @@ def setup(cli_arguments):
         log.info("TSV generator:    " + enabled_disabled(generate_tsv))
         log.info("XML generator:    " + enabled_disabled(generate_xml))
         log.info("Auth service URL: " + license_service_url)
-        log.info("Refresh token:    " + ("set" if refresh_token else "not set"))
+        log.info("Refresh token:    " + refresh_token_as_str(refresh_token))
         log.info("Success")
 
     access_token = get_access_token(dry_run, refresh_token, license_service_url)
