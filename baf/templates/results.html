@@ -44,6 +44,14 @@
                         % endif
                     </tr>
                     <tr>
+                        <td style="width:30ex">Tags</td>
+                        % if configuration['tags']:
+                            <td class='yes'>${" ".join(configuration['tags'])}</td>
+                        % else:
+                            <td class='no'>not specified</td>
+                        % endif
+                    </tr>
+                    <tr>
                         <td>HTML output</td>
                         % if configuration['generate_html'] is not None:
                             <td class='value'>${configuration["generate_html"]}</td>
@@ -112,6 +120,7 @@
                         <th>Mutate payload</th>
                         <th>Expected status</th>
                         <th>Fuzzer setting</th>
+                        <th>Tags</th>
                         <th>Comment</th>
                     </tr>
                 % for test in tests:
@@ -128,6 +137,7 @@
                         <td>${test["Mutate payload"]}</td>
                         <td>${test["Expected status"]}</td>
                         <td>${test["Fuzzer setting"]}</td>
+                        <td>${test["Tags"]}</td>
                         <td>${test["Comment"]}</td>
                     </tr>
                 % endfor

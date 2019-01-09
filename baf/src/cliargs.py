@@ -12,6 +12,10 @@ cli_parser.add_argument('-i', '--input',
                         help='specify input file with test descriptions',
                         action='store')
 
+cli_parser.add_argument('-a', '--tags',
+                        help='select tests by tags',
+                        action='store')
+
 cli_parser.add_argument('-u', '--url',
                         help='specify URL to test',
                         action='store')

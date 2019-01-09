@@ -4,7 +4,7 @@ import sys
 from time import time
 from fastlog import log
 from csv_reader import read_csv_as_dicts
-from setup import setup
+from setup import setup, parse_tags
 from cliargs import cli_parser
 
 from fuzzer import run_test
@@ -26,7 +26,21 @@ def run_all_loaded_tests(cfg, fuzzer_settings, tests, results):
         i += 1
 
 
-def start_tests(cfg, fuzzer_settings, tests, results):
+def run_tests_with_tags(cfg, fuzzer_settings, tests, results, tags):
+    """Run tests read from CSV file that are marged by any of tags provided in tags parameter."""
+    i = 1
+    for test in tests:
+        test_tags = parse_tags(test["Tags"])
+        if tags <= test_tags:
+            log.info("Starting test #{n} with name '{desc}'".format(n=i, desc=test["Name"]))
+            with log.indent():
+                run_test(cfg, fuzzer_settings, test, results)
+            i += 1
+        else:
+            log.info("Skipping test #{n} with name '{desc}'".format(n=i, desc=test["Name"]))
+
+
+def start_tests(cfg, fuzzer_settings, tests, results, tags):
     """Start all tests using the already loaded configuration and fuzzer settings."""
     log.info("Run tests")
     with log.indent():
@@ -37,7 +51,10 @@ def start_tests(cfg, fuzzer_settings, tests, results):
             log.success("Loaded 1 test")
         else:
             log.success("Loaded {n} tests".format(n=len(tests)))
-        run_all_loaded_tests(cfg, fuzzer_settings, tests, results)
+        if not tags:
+            run_all_loaded_tests(cfg, fuzzer_settings, tests, results)
+        else:
+            run_tests_with_tags(cfg, fuzzer_settings, tests, results, tags)
 
 
 def read_fuzzer_settings(filename):
@@ -70,7 +87,8 @@ def main():
         results = Results()
         tests = read_csv_as_dicts(cfg["input_file"])
         t1 = time()
-        start_tests(cfg, fuzzer_settings, tests, results)
+        tags = cfg["tags"]
+        start_tests(cfg, fuzzer_settings, tests, results, tags)
         t2 = time()
         generate_reports(tests, results, cfg, t2 - t1)
 
