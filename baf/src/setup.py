@@ -68,6 +68,18 @@ def get_access_token(dry_run, refresh_token, license_service_url):
     return access_token
 
 
+def parse_tags(tags):
+    """Parse string containing list of tags."""
+    if tags is not None:
+        tags = set(tags.split(","))
+    return tags
+
+
+def tags_as_str(tags):
+    """Convert list of tags to string."""
+    return " ".join(tags) if tags else "all tests"
+
+
 def refresh_token_as_str(refresh_token):
     """Convert refresh token settings (set/not set) into string."""
     return "set" if refresh_token else "not set"
@@ -84,6 +96,7 @@ def setup(cli_arguments):
         generate_csv = cli_arguments.csv
         generate_tsv = cli_arguments.tsv
         generate_xml = cli_arguments.xml
+        tags = parse_tags(cli_arguments.tags)
 
         if not dry_run:
             check_api_tokens_presence()
@@ -105,6 +118,7 @@ def setup(cli_arguments):
         log.info("TSV generator:    " + enabled_disabled(generate_tsv))
         log.info("XML generator:    " + enabled_disabled(generate_xml))
         log.info("Auth service URL: " + license_service_url)
+        log.info("Run tests:        " + tags_as_str(tags))
         log.info("Refresh token:    " + refresh_token_as_str(refresh_token))
         log.info("Success")
 
@@ -116,5 +130,6 @@ def setup(cli_arguments):
             "generate_csv": generate_csv,
             "generate_tsv": generate_tsv,
             "generate_xml": generate_xml,
+            "tags": tags,
             "dry_run": dry_run,
             "input_file": input_file}
