@@ -97,6 +97,7 @@ def setup(cli_arguments):
         generate_tsv = cli_arguments.tsv
         generate_xml = cli_arguments.xml
         tags = parse_tags(cli_arguments.tags)
+        header = cli_arguments.header or "Fuzz tests"
 
         if not dry_run:
             check_api_tokens_presence()
@@ -120,6 +121,7 @@ def setup(cli_arguments):
         log.info("Auth service URL: " + license_service_url)
         log.info("Run tests:        " + tags_as_str(tags))
         log.info("Refresh token:    " + refresh_token_as_str(refresh_token))
+        log.info("Header:           " + header)
         log.info("Success")
 
     access_token = get_access_token(dry_run, refresh_token, license_service_url)
@@ -132,4 +134,5 @@ def setup(cli_arguments):
             "generate_xml": generate_xml,
             "tags": tags,
             "dry_run": dry_run,
-            "input_file": input_file}
+            "input_file": input_file,
+            "header": header}
