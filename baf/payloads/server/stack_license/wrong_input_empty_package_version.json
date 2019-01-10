@@ -1,0 +1,9 @@
+{
+        "packages": [
+            {
+                "package": "p1",
+                "version": "",
+                "licenses": ["MIT"]
+            }
+        ]
+}
