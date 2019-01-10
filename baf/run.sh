@@ -14,4 +14,4 @@ export F8A_SERVER_API_URL=$F8A_API_URL_STAGE
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
-python3 -B src/baf.py $@
+python3 -B src/baf.py "$@"
