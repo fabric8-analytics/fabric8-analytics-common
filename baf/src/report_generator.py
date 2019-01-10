@@ -61,6 +61,7 @@ def generate_html_report(tests, results, filename, cfg, total_time):
     data_for_template["results"] = results.tests
     data_for_template["generated_on"] = generate_timestamp()
     data_for_template["statistic"] = statistic
+    data_for_template["header"] = cfg["header"]
 
     # generate HTML page using the provided data
     generated_page = template.render(**data_for_template)

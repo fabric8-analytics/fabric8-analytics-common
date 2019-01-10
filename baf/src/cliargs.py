@@ -43,3 +43,7 @@ cli_parser.add_argument('-T', '--tsv',
 cli_parser.add_argument('-X', '--xml',
                         help='generate report in XML format',
                         action='store')
+
+cli_parser.add_argument('-e', '--header',
+                        help='specify header for HTML export',
+                        action='store')
