@@ -85,7 +85,14 @@ def main():
         cfg = setup(cli_arguments)
         fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
         results = Results()
-        tests = read_csv_as_dicts(cfg["input_file"])
+
+        try:
+            tests = read_csv_as_dicts(cfg["input_file"])
+        except Exception as e:
+            log.error("Test description can not be read")
+            log.error(e)
+            sys.exit(0)
+
         t1 = time()
         tags = cfg["tags"]
         start_tests(cfg, fuzzer_settings, tests, results, tags)
