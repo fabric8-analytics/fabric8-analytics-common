@@ -90,7 +90,7 @@ def run_tests_with_removed_items(url, http_method, dry_run, original_payload, cf
         items_count = len(original_payload)
         # lexicographics ordering
         remove_flags_list = list(itertools.product([True, False], repeat=items_count))
-        # the last item contains (False, False, False...) and we are not interesting
+        # the last item contains (False, False, False...) and we are not interested
         # in removing ZERO items
         remove_flags_list = remove_flags_list[:-1]
 
@@ -113,7 +113,7 @@ def run_tests_with_added_items_one_iteration(url, http_method, dry_run, original
     rpg = RandomPayloadGenerator()
 
     for i in range(how_many):
-        log.info("Removing item #{n} into the payload".format(n=i))
+        log.info("Adding item #{n} into the payload".format(n=i))
         new_key = rpg.generate_random_key_for_dict(new_payload)
         new_value = rpg.generate_random_payload()
         new_payload[new_key] = new_value
@@ -127,8 +127,8 @@ def run_tests_with_changed_items_one_iteration(url, http_method, dry_run, origin
     new_payload = copy.deepcopy(original_payload)
     rpg = RandomPayloadGenerator()
 
-    for i in range(how_many):
-        log.info("Removing item #{n} into the payload".format(n=i))
+    for i in range(0, how_many):
+        log.info("Changing item #{n} in the payload".format(n=i))
         selected_key = random.choice(list(original_payload.keys()))
         new_value = rpg.generate_random_payload()
         new_payload[selected_key] = new_value
@@ -158,9 +158,9 @@ def run_tests_with_changed_items(url, http_method, dry_run, original_payload, cf
     """Run tests with items changed from the original payload."""
     with log.indent():
         iteration = 1
-        for how_many in range(1, len(original_payload)):
+        for how_many in range(1, 1 + len(original_payload)):
             # TODO: make it configurable
-            for i in range(1, 3):
+            for i in range(1, 4):
                 with log.indent():
                     log.info("Iteration #{n}".format(n=iteration))
                     with log.indent():
