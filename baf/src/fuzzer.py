@@ -142,7 +142,7 @@ def run_tests_with_added_items(url, http_method, dry_run, original_payload, cfg,
         iteration = 1
         # TODO: make it configurable
         for how_many in range(1, 4):
-            for i in range(1, 3):
+            for i in range(1, 4):
                 with log.indent():
                     log.info("Iteration #{n}".format(n=iteration))
                     with log.indent():
@@ -160,7 +160,7 @@ def run_tests_with_changed_items(url, http_method, dry_run, original_payload, cf
         iteration = 1
         for how_many in range(1, 1 + len(original_payload)):
             # TODO: make it configurable
-            for i in range(1, 4):
+            for i in range(1, 5):
                 with log.indent():
                     log.info("Iteration #{n}".format(n=iteration))
                     with log.indent():
@@ -169,6 +169,12 @@ def run_tests_with_changed_items(url, http_method, dry_run, original_payload, cf
                                                                    expected_status, how_many,
                                                                    test, results)
                     iteration += 1
+
+
+def run_tests_with_mutated_items(url, http_method, dry_run, original_payload, cfg, expected_status,
+                                 test, results):
+    """Run tests with items mutated comparing to the original payload."""
+    pass
 
 
 def get_fuzzer_setting(fuzzer_settings, fuzzer_setting_name):
@@ -278,6 +284,11 @@ def run_test(cfg, fuzzer_settings, test, results):
     if change_types:
         log.info("Run tests with items changed from original payload")
         run_tests_with_changed_items(url, http_method, dry_run, original_payload, cfg,
+                                     expected_status, test, results)
+
+    if mutate_payload:
+        log.info("Run tests with items mutated")
+        run_tests_with_mutated_items(url, http_method, dry_run, original_payload, cfg,
                                      expected_status, test, results)
 
     log.success("Finished")
