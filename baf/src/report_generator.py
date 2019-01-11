@@ -36,7 +36,7 @@ def get_test_statistic(results):
     failed = tests - passed
 
     if tests > 0:
-        success_rate = str(100.0 * passed / tests) + "%"
+        success_rate = "{0:.2f} %".format(100.0 * passed / tests)
     else:
         success_rate = "N/A"
 
