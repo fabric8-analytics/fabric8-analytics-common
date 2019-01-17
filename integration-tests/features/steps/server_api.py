@@ -150,6 +150,8 @@ def post_input_to_user_feedback(context, is_valid, endpoint, token):
     if is_valid == "valid":
         data = {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
     elif is_valid == "invalid":
+        data = {"foo": "x", "bar": "y", "baz": []}
+    elif is_valid == "incomplete":
         data = {"request_id": "test_id"}
     elif is_valid == "empty":
         data = {}
