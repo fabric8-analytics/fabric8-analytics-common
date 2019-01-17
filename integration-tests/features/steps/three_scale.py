@@ -104,3 +104,17 @@ def validate_result_post_registration(context):
 
     # stage_url = check_and_get_attribute(endpoints, "stage")
     # assert stage_url.startswith("http://")
+
+
+@then('I should get proper 3scale error message')
+def validate_result_post_registration_error_message(context):
+    """Check that json response contains expected error message."""
+    json_data = context.response.json()
+    assert context.response.status_code == 404
+    assert json_data
+
+    msg = check_and_get_attribute(json_data, "error")
+
+    assert "missing" in msg
+    assert "invalid" in msg
+    assert "auth token" in msg
