@@ -74,6 +74,21 @@ def register_3scale_with_token(context):
     register_3scale(context, True)
 
 
+@when("I make a post call to 3scale with proper authentication token and improper payload")
+def register_3scale_with_token(context):
+    """Try to register to 3scale with authentication, but using improper payload."""
+    payload = {"foo": "x",
+               "bar": "y"}
+    register_3scale(context, True, payload)
+
+
+@when("I make a post call to 3scale with proper authentication token and empty payload")
+def register_3scale_with_token(context):
+    """Try to register to 3scale with authentication, but using empty payload."""
+    payload = {}
+    register_3scale(context, True, payload)
+
+
 @then('I should get proper 3scale response')
 def validate_result_post_registration(context):
     """Check that json response contains appropriate data."""
