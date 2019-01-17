@@ -44,16 +44,18 @@ def get_headers():
     return {'Content-type': 'application/json'}
 
 
-def register_3scale(context, use_token):
+def register_3scale(context, use_token, data=None):
     """Call API endpoint get_route."""
     if use_token:
-        data = get_data(context, use_token)
+        if data is None:
+            data = get_data(context, use_token)
         headers = get_headers()
         context.response = requests.post(three_scale_register_url(context),
                                          data=json.dumps(data),
                                          headers=headers)
     else:
-        data = get_data(context, use_token)
+        if data is None:
+            data = get_data(context, use_token)
         headers = get_headers()
         context.response = requests.post(three_scale_register_url(context),
                                          data=json.dumps(data),
