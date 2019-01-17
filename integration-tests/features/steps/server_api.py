@@ -149,9 +149,9 @@ def post_input_to_user_feedback(context, is_valid, endpoint, token):
     api_url = urljoin(context.coreapi_url, endpoint)
     if is_valid == "valid":
         data = {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
-    else if is_valid == "invalid":
+    elif is_valid == "invalid":
         data = {"request_id": "test_id"}
-    else if is_valid == "empty":
+    elif is_valid == "empty":
         data = {}
     else:
         data = None
