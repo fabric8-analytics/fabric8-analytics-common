@@ -4,9 +4,7 @@ import requests
 import uuid
 
 from behave import given, then, when
-from urllib.parse import urljoin
 
-from src.authorization_tokens import authorization
 from src.attribute_checks import check_timestamp, check_job_token_attributes
 from src.parsing import parse_token_clause
 from src.authorization_tokens import jobs_api_authorization
@@ -67,23 +65,6 @@ def check_job_debug_analyses_report(context):
     for attribute in attributes:
         assert attribute in report
         assert int(report[attribute]) >= 0
-
-
-@when("I post {is_valid} input to the {endpoint} endpoint {token} authorization token")
-def post_input_to_user_feedback(context, is_valid, endpoint, token):
-    """Send feedback to user feedback endpoint."""
-    use_token = parse_token_clause(token)
-    api_url = urljoin(context.coreapi_url, endpoint)
-    if is_valid == "valid":
-        data = {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
-    else:
-        data = {"request_id": "test_id"}
-    if use_token:
-        response = requests.post(api_url, json=data,
-                                 headers=authorization(context))
-    else:
-        response = requests.post(api_url, json=data)
-    context.response = response
 
 
 def flow_sheduling_endpoint(context, state, job_id=None):

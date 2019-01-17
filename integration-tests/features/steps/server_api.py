@@ -1,5 +1,7 @@
 """Basic checks for the server API."""
 from behave import then, when
+from urllib.parse import urljoin
+
 import requests
 import time
 
@@ -7,6 +9,7 @@ from src.utils import split_comma_separated_list
 from src.authorization_tokens import authorization
 from src.attribute_checks import check_and_get_attribute
 from src.schema_validator import validate_schema
+from src.parsing import parse_token_clause
 
 
 @when('I access {url:S}')
@@ -137,3 +140,24 @@ def check_valid_schema(context):
     """Check if the schema is valid, validation is performed against metaschema."""
     data = context.response.json()
     validate_schema(data)
+
+
+@when("I post {is_valid} input to the {endpoint} endpoint {token} authorization token")
+def post_input_to_user_feedback(context, is_valid, endpoint, token):
+    """Send feedback to user feedback endpoint."""
+    use_token = parse_token_clause(token)
+    api_url = urljoin(context.coreapi_url, endpoint)
+    if is_valid == "valid":
+        data = {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
+    elif is_valid == "invalid":
+        data = {"request_id": "test_id"}
+    elif is_valid == "empty":
+        data = {}
+    else:
+        data = None
+    if use_token:
+        response = requests.post(api_url, json=data,
+                                 headers=authorization(context))
+    else:
+        response = requests.post(api_url, json=data)
+    context.response = response
