@@ -56,9 +56,25 @@ Feature: Server API
          |/api/v1/user-intent/<user>/<ecosystem>|
 
   @production
-  Scenario: Check the /api/v1/submit-feedback response
+  Scenario: Check the /api/v1/submit-feedback response with invalid payload
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
     When I access /api/v1/submit-feedback without valid values
+    Then I should get 400 status code
+
+  @production
+  Scenario: Check the /api/v1/submit-feedback response with empty payload
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I access /api/v1/submit-feedback with empty payload
+    Then I should get 400 status code
+
+  @production
+  Scenario: Check the /api/v1/submit-feedback response without any payload
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I access /api/v1/submit-feedback without any payload
     Then I should get 400 status code
