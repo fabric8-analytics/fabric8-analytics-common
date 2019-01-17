@@ -36,8 +36,8 @@ def access_url_with_authorization_token(context, url):
 
 
 @when('I access {url:S} without valid values')
-def check_submit_feedback(context, url):
-    """Access the submit-feedback API using the HTTP POST method."""
+def check_submit_feedback_without_valid_values(context, url):
+    """Access the submit-feedback API using the HTTP POST method with invalid payload."""
     payload = {
         "stack_id": "1234-569586048",
         "recommendation_type": "companion",
@@ -45,6 +45,24 @@ def check_submit_feedback(context, url):
         "feedback_type": True,
         "ecosystem": None
     }
+    context.response = requests.post(context.coreapi_url + url,
+                                     headers=authorization(context),
+                                     data=payload)
+
+
+@when('I access {url:S} without any payload')
+def check_submit_feedback_without_any_payload(context, url):
+    """Access the submit-feedback API using the HTTP POST method with no payload."""
+    payload = None
+    context.response = requests.post(context.coreapi_url + url,
+                                     headers=authorization(context),
+                                     data=payload)
+
+
+@when('I access {url:S} with empty payload')
+def check_submit_feedback_with_empty_payload(context, url):
+    """Access the submit-feedback API using the HTTP POST method with empty payload."""
+    payload = {}
     context.response = requests.post(context.coreapi_url + url,
                                      headers=authorization(context),
                                      data=payload)
