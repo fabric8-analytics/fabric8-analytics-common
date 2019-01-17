@@ -19,6 +19,14 @@ Feature: User feedback server API V1
     Then I should get 400 status code
 
   @requires_authorization_token
+  Scenario: Check the user-feedback endpoint access with authorization token but incomplete input
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I post incomplete input to the /api/v1/user-feedback endpoint with authorization token
+    Then I should get 400 status code
+
+  @requires_authorization_token
   Scenario: Check the user-feedback endpoint access with authorization token but empty input
     Given System is running
     When I acquire the authorization token
