@@ -69,23 +69,6 @@ def check_job_debug_analyses_report(context):
         assert int(report[attribute]) >= 0
 
 
-@when("I post {is_valid} input to the {endpoint} endpoint {token} authorization token")
-def post_input_to_user_feedback(context, is_valid, endpoint, token):
-    """Send feedback to user feedback endpoint."""
-    use_token = parse_token_clause(token)
-    api_url = urljoin(context.coreapi_url, endpoint)
-    if is_valid == "valid":
-        data = {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
-    else:
-        data = {"request_id": "test_id"}
-    if use_token:
-        response = requests.post(api_url, json=data,
-                                 headers=authorization(context))
-    else:
-        response = requests.post(api_url, json=data)
-    context.response = response
-
-
 def flow_sheduling_endpoint(context, state, job_id=None):
     """Return URL to flow-scheduling with the given state and job ID."""
     if job_id:
