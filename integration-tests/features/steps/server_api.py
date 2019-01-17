@@ -149,8 +149,12 @@ def post_input_to_user_feedback(context, is_valid, endpoint, token):
     api_url = urljoin(context.coreapi_url, endpoint)
     if is_valid == "valid":
         data = {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
-    else:
+    else if is_valid == "invalid":
         data = {"request_id": "test_id"}
+    else if is_valid == "empty":
+        data = {}
+    else:
+        data = None
     if use_token:
         response = requests.post(api_url, json=data,
                                  headers=authorization(context))
