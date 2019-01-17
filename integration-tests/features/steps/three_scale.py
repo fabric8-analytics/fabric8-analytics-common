@@ -75,7 +75,7 @@ def register_3scale_with_token(context):
 
 
 @when("I make a post call to 3scale with proper authentication token and improper payload")
-def register_3scale_with_token(context):
+def register_3scale_with_token_improper_payload(context):
     """Try to register to 3scale with authentication, but using improper payload."""
     payload = {"foo": "x",
                "bar": "y"}
@@ -83,7 +83,7 @@ def register_3scale_with_token(context):
 
 
 @when("I make a post call to 3scale with proper authentication token and empty payload")
-def register_3scale_with_token(context):
+def register_3scale_with_token_empty_payload(context):
     """Try to register to 3scale with authentication, but using empty payload."""
     payload = {}
     register_3scale(context, True, payload)
