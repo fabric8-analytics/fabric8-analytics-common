@@ -90,3 +90,19 @@ Feature: Components API V1
     When I read npm/sequence/2.2.0 component analysis using authorization token
     Then I should get 200 status code
 
+  Scenario: Check if component analysis returns error code for unknown ecosystem
+    Given System is running
+    Given Component search service is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I read foobar/sequence/2.2.0 component analysis using authorization token
+    Then I should not get 200 status code
+
+  Scenario: Check if component analysis returns error code for unknown ecosystem
+    Given System is running
+    Given Component search service is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I read XYZZY/sequence/2.2.0 component analysis using authorization token
+    Then I should not get 200 status code
+
