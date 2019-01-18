@@ -16,6 +16,18 @@ Feature: Smoke test
      And I should find the correct commit hash in the JSON response
      And I should find the correct committed at timestamp in the JSON response
 
+  Scenario: Check if 3scale staging url requires authentication
+    Given 3scale staging pod is running
+     When I access get_route API end point for 3scale without authorization
+     Then I should get 404 status code
+      And I should get proper 3scale error message
+
+  Scenario: Check the Gemini API /api/v1/register response
+    Given Gemini service is running
+      And Gemini service git url is https://github.com/jitpack/maven-simple
+      And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
+    When I post to Gemini API api/v1/register
+
   @smoketest @production
   Scenario: Check the jobs API entry point
     Given System is running
