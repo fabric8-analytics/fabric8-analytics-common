@@ -11,6 +11,10 @@ Feature: Smoke test
     Given System is running
     When I access /api/v1/system/version/
     Then I should get 200 status code
+     And I should receive JSON response containing the commit_hash key
+     And I should receive JSON response containing the committed_at key
+     And I should find the correct commit hash in the JSON response
+     And I should find the correct committed at timestamp in the JSON response
 
   @smoketest @production
   Scenario: Check the jobs API entry point
