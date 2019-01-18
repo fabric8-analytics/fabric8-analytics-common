@@ -23,12 +23,14 @@ Feature: Server API
     Then I should receive empty JSON response
 
   @production
-  Scenario: Check the service/state response
+  Scenario: Check the system/version response
     Given System is running
     When I access /api/v1/system/version/
     Then I should get 200 status code
-    Then I should receive JSON response containing the commit_hash key
-    Then I should receive JSON response containing the committed_at key
+     And I should receive JSON response containing the commit_hash key
+     And I should receive JSON response containing the committed_at key
+     And I should find the correct commit hash in the JSON response
+     And I should find the correct committed at timestamp in the JSON response
 
   @production
   Scenario Outline: Check the existence of all expected REST API endpoints
