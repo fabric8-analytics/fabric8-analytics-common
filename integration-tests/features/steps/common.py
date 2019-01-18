@@ -93,6 +93,12 @@ def check_status_code(context, status):
     assert context.response.status_code == status
 
 
+@then('I should not get {status:d} status code')
+def check_status_code_negative_relation(context, status):
+    """Check the HTTP status code returned by the REST API."""
+    assert context.response.status_code != status
+
+
 @then('I should get {status:d} status code for all calls')
 def check_status_code_for_all_calls(context, status):
     """Check the HTTP status codes returned by the REST API."""

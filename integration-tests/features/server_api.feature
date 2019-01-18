@@ -23,12 +23,14 @@ Feature: Server API
     Then I should receive empty JSON response
 
   @production
-  Scenario: Check the service/state response
+  Scenario: Check the system/version response
     Given System is running
     When I access /api/v1/system/version/
     Then I should get 200 status code
-    Then I should receive JSON response containing the commit_hash key
-    Then I should receive JSON response containing the committed_at key
+     And I should receive JSON response containing the commit_hash key
+     And I should receive JSON response containing the committed_at key
+     And I should find the correct commit hash in the JSON response
+     And I should find the correct committed at timestamp in the JSON response
 
   @production
   Scenario Outline: Check the existence of all expected REST API endpoints
@@ -54,6 +56,15 @@ Feature: Server API
          |/api/v1/user-feedback|
          |/api/v1/user-intent|
          |/api/v1/user-intent/<user>/<ecosystem>|
+         |/api/v1/master-tags/<ecosystem>|
+         |/api/v1/set-tags|
+         |/api/v1/categories/<runtime>|
+         |/api/v1/depeditor-analyses|
+         |/api/v1/depeditor-cve-analyses|
+         |/api/v1/get-core-dependencies/<runtime>|
+         |/api/v1/empty-booster|
+         |/api/v1/recommendation_feedback/<ecosystem>|
+         |/api/v1/cves/bydate/<modified_date>/<ecosystem>|
 
   @production
   Scenario: Check the /api/v1/submit-feedback response with invalid payload
