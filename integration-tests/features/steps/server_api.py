@@ -7,7 +7,7 @@ import time
 
 from src.utils import split_comma_separated_list
 from src.authorization_tokens import authorization
-from src.attribute_checks import check_and_get_attribute
+from src.attribute_checks import check_and_get_attribute, check_timestamp, check_hash_value
 from src.schema_validator import validate_schema
 from src.parsing import parse_token_clause
 
@@ -163,3 +163,27 @@ def post_input_to_user_feedback(context, is_valid, endpoint, token):
     else:
         response = requests.post(api_url, json=data)
     context.response = response
+
+
+@then("I should find the correct commit hash in the JSON response")
+def check_hash_attribute(context):
+    """Check the commit hash in the JSON response."""
+    response = context.response
+    assert response is not None
+    data = response.json()
+    commit_hash = check_and_get_attribute(data, "commit_hash")
+    check_hash_value(commit_hash)
+
+
+@then("I should find the correct committed at timestamp in the JSON response")
+def check_timestamp_attribute(context):
+    """Check the commited at timestamp in the JSON response."""
+    response = context.response
+    assert response is not None
+    data = response.json()
+    timestamp = check_and_get_attribute(data, "committed_at")
+    # we are not interested much in +100 offsets etc.
+    template = "2000-01-01 10:20:30"
+    assert len(timestamp) >= len(template), "Invalid timestamp %s" % timestamp
+    t = timestamp[0:len(template)]
+    check_timestamp(t)
