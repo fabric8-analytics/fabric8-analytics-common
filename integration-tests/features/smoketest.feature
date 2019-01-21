@@ -1,13 +1,15 @@
 Feature: Smoke test
 
+
   @smoketest @production
-  Scenario: Check the API entry point
+  Scenario: Check the API entry point for server deployment
     Given System is running
     When I access /api/v1/
     Then I should get 200 status code
 
+
   @smoketest @production
-  Scenario: Check the /system/version entry point
+  Scenario: Check the /system/version entry point for server deployment
     Given System is running
     When I access /api/v1/system/version/
     Then I should get 200 status code
@@ -16,6 +18,8 @@ Feature: Smoke test
      And I should find the correct commit hash in the JSON response
      And I should find the correct committed at timestamp in the JSON response
 
+
+  @smoketest @production
   Scenario: Check if 3scale staging url requires authentication
     Given 3scale staging pod is running
      When I access get_route API end point for 3scale without authorization
@@ -28,6 +32,7 @@ Feature: Smoke test
       And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
     When I post to Gemini API api/v1/register
     Then I should get 401 status code
+
 
 #  @smoketest @production
 #  Scenario: Check the jobs API entry point
