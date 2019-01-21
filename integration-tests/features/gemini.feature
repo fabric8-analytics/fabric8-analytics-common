@@ -136,19 +136,3 @@ Feature: Gemini Analytics API
     Then I should get 200 status code
      And I should find that the status is set to success in the JSON response
      And I should find the text "Repository scan unsubscribed" stored under the key summary
-
-
-  Scenario: Check the Gemini API /api/v1/user-repo/drop
-    Given Gemini service is running
-        And Gemini service git url is https://github.com/jitpack/maven-simple
-        And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
-    When I post to Gemini API /api/v1/user-repo/drop
-    Then I should get 401 status code
-     And I should receive JSON response containing the error key
-     And I should find the text "Authentication failed" stored under the key error
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I post to Gemini API api/v1/user-repo/drop with authorization token
-    Then I should get 200 status code
-     And I should find that the status is set to success in the JSON response
-     And I should find the text "Repository scan unsubscribed" stored under the key summary
