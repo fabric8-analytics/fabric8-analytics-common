@@ -136,3 +136,27 @@ Feature: Gemini Analytics API
     Then I should get 200 status code
      And I should find that the status is set to success in the JSON response
      And I should find the text "Repository scan unsubscribed" stored under the key summary
+
+
+  Scenario: Check that the 'register' REST API point for the Gemini service accepts POST method only
+    Given System is running
+     When I access the /api/v1/register endpoint of Gemini service
+     Then I should not get 200 status code
+
+
+  Scenario: Check that the 'user-repo/scan' REST API point for the Gemini service accepts POST method only
+    Given System is running
+     When I access the /api/v1/user-repo/scan endpoint of Gemini service
+     Then I should not get 200 status code
+
+
+  Scenario: Check that the 'user-repo/notify' REST API point for the Gemini service accepts POST method only
+    Given System is running
+     When I access the /api/v1/user-repo/notify endpoint of Gemini service
+     Then I should not get 200 status code
+
+
+  Scenario: Check that the 'user-repo/drop' REST API point for the Gemini service accepts POST method only
+    Given System is running
+     When I access the /api/v1/user-repo/drop endpoint of Gemini service
+     Then I should not get 200 status code
