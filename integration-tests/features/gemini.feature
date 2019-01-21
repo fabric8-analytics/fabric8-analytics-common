@@ -1,5 +1,41 @@
 Feature: Gemini Analytics API
 
+  # see https://github.com/fabric8-analytics/fabric8-gemini-server/issues/133
+  #@smoketest @production
+  #Scenario: Check the API entry point for the Gemini service
+  #  Given System is running
+  #  When I access the /api/v1 endpoint of Gemini service
+  #  Then I should get 200 status code
+
+
+  Scenario: Check the 'readiness' REST API point for the Gemini service
+    Given System is running
+     When I access the /api/v1/readiness endpoint of Gemini service
+     Then I should get 200 status code
+
+
+  Scenario: Check the 'liveness' REST API point for the Gemini service
+    Given System is running
+     When I access the /api/v1/liveness endpoint of Gemini service
+     Then I should get 200 status code
+
+
+  Scenario: Check the 'readiness' REST API point for the Gemini service with using authorization token
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I access the /api/v1/readiness endpoint of Gemini service with authorization token
+     Then I should get 200 status code
+
+
+  Scenario: Check the 'liveness' REST API entry point for the Gemini service with using authorization token
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I access the /api/v1/liveness endpoint of Gemini service with authorization token
+     Then I should get 200 status code
+
+
   Scenario: Check the Gemini API /api/v1/register response
     Given Gemini service is running
       And Gemini service git url is https://github.com/jitpack/maven-simple
@@ -14,6 +50,20 @@ Feature: Gemini Analytics API
     Then I should get 200 status code
 
 
+  Scenario: Gemini /api/v1/report check when called without arguments
+    Given Gemini service is running
+     When I access the /api/v1/report endpoint of Gemini service without authorization token
+     Then I should not get 200 status code
+
+
+  Scenario: Gemini /api/v1/report check when called without arguments
+    Given Gemini service is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I access the /api/v1/report endpoint of Gemini service with authorization token
+     Then I should not get 200 status code
+
+
   Scenario: Check the Gemini API /api/v1/report response
     Given Gemini service is running
       And Gemini service git url is https://github.com/jitpack/maven-simple
@@ -22,6 +72,12 @@ Feature: Gemini Analytics API
     Then I should get 401 status code
      And I should receive JSON response containing the error key
      And I should find the text "Authentication failed" stored under the key error
+
+
+  Scenario: Check the Gemini API /api/v1/report response
+    Given Gemini service is running
+      And Gemini service git url is https://github.com/jitpack/maven-simple
+      And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
     When I acquire the authorization token
     Then I should get the proper authorization token
     When I get to Gemini API api/v1/report with authorization token

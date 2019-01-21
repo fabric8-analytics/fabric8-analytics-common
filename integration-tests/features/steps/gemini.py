@@ -5,6 +5,7 @@
 import requests
 
 from behave import given, when, then
+from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
@@ -62,6 +63,18 @@ def set_dependency_files(context):
                 'text/plain'
             )
         ))
+
+
+@when('I access the {endpoint} endpoint of Gemini service')
+@when('I access the {endpoint} endpoint of Gemini service {token} authorization token')
+def access_gemini_url(context, endpoint, token="without"):
+    """Access the Gemini service API using the HTTP GET method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    use_token = parse_token_clause(token)
+    headers = {}
+    if use_token:
+        headers = authorization(context)
+    context.response = requests.get(url, headers=headers)
 
 
 @when('I {method} to Gemini API {endpoint}')
