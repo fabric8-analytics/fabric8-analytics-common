@@ -20,6 +20,44 @@ Feature: Gemini Analytics API
      Then I should get 200 status code
 
 
+  @production
+  Scenario Outline: Check that the HTTP method is check properly on Gemini side for the /api/v1/readiness endpoint
+    Given System is running
+     When I call the /api/v1/readiness endpoint of Gemini service using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+     | method |
+     | PUT    |
+     | PATCH  |
+     | DELETE |
+
+
+  @production
+  Scenario: Check that the HTTP method is check properly on Gemini side for the /api/v1/readiness endpoint
+    Given System is running
+     When I call the /api/v1/readiness endpoint of Gemini service using the HTTP HEAD method
+     Then I should get 200 status code
+
+
+  @production
+  Scenario Outline: Check that the HTTP method is check properly on Gemini side for the /api/v1/liveness endpoint
+    Given System is running
+     When I call the /api/v1/liveness endpoint of Gemini service using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+     | method |
+     | PUT    |
+     | PATCH  |
+     | DELETE |
+
+
+  @production
+  Scenario: Check that the HTTP method is check properly on Gemini side for the /api/v1/liveness endpoint
+    Given System is running
+     When I call the /api/v1/liveness endpoint of Gemini service using the HTTP HEAD method
+     Then I should get 200 status code
   Scenario: Check the 'readiness' REST API point for the Gemini service with using authorization token
     Given System is running
      When I acquire the authorization token

@@ -18,6 +18,30 @@ def access_url(context, url):
     context.response = requests.get(context.coreapi_url + url)
 
 
+@when('I call the {url:S} endpoint using the HTTP PUT method')
+def access_url_put_method(context, url):
+    """Access the service API using the HTTP PUT method."""
+    context.response = requests.put(context.coreapi_url + url)
+
+
+@when('I call the {url:S} endpoint using the HTTP PATCH method')
+def access_url_patch_method(context, url):
+    """Access the service API using the HTTP PATCH method."""
+    context.response = requests.patch(context.coreapi_url + url)
+
+
+@when('I call the {url:S} endpoint using the HTTP DELETE method')
+def access_url_delete_method(context, url):
+    """Access the service API using the HTTP DELETE method."""
+    context.response = requests.delete(context.coreapi_url + url)
+
+
+@when('I call the {url:S} endpoint using the HTTP HEAD method')
+def access_url_head_method(context, url):
+    """Access the service API using the HTTP HEAD method."""
+    context.response = requests.head(context.coreapi_url + url)
+
+
 @when('I access the {url:S} {repeat_count:d} times with {delay:d} seconds delay')
 def access_url_repeatedly(context, url, repeat_count, delay):
     """Access the service API using the HTTP GET method repeatedly."""
@@ -25,6 +49,7 @@ def access_url_repeatedly(context, url, repeat_count, delay):
     url = context.coreapi_url + url
 
     # repeatedly call REST API endpoint and collect HTTP status codes
+    # into list assigned to the context
     for i in range(repeat_count):
         response = requests.get(url)
         context.api_call_results.append(response.status_code)

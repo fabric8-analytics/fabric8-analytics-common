@@ -66,6 +66,88 @@ Feature: Server API
          |/api/v1/recommendation_feedback/<ecosystem>|
          |/api/v1/cves/bydate/<modified_date>/<ecosystem>|
 
+
+  @production
+  Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/ endpoint
+    Given System is running
+     When I call the /api/v1/ endpoint using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+         | method |
+         | PUT    |
+         | PATCH  |
+         | DELETE |
+
+
+  @production
+  Scenario: Check that the HTTP method is check properly on server side for the /api/v1/ endpoint
+    Given System is running
+     When I call the /api/v1/ endpoint using the HTTP HEAD method
+     Then I should get 200 status code
+
+
+  @production
+  Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/readiness endpoint
+    Given System is running
+     When I call the /api/v1/readiness endpoint using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+         | method |
+         | PUT    |
+         | PATCH  |
+         | DELETE |
+
+
+  @production
+  Scenario: Check that the HTTP method is check properly on server side for the /api/v1/readiness endpoint
+    Given System is running
+     When I call the /api/v1/readiness endpoint using the HTTP HEAD method
+     Then I should get 200 status code
+
+
+  @production
+  Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/liveness endpoint
+    Given System is running
+     When I call the /api/v1/liveness endpoint using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+         | method |
+         | PUT    |
+         | PATCH  |
+         | DELETE |
+
+
+  @production
+  Scenario: Check that the HTTP method is check properly on server side for the /api/v1/liveness endpoint
+    Given System is running
+     When I call the /api/v1/liveness endpoint using the HTTP HEAD method
+     Then I should get 200 status code
+
+
+  @production
+  Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/system/version
+    Given System is running
+     When I access /api/v1/system/version/
+     When I call the /api/v1/system/version endpoint using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+         | method |
+         | PUT    |
+         | PATCH  |
+         | DELETE |
+
+
+  @production
+  Scenario: Check that the HTTP method is check properly on server side for the /api/v1/system/version
+    Given System is running
+     When I access /api/v1/system/version/
+     When I call the /api/v1/system/version endpoint using the HTTP HEAD method
+     Then I should get 200 status code
+
   @production
   Scenario: Check the /api/v1/submit-feedback response with invalid payload
     Given System is running

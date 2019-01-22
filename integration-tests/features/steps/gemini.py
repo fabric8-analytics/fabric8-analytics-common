@@ -77,6 +77,34 @@ def access_gemini_url(context, endpoint, token="without"):
     context.response = requests.get(url, headers=headers)
 
 
+@when('I call the {endpoint} endpoint of Gemini service using the HTTP PUT method')
+def access_gemini_url_put_method(context, endpoint):
+    """Access the Gemini service API using the HTTP PUT method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    context.response = requests.put(url)
+
+
+@when('I call the {endpoint} endpoint of Gemini service using the HTTP PATCH method')
+def access_gemini_url_patch_method(context, endpoint):
+    """Access the Gemini service API using the HTTP PATCH method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    context.response = requests.patch(url)
+
+
+@when('I call the {endpoint} endpoint of Gemini service using the HTTP DELETE method')
+def access_gemini_url_delete_method(context, endpoint):
+    """Access the Gemini service API using the HTTP DELETE method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    context.response = requests.delete(url)
+
+
+@when('I call the {endpoint} endpoint of Gemini service using the HTTP HEAD method')
+def access_gemini_url_head_method(context, endpoint):
+    """Access the Gemini service API using the HTTP HEAD method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    context.response = requests.head(url)
+
+
 @when('I {method} to Gemini API {endpoint}')
 @when('I {method} to Gemini API {endpoint} {token} authorization token')
 def call_backbone_api(context, method="get", endpoint="/api/v1/register", token="without"):
