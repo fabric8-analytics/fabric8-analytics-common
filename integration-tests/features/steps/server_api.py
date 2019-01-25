@@ -61,6 +61,7 @@ def access_url_repeatedly(context, url, repeat_count, delay):
 
 
 @when('I access {url:S} with authorization token')
+@when('I access the {url:S} endpoint using the HTTP GET method and authorization token')
 def access_url_with_authorization_token(context, url):
     """Access the service API using the HTTP GET method."""
     context.response = requests.get(context.coreapi_url + url,
@@ -73,6 +74,14 @@ def access_url_put_method_with_authorization(context, url):
     """Access the service API using the HTTP PUT method and authorization token."""
     context.response = requests.put(context.coreapi_url + url,
                                     headers=authorization(context))
+
+
+@when('I access the {url:S} endpoint using the HTTP POST method and authorization token')
+@when('I call the {url:S} endpoint using the HTTP POST method and authorization token')
+def access_url_post_method_with_authorization(context, url):
+    """Access the service API using the HTTP POST method and authorization token."""
+    context.response = requests.post(context.coreapi_url + url,
+                                     headers=authorization(context))
 
 
 @when('I access the {url:S} endpoint using the HTTP PATCH method and authorization token')
