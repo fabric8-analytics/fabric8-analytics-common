@@ -106,3 +106,27 @@ Feature: Components API V1
     When I read XYZZY/sequence/2.2.0 component analysis using authorization token
     Then I should not get 200 status code
 
+  @production
+  Scenario Outline: Check that the HTTP method is checked properly on the server side for the /api/v1/component-analyses endpoint
+    Given System is running
+     When I call the /api/v1/component-analyses/ endpoint using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+     | method |
+     | PUT    |
+     | PATCH  |
+     | DELETE |
+
+
+  @production
+  Scenario Outline: Check that the HTTP method is checked properly on the server side for the /api/v1/component-analyses endpoint
+    Given System is running
+     When I call the /api/v1/component-analyses/npm/sequence/2.2.0 endpoint using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+     | method |
+     | PUT    |
+     | PATCH  |
+     | DELETE |
