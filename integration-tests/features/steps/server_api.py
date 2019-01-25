@@ -18,24 +18,28 @@ def access_url(context, url):
     context.response = requests.get(context.coreapi_url + url)
 
 
+@when('I access the {url:S} endpoint using the HTTP PUT method')
 @when('I call the {url:S} endpoint using the HTTP PUT method')
 def access_url_put_method(context, url):
     """Access the service API using the HTTP PUT method."""
     context.response = requests.put(context.coreapi_url + url)
 
 
+@when('I access the {url:S} endpoint using the HTTP PATCH method')
 @when('I call the {url:S} endpoint using the HTTP PATCH method')
 def access_url_patch_method(context, url):
     """Access the service API using the HTTP PATCH method."""
     context.response = requests.patch(context.coreapi_url + url)
 
 
+@when('I access the {url:S} endpoint using the HTTP DELETE method')
 @when('I call the {url:S} endpoint using the HTTP DELETE method')
 def access_url_delete_method(context, url):
     """Access the service API using the HTTP DELETE method."""
     context.response = requests.delete(context.coreapi_url + url)
 
 
+@when('I access the {url:S} endpoint using the HTTP HEAD method')
 @when('I call the {url:S} endpoint using the HTTP HEAD method')
 def access_url_head_method(context, url):
     """Access the service API using the HTTP HEAD method."""
@@ -63,6 +67,7 @@ def access_url_with_authorization_token(context, url):
                                     headers=authorization(context))
 
 
+@when('I access the {url:S} endpoint using the HTTP PUT method and authorization token')
 @when('I call the {url:S} endpoint using the HTTP PUT method and authorization token')
 def access_url_put_method_with_authorization(context, url):
     """Access the service API using the HTTP PUT method and authorization token."""
@@ -70,6 +75,7 @@ def access_url_put_method_with_authorization(context, url):
                                     headers=authorization(context))
 
 
+@when('I access the {url:S} endpoint using the HTTP PATCH method and authorization token')
 @when('I call the {url:S} endpoint using the HTTP PATCH method and authorization token')
 def access_url_patch_method_with_authorization(context, url):
     """Access the service API using the HTTP PATCH method and authorization token."""
@@ -77,6 +83,7 @@ def access_url_patch_method_with_authorization(context, url):
                                       headers=authorization(context))
 
 
+@when('I access the {url:S} endpoint using the HTTP DELETE method and authorization token')
 @when('I call the {url:S} endpoint using the HTTP DELETE method and authorization token')
 def access_url_delete_method_with_authorization(context, url):
     """Access the service API using the HTTP DELETE method and authorization token."""
@@ -84,6 +91,7 @@ def access_url_delete_method_with_authorization(context, url):
                                        headers=authorization(context))
 
 
+@when('I access the {url:S} endpoint using the HTTP HEAD method and authorization token')
 @when('I call the {url:S} endpoint using the HTTP HEAD method and authorization token')
 def access_url_head_method_with_authorization(context, url):
     """Access the service API using the HTTP HEAD method and authorization token."""
