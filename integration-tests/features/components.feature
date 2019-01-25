@@ -72,7 +72,7 @@ Feature: Components API V1
      Then I should get 404 status code
      When I access /api/v1/component-analyses/npm
      Then I should get 404 status code
-     When I access /api/v1/component-analyses/component
+     When I access /api/v1/component-analyses/npm/component
      Then I should get 404 status code
 
   @production
@@ -164,3 +164,33 @@ Feature: Components API V1
      | PUT    |
      | PATCH  |
      | DELETE |
+
+
+  Scenario: Check the HTTP HEAD method for the component analyses endpoint and proper resource specification
+    Given System is running
+      And Component search service is running
+     When I access the /api/v1/component-analyses/npm/sequence/2.2.0 endpoint using the HTTP HEAD method
+     Then I should get 401 status code
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I access the /api/v1/component-analyses/npm/sequence/2.2.0 endpoint using the HTTP HEAD method
+     Then I should get 401 status code
+     When I access the /api/v1/component-analyses/npm/sequence/2.2.0 endpoint using the HTTP HEAD method and authorization token
+     Then I should get 200 status code
+
+
+  @requires_authorization_token @production
+  Scenario Outline: Check the HTTP HEAD method for the component analyses endpoint and incomplete resource specification
+    Given System is running
+      And Component search service is running
+     When I access the /api/v1/component-analyses<resource> endpoint using the HTTP HEAD method
+     Then I should get 404 status code
+
+    Examples: resource paths
+    | resource      |
+    |               |
+    |/              |
+    |/npm           |
+    |/npm/          |
+    |/npm/component |
+    |/npm/component/|
