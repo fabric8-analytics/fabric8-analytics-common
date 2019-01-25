@@ -132,3 +132,35 @@ Feature: Components API V1
      | PUT    |
      | PATCH  |
      | DELETE |
+
+
+  @production
+  Scenario Outline: Check that the HTTP method is checked properly on the server side for the /api/v1/component-analyses endpoint
+    Given System is running
+      And Component search service is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I call the /api/v1/component-analyses/ endpoint using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+     | method |
+     | PUT    |
+     | PATCH  |
+     | DELETE |
+
+
+  @production
+  Scenario Outline: Check that the HTTP method is checked properly on the server side for the /api/v1/component-analyses endpoint
+    Given System is running
+      And Component search service is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I call the /api/v1/component-analyses/npm/sequence/2.2.0 endpoint using the HTTP <method> method
+     Then I should get 405 status code
+
+     Examples: HTTP methods
+     | method |
+     | PUT    |
+     | PATCH  |
+     | DELETE |

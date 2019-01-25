@@ -63,6 +63,34 @@ def access_url_with_authorization_token(context, url):
                                     headers=authorization(context))
 
 
+@when('I call the {url:S} endpoint using the HTTP PUT method and authorization token')
+def access_url_put_method_with_authorization(context, url):
+    """Access the service API using the HTTP PUT method and authorization token."""
+    context.response = requests.put(context.coreapi_url + url,
+                                    headers=authorization(context))
+
+
+@when('I call the {url:S} endpoint using the HTTP PATCH method and authorization token')
+def access_url_patch_method_with_authorization(context, url):
+    """Access the service API using the HTTP PATCH method and authorization token."""
+    context.response = requests.patch(context.coreapi_url + url,
+                                      headers=authorization(context))
+
+
+@when('I call the {url:S} endpoint using the HTTP DELETE method and authorization token')
+def access_url_delete_method_with_authorization(context, url):
+    """Access the service API using the HTTP DELETE method and authorization token."""
+    context.response = requests.delete(context.coreapi_url + url,
+                                       headers=authorization(context))
+
+
+@when('I call the {url:S} endpoint using the HTTP HEAD method and authorization token')
+def access_url_head_method_with_authorization(context, url):
+    """Access the service API using the HTTP HEAD method and authorization token."""
+    context.response = requests.head(context.coreapi_url + url,
+                                     headers=authorization(context))
+
+
 @when('I access {url:S} without valid values')
 def check_submit_feedback_without_valid_values(context, url):
     """Access the submit-feedback API using the HTTP POST method with invalid payload."""
