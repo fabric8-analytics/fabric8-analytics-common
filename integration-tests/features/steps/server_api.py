@@ -18,11 +18,25 @@ def access_url(context, url):
     context.response = requests.get(context.coreapi_url + url)
 
 
+@when('I access the {url:S} endpoint using the HTTP GET method')
+@when('I call the {url:S} endpoint using the HTTP GET method')
+def access_url_get_method(context, url):
+    """Access the service API using the HTTP GET method."""
+    context.response = requests.get(context.coreapi_url + url)
+
+
 @when('I access the {url:S} endpoint using the HTTP PUT method')
 @when('I call the {url:S} endpoint using the HTTP PUT method')
 def access_url_put_method(context, url):
     """Access the service API using the HTTP PUT method."""
     context.response = requests.put(context.coreapi_url + url)
+
+
+@when('I access the {url:S} endpoint using the HTTP POST method')
+@when('I call the {url:S} endpoint using the HTTP POST method')
+def access_url_post_method(context, url):
+    """Access the service API using the HTTP POST method."""
+    context.response = requests.post(context.coreapi_url + url)
 
 
 @when('I access the {url:S} endpoint using the HTTP PATCH method')
