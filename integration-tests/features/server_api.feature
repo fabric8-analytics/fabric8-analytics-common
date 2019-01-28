@@ -48,7 +48,6 @@ Feature: Server API
          |/api/v1/generate-file|
          |/api/v1/get-next-component/<ecosystem>|
          |/api/v1/master-tags/<ecosystem>|
-         |/api/v1/set-tags|
          |/api/v1/stack-analyses|
          |/api/v1/stack-analyses/<external_request_id>|
          |/api/v1/submit-feedback|
