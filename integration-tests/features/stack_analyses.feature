@@ -1,10 +1,39 @@
 Feature: Analyse API functionality check
 
   @production
-  Scenario: Check that the API entry point
+  Scenario: Check that the REST API point for the stack analyses accepts authorization tokens
     Given System is running
-    When I access /api/v1/stack-analyses
-    Then I should get 401 status code
+     When I access /api/v1/stack-analyses
+     Then I should get 401 status code
+
+
+  Scenario Outline: Check that the stack analysis REST API endpoint requires authorization token even for improper HTTP methods
+    Given System is running
+     When I access the /api/v1/stack-analyses endpoint using the HTTP <method> method
+     Then I should not get 200 status code
+
+     Examples: HTTP methods
+     | method |
+     | GET    |
+     | HEAD   |
+     | PUT    |
+     | DELETE |
+
+
+  Scenario Outline: Check that the stack analysis REST API endpoint does not accept any HTTP method other than POST
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I access the /api/v1/stack-analyses endpoint using the HTTP <method> method and authorization token
+     Then I should not get 200 status code
+
+     Examples: HTTP methods
+     | method |
+     | GET    |
+     | HEAD   |
+     | PUT    |
+     | DELETE |
+
 
   @production
   Scenario: Check that the API entry point requires authorization token
