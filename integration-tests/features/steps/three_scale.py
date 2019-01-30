@@ -24,19 +24,19 @@ def three_scale_register_url(context):
 
 
 def get_data(context, use_token):
-        """Construct data for 3scale REST API POST call."""
-        if use_token:
-            token = authorization(context).get("Authorization", None)
-            token = token.split("Bearer ")[-1]
-            data = {
-                "auth_token": token,
-                "service_id": context.service_id[:-1]
-            }
-        else:
-            data = {
-                "service_id": context.service_id[:-1]
-            }
-        return data
+    """Construct data for 3scale REST API POST call."""
+    if use_token:
+        token = authorization(context).get("Authorization", None)
+        token = token.split("Bearer ")[-1]
+        data = {
+            "auth_token": token,
+            "service_id": context.service_id[:-1]
+        }
+    else:
+        data = {
+            "service_id": context.service_id[:-1]
+        }
+    return data
 
 
 def get_headers():
