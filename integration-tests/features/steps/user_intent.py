@@ -15,7 +15,7 @@ def post_data_to_user_intent_endpoint(context, payload=None):
     if payload is not None:
         context.response = requests.post(context.coreapi_url + url,
                                          headers=authorization(context),
-                                         data=payload)
+                                         json=payload)
     else:
         context.response = requests.post(context.coreapi_url + url,
                                          headers=authorization(context))
