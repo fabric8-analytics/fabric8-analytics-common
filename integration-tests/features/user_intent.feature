@@ -22,7 +22,14 @@ Feature: Tests for user intent API version 1.0
 
 
   @production
-  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' argumentes
+  Scenario: Check the HTTP POST call for user intent endpoint - the authorization token should be required
+    Given System is running
+     When I access the /api/v1/user-intent endpoint using the HTTP POST method
+     Then I should get 401 status code
+
+
+  @production
+  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' arguments
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -33,7 +40,7 @@ Feature: Tests for user intent API version 1.0
 
 
   @production
-  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' argumentes
+  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' arguments
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -44,7 +51,7 @@ Feature: Tests for user intent API version 1.0
 
 
   @production
-  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' argumentes
+  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' arguments
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -81,3 +88,74 @@ Feature: Tests for user intent API version 1.0
      | PUT    | 405 |
      | DELETE | 405 |
 
+
+  @production
+  Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token, but no payload
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I call user-intent endpoint without any payload
+     Then I should get 400 status code
+      And I should receive a valid JSON response
+      And I should receive JSON response containing the error key
+      And I should receive JSON response with the error key set to Expected JSON request
+
+
+  @production
+  Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and empty payload
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I call user-intent endpoint with empty payload
+     Then I should get 400 status code
+      And I should receive a valid JSON response
+      And I should receive JSON response containing the error key
+      And I should receive JSON response with the error key set to Expected JSON request
+
+
+  @production
+  Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and incorrect payload
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I call user-intent endpoint with incorrect payload
+     Then I should get 400 status code
+      And I should receive a valid JSON response
+      And I should receive JSON response containing the error key
+      And I should receive JSON response with the error key set to Expected ecosystem in the request
+
+
+  @production
+  Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and manual tagging in JSON
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I call user-intent endpoint with payload that contains only manual_tagging attribute
+     Then I should get 400 status code
+      And I should receive a valid JSON response
+      And I should receive JSON response containing the error key
+      And I should receive JSON response with the error key set to Expected user name in the request
+
+
+  @production
+  Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and manual tagging + user in JSON
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I call user-intent endpoint with payload that contains only manual_tagging and user attributes
+     Then I should get 400 status code
+      And I should receive a valid JSON response
+      And I should receive JSON response containing the error key
+      And I should receive JSON response with the error key set to Expected tags in the request
+
+
+  @production
+  Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and ecosystem in JSON
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+     When I call user-intent endpoint with payload that contains only ecosystem attribute
+     Then I should get 400 status code
+      And I should receive a valid JSON response
+      And I should receive JSON response containing the error key
+      And I should receive JSON response with the error key set to Expected data in the request
