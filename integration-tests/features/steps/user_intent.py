@@ -1,11 +1,9 @@
 """Basic checks for the server API."""
-from behave import then, when
-from urllib.parse import urljoin
+from behave import when
 
 import requests
 
 from src.authorization_tokens import authorization
-from src.parsing import parse_token_clause
 
 
 def post_data_to_user_intent_endpoint(context, payload=None):
@@ -58,7 +56,7 @@ def check_user_intent_with_manual_tagging_user_attributes_in_payload(context):
 
 
 @when('I call user-intent endpoint with payload that contains only ecosystem attribute')
-def check_user_intent_with_manual_tagging_user_attributes_in_payload(context):
+def check_user_intent_with_ecosystem_in_payload(context):
     """Post incomplete payload into the REST API endpoint for user-intent."""
     payload = {"ecosystem": "npm"}
     post_data_to_user_intent_endpoint(context, payload)
