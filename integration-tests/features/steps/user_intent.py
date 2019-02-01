@@ -32,3 +32,33 @@ def check_user_intent_with_empty_payload(context):
     """Post empty into the REST API endpoint for user-intent."""
     payload = {}
     post_data_to_user_intent_endpoint(context, payload)
+
+
+@when('I call user-intent endpoint with incorrect payload')
+def check_user_intent_with_incorrect_payload(context):
+    """Post incorrect into the REST API endpoint for user-intent."""
+    payload = {"foo": "bar"}
+    post_data_to_user_intent_endpoint(context, payload)
+
+
+@when('I call user-intent endpoint with payload that contains only manual_tagging attribute')
+def check_user_intent_with_manual_tagging_attribute_in_payload(context):
+    """Post incomplete payload into the REST API endpoint for user-intent."""
+    payload = {"manual_tagging": "true"}
+    post_data_to_user_intent_endpoint(context, payload)
+
+
+@when('I call user-intent endpoint with payload that contains only manual_tagging and user '
+      'attributes')
+def check_user_intent_with_manual_tagging_user_attributes_in_payload(context):
+    """Post incomplete payload into the REST API endpoint for user-intent."""
+    payload = {"manual_tagging": "true",
+               "user": "User name"}
+    post_data_to_user_intent_endpoint(context, payload)
+
+
+@when('I call user-intent endpoint with payload that contains only ecosystem attribute')
+def check_user_intent_with_manual_tagging_user_attributes_in_payload(context):
+    """Post incomplete payload into the REST API endpoint for user-intent."""
+    payload = {"ecosystem": "npm"}
+    post_data_to_user_intent_endpoint(context, payload)
