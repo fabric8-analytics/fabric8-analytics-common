@@ -33,7 +33,7 @@ Feature: Tests for user intent API version 1.0
 
 
   @production
-  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' argumentes
+  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' arguments
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -44,7 +44,7 @@ Feature: Tests for user intent API version 1.0
 
 
   @production
-  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' argumentes
+  Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' arguments
     Given System is running
      When I acquire the authorization token
      Then I should get the proper authorization token
