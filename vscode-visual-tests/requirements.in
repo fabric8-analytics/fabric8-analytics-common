@@ -1,0 +1,4 @@
+behave
+# behave-pytest # Disabled due to https://github.com/ribozz/behave-pytest/issues/2
+pytest
+pyautogui
