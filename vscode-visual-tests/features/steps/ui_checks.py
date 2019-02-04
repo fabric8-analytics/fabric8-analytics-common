@@ -1,6 +1,6 @@
 """UI-based test steps not tied to any specific UI program."""
 
-from behave import given, then, when
+from behave import then, when
 
 
 @when('I look at the whole screen')
