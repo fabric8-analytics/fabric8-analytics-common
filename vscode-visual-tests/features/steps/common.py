@@ -24,6 +24,7 @@ from src.ps import get_process_list
 def initial_initialize_autogui_library(context):
     """Initialize PyAutoGUI library and check display etc."""
     import pyautogui
+    assert pyautogui is not None
     pyautogui.PAUSE = 1.0
     context.pyautogui = pyautogui
 
@@ -32,8 +33,9 @@ def initial_initialize_autogui_library(context):
 def check_screen_size(context, width, height):
     """Check the screen size, because the UI layout depends on it."""
     actual_width, actual_height = context.pyautogui.size()
-    assert actual_width >= width, "Insuficient width {w}".format(w=actual_width)
-    assert actual_height >= height, "Insuficient height {h}".format(h=actual_height)
+
+    assert actual_width >= width, "Insuficient screen width {w}".format(w=actual_width)
+    assert actual_height >= height, "Insuficient screen height {h}".format(h=actual_height)
 
 
 @when('I start the Visual Studio Code')
@@ -42,6 +44,13 @@ def start_visual_studion_code(context):
     system("code")
     # time to breath
     sleep(2)
+
+
+@when('I wait {num:d} seconds')
+@then('I wait {num:d} seconds')
+def pause_scenario_execution(context, num):
+    """Pause the test for provided number of seconds."""
+    sleep(num)
 
 
 @then('I should find Visual Studio Code instance')
