@@ -17,7 +17,7 @@
 from behave import given, then, when
 from time import sleep
 from os import system
-import subprocess
+from src.ps import get_process_list
 
 
 @given('The PyAutoGUI library is initialized')
@@ -47,17 +47,11 @@ def start_visual_studion_code(context):
 @then('I should find Visual Studio Code instance')
 def visual_studio_code_instance(context):
     """Check that the Visual Studio Code has been started."""
-    out = subprocess.Popen(['ps', '-e', '-o', 'command'],
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT)
-    stdout, stderr = out.communicate()
+    ps_output = get_process_list()
 
-    assert stderr is None, "Error during 'ps'"
-    assert stdout is not None, "No output from 'ps'"
-
-    ps_output = stdout.decode('utf-8').split()
     for line in ps_output:
         if line.startswith("/usr/share/code"):
+            # ok, we have probably found an instance of Visual Studio Code
             return
 
     raise Exception("Visual Studio Code is not running")
@@ -66,4 +60,8 @@ def visual_studio_code_instance(context):
 @then('I should not find any Visual Studio Code instance')
 def no_visual_studio_code_instance(context):
     """Check that the Visual Studio Code has not been started."""
-    pass
+    ps_output = get_process_list()
+
+    for line in ps_output:
+        if line.startswith("/usr/share/code"):
+            raise Exception("Visual Studio Code is running")
