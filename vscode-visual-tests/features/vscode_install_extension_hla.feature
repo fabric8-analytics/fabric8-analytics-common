@@ -6,7 +6,6 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality
 
          When I start the Visual Studio Code
          Then I should find Visual Studio Code instance
-         When I look at the whole screen
 
          When I click on the extension icon on the activity bar
          Then I should find the Search extension in Marketplace input box
