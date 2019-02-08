@@ -3,6 +3,12 @@
 TYPING_INTERVAL = 0.25
 
 
+def perform_move_mouse_cursor(context, x=0, y=0):
+    """Move mouse cursor to specifief coordinates."""
+    assert context is not None, "Context must be provided by Behave"
+    context.pyautogui.moveTo(x, y)
+
+
 def perform_click_on_the_region(context):
     """Click on region found by previous test step."""
     assert context is not None, "Context must be provided by Behave"
