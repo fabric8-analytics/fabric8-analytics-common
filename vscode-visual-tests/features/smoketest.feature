@@ -6,7 +6,7 @@ Feature: Smoke test
          When I start the Visual Studio Code
          Then I should find Visual Studio Code instance
          When I look at the whole screen
-         Then I should find the region with activity bar
+         Then I should find the activity bar
          When I look at the whole screen
          Then I should find the region with file menu header
          When I click on that region
