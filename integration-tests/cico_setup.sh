@@ -22,6 +22,10 @@ prep() {
 load_jenkins_vars
 prep
 
+echo "------------"
+echo $RECOMMENDER_REFRESH_TOKEN | tail -c 10
+echo "------------"
+
 F8A_API_URL=${F8A_API_URL:-https://recommender.api.prod-preview.openshift.io}
 F8A_JOB_API_URL=${F8A_JOB_API_URL:-http://bayesian-jobs-bayesian-preview.b6ff.rh-idev.openshiftapps.com}
 F8A_GREMLIN_URL=${F8A_GREMLIN_URL:-http://bayesian-gremlin-http-preview-b6ff-bayesian-preview.b6ff.rh-idev.openshiftapps.com}
