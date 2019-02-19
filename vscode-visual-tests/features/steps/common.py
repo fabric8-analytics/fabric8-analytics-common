@@ -19,12 +19,16 @@ from time import sleep
 from os import system
 from src.ps import get_process_list
 
+VSCODE_COMMAND_NAME = "code"
+
 
 @given('The PyAutoGUI library is initialized')
-def initial_initialize_autogui_library(context):
+def initialize_autogui_library(context):
     """Initialize PyAutoGUI library and check display etc."""
     import pyautogui
+    # must not be None
     assert pyautogui is not None
+    # pause time (in seconds) for GUI operations
     pyautogui.PAUSE = 1.0
     context.pyautogui = pyautogui
 
@@ -32,6 +36,7 @@ def initial_initialize_autogui_library(context):
 @given('The screen resolution is at least {width:d}x{height:d} pixels')
 def check_screen_size(context, width, height):
     """Check the screen size, because the UI layout depends on it."""
+    assert context is not None
     actual_width, actual_height = context.pyautogui.size()
 
     assert actual_width >= width, "Insuficient screen width {w}".format(w=actual_width)
@@ -41,7 +46,7 @@ def check_screen_size(context, width, height):
 @when('I start the Visual Studio Code')
 def start_visual_studion_code(context):
     """Start the Visual Studio Code."""
-    system("code")
+    system(VSCODE_COMMAND_NAME)
     # time to breath
     sleep(2)
 
@@ -60,7 +65,7 @@ def visual_studio_code_instance(context):
 
     for line in ps_output:
         if line.startswith("/usr/share/code"):
-            # ok, we have probably found an instance of Visual Studio Code
+            # ok, we have probably found a running instance of Visual Studio Code
             return
 
     raise Exception("Visual Studio Code is not running")
@@ -73,4 +78,5 @@ def no_visual_studio_code_instance(context):
 
     for line in ps_output:
         if line.startswith("/usr/share/code"):
+            # we have probably found a running instance of Visual Studio Code
             raise Exception("Visual Studio Code is running")

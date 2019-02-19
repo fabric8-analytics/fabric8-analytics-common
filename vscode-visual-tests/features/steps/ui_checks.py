@@ -1,4 +1,4 @@
-"""UI-based test steps not tied to any specific UI program."""
+"""UI-based test steps that are not tied to any specific UI program."""
 
 # vim: set fileencoding=utf-8
 
@@ -21,6 +21,7 @@ from src.gui import perform_click_on_the_region, perform_find_the_region
 @when('I look at the whole screen')
 def look_at_the_whole_screen(context):
     """Create the screenshot of the whole screen."""
+    assert context is not None
     screenshot = context.pyautogui.screenshot()
     assert screenshot is not None, "Unable to create screenshot"
     context.screenshot = screenshot
@@ -30,11 +31,13 @@ def look_at_the_whole_screen(context):
 @when('I click on that region')
 def click_on_the_region(context):
     """Click on region found by previous test step."""
+    assert context is not None
     perform_click_on_the_region(context)
 
 
 @then('I should find the region with {region}')
 def find_the_region(context, region):
     """Try to find region on screen based on specified pattern."""
+    assert context is not None
     assert region is not None
     perform_find_the_region(context, region)
