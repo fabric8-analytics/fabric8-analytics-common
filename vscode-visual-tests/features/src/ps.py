@@ -12,6 +12,7 @@ def get_process_list():
     # read data from stdout and stderr, until end-of-file is reached
     stdout, stderr = out.communicate()
 
+    # basic checks
     assert stderr is None, "Error during 'ps'"
     assert stdout is not None, "No output from 'ps'"
 

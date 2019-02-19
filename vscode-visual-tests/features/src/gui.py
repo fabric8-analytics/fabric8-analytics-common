@@ -1,6 +1,13 @@
+# vim: set fileencoding=utf-8
+
 """Common functions for GUI-related tests."""
 
+from os import path
+
+
 TYPING_INTERVAL = 0.25
+DIRECTORY_WITH_REGIONS = "regions"
+OUTPUT_DIRECTORY = "."
 
 
 def perform_move_mouse_cursor(context, x=0, y=0):
@@ -27,24 +34,34 @@ def perform_type(context, what_to_type):
     context.pyautogui.typewrite(what_to_type, interval=TYPING_INTERVAL)
 
 
+def region_filename_in_directory(directory, region):
+    """Generate filename for region residing in specified directory."""
+    # construct proper filename
+    region = region.replace(" ", "_")
+    filename = path.join(directory, region + ".png")
+    return filename
+
+
 def filename_for_region(region):
     """Proper filename for file containing pattern for region."""
     assert region is not None, "Name of region is required parameter"
 
-    region = region.replace(" ", "_")
-    filename = "regions/" + region + ".png"
-    return filename
+    return region_filename_in_directory(DIRECTORY_WITH_REGIONS, region)
 
 
 def save_screenshot(context, region):
     """Save screenshot with the filename the same as the region."""
     assert region is not None, "Name of region is required parameter"
 
-    context.pyautogui.screenshot(region.replace(" ", "_") + ".png")
+    filename = region_filename_in_directory(OUTPUT_DIRECTORY, region)
+    context.pyautogui.screenshot(filename)
 
 
 def perform_find_the_region(context, region, alternate_region=None):
     """Try to find region on screen based on specified pattern."""
+    assert region is not None, "Name of region is required parameter"
+    context.location = None
+
     try:
         # first step - try to localize primary region
         location = context.pyautogui.locateOnScreen(filename_for_region(region))
@@ -55,10 +72,11 @@ def perform_find_the_region(context, region, alternate_region=None):
                 location = context.pyautogui.locateOnScreen(filename_for_region(alternate_region))
             except Exception:
                 save_screenshot(context, alternate_region)
-                raise Exception("Alternate region '{r}' can not be found".format(r=region))
+                raise Exception("Alternate region '{r}' can not be found on the screen".format(
+                                r=region))
         # first region can't be found and alternate region is not specified -> a problem
         else:
             save_screenshot(context, region)
-            raise Exception("Primary region '{r}' can not be found".format(r=region))
+            raise Exception("Primary region '{r}' can not be found on the screen".format(r=region))
 
     context.location = location
