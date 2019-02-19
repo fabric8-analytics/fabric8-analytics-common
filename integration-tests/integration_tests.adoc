@@ -277,3 +277,142 @@ $ ./runtest.sh --tags resilient.infrastructure
 ----
 
 //TODO: make it possible to run the integration tests from a venv even when docker access requires sudo
+
+== Security tokens for tests
+
+A brief about setting up security tokens for end to end tests.
+
+Currently we use the following user for test account: `ptisnovs-preview-osiotest1`
+
+CAUTION: As the offline token feature manifested in a point of vulnerability
+(where potential attackers may exploit a stolen token across an extensive
+period of time, without concern for the token expiring), we now recommend that
+standard access tokens, obtained using the standard OAuth flow are used
+instead.
+
+The process looks like:
+
+. Login to OSIO and acquire coded token
+. Decode the refresh token
+. Store the refresh token into Vault
+. Setup CI jobs to put refresh token into environment variable with a known name
+. Use this environment variable
+
+
+=== Acquire token needed for most REST API tests
+
+To get the token for production, open the following page:
+
+https://auth.openshift.io/api/login?scope=offline_access&redirect=https%3A%2F%2Fauth.openshift.io%2Fapi%2Fstatus
+
+To get the token for prod-preview, open the following page:
+
+https://auth.prod-preview.openshift.io/api/login?scope=offline_access&redirect=https%3A%2F%2Fauth.prod-preview.openshift.io%2Fapi%2Fstatus
+
+After logging in, you will be redirected to another URL.
+
+Look at the URL of the new page.
+
+Copy the <JSON> part from the URL, it will look like this:
+
+```
+%7B%22access_token%22%3A%22foobar22expires_in%22%3A2592000%2C%22not-before-policy%22%3Anull%2C%22refresh_expires_in%22%3A2592000%2C%22refresh_token%22foobar%22token_type%22%3A%22Bearer%22%7D
+```
+
+Use conversion function to convert these data into JSON format:
+
+Conversion function:
+
+```
+urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
+```
+
+Usage:
+
+```
+urldecode `cat url_part.txt` > url_part.json
+```
+
+Result should look like this:
+
+```
+"access_token":"foobar",
+"expires_in":2592000,
+"not-before-policy":null,
+"refresh_expires_in":2592000,
+"refresh_token":"foobar",
+"token_type":"Bearer"
+```
+
+Get just the `refresh_token part` and store it into file named `refresh_token.txt`
+
+CAUTION: Make sure that the file don't end with a new line. It will cause
+problems because the Vault CLI tool will use the whole content of a file,
+including newline, which is not correct.
+
+
+=== Store token into Vault
+
+You will need the Vault CLI tool installed to store token into the Vault service.
+
+Login into vault:
+
+```
+export VAULT_ADDR=https://vault.devshift.net
+vault login -method=github token="MY_GH_TOKEN"
+```
+
+Use the following command to store token into Vault
+
+```
+vault write devtools-osio-ci/recommender-refresh-token token=@refresh_token.txt
+```
+
+=== Use token on CI
+
+Definition of secret object:
+
+```
+- recommender-refresh-token: &recommender-refresh-token
+    name: "recommender-refresh-token"
+    secret-path: 'devtools-osio-ci/recommender-refresh-token'
+    secret-values:
+      - env-var: 'RECOMMENDER_REFRESH_TOKEN'
+        vault-key: 'token'
+```
+
+The job template needs to contain reference to a secret object:
+
+```
+- job-template:
+    wrappers:
+        - vault-secrets:
+            <<: *vault_defaults
+            secrets:
+              - *recommender-api-token
+              - *3scale-user-key
+              - *recommender-refresh-token
+```
+
+The token will be stored in environment variable named `RECOMMENDER_REFRESH_TOKEN` and can be used by tests:
+
+```
+load_jenkins_vars() {
+    if [ -e "jenkins-env" ]; then
+        cat jenkins-env \
+          | grep -E "(FRECOMMENDER_REFRESH_TOKEN|JENKINS_URL|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER)=" \
+          | sed 's/^/export /g' \
+          > ~/.jenkins-env
+        source ~/.jenkins-env
+    fi
+    echo "Jenkins URL: $JENKINS_URL"
+    echo "Build URL: $BUILD_URL"
+}
+```
+
+=== More information about tokens:
+
+link:https://fabric8-services.github.io/fabric8-auth/reference.html#_token_validation[Token validation]
+link:https://fabric8-services.github.io/fabric8-auth/reference.html#_offline_tokens[Offline Tokens]
+link:https://www.vaultproject.io/[Vault: Manage Secrets and Protect Sensitive Data]
+link:https://gitlab.cee.redhat.com/dtsd/devguide/blob/master/devguide.md#credentials-mgmt[Credentials Management in Vault]
