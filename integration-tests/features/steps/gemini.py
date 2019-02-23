@@ -77,6 +77,15 @@ def access_gemini_url(context, endpoint, token="without"):
     context.response = requests.get(url, headers=headers)
 
 
+@when('I access the {endpoint} endpoint of Gemini service for {parameter} reports {list}')
+def access_stacks_report_list(context, endpoint, parameter='', list=''):
+    """Access the Gemini stacks-report/list API endpoint using the HTTP GET method."""
+    url = urljoin(context.gemini_api_url, '{ep}/{param}'.format(ep=endpoint, param=parameter))
+    context.response = requests.get(url, headers=headers)
+    if list == 'list':
+        context.list = True
+
+
 @when('I call the {endpoint} endpoint of Gemini service using the HTTP PUT method')
 def access_gemini_url_put_method(context, endpoint):
     """Access the Gemini service API using the HTTP PUT method."""
@@ -161,3 +170,12 @@ def check_cves_for_epv(context, cves, p, v, e):
                 "{exp} CVEs expected, but {found} was found".format(exp=cves, found=cve_count)
             return
     raise Exception("{e}/{p}/{v} was not found".format(e=e, p=p, v=v))
+
+
+@then('I should should get a valid report')
+def check_valid_report(context):
+    response = context.response.json()
+    if context.list == 'list':
+        assert(isinstance(response['objects'], list))
+    else:
+        assert(isinstance(response), dict)
