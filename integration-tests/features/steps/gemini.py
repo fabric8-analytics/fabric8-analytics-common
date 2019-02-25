@@ -77,7 +77,7 @@ def access_gemini_url(context, endpoint, token="without"):
     context.response = requests.get(url, headers=headers)
 
 
-@when('I access the {endpoint} endpoint of Gemini service for {parameter} reports {list}')
+@when('I access the {endpoint} endpoint of Gemini service for {parameter} report {list}')
 def access_stacks_report_list(context, endpoint, parameter='', list=''):
     """Access the Gemini stacks-report/list API endpoint using the HTTP GET method."""
     url = urljoin(context.gemini_api_url, '{ep}/{param}'.format(ep=endpoint, param=parameter))
@@ -172,10 +172,11 @@ def check_cves_for_epv(context, cves, p, v, e):
     raise Exception("{e}/{p}/{v} was not found".format(e=e, p=p, v=v))
 
 
-@then('I should should get a valid report')
+@then('I should get a valid report')
 def check_valid_report(context):
+    """Check if the stacks report is a valid one."""
     response = context.response.json()
     if context.list == 'list':
         assert(isinstance(response['objects'], list))
     else:
-        assert(isinstance(response), dict)
+        assert(isinstance(response, dict))
