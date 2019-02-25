@@ -78,12 +78,15 @@ def access_gemini_url(context, endpoint, token="without"):
 
 
 @when('I access the {endpoint} endpoint of Gemini service for {parameter} report {list}')
+@when('I access the {endpoint} endpoint of Gemini service for {parameter} report')
 def access_stacks_report_list(context, endpoint, parameter='', list=''):
     """Access the Gemini stacks-report/list API endpoint using the HTTP GET method."""
     url = urljoin(context.gemini_api_url, '{ep}/{param}'.format(ep=endpoint, param=parameter))
-    context.response = requests.get(url, headers=headers)
+    context.response = requests.get(url)
     if list == 'list':
         context.list = True
+    else:
+        context.list = False
 
 
 @when('I call the {endpoint} endpoint of Gemini service using the HTTP PUT method')
