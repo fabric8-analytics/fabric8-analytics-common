@@ -202,7 +202,7 @@ Feature: Gemini Analytics API
 
   Scenario: Check the Gemini API endpoint 'stacks-report/list'
     Given System is running
-     When I access the /api/v1/stacks-report/list endpoint of Gemini service for monthly report list
+     When I access the /api/v1/stacks-report/list endpoint of Gemini service for monthly report history
      Then I should get 200 status code
      Then I should get a valid report
 
