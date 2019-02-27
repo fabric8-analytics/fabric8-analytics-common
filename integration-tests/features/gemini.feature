@@ -198,3 +198,17 @@ Feature: Gemini Analytics API
     Given System is running
      When I access the /api/v1/user-repo/drop endpoint of Gemini service
      Then I should not get 200 status code
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/list'
+    Given System is running
+     When I access the /api/v1/stacks-report/list endpoint of Gemini service for monthly report history
+     Then I should get 200 status code
+     Then I should get a valid report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report'
+    Given System is running
+     When I access the /api/v1/stacks-report/report endpoint of Gemini service for STAGE/monthly/201902.json report
+     Then I should get 200 status code
+     Then I should get a valid report
