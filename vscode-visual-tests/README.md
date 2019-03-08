@@ -121,3 +121,26 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality
           And I wait 2 seconds
          Then I should not find any Visual Studio Code instance
 ```
+
+## Common issues
+
+### Error message: Xlib.error.DisplayConnectionError: Can't connect to display ":0.0": b'No protocol specified\n'
+
+You can use the `xhost` tool to control user access to X.
+
+First run `xhost +` which should disable ALL checks so the test can be started.
+This solution is no secure, of course, so use it just for checking.
+
+Better is to use:
+
+```
+xhost -
+xhost +SI:localuser:$(you_username)
+```
+
+### Error message: ImportError: No module named Xlib.display
+
+```
+sudo dnf install python3-xlib
+```
+
