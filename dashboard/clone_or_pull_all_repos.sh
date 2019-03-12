@@ -34,7 +34,8 @@ f8a-hpf-insights
 f8a-golang-insights
 f8a-pypi-insights
 f8a-stacks-report
-cvejob"
+cvejob
+victimsdb-lib"
 
 pushd repositories
 
