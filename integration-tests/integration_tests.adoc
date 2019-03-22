@@ -301,7 +301,9 @@ The process looks like:
 
 === Acquire token needed for most REST API tests
 
-To get the token for production, open the following page:
+IMPORTANT: please choose the right system - production or pre-production!
+
+To get the token for production system, open the following page:
 
 https://auth.openshift.io/api/login?scope=offline_access&redirect=https%3A%2F%2Fauth.openshift.io%2Fapi%2Fstatus
 
@@ -344,7 +346,7 @@ Result should look like this:
 "token_type":"Bearer"
 ```
 
-Get just the `refresh_token part` and store it into file named `refresh_token.txt`
+Get just the `refresh_token` part and store it into file named `refresh_token.txt`
 
 CAUTION: Make sure that the file don't end with a new line. It will cause
 problems because the Vault CLI tool will use the whole content of a file,
@@ -354,6 +356,18 @@ including newline, which is not correct.
 === Store token into Vault
 
 You will need the Vault CLI tool installed to store token into the Vault service.
+
+==== Get the GH token to be able to use Vault:
+
+Go to the page
+https://github.com/settings/tokens
+
+Select Vault
+
+Select Refresh token button
+
+
+==== Push token into Vault
 
 Login into vault:
 
