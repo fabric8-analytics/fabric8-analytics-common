@@ -15,7 +15,7 @@ features/user_tag.feature
 ## temporary: features/gremlin.feature
 features/three_scale.feature
 #features/api_backbone.feature
-features/gemini.feature
+## features/gemini.feature
 features/resilient_infrastructure.feature
 features/three_scale_stack_analyses.feature
 features/three_scale_component_analyses.feature
