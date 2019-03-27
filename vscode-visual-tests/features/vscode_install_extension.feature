@@ -17,7 +17,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality
           And I look at the whole screen
          Then I should find the Search extension in Marketplace input box
          When I click on that region
-          And I type in Depencency Analytics
+          And I type in Dependency Analytics
           And I wait 2 seconds
           And I look at the whole screen
          Then I should find the Dependency Analytics info region

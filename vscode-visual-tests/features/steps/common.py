@@ -16,7 +16,7 @@
 
 from behave import given, then, when
 from time import sleep
-from os import system
+from os import system, environ
 from src.ps import get_process_list
 
 VSCODE_COMMAND_NAME = "code"
@@ -41,6 +41,15 @@ def check_screen_size(context, width, height):
 
     assert actual_width >= width, "Insuficient screen width {w}".format(w=actual_width)
     assert actual_height >= height, "Insuficient screen height {h}".format(h=actual_height)
+
+
+@given('The Visual Studio Code is set up')
+def check_visual_studio_code_version(context):
+    """Check whether the VS_CODE_VERSION environment variable is set."""
+    env = environ
+    assert env is not None
+    assert "VS_CODE_VERSION" in env
+    context.vs_code_version = env["VS_CODE_VERSION"]
 
 
 @when('I start the Visual Studio Code')
