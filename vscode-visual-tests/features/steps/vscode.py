@@ -76,7 +76,7 @@ def look_for_dependency_analytics_info_region(context):
 def look_for_openshift_logo(context):
     """Try to find the OpenShift logo."""
     assert context is not None
-    perform_find_the_region(context, "openshift logo")
+    perform_find_the_region(context, "openshift logo", "openshift logo 2")
 
 
 @then('I should find the Dependency Analytics header')
@@ -97,7 +97,7 @@ def look_for_dependency_analytics_title(context):
 def look_for_plugin_install_button(context):
     """Try to find the Install button for a selected plugin."""
     assert context is not None
-    perform_find_the_region(context, "plugin install button")
+    perform_find_the_region(context, "plugin install button", "plugin install button 2")
 
 
 @then('I should find the Reload and Uninstall buttons')
