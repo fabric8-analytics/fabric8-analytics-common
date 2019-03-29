@@ -70,12 +70,14 @@ def perform_find_the_region(context, region, alternate_region=None):
         # first step - try to localize primary region
         filename = filename_for_region(context, region)
         location = context.pyautogui.locateOnScreen(filename)
+        assert location is not None
     except Exception:
         # the primary region can't be found: try the alternate region, if any
         if alternate_region is not None:
             try:
                 filename = filename_for_region(context, alternate_region)
                 location = context.pyautogui.locateOnScreen(filename)
+                assert location is not None
             except Exception:
                 save_screenshot(context, alternate_region)
                 raise Exception("Alternate region '{r}' can not be found on the screen".format(
