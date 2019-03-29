@@ -19,6 +19,8 @@ from behave import then, when
 from src.gui import perform_click_on_the_region, perform_find_the_region, perform_type
 from src.gui import perform_move_mouse_cursor
 
+SLEEP_AMOUNT = 2
+
 
 @when('I click on the File menu')
 def click_on_the_file_menu(context):
@@ -129,7 +131,7 @@ def click_on_the_extension_icon_on_the_activity_bar(context):
     look_for_extension_icon_on_activity_bar(context)
     perform_click_on_the_region(context)
     click_on_the_extension_icon_on_the_activity_bar
-    sleep(2)
+    sleep(SLEEP_AMOUNT)
 
 
 @when('I close the Visual Studio Code')
@@ -138,7 +140,7 @@ def close_visual_studio_code(context):
     assert context is not None
     click_on_the_file_menu(context)
     click_on_the_exit_menu_entry(context)
-    sleep(2)
+    sleep(SLEEP_AMOUNT)
 
 
 @when('I search for {plugin} plugin')
@@ -147,7 +149,7 @@ def search_for_plugin(context, plugin):
     assert context is not None
     look_for_search_extension_in_marketplace(context)
     type_in_text(context, plugin)
-    sleep(2)
+    sleep(SLEEP_AMOUNT)
     look_for_dependency_analytics_info_region(context)
 
 
@@ -157,7 +159,7 @@ def select_plugin(context):
     assert context is not None
     perform_click_on_the_region(context)
     # time to find the plugin
-    sleep(2)
+    sleep(SLEEP_AMOUNT)
     look_for_plugin_install_button(context)
 
 
@@ -167,4 +169,4 @@ def start_extension_installation(context):
     assert context is not None
     perform_click_on_the_region(context)
     perform_move_mouse_cursor(context, 10, 10)
-    sleep(2)
+    sleep(SLEEP_AMOUNT)

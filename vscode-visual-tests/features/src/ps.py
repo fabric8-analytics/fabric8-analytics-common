@@ -18,5 +18,6 @@ def get_process_list():
 
     # try to decode the output and split it by lines
     ps_output = stdout.decode('utf-8').split()
+    assert ps_output is not None
 
     return ps_output
