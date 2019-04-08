@@ -5,13 +5,17 @@ pass=0
 fail=0
 
 function prepare_venv() {
-    VIRTUALENV=$(which virtualenv)
+    VIRTUALENV="$(which virtualenv)"
     if [ $? -eq 1 ]; then
         # python34 which is in CentOS does not have virtualenv binary
-        VIRTUALENV=$(which virtualenv-3)
+        VIRTUALENV="$(which virtualenv-3)"
     fi
-
-    ${VIRTUALENV} -p python3 venv && source venv/bin/activate && python3 "$(which pip3)" install pyflakes
+    if [ $? -eq 1 ]; then
+        # still don't have virtual environment -> use python3.4 directly
+        python3.4 -m venv venv && source venv/bin/activate && python3 "$(which pip3)" install pyflakes
+    else
+        ${VIRTUALENV} -p python3 venv && source venv/bin/activate && python3 "$(which pip3)" install pyflakes
+    fi
 }
 
 # run the pyflakes for all files that are provided in $1
@@ -35,6 +39,7 @@ function check_files() {
     done
 }
 
+[ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
 echo "----------------------------------------------------"
 echo "Checking source files for common errors in following"
@@ -42,8 +47,6 @@ echo "directories:"
 echo "$directories"
 echo "----------------------------------------------------"
 echo
-
-[ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
 # checks for the whole directories
 for directory in $directories
