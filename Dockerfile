@@ -6,14 +6,14 @@ RUN yum install -y epel-release && \
     yum install -y python34-devel python34-pip gcc which && \
     yum clean all && \
     rm -rf /var/cache/yum && \
-    pip3 install virtualenv && \
-    pip3 install --upgrade pip && \
+    pip3.4 install virtualenv && \
+    pip3.4 install --upgrade pip && \
     mkdir /taas
 
 COPY ./ /taas
 
 WORKDIR /taas/taas
 
-RUN pip3 install -r requirements.txt
+RUN pip3.4 install -r requirements.txt
 
 CMD ["./run_taas_in_docker.sh"]

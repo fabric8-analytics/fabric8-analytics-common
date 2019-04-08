@@ -10,7 +10,7 @@ RUN yum install -y epel-release &&\
 
 COPY . /tests
 RUN pushd /tests &&\
-    pip3 install -r requirements.txt
+    pip3.4 install -r requirements.txt
 
 WORKDIR /tests
 ENTRYPOINT ["/tests/runtest.sh"]
