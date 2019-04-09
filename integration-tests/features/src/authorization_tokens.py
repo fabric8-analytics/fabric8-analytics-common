@@ -15,3 +15,12 @@ def authorization(context):
     Returned dict can be added to the 'request' object.
     """
     return {'Authorization': 'Bearer {token}'.format(token=context.token)}
+
+
+def authorization_with_eco_origin(context, ecosystem, origin):
+    """Construct header with authorization token for the server API calls.
+
+    Returned dict can be added to the 'request' object.
+    """
+    return {'Authorization': 'Bearer {token}'.format(token=context.token),
+            'origin': origin, 'ecosystem': ecosystem}
