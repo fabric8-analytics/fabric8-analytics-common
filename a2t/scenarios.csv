@@ -1,0 +1,8 @@
+"Name","Component analysis","Stack analysis","Python payload","Maven payload","NPM Payload","Improper payload","Mix payloads","Check reponses","Export responses","Comment"
+"normal","10","10","yes","yes","yes","yes","yes","no","no","set of normal tests"
+"component analysis smoke test","1","0","yes","no","no","no","no","no","yes","component analysis smoke tests, just check if API responds"
+"component analysis light load","10","0","yes","no","no","no","no","no","no","component analysis tests with light load"
+"component analysis normal load","50","0","yes","no","no","no","no","no","no","component analysis tests with normal load"
+"component analysis medium load","100","0","yes","no","no","no","no","no","no","component analysis tests with medium load"
+"component analysis heavy load","200","0","yes","no","no","no","no","no","no","component analysis tests with heavy load"
+"component analysis extra heavy load","500","0","yes","no","no","no","no","no","no","component analysis tests with extra heavy load"
