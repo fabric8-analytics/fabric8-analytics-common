@@ -1,6 +1,6 @@
 #!/bin/bash
 
-directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests db-integrity-tests taas baf e2e_tests_bot vscode-visual-tests"
+directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests db-integrity-tests taas baf e2e_tests_bot vscode-visual-tests a2t"
 pass=0
 fail=0
 
