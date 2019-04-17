@@ -76,7 +76,9 @@ class ComponentAnalysis(Api):
 
         status_code = response.status_code
 
-        r = {"result": status_code,
+        r = {"thread_id": thread_id,
+             "call_number": i,
+             "result": status_code,
              "json": response.json()}
 
         if queue is not None:
