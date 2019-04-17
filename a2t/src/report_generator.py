@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import csv
-import time
-from fastlog import log
 
 
 def export_header(csv_writer):

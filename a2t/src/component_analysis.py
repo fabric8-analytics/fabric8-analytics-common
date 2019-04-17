@@ -17,10 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import requests
-import time
 import datetime
 import json
-import os
 from urllib.parse import urljoin
 
 from api import Api
