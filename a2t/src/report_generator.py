@@ -21,21 +21,24 @@ import csv
 
 def export_header(csv_writer):
     """Export CSV header."""
-    csv_writer.writerow(["Test name", "Endpoint", "Method",
-                         "Expected status", "Actual status",
-                         "Start time", "End time", "Duration", "Payload"])
+    csv_writer.writerow(["#",
+                         "Test name", "Ecosystem", "Package", "Version",
+                         "Manifest",
+                         "Thread#", "Status code",
+                         "Start time", "End time", "Duration"])
 
 
 def export_test_results(csv_writer, results):
     """Export results for all tests/API calls."""
-    for result in results.tests:
-        test = result["Test"]
-        status_code = str(result["Status code"]) or "N/A"
-        payload = str(result["Payload"]) or "N/A"
-        csv_writer.writerow([test["Name"], result["Url"], test["Method"],
-                             test["Expected status"], status_code,
-                             test["Start"], test["End"], test["Duration"],
-                             payload])
+    for i in range(results.qsize()):
+        result = results.get()
+        csv_writer.writerow([i + 1,
+                             result["name"],
+                             result["ecosystem"], result["package"], result["version"],
+                             result["manifest"],
+                             result["thread_id"],
+                             result["status_code"],
+                             result["started"], result["finished"], result["duration"]])
 
 
 def export_totat_time(csv_writer, start, end, duration):
@@ -52,4 +55,4 @@ def generate_csv_report(results, start, end, duration, filename):
         export_totat_time(csv_writer, start, end, duration)
         csv_writer.writerow([])
         export_header(csv_writer)
-        # export_test_results(csv_writer, results)
+        export_test_results(csv_writer, results)
