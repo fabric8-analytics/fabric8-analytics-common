@@ -106,6 +106,10 @@ def refresh_token_as_str(refresh_token):
 def setup(cli_arguments):
     """Perform BAF setup."""
     log.info("Setup")
+
+    refresh_token = None
+    api_token = None
+
     with log.indent():
         input_file = cli_arguments.input or DEFAULT_INPUT_FILE
         dry_run = cli_arguments.dry
@@ -115,13 +119,13 @@ def setup(cli_arguments):
             check_api_tokens_presence()
             license_service_url = read_url_from_env_var("OSIO_AUTH_SERVICE")
             refresh_token = os.environ.get("RECOMMENDER_REFRESH_TOKEN")
+            api_token = os.environ.get("RECOMMENDER_API_TOKEN")
 
             if not license_service_url:
                 log.error("OSIO_AUTH_SERVICE is not set")
                 sys.exit(-1)
         else:
             license_service_url = "N/A"
-            refresh_token = None
 
         log.info("Dry run:          " + enabled_disabled(dry_run))
         log.info("Input file:       " + input_file)
