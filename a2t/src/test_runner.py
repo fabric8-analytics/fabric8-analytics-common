@@ -17,8 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import sys
-import random
 
+from random import randint
 from fastlog import log
 from time import time
 from queue import Queue
@@ -55,7 +55,7 @@ def component_analysis_benchmark(queue, threads, component_analysis, thread_coun
     g = ComponentGenerator().generator_for_ecosystem("pypi")
 
     # don't start the generator from the 1st item
-    for i in range(random.randint(10, 100)):
+    for i in range(randint(10, 100)):
         next(g)
 
     for t in range(thread_count):
@@ -67,18 +67,33 @@ def component_analysis_benchmark(queue, threads, component_analysis, thread_coun
         t.start()
         threads.append(t)
         # skip some items
-        for i in range(random.randint(5, 10)):
+        for i in range(randint(5, 10)):
             next(g)
 
 
 def stack_analysis_benchmark(queue, threads, stack_analysis, thread_count):
     """Stack analysis benchmark."""
+    # TODO: read automagically from the filelist
+    manifests = (
+        ("maven", "junit.xml"),
+        ("maven", "springboot.xml"),
+        ("maven", "vertx_3_4_1.xml"),
+        ("maven", "vertx_3_4_2.xml"),
+        ("pypi", "requirements_click_6_star.txt"),
+        ("pypi", "array_split.txt"),
+        ("npm", "wisp.json"),
+    )
+
     for t in range(thread_count):
-        manifest = "requirements_click_6_star.txt"
+        manifest_idx = randint(0, len(manifests) - 1)
+        manifest = manifests[manifest_idx]
+
         with log.indent():
             log.info("Stack analysis")
+        ecosystem = manifest[0]
+        manifest_file = manifest[1]
         t = Thread(target=stack_analysis.start,
-                   args=(t, "pypi", manifest, queue))
+                   args=(t, ecosystem, manifest_file, queue))
         t.start()
         threads.append(t)
 
