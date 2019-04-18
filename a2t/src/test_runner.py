@@ -72,6 +72,7 @@ def component_analysis_benchmark(queue, threads, component_analysis, thread_coun
 
 
 def wait_for_all_threads(threads):
+    """Wait for all threads to finish."""
     log.info("Waiting for all threads to finish")
     for t in threads:
         t.join()
