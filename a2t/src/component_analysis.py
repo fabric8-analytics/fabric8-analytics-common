@@ -89,7 +89,8 @@ class ComponentAnalysis(Api):
              "json": response.json(),
              "started": start_time,
              "finished": end_time,
-             "duration": duration
+             "duration": duration,
+             "manifest": "N/A"
              }
 
         if queue is not None:
