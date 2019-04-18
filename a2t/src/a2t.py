@@ -21,7 +21,7 @@ import os
 from time import time
 from fastlog import log
 from csv_reader import read_csv_as_dicts
-from setup import setup, parse_tags
+from setup import setup
 from cliargs import cli_parser
 
 from component_analysis import ComponentAnalysis
