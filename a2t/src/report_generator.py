@@ -23,6 +23,7 @@ def export_header(csv_writer):
     """Export CSV header."""
     csv_writer.writerow(["#",
                          "Test name", "Ecosystem", "Package", "Version",
+                         "Manifest",
                          "Thread#", "Status code",
                          "Start time", "End time", "Duration"])
 
@@ -34,6 +35,7 @@ def export_test_results(csv_writer, results):
         csv_writer.writerow([i + 1,
                              result["name"],
                              result["ecosystem"], result["package"], result["version"],
+                             result["manifest"],
                              result["thread_id"],
                              result["status_code"],
                              result["started"], result["finished"], result["duration"]])
