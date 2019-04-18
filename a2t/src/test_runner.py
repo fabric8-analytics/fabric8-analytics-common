@@ -71,6 +71,18 @@ def component_analysis_benchmark(queue, threads, component_analysis, thread_coun
             next(g)
 
 
+def stack_analysis_benchmark(queue, threads, stack_analysis, thread_count):
+    """Stack analysis benchmark."""
+    for t in range(thread_count):
+        manifest = "requirements_click_6_star.txt"
+        with log.indent():
+            log.info("Stack analysis")
+        t = Thread(target=stack_analysis.start,
+                   args=(t, "pypi", manifest, queue))
+        t.start()
+        threads.append(t)
+
+
 def wait_for_all_threads(threads):
     """Wait for all threads to finish."""
     log.info("Waiting for all threads to finish")
@@ -79,7 +91,7 @@ def wait_for_all_threads(threads):
     log.success("Done")
 
 
-def run_test(cfg, test, i, component_analysis):
+def run_test(cfg, test, i, component_analysis, stack_analysis):
     """Run one selected test."""
     test_name = test["Name"]
     log.info("Starting test #{n} with name '{desc}'".format(n=i, desc=test_name))
@@ -91,12 +103,15 @@ def run_test(cfg, test, i, component_analysis):
 
         with log.indent():
             component_analysis_count = int(test["Component analysis"])
+            stack_analysis_count = int(test["Stack analysis"])
             component_analysis_benchmark(queue, threads, component_analysis,
                                          component_analysis_count)
+            stack_analysis_benchmark(queue, threads, stack_analysis,
+                                     stack_analysis_count)
 
         wait_for_all_threads(threads)
         queue_size = queue.qsize()
-        thread_count = component_analysis_count
+        thread_count = component_analysis_count + stack_analysis_count
         check_number_of_results(queue_size, thread_count)
 
         end = time()
@@ -106,22 +121,22 @@ def run_test(cfg, test, i, component_analysis):
         generate_csv_report(queue, start, end, end - start, filename)
 
 
-def run_all_loaded_tests(cfg, tests, component_analysis):
+def run_all_loaded_tests(cfg, tests, component_analysis, stack_analysis):
     """Run all tests read from CSV file."""
     i = 1
     for test in tests:
-        run_test(cfg, test, i, component_analysis)
+        run_test(cfg, test, i, component_analysis, stack_analysis)
         i += 1
 
 
-def run_tests_with_tags(cfg, tests, tags, component_analysis):
+def run_tests_with_tags(cfg, tests, tags, component_analysis, stack_analysis):
     """Run tests read from CSV file that are marged by any of tags provided in tags parameter."""
     i = 1
     for test in tests:
         test_tags = parse_tags(test["Tags"])
         test_name = test["Name"]
         if tags <= test_tags:
-            run_test(cfg, test, i, component_analysis)
+            run_test(cfg, test, i, component_analysis, stack_analysis)
             i += 1
         else:
             log.info("Skipping test #{n} with name '{desc}'".format(n=i, desc=test_name))
@@ -132,7 +147,7 @@ def no_tests(tests):
     return not tests or len(tests) == 0
 
 
-def start_tests(cfg, tests, tags, component_analysis):
+def start_tests(cfg, tests, tags, component_analysis, stack_analysis):
     """Start all tests using the already loaded configuration."""
     log.info("Run tests")
     with log.indent():
@@ -144,6 +159,6 @@ def start_tests(cfg, tests, tags, component_analysis):
         else:
             log.success("Loaded {n} tests".format(n=len(tests)))
         if not tags:
-            run_all_loaded_tests(cfg, tests, component_analysis)
+            run_all_loaded_tests(cfg, tests, component_analysis, stack_analysis)
         else:
-            run_tests_with_tags(cfg, tests, tags, component_analysis)
+            run_tests_with_tags(cfg, tests, tags, component_analysis, stack_analysis)

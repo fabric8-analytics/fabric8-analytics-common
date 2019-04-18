@@ -25,6 +25,7 @@ from setup import setup
 from cliargs import cli_parser
 
 from component_analysis import ComponentAnalysis
+from stack_analysis import StackAnalysis
 from test_runner import start_tests
 
 
@@ -81,6 +82,7 @@ def main():
 
         coreapi_url = os.environ.get('F8A_SERVER_API_URL', None)
         component_analysis = ComponentAnalysis(coreapi_url, cfg["access_token"], True)
+        stack_analysis = StackAnalysis(coreapi_url, cfg["access_token"], True)
 
         check_system(component_analysis)
 
@@ -93,7 +95,7 @@ def main():
 
         t1 = time()
         tags = cfg["tags"]
-        start_tests(cfg, tests, tags, component_analysis)
+        start_tests(cfg, tests, tags, component_analysis, stack_analysis)
         t2 = time()
         log.info("Start time: {}".format(t1))
         log.info("End time:   {}".format(t2))
