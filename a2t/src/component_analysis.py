@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import requests
 import datetime
+from time import time
 import json
 from urllib.parse import urljoin
 
@@ -66,8 +67,9 @@ class ComponentAnalysis(Api):
         with open(filename, 'w') as fout:
             json.dump(json_response, fout)
 
-    def start(self, thread_id=None, i=0, ecosystem=None, component=None, version=None, queue=None):
+    def start(self, thread_id=None, ecosystem=None, component=None, version=None, queue=None):
         """Start the component analysis and check the status code."""
+        start_time = time()
         url = self.analysis_url(ecosystem, component, version)
         response = requests.get(url, headers=self.authorization())
 
@@ -75,11 +77,20 @@ class ComponentAnalysis(Api):
             self.dump_analysis(ecosystem, component, version, response.json())
 
         status_code = response.status_code
+        end_time = time()
+        duration = end_time - start_time
 
-        r = {"thread_id": thread_id,
-             "call_number": i,
-             "result": status_code,
-             "json": response.json()}
+        r = {"name": "component_analysis",
+             "ecosystem": ecosystem,
+             "package": component,
+             "version": version,
+             "thread_id": thread_id,
+             "status_code": status_code,
+             "json": response.json(),
+             "started": start_time,
+             "finished": end_time,
+             "duration": duration
+             }
 
         if queue is not None:
             queue.put(r)
