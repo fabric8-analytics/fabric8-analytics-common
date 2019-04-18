@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import sys
+import random
 
 from fastlog import log
 from time import time
@@ -49,27 +50,32 @@ def check_number_of_results(queue_size, thread_count):
             n=thread_count - queue_size))
 
 
-def component_analysis_benchmark(component_analysis, thread_count):
+def component_analysis_benchmark(queue, threads, component_analysis, thread_count):
     """Component analysis benchmark."""
-    threads = []
-    q = Queue()
     g = ComponentGenerator().generator_for_ecosystem("pypi")
+
+    # don't start the generator from the 1st item
+    for i in range(random.randint(10, 100)):
+        next(g)
 
     for t in range(thread_count):
         ecosystem, component, version = next(g)
         with log.indent():
             log.info("Component analysis for e/c/v {} {} {}".format(ecosystem, component, version))
         t = Thread(target=component_analysis.start,
-                   args=(t, 0, ecosystem, component, version, q))
+                   args=(t, ecosystem, component, version, queue))
         t.start()
         threads.append(t)
+        # skip some items
+        for i in range(random.randint(5, 10)):
+            next(g)
 
+
+def wait_for_all_threads(threads):
     log.info("Waiting for all threads to finish")
     for t in threads:
         t.join()
     log.success("Done")
-    queue_size = q.qsize()
-    check_number_of_results(queue_size, thread_count)
 
 
 def run_test(cfg, test, i, component_analysis):
@@ -78,14 +84,25 @@ def run_test(cfg, test, i, component_analysis):
     log.info("Starting test #{n} with name '{desc}'".format(n=i, desc=test_name))
     with log.indent():
         start = time()
+
+        threads = []
+        queue = Queue()
+
         with log.indent():
             component_analysis_count = int(test["Component analysis"])
-            component_analysis_benchmark(component_analysis, component_analysis_count)
+            component_analysis_benchmark(queue, threads, component_analysis,
+                                         component_analysis_count)
+
+        wait_for_all_threads(threads)
+        queue_size = queue.qsize()
+        thread_count = component_analysis_count
+        check_number_of_results(queue_size, thread_count)
+
         end = time()
         # TODO: use better approach to join paths
         filename = RESULT_DIRECTORY + "/" + test_name.replace(" ", "_") + ".csv"
         log.info("Generating test report into file '{filename}'".format(filename=filename))
-        generate_csv_report([], start, end, end - start, filename)
+        generate_csv_report(queue, start, end, end - start, filename)
 
 
 def run_all_loaded_tests(cfg, tests, component_analysis):
