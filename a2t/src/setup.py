@@ -130,7 +130,10 @@ def setup(cli_arguments):
         log.info("Refresh token:    " + refresh_token_as_str(refresh_token))
         log.success("Success")
 
-    access_token = get_access_token(dry_run, refresh_token, license_service_url)
+    if api_token is not None:
+        access_token = api_token
+    else:
+        access_token = get_access_token(dry_run, refresh_token, license_service_url)
 
     return {"access_token": access_token,
             "tags": tags,
