@@ -56,12 +56,13 @@ class StackAnalysis(Api):
             self.print_error_response(response, "error")
         return response.status_code == 200
 
-    def dump_analysis(self, ecosystem, manifest):
+    def dump_analysis(self, ecosystem, manifest, json_response):
         """Dump the stack analysis result into a file."""
         timestamp_str = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")
         filename = API_RESULTS_DIRECTORY + "/"
-        filename += "stack_analysis_{e}_{m}.json".format(e=ecosystem,
-                                                         m=manifest)
+        filename += "stack_analysis_{t}_{e}_{m}.json".format(t=timestamp_str,
+                                                             e=ecosystem,
+                                                             m=manifest)
         with open(filename, 'w') as fout:
             json.dump(json_response, fout)
 
@@ -107,8 +108,8 @@ class StackAnalysis(Api):
             log.info("thread# {t}  job# {j}  status code: {s}".format(
                 t=thread_id, j=job_id, s=status_code))
             if status_code == 200:
-                json_resp = response.json()
                 # TODO:
+                # json_resp = response.json()
                 # if CoreApi.contains_alternate_node(json_resp):
                 #     if self._dump_json_responses:
                 #         CoreApi.dump_stack_analysis(job_id, json_resp)
