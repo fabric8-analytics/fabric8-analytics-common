@@ -76,7 +76,7 @@ class StackAnalysis(Api):
         for extension, manifest in manifests.items():
             if filename.endswith(extension):
                 return manifest
-        raise "Unknown extension in filename: {f}".format(f=filename)
+        raise Exception("Unknown extension in filename: {f}".format(f=filename))
 
     @staticmethod
     def prepare_manifest_files(filename):
@@ -96,7 +96,7 @@ class StackAnalysis(Api):
                  'filePath[]': (None, path_to_manifest_file)}
         return files
 
-    def wait_for_stack_analysis(self, job_id, thread_id=""):
+    def wait_for_stack_analysis(self, ecosystem, manifest, job_id, thread_id=""):
         """Wait for the stack analysis to finish."""
         endpoint = self.analysis_url() + "/" + job_id
         timeout = 10000
@@ -108,11 +108,9 @@ class StackAnalysis(Api):
             log.info("thread# {t}  job# {j}  status code: {s}".format(
                 t=thread_id, j=job_id, s=status_code))
             if status_code == 200:
-                # TODO:
-                # json_resp = response.json()
-                # if CoreApi.contains_alternate_node(json_resp):
-                #     if self._dump_json_responses:
-                #         CoreApi.dump_stack_analysis(job_id, json_resp)
+                if self._dump_json_responses:
+                    json_resp = response.json()
+                    self.dump_analysis(ecosystem, manifest, json_resp)
                 return response
             # 401 code should be checked later
             elif status_code == 401:
@@ -137,7 +135,7 @@ class StackAnalysis(Api):
         # log.info(response.json())
         job_id = response.json().get("id")
         log.info("job ID: " + job_id)
-        self.wait_for_stack_analysis(job_id, thread_id)
+        self.wait_for_stack_analysis(ecosystem, manifest, job_id, thread_id)
         status_code = response.status_code
 
         end_time = time()
