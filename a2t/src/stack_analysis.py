@@ -30,6 +30,9 @@ from api import Api
 # directory where the API results needs to be dumped
 API_RESULTS_DIRECTORY = "api_results"
 
+# TODO: make timeout configurable
+DEFAULT_TIMEOUT = 5 * 60
+
 
 class StackAnalysis(Api):
     """Implementation of stack analysis."""
@@ -99,7 +102,7 @@ class StackAnalysis(Api):
     def wait_for_stack_analysis(self, ecosystem, manifest, job_id, thread_id=""):
         """Wait for the stack analysis to finish."""
         endpoint = self.analysis_url() + "/" + job_id
-        timeout = 10000
+        timeout = DEFAULT_TIMEOUT
         sleep_amount = 5
 
         for _ in range(timeout // sleep_amount):
@@ -135,8 +138,12 @@ class StackAnalysis(Api):
         # log.info(response.json())
         job_id = response.json().get("id")
         log.info("job ID: " + job_id)
-        self.wait_for_stack_analysis(ecosystem, manifest, job_id, thread_id)
-        status_code = response.status_code
+
+        try:
+            self.wait_for_stack_analysis(ecosystem, manifest, job_id, thread_id)
+            status_code = response.status_code
+        except Exception:
+            status_code = "Timeout/Error"
 
         end_time = time()
         duration = end_time - start_time
