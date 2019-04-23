@@ -364,7 +364,9 @@ https://github.com/settings/tokens
 
 Select Vault
 
-Select Refresh token button
+Select Refresh token or Regenerate token button (UI change from time to time)
+
+Copy and use the token displayed.
 
 
 ==== Push token into Vault
