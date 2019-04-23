@@ -10,6 +10,6 @@ docutils==0.14            # via botocore
 jmespath==0.9.3           # via boto3, botocore
 jsonschema==2.5.1
 python-dateutil==2.6.1    # via botocore
-requests==2.11.1
+requests==2.20.0
 s3transfer==0.1.10        # via boto3
 semantic_version==2.6.0
