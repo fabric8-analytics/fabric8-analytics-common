@@ -69,7 +69,7 @@ def component_analysis_benchmark(queue, threads, component_analysis, thread_coun
     # don't start the generators from the 1st item
     for i in range(randint(10, 100)):
         for g in generators:
-                next(g)
+            next(g)
 
     for t in range(thread_count):
         g = generators[randint(0, len(generators) - 1)]
