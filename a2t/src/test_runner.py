@@ -133,7 +133,7 @@ def run_test(cfg, test, i, component_analysis, stack_analysis):
         # TODO: use better approach to join paths
         filename = RESULT_DIRECTORY + "/" + test_name.replace(" ", "_") + ".csv"
         log.info("Generating test report into file '{filename}'".format(filename=filename))
-        generate_csv_report(queue, start, end, end - start, filename)
+        generate_csv_report(queue, test, start, end, end - start, filename)
 
 
 def run_all_loaded_tests(cfg, tests, component_analysis, stack_analysis):
