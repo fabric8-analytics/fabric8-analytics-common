@@ -17,6 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import csv
+import os
+import sys
+import platform
 
 
 def export_header(csv_writer):
@@ -26,6 +29,15 @@ def export_header(csv_writer):
                          "Manifest",
                          "Thread#", "Status code",
                          "Start time", "End time", "Duration"])
+
+
+def export_environment_info(csv_writer):
+    """Export basic information about test environment."""
+    csv_writer.writerow(["System family", os.name])
+    csv_writer.writerow(["System", platform.system()])
+    csv_writer.writerow(["Version", platform.release()])
+    csv_writer.writerow(["Python", "{}.{}".format(sys.version_info.major, sys.version_info.minor)])
+    csv_writer.writerow(["Path to interpret", sys.executable])
 
 
 def export_test_results(csv_writer, results):
@@ -52,6 +64,8 @@ def generate_csv_report(results, start, end, duration, filename):
     """Generate CSV report with all A2T tests."""
     with open(filename, 'w', encoding='utf8') as fout:
         csv_writer = csv.writer(fout)
+        export_environment_info(csv_writer)
+        csv_writer.writerow([])
         export_totat_time(csv_writer, start, end, duration)
         csv_writer.writerow([])
         export_header(csv_writer)
