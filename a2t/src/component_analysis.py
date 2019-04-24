@@ -81,6 +81,7 @@ class ComponentAnalysis(Api):
         duration = end_time - start_time
 
         r = {"name": "component_analysis",
+             "method": "GET",
              "ecosystem": ecosystem,
              "package": component,
              "version": version,

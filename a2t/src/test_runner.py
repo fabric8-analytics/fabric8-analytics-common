@@ -33,7 +33,7 @@ from setup import parse_tags
 RESULT_DIRECTORY = "test_results"
 
 
-def check_number_of_results(queue_size, thread_count):
+def check_number_of_results(queue_size, component_analysis_count, stack_analysis_count):
     """Check if we really got the same number of results as expected.
 
     When the server respond by any HTTP error code (4xx, 5xx), the results
@@ -43,11 +43,12 @@ def check_number_of_results(queue_size, thread_count):
     """
     log.info("queue size: {size}".format(size=queue_size))
 
-    if queue_size != thread_count:
+    expected = component_analysis_count + 2 * stack_analysis_count
+    if queue_size != expected:
         log.warning("Warning: {expected} results expected, but only {got} is presented".format(
-            expected=thread_count, got=queue_size))
+            expected=expected, got=queue_size))
         log.warning("This means that {n} analysis ends with error or exception".format(
-            n=thread_count - queue_size))
+            n=expected - queue_size))
 
 
 def component_analysis_benchmark(queue, threads, component_analysis, thread_count):
@@ -126,8 +127,7 @@ def run_test(cfg, test, i, component_analysis, stack_analysis):
 
         wait_for_all_threads(threads)
         queue_size = queue.qsize()
-        thread_count = component_analysis_count + stack_analysis_count
-        check_number_of_results(queue_size, thread_count)
+        check_number_of_results(queue_size, component_analysis_count, stack_analysis_count)
 
         end = time()
         # TODO: use better approach to join paths

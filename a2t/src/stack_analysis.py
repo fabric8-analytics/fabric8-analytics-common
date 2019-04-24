@@ -135,6 +135,10 @@ class StackAnalysis(Api):
         files = StackAnalysis.prepare_manifest_files(manifest)
         response = requests.post(url, files=files, headers=self.authorization())
         response.raise_for_status()
+
+        post_time = time()
+        post_duration = post_time - start_time
+
         # log.info(response.json())
         job_id = response.json().get("id")
         log.info("job ID: " + job_id)
@@ -146,23 +150,39 @@ class StackAnalysis(Api):
             status_code = "Timeout/Error"
 
         end_time = time()
-        duration = end_time - start_time
+        duration = end_time - post_time
 
-        r = {"name": "stack_analysis",
-             "ecosystem": ecosystem,
-             "package": "N/A",
-             "version": "N/A",
-             "thread_id": thread_id,
-             "status_code": status_code,
-             "json": response.json(),
-             "started": start_time,
-             "finished": end_time,
-             "duration": duration,
-             "manifest": manifest
-             }
+        r1 = {"name": "stack_analysis",
+              "method": "POST",
+              "ecosystem": ecosystem,
+              "package": "N/A",
+              "version": "N/A",
+              "thread_id": thread_id,
+              "status_code": status_code,
+              "json": response.json(),
+              "started": start_time,
+              "finished": post_time,
+              "duration": post_duration,
+              "manifest": manifest
+              }
+
+        r2 = {"name": "stack_analysis",
+              "method": "GET",
+              "ecosystem": ecosystem,
+              "package": "N/A",
+              "version": "N/A",
+              "thread_id": thread_id,
+              "status_code": status_code,
+              "json": response.json(),
+              "started": post_time,
+              "finished": end_time,
+              "duration": duration,
+              "manifest": manifest
+              }
 
         if queue is not None:
-            queue.put(r)
+            queue.put(r1)
+            queue.put(r2)
 
         # return both component analysis status and debug data (durations) as well
-        return r
+        return r1, r2
