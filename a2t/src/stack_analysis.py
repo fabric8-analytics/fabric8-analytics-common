@@ -179,7 +179,7 @@ class StackAnalysis(Api):
               "duration": duration,
               "manifest": manifest
               }
-            
+
         if queue is not None:
             queue.put(r1)
             queue.put(r2)
