@@ -41,6 +41,18 @@ def export_environment_info(csv_writer):
     csv_writer.writerow(["Path to interpret", sys.executable])
 
 
+def export_test_setup(csv_writer, test):
+    """Export information about test setup."""
+    csv_writer.writerow(["Name", "Component analysis", "Stack analysis",
+                         "Python payload", "Maven payload", "NPM payload",
+                         "Improper payload", "Mix payloads",
+                         "Check responses", "Export responses", "Comment"])
+    csv_writer.writerow([test["Name"], test["Component analysis"], test["Stack analysis"],
+                         test["Python payload"], test["Maven payload"], test["NPM payload"],
+                         test["Improper payload"], test["Mix payloads"],
+                         test["Check responses"], test["Export responses"], test["Comment"]])
+
+
 def export_test_results(csv_writer, results):
     """Export results for all tests/API calls."""
     for i in range(results.qsize()):
@@ -61,11 +73,13 @@ def export_totat_time(csv_writer, start, end, duration):
     csv_writer.writerow(["Duration", duration])
 
 
-def generate_csv_report(results, start, end, duration, filename):
+def generate_csv_report(results, test, start, end, duration, filename):
     """Generate CSV report with all A2T tests."""
     with open(filename, 'w', encoding='utf8') as fout:
         csv_writer = csv.writer(fout)
         export_environment_info(csv_writer)
+        csv_writer.writerow([])
+        export_test_setup(csv_writer, test)
         csv_writer.writerow([])
         export_totat_time(csv_writer, start, end, duration)
         csv_writer.writerow([])
