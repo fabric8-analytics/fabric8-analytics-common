@@ -46,9 +46,9 @@ def check_number_of_results(queue_size, component_analysis_count, stack_analysis
     expected = component_analysis_count + 2 * stack_analysis_count
     if queue_size != expected:
         log.warning("Warning: {expected} results expected, but only {got} is presented".format(
-            expected=thread_count, got=queue_size))
+            expected=expected, got=queue_size))
         log.warning("This means that {n} analysis ends with error or exception".format(
-            n=thread_count - queue_size))
+            n=expected - queue_size))
 
 
 def component_analysis_benchmark(queue, threads, component_analysis, thread_count):
