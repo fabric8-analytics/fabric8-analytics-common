@@ -51,28 +51,42 @@ def check_number_of_results(queue_size, component_analysis_count, stack_analysis
             n=expected - queue_size))
 
 
-def component_analysis_benchmark(queue, threads, component_analysis, thread_count):
+def component_analysis_benchmark(queue, threads, component_analysis, thread_count,
+                                 python_payload, maven_payload, npm_payload):
     """Component analysis benchmark."""
-    g = ComponentGenerator().generator_for_ecosystem("pypi")
+    g_python = ComponentGenerator().generator_for_ecosystem("pypi")
+    g_maven = ComponentGenerator().generator_for_ecosystem("maven")
+    g_npm = ComponentGenerator().generator_for_ecosystem("npm")
+    generators = []
 
-    # don't start the generator from the 1st item
+    if python_payload:
+        generators.append(g_python)
+    if maven_payload:
+        generators.append(g_maven)
+    if npm_payload:
+        generators.append(g_npm)
+
+    # don't start the generators from the 1st item
     for i in range(randint(10, 100)):
-        next(g)
+        for g in generators:
+                next(g)
 
     for t in range(thread_count):
+        g = generators[randint(0, len(generators) - 1)]
         ecosystem, component, version = next(g)
         with log.indent():
-            log.info("Component analysis for e/c/v {} {} {}".format(ecosystem, component, version))
+            log.info("Component analysis for E/P/V {} {} {}".format(ecosystem, component, version))
         t = Thread(target=component_analysis.start,
                    args=(t, ecosystem, component, version, queue))
         t.start()
         threads.append(t)
         # skip some items
-        for i in range(randint(5, 10)):
+        for i in range(randint(5, 25)):
             next(g)
 
 
-def stack_analysis_benchmark(queue, threads, stack_analysis, thread_count):
+def stack_analysis_benchmark(queue, threads, stack_analysis, thread_count,
+                             python_payload, maven_payload, npm_payload):
     """Stack analysis benchmark."""
     # TODO: read automagically from the filelist
     manifests = (
@@ -120,10 +134,16 @@ def run_test(cfg, test, i, component_analysis, stack_analysis):
         with log.indent():
             component_analysis_count = int(test["Component analysis"])
             stack_analysis_count = int(test["Stack analysis"])
+            python_payload = test["Python payload"] in ("Yes", "yes")
+            maven_payload = test["Maven payload"] in ("Yes", "yes")
+            npm_payload = test["NPM payload"] in ("Yes", "yes")
+
             component_analysis_benchmark(queue, threads, component_analysis,
-                                         component_analysis_count)
+                                         component_analysis_count,
+                                         python_payload, maven_payload, npm_payload)
             stack_analysis_benchmark(queue, threads, stack_analysis,
-                                     stack_analysis_count)
+                                     stack_analysis_count,
+                                     python_payload, maven_payload, npm_payload)
 
         wait_for_all_threads(threads)
         queue_size = queue.qsize()
