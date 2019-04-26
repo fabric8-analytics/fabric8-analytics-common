@@ -9,4 +9,4 @@ chardet==3.0.4            # via requests
 idna==2.6                 # via requests
 requests-futures==0.9.7
 requests==2.18.4          # via requests-futures
-urllib3==1.22             # via requests
+urllib3==1.23             # via requests
