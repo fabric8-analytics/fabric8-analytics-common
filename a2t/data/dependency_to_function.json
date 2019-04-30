@@ -1,0 +1,6 @@
+{
+  "name": "test-project",
+  "dependencies": {
+    "to-function": "~1.2.1"
+  }
+}
