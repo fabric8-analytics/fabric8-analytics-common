@@ -1,0 +1,15 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.redhat.bayessian.test</groupId>
+  <artifactId>test-app-vertx</artifactId>
+  <version>1.0</version>
+  <dependencies>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-client</artifactId>
+      <version>3.4.2</version>
+    </dependency>
+
+  </dependencies>
+</project>
