@@ -5,8 +5,6 @@ pytest
 jsonschema
 requests
 docker-py
-pyjwt
-pycrypto
 boto3
 semantic_version
 voluptuous
