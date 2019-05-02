@@ -4,6 +4,7 @@ pytest
 jsonschema
 requests
 docker-py
+pycrypto
 pyjwt
 boto3
 semantic_version
