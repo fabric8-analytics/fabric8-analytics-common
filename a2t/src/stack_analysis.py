@@ -152,9 +152,11 @@ class StackAnalysis(Api):
         response.raise_for_status()
         status_code_post = response.status_code
 
+        json_resp_post = None
+
         if status_code_post == 200:
             if self._dump_json_responses:
-                json_resp = response.json()
+                json_response_post = response.json()
                 self.dump_analysis("request", ecosystem, manifest, response.json())
 
         post_time = time()
@@ -180,7 +182,7 @@ class StackAnalysis(Api):
               "version": "N/A",
               "thread_id": thread_id,
               "status_code": status_code_post,
-              "json": response.json(),
+              "json": json_response_post,
               "started": start_time,
               "finished": post_time,
               "duration": post_duration,
