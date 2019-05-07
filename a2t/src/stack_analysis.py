@@ -31,7 +31,9 @@ from api import Api
 API_RESULTS_DIRECTORY = "api_results"
 
 # TODO: make timeout configurable
-DEFAULT_TIMEOUT = 5 * 60
+DEFAULT_TIMEOUT = 10 * 60
+
+DEFAULT_SLEEP_AMOUNT = 15
 
 
 class StackAnalysis(Api):
@@ -108,7 +110,8 @@ class StackAnalysis(Api):
         endpoint = self.analysis_url() + "/" + job_id
 
         timeout = DEFAULT_TIMEOUT
-        sleep_amount = 5
+        sleep_amount = DEFAULT_SLEEP_AMOUNT
+        too_many_requests_cnt = 0
 
         for _ in range(timeout // sleep_amount):
             response = requests.get(endpoint, headers=self.authorization())
@@ -127,6 +130,12 @@ class StackAnalysis(Api):
                 return response
             elif status_code == 500 or status_code == 504:
                 log.info("WARNING: got {c}".format(c=status_code))
+            elif status_code == 429:
+                too_many_requests_cnt += 1
+                log.info("Additional sleep...")
+                sleep(sleep_amount)
+                if too_many_requests_cnt > 10:
+                    raise Exception('429 Too Many Requests')
             elif status_code != 202:
                 # print("warning, got wrong status code {c}".format(c=status_code))
                 raise Exception('Bad HTTP status code {c}'.format(c=status_code))
