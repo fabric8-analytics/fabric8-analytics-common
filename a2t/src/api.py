@@ -66,3 +66,23 @@ class Api:
 
         if error_message:
             log.error("Error message: {m}".format(m=error_message))
+
+    def authorization(self):
+        """Return a HTTP header with authorization token."""
+        return {'Authorization': 'Bearer {token}'.format(token=self.token)}
+
+    def perform_get_request(self, endpoint):
+        """Perform the HTTP GET request."""
+        if self.user_key is None:
+            return requests.get(endpoint, headers=self.authorization())
+        else:
+            endpoint += "?user_key=" + self.user_key
+            return requests.get(endpoint)
+
+    def perform_post_request(self, endpoint, files):
+        """Perform the HTTP POST request."""
+        if self.user_key is None:
+            return requests.post(endpoint, files=files, headers=self.authorization())
+        else:
+            endpoint += "?user_key=" + self.user_key
+            return requests.post(endpoint, files=files, headers={"user_key": self.user_key})

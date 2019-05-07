@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import requests
 import datetime
 from time import time, sleep
 import json
@@ -49,18 +48,11 @@ class StackAnalysis(Api):
         return urljoin(self.url,
                        'api/v1/stack-analyses')
 
-    def authorization(self):
-        """Return a HTTP header with authorization token."""
-        return {'Authorization': 'Bearer {token}'.format(token=self.token)}
-
     def check_auth_token_validity(self):
         """Check that the authorization token is valid by calling the API and check HTTP code."""
         endpoint = self.url + 'api/v1/readiness'
-        if self.user_key is None:
-            response = requests.get(endpoint, headers=self.authorization())
-        else:
-            endpoint += "?user_key=" + self.user_key
-            response = requests.get(endpoint)
+        response = self.perform_get_request(endpoint)
+
         if response.status_code != 200:
             self.print_error_response(response, "error")
         return response.status_code == 200
@@ -114,7 +106,7 @@ class StackAnalysis(Api):
         too_many_requests_cnt = 0
 
         for _ in range(timeout // sleep_amount):
-            response = requests.get(endpoint, headers=self.authorization())
+            response = self.perform_get_request(endpoint)
             status_code = response.status_code
             log.info("thread# {t}  job# {j}  status code: {s}".format(
                 t=thread_id, j=job_id, s=status_code))
@@ -148,7 +140,9 @@ class StackAnalysis(Api):
         start_time = time()
         endpoint = self.analysis_url()
         files = StackAnalysis.prepare_manifest_files(manifest)
-        response = requests.post(endpoint, files=files, headers=self.authorization())
+
+        response = self.perform_post_request(endpoint, files)
+
         response.raise_for_status()
 
         post_time = time()
@@ -161,8 +155,8 @@ class StackAnalysis(Api):
         try:
             self.wait_for_stack_analysis(ecosystem, manifest, job_id, thread_id)
             status_code = response.status_code
-        except Exception:
-            status_code = "Timeout/Error"
+        except Exception as e:
+            status_code = str(e)
 
         end_time = time()
         duration = end_time - post_time
