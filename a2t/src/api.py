@@ -27,17 +27,18 @@ class Api:
     # please note that we use version1 of API
     _API_ENDPOINT = 'api/v1'
 
-    def __init__(self, url, token=None):
+    def __init__(self, url, token=None, user_key=None):
         """Set the API endpoint and store the authorization token if provided."""
         self.url = Api.add_slash(url)
         # optional on devcluster, but used on stage and on production as well
         self.token = token
+        self.user_key = user_key
 
     def is_api_running(self):
         """Check if the API is available for calls."""
         try:
             res = requests.get(self.url)
-            if res.status_code in {200, 401}:
+            if res.status_code in {200, 401, 403}:
                 return True
         except requests.exceptions.ConnectionError:
             pass
