@@ -103,6 +103,11 @@ def refresh_token_as_str(refresh_token):
     return "set" if refresh_token else "not set"
 
 
+def user_key_as_str(refresh_token):
+    """Convert user_key settings (set/not set) into string."""
+    return refresh_token if refresh_token else "not set"
+
+
 def setup(cli_arguments):
     """Perform BAF setup."""
     log.info("Setup")
@@ -120,8 +125,9 @@ def setup(cli_arguments):
             license_service_url = read_url_from_env_var("OSIO_AUTH_SERVICE")
             refresh_token = os.environ.get("RECOMMENDER_REFRESH_TOKEN")
             api_token = os.environ.get("RECOMMENDER_API_TOKEN")
+            user_key = os.environ.get("USER_KEY")
 
-            if not license_service_url:
+            if user_key is None and not license_service_url:
                 log.error("OSIO_AUTH_SERVICE is not set")
                 sys.exit(-1)
         else:
@@ -132,14 +138,18 @@ def setup(cli_arguments):
         log.info("Auth service URL: " + license_service_url)
         log.info("Run tests:        " + tags_as_str(tags))
         log.info("Refresh token:    " + refresh_token_as_str(refresh_token))
+        log.info("User key:         " + user_key_as_str(user_key))
         log.success("Success")
 
     if api_token is not None:
         access_token = api_token
-    else:
+    elif user_key is None:
         access_token = get_access_token(dry_run, refresh_token, license_service_url)
+    else:
+        access_token = None
 
     return {"access_token": access_token,
+            "user_key": user_key,
             "tags": tags,
             "dry_run": dry_run,
             "input_file": input_file}

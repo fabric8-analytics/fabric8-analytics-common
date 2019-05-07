@@ -37,9 +37,9 @@ DEFAULT_TIMEOUT = 5 * 60
 class StackAnalysis(Api):
     """Implementation of stack analysis."""
 
-    def __init__(self, url, token, dump_json_responses):
+    def __init__(self, url, token, user_key, dump_json_responses):
         """Set the API endpoint and store the authorization token if provided."""
-        super().__init__(url, token)
+        super().__init__(url, token, user_key)
         self._dump_json_responses = dump_json_responses
 
     def analysis_url(self):
@@ -53,8 +53,12 @@ class StackAnalysis(Api):
 
     def check_auth_token_validity(self):
         """Check that the authorization token is valid by calling the API and check HTTP code."""
-        endpoint = self.url + 'api/v1/component-search/foobar'
-        response = requests.get(endpoint, headers=self.authorization())
+        endpoint = self.url + 'api/v1/readiness'
+        if self.user_key is None:
+            response = requests.get(endpoint, headers=self.authorization())
+        else:
+            endpoint += "?user_key=" + self.user_key
+            response = requests.get(endpoint)
         if response.status_code != 200:
             self.print_error_response(response, "error")
         return response.status_code == 200
@@ -102,6 +106,7 @@ class StackAnalysis(Api):
     def wait_for_stack_analysis(self, ecosystem, manifest, job_id, thread_id=""):
         """Wait for the stack analysis to finish."""
         endpoint = self.analysis_url() + "/" + job_id
+
         timeout = DEFAULT_TIMEOUT
         sleep_amount = 5
 
@@ -110,6 +115,7 @@ class StackAnalysis(Api):
             status_code = response.status_code
             log.info("thread# {t}  job# {j}  status code: {s}".format(
                 t=thread_id, j=job_id, s=status_code))
+
             if status_code == 200:
                 if self._dump_json_responses:
                     json_resp = response.json()
@@ -131,9 +137,9 @@ class StackAnalysis(Api):
     def start(self, thread_id=None, ecosystem=None, manifest=None, queue=None):
         """Start the component analysis and check the status code."""
         start_time = time()
-        url = self.analysis_url()
+        endpoint = self.analysis_url()
         files = StackAnalysis.prepare_manifest_files(manifest)
-        response = requests.post(url, files=files, headers=self.authorization())
+        response = requests.post(endpoint, files=files, headers=self.authorization())
         response.raise_for_status()
 
         post_time = time()

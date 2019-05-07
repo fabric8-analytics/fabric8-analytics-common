@@ -81,8 +81,10 @@ def main():
         cfg = setup(cli_arguments)
 
         coreapi_url = os.environ.get('F8A_SERVER_API_URL', None)
-        component_analysis = ComponentAnalysis(coreapi_url, cfg["access_token"], True)
-        stack_analysis = StackAnalysis(coreapi_url, cfg["access_token"], True)
+        component_analysis = ComponentAnalysis(coreapi_url,
+                                               cfg["access_token"], cfg["user_key"], True)
+        stack_analysis = StackAnalysis(coreapi_url,
+                                       cfg["access_token"], cfg["user_key"], True)
 
         check_system(component_analysis)
 
