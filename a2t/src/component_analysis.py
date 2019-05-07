@@ -70,11 +70,20 @@ class ComponentAnalysis(Api):
         response = self.perform_get_request(endpoint)
 
         if self._dump_json_responses:
-            self.dump_analysis(ecosystem, component, version, response.json())
+            try:
+                self.dump_analysis(ecosystem, component, version, response.json())
+            except Exception:
+                self.print_error_response(response, "error")
 
         status_code = response.status_code
         end_time = time()
         duration = end_time - start_time
+
+        json_response = ""
+        try:
+            json_response = response.json()
+        except Exception:
+            pass
 
         r = {"name": "component_analysis",
              "method": "GET",
@@ -83,7 +92,7 @@ class ComponentAnalysis(Api):
              "version": version,
              "thread_id": thread_id,
              "status_code": status_code,
-             "json": response.json(),
+             "json": json_response,
              "started": start_time,
              "finished": end_time,
              "duration": duration,
