@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import requests
 import datetime
 from time import time, sleep
 import json
@@ -52,11 +51,8 @@ class StackAnalysis(Api):
     def check_auth_token_validity(self):
         """Check that the authorization token is valid by calling the API and check HTTP code."""
         endpoint = self.url + 'api/v1/readiness'
-        if self.user_key is None:
-            response = requests.get(endpoint, headers=self.authorization())
-        else:
-            endpoint += "?user_key=" + self.user_key
-            response = requests.get(endpoint)
+        response = self.perform_get_request(endpoint)
+
         if response.status_code != 200:
             self.print_error_response(response, "error")
         return response.status_code == 200
