@@ -159,8 +159,8 @@ class StackAnalysis(Api):
         try:
             self.wait_for_stack_analysis(ecosystem, manifest, job_id, thread_id)
             status_code = response.status_code
-        except Exception:
-            status_code = "Timeout/Error"
+        except Exception as e:
+            status_code = str(e)
 
         end_time = time()
         duration = end_time - post_time
