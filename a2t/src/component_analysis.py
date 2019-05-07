@@ -44,14 +44,11 @@ class ComponentAnalysis(Api):
                                                                       c=component,
                                                                       v=version))
 
-    def authorization(self):
-        """Return a HTTP header with authorization token."""
-        return {'Authorization': 'Bearer {token}'.format(token=self.token)}
-
     def check_auth_token_validity(self):
         """Check that the authorization token is valid by calling the API and check HTTP code."""
         endpoint = self.url + 'api/v1/readiness'
-        response = requests.get(endpoint, headers=self.authorization())
+        response = self.perform_get_request(endpoint)
+
         if response.status_code != 200:
             self.print_error_response(response, "error")
         return response.status_code == 200
@@ -71,7 +68,7 @@ class ComponentAnalysis(Api):
         """Start the component analysis and check the status code."""
         start_time = time()
         endpoint = self.analysis_url(ecosystem, component, version)
-        response = requests.get(endpoint, headers=self.authorization())
+        response = self.perform_get_request(endpoint)
 
         if self._dump_json_responses:
             self.dump_analysis(ecosystem, component, version, response.json())

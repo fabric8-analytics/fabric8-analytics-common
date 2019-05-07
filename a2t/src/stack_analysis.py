@@ -49,10 +49,6 @@ class StackAnalysis(Api):
         return urljoin(self.url,
                        'api/v1/stack-analyses')
 
-    def authorization(self):
-        """Return a HTTP header with authorization token."""
-        return {'Authorization': 'Bearer {token}'.format(token=self.token)}
-
     def check_auth_token_validity(self):
         """Check that the authorization token is valid by calling the API and check HTTP code."""
         endpoint = self.url + 'api/v1/readiness'
@@ -114,7 +110,7 @@ class StackAnalysis(Api):
         too_many_requests_cnt = 0
 
         for _ in range(timeout // sleep_amount):
-            response = requests.get(endpoint, headers=self.authorization())
+            response = self.perform_get_request(endpoint)
             status_code = response.status_code
             log.info("thread# {t}  job# {j}  status code: {s}".format(
                 t=thread_id, j=job_id, s=status_code))
@@ -148,7 +144,9 @@ class StackAnalysis(Api):
         start_time = time()
         endpoint = self.analysis_url()
         files = StackAnalysis.prepare_manifest_files(manifest)
-        response = requests.post(endpoint, files=files, headers=self.authorization())
+
+        response = self.perform_post_request(endpoint, files)
+
         response.raise_for_status()
 
         post_time = time()
