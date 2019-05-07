@@ -152,7 +152,7 @@ class StackAnalysis(Api):
         response.raise_for_status()
         status_code_post = response.status_code
 
-        json_resp_post = None
+        json_response_post = None
 
         if status_code_post == 200:
             if self._dump_json_responses:
