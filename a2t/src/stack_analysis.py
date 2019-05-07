@@ -57,13 +57,14 @@ class StackAnalysis(Api):
             self.print_error_response(response, "error")
         return response.status_code == 200
 
-    def dump_analysis(self, ecosystem, manifest, json_response):
+    def dump_analysis(self, type, ecosystem, manifest, json_response):
         """Dump the stack analysis result into a file."""
         timestamp_str = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")
         filename = API_RESULTS_DIRECTORY + "/"
-        filename += "stack_analysis_{t}_{e}_{m}.json".format(t=timestamp_str,
-                                                             e=ecosystem,
-                                                             m=manifest)
+        filename += "stack_analysis_{t}_{e}_{m}_{type}.json".format(t=timestamp_str,
+                                                                    e=ecosystem,
+                                                                    m=manifest,
+                                                                    type=type)
         with open(filename, 'w') as fout:
             json.dump(json_response, fout)
 
@@ -97,6 +98,13 @@ class StackAnalysis(Api):
                  'filePath[]': (None, path_to_manifest_file)}
         return files
 
+    def dump_response_if_enabled(self, ecosystem, manifest, response):
+        """Dump response from server, if dumping is enabled."""
+        if self._dump_json_responses:
+            log.info("Dumping server response")
+            json_resp = response.json()
+            self.dump_analysis("analysis", ecosystem, manifest, json_resp)
+
     def wait_for_stack_analysis(self, ecosystem, manifest, job_id, thread_id=""):
         """Wait for the stack analysis to finish."""
         endpoint = self.analysis_url() + "/" + job_id
@@ -112,9 +120,7 @@ class StackAnalysis(Api):
                 t=thread_id, j=job_id, s=status_code))
 
             if status_code == 200:
-                if self._dump_json_responses:
-                    json_resp = response.json()
-                    self.dump_analysis(ecosystem, manifest, json_resp)
+                self.dump_response_if_enabled(ecosystem, manifest, response)
                 return response
             # 401 code should be checked later
             elif status_code == 401:
@@ -144,6 +150,14 @@ class StackAnalysis(Api):
         response = self.perform_post_request(endpoint, files)
 
         response.raise_for_status()
+        status_code_post = response.status_code
+
+        json_response_post = None
+
+        if status_code_post == 200:
+            if self._dump_json_responses:
+                json_response_post = response.json()
+                self.dump_analysis("request", ecosystem, manifest, response.json())
 
         post_time = time()
         post_duration = post_time - start_time
@@ -167,8 +181,8 @@ class StackAnalysis(Api):
               "package": "N/A",
               "version": "N/A",
               "thread_id": thread_id,
-              "status_code": status_code,
-              "json": response.json(),
+              "status_code": status_code_post,
+              "json": json_response_post,
               "started": start_time,
               "finished": post_time,
               "duration": post_duration,
