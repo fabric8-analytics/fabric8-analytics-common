@@ -32,9 +32,9 @@ API_RESULTS_DIRECTORY = "api_results"
 class ComponentAnalysis(Api):
     """Implementation of component analysis."""
 
-    def __init__(self, url, token, dump_json_responses):
+    def __init__(self, url, token, user_key, dump_json_responses):
         """Set the API endpoint and store the authorization token if provided."""
-        super().__init__(url, token)
+        super().__init__(url, token, user_key)
         self._dump_json_responses = dump_json_responses
 
     def analysis_url(self, ecosystem, component, version):
@@ -50,7 +50,7 @@ class ComponentAnalysis(Api):
 
     def check_auth_token_validity(self):
         """Check that the authorization token is valid by calling the API and check HTTP code."""
-        endpoint = self.url + 'api/v1/component-search/foobar'
+        endpoint = self.url + 'api/v1/readiness'
         response = requests.get(endpoint, headers=self.authorization())
         if response.status_code != 200:
             self.print_error_response(response, "error")
@@ -70,8 +70,8 @@ class ComponentAnalysis(Api):
     def start(self, thread_id=None, ecosystem=None, component=None, version=None, queue=None):
         """Start the component analysis and check the status code."""
         start_time = time()
-        url = self.analysis_url(ecosystem, component, version)
-        response = requests.get(url, headers=self.authorization())
+        endpoint = self.analysis_url(ecosystem, component, version)
+        response = requests.get(endpoint, headers=self.authorization())
 
         if self._dump_json_responses:
             self.dump_analysis(ecosystem, component, version, response.json())
