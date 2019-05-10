@@ -416,6 +416,31 @@ def export_dashboard_api_into_csv(results, repositories):
         writer.writerow(record)
 
 
+def export_code_coverage_into_csv(results, repositories):
+    """Export code coverage report into CSV."""
+    with open('coverage.csv', 'w') as fout:
+        writer = csv.writer(fout)
+        writer.writerow(("Repository",
+                         "Statements", "Missed", "Coverage",
+                         "Threshold", "Pass?"))
+        for repository in repositories:
+            coverage = results.unit_test_coverage[repository]
+            if coverage is not None:
+                cov = coverage.get("coverage")
+                cov_pass = int(cov) >= 90
+                writer.writerow((repository,
+                                 coverage["statements"], coverage["missed"],
+                                 str(cov) + "%" or "N/A",
+                                 "90%",
+                                 "yes" if cov_pass else "no"
+                                 ))
+            else:
+                writer.writerow((repository,
+                                 "N/A", "N/A", "N/A",
+                                 "90%",
+                                 "no"))
+
+
 def export_dashboard_into_csv(results, repositories):
     """Export dashboard data report into CSV."""
     with open('dashboard.csv', 'w') as fout:
@@ -475,6 +500,7 @@ def export_dashboard_into_csv(results, repositories):
 def export_into_csv(results, repositories):
     """Export the results into CSV file."""
     export_dashboard_api_into_csv(results, repositories)
+    export_code_coverage_into_csv(results, repositories)
     export_dashboard_into_csv(results, repositories)
 
 
