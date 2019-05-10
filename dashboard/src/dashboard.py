@@ -387,8 +387,8 @@ def cleanup_repository(repository):
         shutil.rmtree(repository, ignore_errors=True)
 
 
-def export_into_csv(results, repositories):
-    """Export the results into CSV file."""
+def export_dashboard_api_into_csv(results, repositories):
+    """Export Dashboard API into CSV and append it to previous results."""
     record = [
         datetime.date.today().strftime("%Y-%m-%d"),
         int(results.stage["core_api_available"]),
@@ -411,9 +411,14 @@ def export_into_csv(results, repositories):
         record.append(results.repo_docstyle_checks[repository]["passed"])
         record.append(results.repo_docstyle_checks[repository]["failed"])
 
-    with open('dashboard.csv', 'a') as fout:
+    with open('dashboard_api.csv', 'a') as fout:
         writer = csv.writer(fout)
         writer.writerow(record)
+
+
+def export_into_csv(results, repositories):
+    """Export the results into CSV file."""
+    export_dashboard_api_into_csv(results, repositories)
 
 
 def prepare_data_for_liveness_table(results, ci_jobs, job_statuses):
