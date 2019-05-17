@@ -9,6 +9,8 @@ from auth import retrieve_access_token
 # The following endpoint is used to get the access token from OSIO AUTH service
 _AUTH_ENDPOINT = "/api/token/refresh"
 
+DEFAULT_INPUT_FILE_NAME = "tests.csv"
+
 
 def add_slash(url):
     """Add a slash at the end of URL if the slash is not already presented."""
@@ -85,11 +87,16 @@ def refresh_token_as_str(refresh_token):
     return "set" if refresh_token else "not set"
 
 
+def get_input_file(cli_arguments):
+    """Retrieve the input file name."""
+    return cli_arguments.input or DEFAULT_INPUT_FILE_NAME
+
+
 def setup(cli_arguments):
     """Perform BAF setup."""
     log.info("Setup")
     with log.indent():
-        input_file = cli_arguments.input or "tests.csv"
+        input_file = get_input_file(cli_arguments)
         dry_run = cli_arguments.dry
         generate_text = cli_arguments.text
         generate_html = cli_arguments.html
@@ -98,6 +105,8 @@ def setup(cli_arguments):
         generate_xml = cli_arguments.xml
         tags = parse_tags(cli_arguments.tags)
         header = cli_arguments.header or "Fuzz tests"
+        license_service_url = "N/A"
+        refresh_token = None
 
         if not dry_run:
             check_api_tokens_presence()
@@ -107,9 +116,6 @@ def setup(cli_arguments):
             if not license_service_url:
                 log.error("OSIO_AUTH_SERVICE is not set")
                 sys.exit(-1)
-        else:
-            license_service_url = "N/A"
-            refresh_token = None
 
         log.info("Dry run:          " + enabled_disabled(dry_run))
         log.info("Input file:       " + input_file)
