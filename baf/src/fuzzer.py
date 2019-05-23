@@ -124,16 +124,17 @@ def run_tests_with_added_items_one_iteration(url, http_method, dry_run, original
 def run_tests_with_changed_items_one_iteration(url, http_method, dry_run, original_payload, cfg,
                                                expected_status, how_many, test, results):
     """One iteration for the run_tests_with_changed_items()."""
-    # deep copy
-    new_payload = copy.deepcopy(original_payload)
-    rpg = RandomPayloadGenerator()
+    with log.indent():
+        # deep copy
+        new_payload = copy.deepcopy(original_payload)
+        rpg = RandomPayloadGenerator()
 
-    for i in range(0, how_many):
-        log.info("Changing item #{n} in the payload".format(n=i))
-        selected_key = random.choice(list(original_payload.keys()))
-        new_value = rpg.generate_random_payload()
-        new_payload[selected_key] = new_value
-    perform_test(url, http_method, dry_run, new_payload, cfg, expected_status, test, results)
+        for i in range(0, how_many):
+            log.info("Changing item #{n} in the payload".format(n=i))
+            selected_key = random.choice(list(original_payload.keys()))
+            new_value = rpg.generate_random_payload()
+            new_payload[selected_key] = new_value
+        perform_test(url, http_method, dry_run, new_payload, cfg, expected_status, test, results)
 
 
 def run_tests_with_added_items(url, http_method, dry_run, original_payload, cfg, expected_status,
@@ -163,11 +164,10 @@ def run_tests_with_changed_items(url, http_method, dry_run, original_payload, cf
             for i in range(1, 5):
                 with log.indent():
                     log.info("Iteration #{n}".format(n=iteration))
-                    with log.indent():
-                        run_tests_with_changed_items_one_iteration(url, http_method, dry_run,
-                                                                   original_payload, cfg,
-                                                                   expected_status, how_many,
-                                                                   test, results)
+                    run_tests_with_changed_items_one_iteration(url, http_method, dry_run,
+                                                               original_payload, cfg,
+                                                               expected_status, how_many,
+                                                               test, results)
                     iteration += 1
 
 
