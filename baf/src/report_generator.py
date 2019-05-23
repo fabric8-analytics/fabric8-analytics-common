@@ -129,7 +129,7 @@ def generate_text_report_if_enabled(cfg, results):
         generate_text_report(results, cfg["generate_text"])
 
 
-def generate_html_report_if_enabled(cfg, results):
+def generate_html_report_if_enabled(cfg, results, tests, total_time):
     """Generate HTML report if reporting is enabled."""
     if cfg["generate_html"]:
         log.info("HTML report")
@@ -163,7 +163,7 @@ def generate_reports(tests, results, cfg, total_time):
     with log.indent():
         # cfg contains information whether to generate HTML, CSV, TSV etc. outputs
         generate_text_report_if_enabled(cfg, results)
-        generate_html_report_if_enabled(cfg, results)
+        generate_html_report_if_enabled(cfg, results, tests, total_time)
         generate_csv_report_if_enabled(cfg, results)
         generate_tsv_report_if_enabled(cfg, results)
         generate_xml_report_if_enabled(cfg, results)
