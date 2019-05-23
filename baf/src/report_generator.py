@@ -122,23 +122,48 @@ def generate_xml_report(results, filename):
     tree.write(filename)
 
 
+def generate_text_report_if_enabled(cfg, results):
+    """Generate text report if reporting is enabled."""
+    if cfg["generate_text"]:
+        log.info("Text report")
+        generate_text_report(results, cfg["generate_text"])
+
+
+def generate_html_report_if_enabled(cfg, results):
+    """Generate HTML report if reporting is enabled."""
+    if cfg["generate_html"]:
+        log.info("HTML report")
+        generate_html_report(tests, results, cfg["generate_html"], cfg, total_time)
+
+
+def generate_csv_report_if_enabled(cfg, results):
+    """Generate CSV report if reporting is enabled."""
+    if cfg["generate_csv"]:
+        log.info("CSV report")
+        generate_csv_report(results, cfg["generate_csv"])
+
+
+def generate_tsv_report_if_enabled(cfg, results):
+    """Generate TSV report if reporting is enabled."""
+    if cfg["generate_tsv"]:
+        log.info("TSV report")
+        generate_tsv_report(results, cfg["generate_tsv"])
+
+
+def generate_xml_report_if_enabled(cfg, results):
+    """Generate XML report if reporting is enabled."""
+    if cfg["generate_xml"]:
+        log.info("XML report")
+        generate_xml_report(results, cfg["generate_xml"])
+
+
 def generate_reports(tests, results, cfg, total_time):
     """Generate reports with all BAF tests."""
     log.info("Generate reports")
     with log.indent():
         # cfg contains information whether to generate HTML, CSV, TSV etc. outputs
-        if cfg["generate_text"]:
-            log.info("Text report")
-            generate_text_report(results, cfg["generate_text"])
-        if cfg["generate_html"]:
-            log.info("HTML report")
-            generate_html_report(tests, results, cfg["generate_html"], cfg, total_time)
-        if cfg["generate_csv"]:
-            log.info("CSV report")
-            generate_csv_report(results, cfg["generate_csv"])
-        if cfg["generate_tsv"]:
-            log.info("TSV report")
-            generate_tsv_report(results, cfg["generate_tsv"])
-        if cfg["generate_xml"]:
-            log.info("XML report")
-            generate_xml_report(results, cfg["generate_xml"])
+        generate_text_report_if_enabled(cfg, results)
+        generate_html_report_if_enabled(cfg, results)
+        generate_csv_report_if_enabled(cfg, results)
+        generate_tsv_report_if_enabled(cfg, results)
+        generate_xml_report_if_enabled(cfg, results)
