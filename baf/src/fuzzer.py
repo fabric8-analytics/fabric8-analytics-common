@@ -213,6 +213,31 @@ def log_fuzzer_setting(fuzzer_setting):
                  fuzzer_setting["Gremlin injection strings"])
 
 
+def run_all_setup_tests(remove_items, add_items, change_types, mutate_payload,
+                        url, http_method, dry_run, original_payload, cfg,
+                        expected_status, test, results):
+    """Run all tests that has been setup."""
+    if remove_items:
+        log.info("Run tests with items removed from original payload")
+        run_tests_with_removed_items(url, http_method, dry_run, original_payload, cfg,
+                                     expected_status, test, results)
+
+    if add_items:
+        log.info("Run tests with items added into the original payload")
+        run_tests_with_added_items(url, http_method, dry_run, original_payload, cfg,
+                                   expected_status, test, results)
+
+    if change_types:
+        log.info("Run tests with items changed from original payload")
+        run_tests_with_changed_items(url, http_method, dry_run, original_payload, cfg,
+                                     expected_status, test, results)
+
+    if mutate_payload:
+        log.info("Run tests with items mutated")
+        run_tests_with_mutated_items(url, http_method, dry_run, original_payload, cfg,
+                                     expected_status, test, results)
+
+
 def run_test(cfg, fuzzer_settings, test, results):
     """Run one selected test."""
     url = construct_url(test)
@@ -271,25 +296,9 @@ def run_test(cfg, fuzzer_settings, test, results):
         perform_test(url, http_method, dry_run, original_payload, cfg, expected_status, test,
                      results)
 
-    if remove_items:
-        log.info("Run tests with items removed from original payload")
-        run_tests_with_removed_items(url, http_method, dry_run, original_payload, cfg,
-                                     expected_status, test, results)
-
-    if add_items:
-        log.info("Run tests with items added into the original payload")
-        run_tests_with_added_items(url, http_method, dry_run, original_payload, cfg,
-                                   expected_status, test, results)
-
-    if change_types:
-        log.info("Run tests with items changed from original payload")
-        run_tests_with_changed_items(url, http_method, dry_run, original_payload, cfg,
-                                     expected_status, test, results)
-
-    if mutate_payload:
-        log.info("Run tests with items mutated")
-        run_tests_with_mutated_items(url, http_method, dry_run, original_payload, cfg,
-                                     expected_status, test, results)
+    run_all_setup_tests(remove_items, add_items, change_types, mutate_payload,
+                        url, http_method, dry_run, original_payload, cfg,
+                        expected_status, test, results)
 
     log.success("Finished")
     return
