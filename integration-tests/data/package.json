@@ -12,8 +12,9 @@
   },
   "dependencies": {
           "underscore" : "1.8.1",
-          "express": "4.15.2",
-          "mongoose": "4.8.6"
+          "moment": "2.24.0",
+          "lodash": "4.17.11",
+          "request": "2.88.0"
   },
   "old_dependencies": {
     "babel-core": "^6.7.7",
