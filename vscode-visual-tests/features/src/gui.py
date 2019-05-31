@@ -16,13 +16,18 @@ def perform_move_mouse_cursor(context, x=0, y=0):
     context.pyautogui.moveTo(x, y)
 
 
+def check_location_existence(location):
+    """Check if location exist and can be found on the screen."""
+    assert location is not None, "Region can not be found"
+
+
 def perform_click_on_the_region(context):
     """Click on region found by previous test step."""
     assert context is not None, "Context must be provided by Behave"
 
     # get the already found location
     location = context.location
-    assert location is not None, "Region can not be found"
+    check_location_existence(location)
 
     # click on the center of location
     x, y = context.pyautogui.center(location)
@@ -42,8 +47,15 @@ def region_filename_in_directory(directory, version, region):
     return filename
 
 
+def entry_region_check(context, region):
+    """Check if context and region are set."""
+    assert context is not None, "Context is not set (FATAL)"
+    assert region is not None, "Name of region is required parameter"
+
+
 def filename_for_region(context, region):
     """Proper filename for file containing pattern for region."""
+    assert context is not None, "Context is not set (FATAL)"
     assert region is not None, "Name of region is required parameter"
 
     version = context.vs_code_version
@@ -53,6 +65,7 @@ def filename_for_region(context, region):
 
 def save_screenshot(context, region):
     """Save screenshot with the filename the same as the region."""
+    assert context is not None, "Context is not set (FATAL)"
     assert region is not None, "Name of region is required parameter"
 
     version = context.vs_code_version
@@ -63,21 +76,21 @@ def save_screenshot(context, region):
 
 def perform_find_the_region(context, region, alternate_region=None):
     """Try to find region on screen based on specified pattern."""
-    assert region is not None, "Name of region is required parameter"
+    entry_region_check(context, region)
     context.location = None
 
     try:
         # first step - try to localize primary region
         filename = filename_for_region(context, region)
         location = context.pyautogui.locateOnScreen(filename)
-        assert location is not None
+        check_location_existence(location)
     except Exception:
         # the primary region can't be found: try the alternate region, if any
         if alternate_region is not None:
             try:
                 filename = filename_for_region(context, alternate_region)
                 location = context.pyautogui.locateOnScreen(filename)
-                assert location is not None
+                check_location_existence(location)
             except Exception:
                 save_screenshot(context, alternate_region)
                 raise Exception("Alternate region '{r}' can not be found on the screen".format(
