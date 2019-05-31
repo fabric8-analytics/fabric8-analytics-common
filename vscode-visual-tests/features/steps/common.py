@@ -63,7 +63,7 @@ def start_visual_studio_code(context):
 
 
 @when('I start the Visual Studio Code with parameter {parameter}')
-def start_visual_studio_code(context, parameter):
+def start_visual_studio_code_with_parameter(context, parameter):
     """Start the Visual Studio Code with the specified parameter."""
     out = subprocess.Popen([VSCODE_COMMAND_NAME, parameter],
                            stdout=subprocess.PIPE,
@@ -85,6 +85,7 @@ def start_visual_studio_code(context, parameter):
 
 @then(u'I should find that version is set to {version}')
 def check_vscode_version(context, version):
+    """Check the VSCode version taken from CLI."""
     assert context is not None, "Context is not set (FATAL)"
     assert context.output is not None, "Output is not set, run command before this step"
     assert len(context.output) >= 2, \
@@ -95,6 +96,7 @@ def check_vscode_version(context, version):
 
 @then(u'I should find that commit ID is {commit_id}')
 def step_commit_id(context, commit_id):
+    """Check the VSCode commit ID taken from CLI."""
     assert context is not None, "Context is not set (FATAL)"
     assert context.output is not None, "Output is not set, run command before this step"
     assert len(context.output) >= 2, \
@@ -105,6 +107,7 @@ def step_commit_id(context, commit_id):
 
 @then(u'I should find that extension {extension} is installed')
 def step_check_extension_name(context, extension):
+    """Look for VSCode extension on CLI."""
     assert context is not None, "Context is not set (FATAL)"
     assert context.output is not None, "Output is not set, run command before this step"
     assert len(context.output) >= 1, \
