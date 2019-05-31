@@ -16,13 +16,18 @@ def perform_move_mouse_cursor(context, x=0, y=0):
     context.pyautogui.moveTo(x, y)
 
 
+def check_location_existence(location):
+    """Check if location exist and can be found on the screen."""
+    assert location is not None, "Region can not be found"
+
+
 def perform_click_on_the_region(context):
     """Click on region found by previous test step."""
     assert context is not None, "Context must be provided by Behave"
 
     # get the already found location
     location = context.location
-    assert location is not None, "Region can not be found"
+    check_location_existence(location)
 
     # click on the center of location
     x, y = context.pyautogui.center(location)
@@ -70,7 +75,7 @@ def perform_find_the_region(context, region, alternate_region=None):
         # first step - try to localize primary region
         filename = filename_for_region(context, region)
         location = context.pyautogui.locateOnScreen(filename)
-        assert location is not None
+        check_location_existence(location)
     except Exception:
         # the primary region can't be found: try the alternate region, if any
         if alternate_region is not None:
