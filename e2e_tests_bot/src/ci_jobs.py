@@ -24,6 +24,24 @@ def jenkins_api_query_build_statuses(jenkins_url):
     return "{url}/api/json?tree=builds[result,number]".format(url=jenkins_url)
 
 
+def log_builds(last_build, total_builds_cnt, success_builds_cnt):
+    """Log informations about builds found."""
+    with log.indent():
+        log.info("Last build: {n}".format(n=last_build))
+        log.info("Total builds: {n}".format(n=total_builds_cnt))
+        log.info("Success builds: {n}".format(n=success_builds_cnt))
+
+
+def get_total_builds(builds):
+    """Get number of all builds."""
+    return [b for b in builds if b["result"] is not None]
+
+
+def get_success_builds(builds):
+    """Get number of success builds."""
+    return [b for b in builds if b["result"] == "SUCCESS"]
+
+
 def read_build_history(job_url):
     """Read total number of remembered builds and succeeded builds as well."""
     log.info("Read build history")
@@ -41,15 +59,12 @@ def read_build_history(job_url):
         if last_build_status is not None:
             last_build_status = last_build_status == "SUCCESS"
 
-        total_builds = [b for b in builds if b["result"] is not None]
-        success_builds = [b for b in builds if b["result"] == "SUCCESS"]
+        total_builds = get_total_builds(builds)
+        success_builds = get_success_builds(builds)
         total_builds_cnt = len(total_builds)
         success_builds_cnt = len(success_builds)
 
-        with log.indent():
-            log.info("Last build: {n}".format(n=last_build))
-            log.info("Total builds: {n}".format(n=total_builds_cnt))
-            log.info("Success builds: {n}".format(n=success_builds_cnt))
+        log_builds(last_build, total_builds_cnt, success_builds_cnt)
 
         log.success("Done")
     return last_build, last_build_status, total_builds_cnt, success_builds_cnt
