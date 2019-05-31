@@ -18,6 +18,8 @@ from behave import given, then, when
 from time import sleep
 from os import system, environ
 from src.ps import get_process_list
+import subprocess
+
 
 VSCODE_COMMAND_NAME = "code"
 
@@ -53,11 +55,70 @@ def check_visual_studio_code_version(context):
 
 
 @when('I start the Visual Studio Code')
-def start_visual_studion_code(context):
+def start_visual_studio_code(context):
     """Start the Visual Studio Code."""
     system(VSCODE_COMMAND_NAME)
     # time to breath
     sleep(2)
+
+
+@when('I start the Visual Studio Code with parameter {parameter}')
+def start_visual_studio_code_with_parameter(context, parameter):
+    """Start the Visual Studio Code with the specified parameter."""
+    out = subprocess.Popen([VSCODE_COMMAND_NAME, parameter],
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT)
+    # interact with the process:
+    # read data from stdout and stderr, until end-of-file is reached
+    stdout, stderr = out.communicate()
+
+    # basic checks
+    assert stderr is None, "Error during 'vscode'"
+    assert stdout is not None, "No output from 'vscode'"
+
+    # try to decode the output and split it by lines
+    vscode_output = stdout.decode('utf-8').split()
+    assert vscode_output is not None
+
+    context.output = vscode_output
+
+
+@then(u'I should find that version is set to {version}')
+def check_vscode_version(context, version):
+    """Check the VSCode version taken from CLI."""
+    assert context is not None, "Context is not set (FATAL)"
+    assert context.output is not None, "Output is not set, run command before this step"
+    assert len(context.output) >= 2, \
+        "At least two lines of output are expected: version + commit ID"
+    assert context.output[0] == version, \
+        "Version {} is expected, got {} instead".format(version, context.output[0])
+
+
+@then(u'I should find that commit ID is {commit_id}')
+def step_commit_id(context, commit_id):
+    """Check the VSCode commit ID taken from CLI."""
+    assert context is not None, "Context is not set (FATAL)"
+    assert context.output is not None, "Output is not set, run command before this step"
+    assert len(context.output) >= 2, \
+        "At least two lines of output are expected: version + commit ID"
+    assert context.output[1] == commit_id, \
+        "Commit ID {} is expected, got {} instead".format(commit_id, context.output[2])
+
+
+@then(u'I should find that extension {extension} is installed')
+def step_check_extension_name(context, extension):
+    """Look for VSCode extension on CLI."""
+    assert context is not None, "Context is not set (FATAL)"
+    assert context.output is not None, "Output is not set, run command before this step"
+    assert len(context.output) >= 1, \
+        "At least one line of output are expected: version + commit ID"
+    for ext in context.output:
+        if extension == ext:
+            # all ok
+            return
+    # raise an exception
+    msg = "The extension {} can't be found in a list of installed extensions".format(extension)
+    raise Exception(msg)
 
 
 @when('I wait {num:d} seconds')
