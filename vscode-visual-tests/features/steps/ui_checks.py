@@ -15,7 +15,8 @@
 #
 
 from behave import then, when
-from src.gui import perform_click_on_the_region, perform_find_the_region
+from src.gui import perform_click_on_the_region, perform_right_click_on_the_region
+from src.gui import perform_find_the_region
 
 
 @when('I look at the whole screen')
@@ -33,6 +34,14 @@ def click_on_the_region(context):
     """Click on region found by previous test step."""
     assert context is not None
     perform_click_on_the_region(context)
+
+
+@when('I right click on the region')
+@when('I right click on that region')
+def right_click_on_the_region(context):
+    """Click on region found by previous test step."""
+    assert context is not None
+    perform_right_click_on_the_region(context)
 
 
 @then('I should find the region with {region}')
