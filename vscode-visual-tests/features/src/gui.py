@@ -34,6 +34,19 @@ def perform_click_on_the_region(context):
     context.pyautogui.click(x, y)
 
 
+def perform_right_click_on_the_region(context):
+    """Click on region found by previous test step by the right mouse button."""
+    assert context is not None, "Context must be provided by Behave"
+
+    # get the already found location
+    location = context.location
+    check_location_existence(location)
+
+    # click on the center of location
+    x, y = context.pyautogui.center(location)
+    context.pyautogui.click(x, y, button="right")
+
+
 def perform_type(context, what_to_type):
     """Type anything onto the screen."""
     context.pyautogui.typewrite(what_to_type, interval=TYPING_INTERVAL)
