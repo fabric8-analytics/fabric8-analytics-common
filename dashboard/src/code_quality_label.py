@@ -141,6 +141,20 @@ class Element(RootElement):
         self.id = RootElement.id
         # print(self.id)
 
+    def compute_xmin_ymin(self):
+        """Compute minimum x and y coordinates."""
+        xmin = self.parent_element.points[0][0]
+        ymin = self.parent_element.points[0][0]
+
+        for x, y in self.parent_element.points:
+            # print(xmin)
+            # print(x)
+            if xmin > x:
+                xmin = x
+            if ymin > y:
+                ymin = y
+        return xmin, ymin
+
     def count_real_x_y(self):
         """Count the x and y coordinates."""
         if not self.relative:
@@ -149,16 +163,7 @@ class Element(RootElement):
             xmin = 0
             ymin = 0
         else:
-            xmin = self.parent_element.points[0][0]
-            ymin = self.parent_element.points[0][0]
-
-            for x, y in self.parent_element.points:
-                # print(xmin)
-                # print(x)
-                if xmin > x:
-                    xmin = x
-                if ymin > y:
-                    ymin = y
+            xmin, ymin = self.compute_xmin_ymin()
         # print(self.points)
         points = [(x + xmin, y + ymin) for x, y in self.points]
         self.points = points
