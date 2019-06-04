@@ -128,6 +128,7 @@ def step_check_extension_name_existence(context, extension):
 
 @then(u'I should find that extension {extension} is not installed')
 def step_check_extension_name_nonexistence(context, extension):
+    """Check if the given extension can't be found in a list of installed extensions."""
     check_context(context)
     assert context.output is not None, "Output is not set, run command before this step"
     for ext in context.output:
