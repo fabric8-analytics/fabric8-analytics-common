@@ -62,6 +62,41 @@ def export_code_coverage_into_csv(results, repositories):
             export_repository_code_coverage_into_csv(repository, results, writer)
 
 
+def export_repository_data_into_csv(repository, results, writer):
+    """Export repository data into CSV file as one row."""
+    source_files = results.source_files[repository]
+    linter = results.repo_linter_checks[repository]
+    docstyle = results.repo_docstyle_checks[repository]
+    coverage = results.unit_test_coverage[repository]
+    if coverage is None:
+        cov_statements = "N/A"
+        cov_missed = "N/A"
+        cov_covered = "N/A"
+    else:
+        cov_statements = coverage["statements"]
+        cov_missed = coverage["missed"]
+        cov_covered = str(coverage.get("coverage")) + "%"
+    dead_code = results.dead_code[repository]
+    common_errors = results.common_errors[repository]
+    cc = results.repo_cyclomatic_complexity[repository]
+    mi = results.repo_maintainability_index[repository]
+
+    writer.writerow((repository,
+                     source_files["count"], source_files["total_lines"],
+                     linter["passed"], linter["failed"],
+                     str(linter["passed%"]) + "%",
+                     docstyle["passed"], docstyle["failed"],
+                     str(docstyle["passed%"]) + "%",
+                     cov_statements, cov_missed, cov_covered,
+                     dead_code["failed"], common_errors["failed"],
+                     cc["A"], cc["B"], cc["C"], cc["D"], cc["E"], cc["F"],
+                     "yes" if cc["status"] else "no",
+                     mi["A"], mi["B"], mi["C"],
+                     "yes" if mi["status"] else "no",
+                     "ok" if results.overall_status[repository] else "failure(s) found"
+                     ))
+
+
 def export_dashboard_into_csv(results, repositories):
     """Export dashboard data report into CSV."""
     with open('dashboard.csv', 'w') as fout:
@@ -85,37 +120,7 @@ def export_dashboard_into_csv(results, repositories):
                          "A", "B", "C", "OK?",
                          ""))
         for repository in repositories:
-            source_files = results.source_files[repository]
-            linter = results.repo_linter_checks[repository]
-            docstyle = results.repo_docstyle_checks[repository]
-            coverage = results.unit_test_coverage[repository]
-            if coverage is None:
-                cov_statements = "N/A"
-                cov_missed = "N/A"
-                cov_covered = "N/A"
-            else:
-                cov_statements = coverage["statements"]
-                cov_missed = coverage["missed"]
-                cov_covered = str(coverage.get("coverage")) + "%"
-            dead_code = results.dead_code[repository]
-            common_errors = results.common_errors[repository]
-            cc = results.repo_cyclomatic_complexity[repository]
-            mi = results.repo_maintainability_index[repository]
-
-            writer.writerow((repository,
-                             source_files["count"], source_files["total_lines"],
-                             linter["passed"], linter["failed"],
-                             str(linter["passed%"]) + "%",
-                             docstyle["passed"], docstyle["failed"],
-                             str(docstyle["passed%"]) + "%",
-                             cov_statements, cov_missed, cov_covered,
-                             dead_code["failed"], common_errors["failed"],
-                             cc["A"], cc["B"], cc["C"], cc["D"], cc["E"], cc["F"],
-                             "yes" if cc["status"] else "no",
-                             mi["A"], mi["B"], mi["C"],
-                             "yes" if mi["status"] else "no",
-                             "ok" if results.overall_status[repository] else "failure(s) found"
-                             ))
+            export_repository_data_into_csv(repository, results, writer)
 
 
 def export_into_csv(results, repositories):
