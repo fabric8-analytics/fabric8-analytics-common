@@ -1,6 +1,6 @@
-Feature: Smoke test
+Feature: Visual Studio Code basic functionality - check for version on GUI
 
-    Scenario: Basic check that use the common UI test steps
+    Scenario: Check the Visual Code Studio version via its About dialog
         Given The PyAutoGUI library is initialized
           And The screen resolution is at least 1024x768 pixels
           And The Visual Studio Code is set up
