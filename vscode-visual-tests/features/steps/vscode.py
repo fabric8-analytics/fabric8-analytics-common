@@ -71,7 +71,8 @@ def look_for_search_extension_in_marketplace(context):
 def look_for_dependency_analytics_info_region(context):
     """Try to find the Dependency Analytics info region."""
     assert context is not None
-    perform_find_the_region(context, "dependency analytics info region 0 11")
+    perform_find_the_region(context, "dependency analytics info region")
+    perform_find_the_region(context, "dependency analytics info region 0 12")
 
 
 @then('I should find the OpenShift logo')
@@ -102,6 +103,20 @@ def look_for_plugin_install_button(context):
     perform_find_the_region(context, "plugin install button", "plugin install button 2")
 
 
+@then(u'I should find the Plugin uninstall button')
+def look_for_plugin_uninstall_button(context):
+    """Try to find the Unistall button for a selected plugin."""
+    assert context is not None
+    perform_find_the_region(context, "plugin uninstall button", "plugin uninstall button 2")
+
+
+@then('I should find the Uninstalled label')
+def look_for_uninstalled_label(context):
+    """Try to find the Uninstalled label."""
+    assert context is not None
+    perform_find_the_region(context, "uninstalled label")
+
+
 @then('I should find the Reload and Uninstall buttons')
 def look_for_plugin_reload_and_uninstall_button(context):
     """Try to find the Reload and Unistall buttons for a selected plugin."""
@@ -114,6 +129,20 @@ def look_for_plugin_reload_button_and_gear_icon(context):
     """Try to find the Reload button with Gear icon for a selected plugin."""
     assert context is not None
     perform_find_the_region(context, "reload gear")
+
+
+@then('I should find the Installed icon and Gear button')
+def look_for_plugin_installed_icon_and_gear_button(context):
+    """Try to find the Install icon and a Gear icon for a selected plugin."""
+    assert context is not None
+    perform_find_the_region(context, "installed icon and gear button")
+
+
+@then('I should find the Installed icon and Uninstall button')
+def look_for_plugin_install_icon_and_uninstall_button(context):
+    """Try to find the Install icon and a Uninstall icon for a selected plugin."""
+    assert context is not None
+    perform_find_the_region(context, "installed icon and uninstall button")
 
 
 @when('I type in {what}')
