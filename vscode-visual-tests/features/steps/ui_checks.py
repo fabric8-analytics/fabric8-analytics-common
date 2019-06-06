@@ -19,6 +19,13 @@ from src.gui import perform_click_on_the_region, perform_right_click_on_the_regi
 from src.gui import perform_find_the_region
 
 
+@when('I press Enter')
+def press_enter(context):
+    """Press the Enter."""
+    assert context is not None
+    context.pyautogui.press('enter')
+
+
 @when('I look at the whole screen')
 def look_at_the_whole_screen(context):
     """Create the screenshot of the whole screen."""
