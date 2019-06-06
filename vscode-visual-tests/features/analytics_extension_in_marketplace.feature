@@ -3,6 +3,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality
     Scenario: Check that the Analytics plugin can be found in the Marketplace
         Given The PyAutoGUI library is initialized
           And The screen resolution is at least 1024x768 pixels
+          And The Visual Studio Code is set up
 
          # Start the Visual Studio Code
          When I start the Visual Studio Code
@@ -26,12 +27,10 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality
          When I click on that region
           And I wait 2 seconds
           And I look at the whole screen
-         Then I should find the Plugin install button
-         When I click on that region
-          And I move mouse cursor to the top left corner
-          And I wait 2 seconds
-         Then I should find the Reload and Uninstall buttons
-          And I should find the Reload button and Gear icon
+         Then I should find the OpenShift logo
+          And I should find the Dependency Analytics header
+          And I should find the Dependency Analytics title
+          And I should find the Plugin install button
 
          # Close the Visual Studio Code
          When I look at the whole screen

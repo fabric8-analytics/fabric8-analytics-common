@@ -83,10 +83,15 @@ def start_visual_studio_code_with_parameter(context, parameter):
     context.output = vscode_output
 
 
+def check_context(context):
+    """Check the context existence."""
+    assert context is not None, "Context is not set (FATAL)"
+
+
 @then(u'I should find that version is set to {version}')
 def check_vscode_version(context, version):
     """Check the VSCode version taken from CLI."""
-    assert context is not None, "Context is not set (FATAL)"
+    check_context(context)
     assert context.output is not None, "Output is not set, run command before this step"
     assert len(context.output) >= 2, \
         "At least two lines of output are expected: version + commit ID"
@@ -97,7 +102,7 @@ def check_vscode_version(context, version):
 @then(u'I should find that commit ID is {commit_id}')
 def step_commit_id(context, commit_id):
     """Check the VSCode commit ID taken from CLI."""
-    assert context is not None, "Context is not set (FATAL)"
+    check_context(context)
     assert context.output is not None, "Output is not set, run command before this step"
     assert len(context.output) >= 2, \
         "At least two lines of output are expected: version + commit ID"
@@ -106,9 +111,9 @@ def step_commit_id(context, commit_id):
 
 
 @then(u'I should find that extension {extension} is installed')
-def step_check_extension_name(context, extension):
+def step_check_extension_name_existence(context, extension):
     """Look for VSCode extension on CLI."""
-    assert context is not None, "Context is not set (FATAL)"
+    check_context(context)
     assert context.output is not None, "Output is not set, run command before this step"
     assert len(context.output) >= 1, \
         "At least one line of output are expected: version + commit ID"
@@ -119,6 +124,21 @@ def step_check_extension_name(context, extension):
     # raise an exception
     msg = "The extension {} can't be found in a list of installed extensions".format(extension)
     raise Exception(msg)
+
+
+@then(u'I should find that extension {extension} is not installed')
+def step_check_extension_name_nonexistence(context, extension):
+    """Check if the given extension can't be found in a list of installed extensions."""
+    check_context(context)
+    assert context.output is not None, "Output is not set, run command before this step"
+    for ext in context.output:
+        if extension == ext:
+            # raise an exception
+            msg = "The extension {} has been found in a " + \
+                  "list of installed extensions".format(extension)
+            raise Exception(msg)
+    # all ok
+    return
 
 
 @when('I wait {num:d} seconds')
