@@ -168,6 +168,12 @@ class Element(RootElement):
         points = [(x + xmin, y + ymin) for x, y in self.points]
         self.points = points
 
+    def build_elements(self, dwg):
+        """Build all elements."""
+        for element in self.elements:
+            # print(element)
+            element.build(dwg)
+
     def build(self, dwg):
         """Build the elemend on drawing."""
         self.count_real_x_y()
@@ -181,9 +187,8 @@ class Element(RootElement):
                                             fill=self.style)
 
             dwg.add(new_el)
-        for element in self.elements:
-            # print(element)
-            element.build(dwg)
+
+        self.build_elements(dwg)
 
     def __len__(self):
         """Count all elements."""
