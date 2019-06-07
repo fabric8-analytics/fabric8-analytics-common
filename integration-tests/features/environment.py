@@ -469,6 +469,16 @@ def _get_url(context, actual, attribute_name, port):
     return actual or _get_api_url(context, attribute_name, port)
 
 
+def check_token_structure(data):
+    """Check the basic structure of response with access token."""
+    assert "token" in data
+    token_structure = data["token"]
+
+    assert "access_token" in token_structure
+    assert "token_type" in token_structure
+    assert "expires_in" in token_structure
+
+
 def retrieve_access_token(refresh_token, auth_service_url):
     """Retrieve temporary access token by using refresh/offline token."""
     print("Trying to retrieve access token")
@@ -487,14 +497,10 @@ def retrieve_access_token(refresh_token, auth_service_url):
     data = response.json()
 
     # check the basic structure of the response
-    assert "token" in data
-    token_structure = data["token"]
-
-    assert "access_token" in token_structure
-    assert "token_type" in token_structure
-    assert "expires_in" in token_structure
+    check_token_structure(data)
 
     # seems like everything's ok, let's read the temporary access token
+    token_structure = data["token"]
     return token_structure["access_token"]
 
 
