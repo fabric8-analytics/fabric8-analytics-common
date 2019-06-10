@@ -145,6 +145,20 @@ def look_for_plugin_install_icon_and_uninstall_button(context):
     perform_find_the_region(context, "installed icon and uninstall button")
 
 
+@then('I should find the Dependency Analysis Report menu entry in context menu')
+def look_for_dependency_analysis_report_menu_entry_context_menu(context):
+    """Try to find the Dependency Analysis Report menu entry in context menu."""
+    assert context is not None
+    perform_find_the_region(context, "context menu dependency analytics entry")
+
+
+@then('I should find the empty window or Welcome tab')
+def look_for_empty_window_or_welcome_tab(context):
+    """Try to find the Welcome tab displayed after all editor tabs are closed."""
+    assert context is not None
+    perform_find_the_region(context, "welcome tab", "empty window")
+
+
 @when('I type in {what}')
 def type_in_text(context, what):
     """Type anything onto the screen."""
