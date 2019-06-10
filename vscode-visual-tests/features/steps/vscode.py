@@ -159,6 +159,27 @@ def look_for_empty_window_or_welcome_tab(context):
     perform_find_the_region(context, "welcome tab", "empty window")
 
 
+@then('I should find the icon with info about zero problems in the status bar')
+def look_for_icon_with_info_about_zero_problems(context):
+    """Try to find the icon that informed users about zero problems."""
+    assert context is not None
+    perform_find_the_region(context, "zero problems")
+
+
+@then('I should find the icon with info about one problem found in the status bar')
+def look_for_icon_with_info_about_one_problem(context):
+    """Try to find the icon that informed users about one problem."""
+    assert context is not None
+    perform_find_the_region(context, "one problem")
+
+
+@then('I should find the icon with info about {number} problems found in the status bar')
+def look_for_icon_with_info_about_more_problems(context, number):
+    """Try to find the icon that informed users about more problems."""
+    assert context is not None
+    perform_find_the_region(context, number + " problems")
+
+
 @when('I type in {what}')
 def type_in_text(context, what):
     """Type anything onto the screen."""
