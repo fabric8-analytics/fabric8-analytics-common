@@ -26,6 +26,13 @@ def press_enter(context):
     context.pyautogui.press('enter')
 
 
+@when('I press Ctrl+W')
+def press_ctrl_w(context):
+    """Press the Ctrl+W."""
+    assert context is not None
+    context.pyautogui.hotkey('ctrl', 'w')
+
+
 @when('I look at the whole screen')
 def look_at_the_whole_screen(context):
     """Create the screenshot of the whole screen."""
