@@ -1,7 +1,7 @@
 {
-  "name": "foo-five-dependencies",
+  "name": "foo-one-dependency-no-cve",
   "version": "0.0.1-01",
-  "description": "A project with five dependencies and no CVEs",
+  "description": "A project with one dependency, but without CVE",
   "main": "hello.js",
   "scripts": {
     "start": "node hello.js"
@@ -11,6 +11,6 @@
     "url": "git://github.com/foo/bar.baz.git"
   },
   "dependencies": {
-          "underscore" : "1.8.1",
+          "lodash": "4.17.11"
   }
 }
