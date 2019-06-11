@@ -64,3 +64,12 @@ def find_the_region(context, region):
     assert context is not None
     assert region is not None
     perform_find_the_region(context, region)
+
+
+@then('I should find region {region1} or {region2}')
+def find_the_region_with_alternative(context, region1, region2):
+    """Try to find region on screen based on specified pattern."""
+    assert context is not None
+    assert region1 is not None
+    assert region2 is not None
+    perform_find_the_region(context, region1, region2)
