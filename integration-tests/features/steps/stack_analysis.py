@@ -105,6 +105,11 @@ def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, end
     """Send the selected dependencies file for stack analysis."""
     filename = 'data/{manifest}'.format(manifest=manifest)
     manifest_file_dir = os.path.abspath(os.path.dirname(filename))
+
+    # in the new API version the manifest names are hard coded
+    if ecosystem == "pypi":
+        manifest = "requirements.txt"
+
     files = {'manifest[]': (manifest, open(filename, 'rb')),
              'filePath[]': (None, manifest_file_dir)}
     context.response = requests.post(endpoint, files=files,
