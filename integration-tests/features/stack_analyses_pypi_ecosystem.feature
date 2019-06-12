@@ -170,7 +170,35 @@ Feature: Thorough stack analysis v3 API tests
      And I should receive JSON response with the correct request_id
      And I should find analyzed dependency named click with version 6.7 in the stack analysis
  
- 
+
+  @requires_authorization_token
+  Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I test pypi dependencies file requirements_click_normalize_integer_minor.txt for stack analysis from vscode
+    Then I should get 200 status code
+    When I wait for stack analysis version 3 to finish with authorization token
+    Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response with the correct request_id
+     And I should find analyzed dependency named click with version 6.7 in the stack analysis
+    When I test pypi dependencies file requirements_click_normalize_integer_major.txt for stack analysis from vscode
+    Then I should get 200 status code
+    When I wait for stack analysis version 3 to finish with authorization token
+    Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response with the correct request_id
+     And I should find analyzed dependency named click with version 6.7 in the stack analysis
+    When I test pypi dependencies file requirements_click_normalize_integer_major_minor.txt for stack analysis from vscode
+    Then I should get 200 status code
+    When I wait for stack analysis version 3 to finish with authorization token
+    Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response with the correct request_id
+     And I should find analyzed dependency named click with version 6.7 in the stack analysis
+
+
   @requires_authorization_token
   Scenario: Check the stack analysis output
     Given System is running
