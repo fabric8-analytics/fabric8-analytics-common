@@ -641,6 +641,14 @@ def check_stack_analysis_id(context):
     assert previous_id == request_id
 
 
+@when('I look at recent stack analysis')
+def look_at_recent_stack_analysis(context):
+    """Just dummy step to make test scenarios more readable."""
+    assert context is not None
+    json_data = context.response.json()
+    assert json_data is not None
+
+
 @then('I should find matching topic lists for all {key} components')
 def validate_topic_list(context, key):
     """Verify topics' list for stack dependencies with the input stack topics."""
