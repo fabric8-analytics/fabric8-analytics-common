@@ -66,8 +66,39 @@ def read_job_statuses(ci_jobs):
     return read_ci_jobs_statuses(JENKINS_URL)
 
 
+def check_ci_status(url, repository):
+    """Check CI status for selected repository."""
+    api_query = jenkins_api_query_build_statuses(url)
+    response = requests.get(api_query)
+    builds = response.json()["builds"]
+    failures = 0
+    for b in builds:
+        if b["result"] != "SUCCESS":
+            failures += 1
+        else:
+            break
+    if failures >= FAILURE_THRESHOLD:
+        print("Repository: {}".format(repository))
+        print("URL to job: {}".format(url))
+        print("Failures:   {}".format(failures))
+        print()
+
+
+def run_checker_for_repository(ci_jobs, config, job_statuses, repository):
+    """Run job checker for selected repository."""
+    for job_type in ci_job_types:
+        with log.indent():
+            url = ci_jobs.get_job_url(repository, job_type)
+            name = ci_jobs.get_job_name(repository, job_type)
+            badge = ci_jobs.get_job_badge(repository, job_type)
+            job_status = job_statuses.get(name)
+
+            if url is not None:
+                check_ci_status(url, repository)
+
+
 def main():
-    """Entry point to the QA Dashboard."""
+    """Entry point to the job checker."""
     log.setLevel(log.INFO)
     log.info("Setup")
     with log.indent():
@@ -82,29 +113,7 @@ def main():
 
     with log.indent():
         for repository in repositories.repolist:
-
-            for job_type in ci_job_types:
-                with log.indent():
-                    url = ci_jobs.get_job_url(repository, job_type)
-                    name = ci_jobs.get_job_name(repository, job_type)
-                    badge = ci_jobs.get_job_badge(repository, job_type)
-                    job_status = job_statuses.get(name)
-
-                    if url is not None:
-                        api_query = jenkins_api_query_build_statuses(url)
-                        response = requests.get(api_query)
-                        builds = response.json()["builds"]
-                        failures = 0
-                        for b in builds:
-                            if b["result"] != "SUCCESS":
-                                failures += 1
-                            else:
-                                break
-                        if failures >= FAILURE_THRESHOLD:
-                            print("Repository: {}".format(repository))
-                            print("URL to job: {}".format(url))
-                            print("Failures:   {}".format(failures))
-                            print()
+            run_checker_for_repository(ci_jobs, config, job_statuses, repository)
 
     log.success("Data prepared")
 
