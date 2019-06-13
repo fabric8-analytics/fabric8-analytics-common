@@ -98,18 +98,32 @@ def check_status_code_for_get_next_untagged_component(context):
     assert context.response.status_code == 401
 
 
+def check_response_data_for_maven_ecosystem(data):
+    """Check response data for Maven ecosystem."""
+    # TODO: IIRC we should add more checks here
+    assert len(data) != 0
+    assert data.find(':') != -1
+
+
+def check_response_data_for_unsupported_ecosystem(data):
+    """Check response data for unsupported ecosystem."""
+    assert 'error' in data
+    assert data.get('error') == "No package found for tagging."
+
+
 @then("I should get a 200 status code and component as {response} type")
 def check_get_next_untagged_component_response(context, response):
     """Check that response contains the component."""
     assert context.response.status_code == 200
     data = context.response.json()
     assert data.__class__.__name__ == response
+    # TODO: how is this situation handled in the REST API scheme?
     if type(data) is str:  # for maven ecosystem
-        assert len(data) != 0
-        assert data.find(':') != -1
+        check_response_data_for_maven_ecosystem(data)
     elif type(data) is dict:  # for unsupported ecosystem
-        assert 'error' in data
-        assert data.get('error') == "No package found for tagging."
+        check_response_data_for_unsupported_ecosystem(data)
+    else:
+        raise Exception("Unknown response!")
 
 
 @when("I access set tags api endpoint without authorization token")

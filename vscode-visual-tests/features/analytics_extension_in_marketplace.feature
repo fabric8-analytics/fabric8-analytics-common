@@ -36,5 +36,5 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
