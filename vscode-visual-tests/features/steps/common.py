@@ -148,6 +148,42 @@ def pause_scenario_execution(context, num):
     sleep(num)
 
 
+@when('I wait for the analysis to finish')
+def pause_scenario_execution_wait_for_analysis(context):
+    """Pause the test and wait for the analysis to finish."""
+    pause_scenario_execution(context, context.time_for_analysis_to_finish)
+
+
+@when('I wait for the detailed analysis to finish')
+def pause_scenario_execution_wait_for_detailed_analysis(context):
+    """Pause the test and wait for the detailed analysis to finish."""
+    pause_scenario_execution(context, context.time_for_detailed_analysis_to_finish)
+
+
+@when('I wait for VSCode text editor to open')
+def pause_vscode_text_editor_to_open(context):
+    """Pause the test and wait the VSCode text editor to open."""
+    pause_scenario_execution(context, context.time_for_text_editor_to_open)
+
+
+@when('I wait for VSCode text editor to close')
+def pause_vscode_text_editor_to_close(context):
+    """Pause the test and wait the VSCode text editor to close."""
+    pause_scenario_execution(context, context.time_for_text_editor_to_close)
+
+
+@when('I wait for VSCode to close')
+def pause_vscode_to_close(context):
+    """Pause the test and wait the VSCode to close."""
+    pause_scenario_execution(context, context.time_for_vscode_to_close)
+
+
+@when('I wait for context menu')
+def pause_wait_for_context_menu(context):
+    """Pause the test and wait the VSCode text editor to open."""
+    pause_scenario_execution(context, context.time_for_context_menu)
+
+
 @then('I should find Visual Studio Code instance')
 def visual_studio_code_instance(context):
     """Check that the Visual Studio Code has been started."""
