@@ -15,7 +15,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          Then I should find Visual Studio Code instance
 
          # Check the code area
-         When I wait 2 seconds
+         When I wait for VSCode text editor to open
           And I look at the whole screen
          Then I should find the region with dependencies in package json
 
@@ -27,19 +27,19 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
          Then I should find the region with dependencies in package json
          When I right click on that region
-          And I wait 2 seconds
+          And I wait for context menu
           And I look at the whole screen
          Then I should find the Dependency Analysis Report menu entry in context menu
 
          # Run the analysis and check the results
          When I click on that region
-          And I wait 5 seconds
+          And I wait for the analysis to finish
           And I look at the whole screen
          Then I should find the icon with info about zero problems in the status bar
 
          # Close the editor
          When I press Ctrl+W
-          And I wait 2 seconds
+          And I wait for VSCode text editor to close
           And I look at the whole screen
          Then I should find the empty window or Welcome tab
 
@@ -47,7 +47,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
 
 
@@ -60,7 +60,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          Then I should find Visual Studio Code instance
 
          # Check the code area
-         When I wait 2 seconds
+         When I wait for VSCode text editor to open
           And I look at the whole screen
          Then I should find the region with dependencies in package json
 
@@ -72,19 +72,19 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
          Then I should find the region with dependencies in package json
          When I right click on that region
-          And I wait 2 seconds
+          And I wait for context menu
           And I look at the whole screen
          Then I should find the Dependency Analysis Report menu entry in context menu
 
          # Run the analysis and check the results
          When I click on that region
-          And I wait 5 seconds
+          And I wait for the analysis to finish
           And I look at the whole screen
          Then I should find the icon with info about zero problems in the status bar
 
          # Close the editor
          When I press Ctrl+W
-          And I wait 2 seconds
+          And I wait for VSCode text editor to close
           And I look at the whole screen
          Then I should find the empty window or Welcome tab
 
@@ -92,7 +92,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
 
 
@@ -105,7 +105,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          Then I should find Visual Studio Code instance
 
          # Check the code area
-         When I wait 2 seconds
+         When I wait for VSCode text editor to open
           And I look at the whole screen
          Then I should find the region with dependencies in package json
 
@@ -117,19 +117,19 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
          Then I should find the region with dependencies in package json
          When I right click on that region
-          And I wait 2 seconds
+          And I wait for context menu
           And I look at the whole screen
          Then I should find the Dependency Analysis Report menu entry in context menu
 
          # Run the analysis and check the results
          When I click on that region
-          And I wait 5 seconds
+          And I wait for the analysis to finish
           And I look at the whole screen
          Then I should find the icon with info about one problem found in the status bar
 
          # Close the editor
          When I press Ctrl+W
-          And I wait 2 seconds
+          And I wait for VSCode text editor to close
           And I look at the whole screen
          Then I should find the empty window or Welcome tab
 
@@ -137,7 +137,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
 
 
@@ -150,7 +150,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          Then I should find Visual Studio Code instance
 
          # Check the code area
-         When I wait 2 seconds
+         When I wait for VSCode text editor to open
           And I look at the whole screen
          Then I should find the region with dependencies in package json
 
@@ -162,19 +162,19 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
          Then I should find the region with dependencies in package json
          When I right click on that region
-          And I wait 2 seconds
+          And I wait for context menu
           And I look at the whole screen
          Then I should find the Dependency Analysis Report menu entry in context menu
 
          # Run the analysis and check the results
          When I click on that region
-          And I wait 5 seconds
+          And I wait for the analysis to finish
           And I look at the whole screen
          Then I should find the icon with info about zero problems in the status bar
 
          # Close the editor
          When I press Ctrl+W
-          And I wait 2 seconds
+          And I wait for VSCode text editor to close
           And I look at the whole screen
          Then I should find the empty window or Welcome tab
 
@@ -182,7 +182,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
 
 
@@ -195,7 +195,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          Then I should find Visual Studio Code instance
 
          # Check the code area
-         When I wait 2 seconds
+         When I wait for VSCode text editor to open
           And I look at the whole screen
          Then I should find the region with dependencies in package json
 
@@ -207,19 +207,19 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
          Then I should find the region with dependencies in package json
          When I right click on that region
-          And I wait 2 seconds
+          And I wait for context menu
           And I look at the whole screen
          Then I should find the Dependency Analysis Report menu entry in context menu
 
          # Run the analysis and check the results
          When I click on that region
-          And I wait 5 seconds
+          And I wait for the analysis to finish
           And I look at the whole screen
          Then I should find the icon with info about one problem found in the status bar
 
          # Close the editor
          When I press Ctrl+W
-          And I wait 2 seconds
+          And I wait for VSCode text editor to close
           And I look at the whole screen
          Then I should find the empty window or Welcome tab
 
@@ -227,7 +227,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
 
 
@@ -240,7 +240,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          Then I should find Visual Studio Code instance
 
          # Check the code area
-         When I wait 2 seconds
+         When I wait for VSCode text editor to open
           And I look at the whole screen
          Then I should find the region with dependencies in package json
 
@@ -252,19 +252,19 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
          Then I should find the region with dependencies in package json
          When I right click on that region
-          And I wait 2 seconds
+          And I wait for context menu
           And I look at the whole screen
          Then I should find the Dependency Analysis Report menu entry in context menu
 
          # Run the analysis and check the results
          When I click on that region
-          And I wait 5 seconds
+          And I wait for the analysis to finish
           And I look at the whole screen
          Then I should find the icon with info about two problems found in the status bar
 
          # Close the editor
          When I press Ctrl+W
-          And I wait 2 seconds
+          And I wait for VSCode text editor to close
           And I look at the whole screen
          Then I should find the empty window or Welcome tab
 
@@ -272,7 +272,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
 
 
@@ -285,7 +285,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          Then I should find Visual Studio Code instance
 
          # Check the code area
-         When I wait 2 seconds
+         When I wait for VSCode text editor to open
           And I look at the whole screen
          Then I should find the region with dependencies in package json
 
@@ -297,19 +297,19 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
          Then I should find the region with dependencies in package json
          When I right click on that region
-          And I wait 2 seconds
+          And I wait for context menu
           And I look at the whole screen
          Then I should find the Dependency Analysis Report menu entry in context menu
 
          # Run the analysis and check the results
          When I click on that region
-          And I wait 5 seconds
+          And I wait for the analysis to finish
           And I look at the whole screen
          Then I should find the icon with info about three problems found in the status bar
 
          # Close the editor
          When I press Ctrl+W
-          And I wait 2 seconds
+          And I wait for VSCode text editor to close
           And I look at the whole screen
          Then I should find the empty window or Welcome tab
 
@@ -317,7 +317,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
 
 
@@ -330,7 +330,7 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          Then I should find Visual Studio Code instance
 
          # Check the code area
-         When I wait 2 seconds
+         When I wait for VSCode text editor to open
           And I look at the whole screen
          Then I should find the region with dependencies in package json
 
@@ -342,19 +342,19 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
          Then I should find the region with dependencies in package json
          When I right click on that region
-          And I wait 2 seconds
+          And I wait for context menu
           And I look at the whole screen
          Then I should find the Dependency Analysis Report menu entry in context menu
 
          # Run the analysis and check the results
          When I click on that region
-          And I wait 5 seconds
+          And I wait for the analysis to finish
           And I look at the whole screen
          Then I should find the icon with info about four problems found in the status bar
 
          # Close the editor
          When I press Ctrl+W
-          And I wait 2 seconds
+          And I wait for VSCode text editor to close
           And I look at the whole screen
          Then I should find the empty window or Welcome tab
 
@@ -362,5 +362,5 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality: displayi
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode to close
          Then I should not find any Visual Studio Code instance
