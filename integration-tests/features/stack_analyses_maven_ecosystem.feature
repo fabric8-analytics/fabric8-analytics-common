@@ -12,6 +12,8 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I send Maven package manifest pom.xml to stack analysis version 3 with authorization token
     Then I should get 200 status code
 
@@ -21,10 +23,19 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I send Maven package manifest pom.xml to stack analysis version 3 with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
      And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -50,11 +61,19 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I send Maven package manifest springboot.xml to stack analysis version 3 with authorization token
     Then I should get 200 status code
-    Then I should get 200 status code
      And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
      And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
 
@@ -82,10 +101,18 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I send Maven package manifest vertx.xml to stack analysis version 3 with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
      And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
 
