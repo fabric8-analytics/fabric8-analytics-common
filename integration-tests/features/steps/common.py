@@ -144,6 +144,16 @@ def check_id_in_json_response(context):
     check_id_value_in_json_response(context, "id")
 
 
+@then('I should receive JSON response with the correct request_id')
+def check_request_id_in_json_response(context):
+    """Check the ID attribute in the JSON response.
+
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    check_id_value_in_json_response(context, "request_id")
+
+
 @then('I should receive JSON response with the correct timestamp in attribute {attribute}')
 def check_timestamp_in_json_attribute(context, attribute):
     """Check the timestamp stored in the JSON response.

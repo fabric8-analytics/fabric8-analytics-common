@@ -16,7 +16,7 @@ Feature: Smoke tests
           And I look at the whole screen
          Then I should find the region with file menu exit
          When I click on that region
-          And I wait 2 seconds
+          And I wait for VSCode close
          Then I should not find any Visual Studio Code instance
 
 
@@ -31,5 +31,5 @@ Feature: Smoke tests
          When I look at the whole screen
           And I click on the File menu
           And I click on the Exit menu entry
-          And I wait 2 seconds
+          And I wait for VSCode close
          Then I should not find any Visual Studio Code instance

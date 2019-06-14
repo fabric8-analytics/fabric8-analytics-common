@@ -82,6 +82,15 @@ def look_for_openshift_logo(context):
     perform_find_the_region(context, "openshift logo", "openshift logo 2")
 
 
+@then('I should find Analytics page with {header} header')
+def look_for_analytics_page_with_specified_header(context, header):
+    """Try to find specified header on the Analytics page."""
+    assert context is not None
+    assert header is not None
+    region = "analysis_security_{}_header".format(header.lower())
+    perform_find_the_region(context, region)
+
+
 @then('I should find the Dependency Analytics header')
 def look_for_dependency_analytics_header(context):
     """Try to find the Dependency Analytics header."""

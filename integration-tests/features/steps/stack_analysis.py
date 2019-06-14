@@ -105,6 +105,11 @@ def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, end
     """Send the selected dependencies file for stack analysis."""
     filename = 'data/{manifest}'.format(manifest=manifest)
     manifest_file_dir = os.path.abspath(os.path.dirname(filename))
+
+    # in the new API version the manifest names are hard coded
+    if ecosystem == "pypi" and manifest != "pylist.json":
+        manifest = "requirements.txt"
+
     files = {'manifest[]': (manifest, open(filename, 'rb')),
              'filePath[]': (None, manifest_file_dir)}
     context.response = requests.post(endpoint, files=files,
@@ -639,6 +644,14 @@ def check_stack_analysis_id(context):
     assert previous_id is not None
     assert request_id is not None
     assert previous_id == request_id
+
+
+@when('I look at recent stack analysis')
+def look_at_recent_stack_analysis(context):
+    """Just dummy step to make test scenarios more readable."""
+    assert context is not None
+    json_data = context.response.json()
+    assert json_data is not None
 
 
 @then('I should find matching topic lists for all {key} components')
