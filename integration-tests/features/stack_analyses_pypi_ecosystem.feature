@@ -1,4 +1,4 @@
-Feature: Thorough stack analysis v3 API tests
+Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
 
 
   @requires_authorization_token
@@ -6,8 +6,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_newest_6_7.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -20,8 +31,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_newest_7_0.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -34,8 +56,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_arbitrary_equality.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -48,8 +81,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_version_gt_5_0.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -62,8 +106,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_version_eq_5_0.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -76,8 +131,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_version_ge_5_0_le_6_0.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -90,8 +156,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_version_ge_5_0_lt_6_0.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -104,8 +181,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_version_gt_5_0_lt_6_0.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -118,8 +206,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_version_gt_5_0_le_6_0.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -132,8 +231,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_6_7_star.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -146,8 +256,19 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements_click_normalize_integer_minor.txt for stack analysis from vscode
     Then I should get 200 status code
+     And I should receive a valid JSON response
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
+
+    # wait for response from stack analysis
     When I wait for stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -174,6 +295,8 @@ Feature: Thorough stack analysis v3 API tests
     Given System is running
     When I acquire the authorization token
     Then I should get the proper authorization token
+
+    # request the stack analysis
     When I test pypi dependencies file requirements.txt for stack analysis from vscode
     Then I should get 200 status code
     When I wait for stack analysis version 3 to finish with authorization token
@@ -197,7 +320,8 @@ Feature: Thorough stack analysis v3 API tests
      And I should find the value pypi under the path result/0/user_stack_info/ecosystem in the JSON response
  
     # Analyzed dependencies checks
-     And I should find analyzed dependency named requests with version 2.22.0 in the stack analysis
+    When I look at recent stack analysis
+    Then I should find analyzed dependency named requests with version 2.22.0 in the stack analysis
      And I should find analyzed dependency named numpy with version 1.16.4 in the stack analysis
      And I should find analyzed dependency named scipy with version 1.3.0 in the stack analysis
      And I should find analyzed dependency named pandas with version 0.24.2 in the stack analysis
