@@ -610,7 +610,7 @@ def check_all_dependencies(context, packages):
 
 
 @then('I should find the following analyzed dependencies ({packages}) in the stack analysis')
-def check_all_analyzed_dependency(context, packages):
+def check_all_analyzed_dependencies(context, packages):
     """Check all analyzed dependencies in the stack analysis."""
     packages = split_comma_separated_list(packages)
     jsondata = context.response.json()
@@ -622,6 +622,44 @@ def check_all_analyzed_dependency(context, packages):
     for package in packages:
         if package not in dependencies:
             raise Exception('Package {package} not found'.format(package=package))
+
+
+@then("I should find at least one dependency")
+@then("I should find at least {expected:n} dependencies")
+def check_dependencies_count(context, expected=1):
+    """Check number of dependencies."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/dependencies"
+    dependencies_count = len(get_value_using_path(jsondata, path))
+    assert dependencies_count >= expected, \
+        "Found only {} dependencies, but at least {} is expected".format(
+            dependencies_count, expected)
+
+
+@then("I should find at least one analyzed dependency")
+@then("I should find at least {expected:n} analyzed dependencies")
+def check_analyzed_dependencies_count(context, expected=1):
+    """Check number of analyzed dependencies."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies_count"
+    analyzed_dependencies_count = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies_count >= expected, \
+        "Found only {} analyzed dependencies, but at least {} is expected".format(
+            analyzed_dependencies_count, expected)
+
+
+@then("I should find no more than {expected:n} unknown dependencies")
+def check_unknown_dependencies_count(context, expected):
+    """Check number of unknown dependencies."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/unknown_dependencies_count"
+    unknown_dependencies_count = get_value_using_path(jsondata, path)
+    assert unknown_dependencies_count <= expected, \
+        "Found {} unknown dependencies, but at most {} is expected".format(
+            unknown_dependencies_count, expected)
 
 
 @then("I should get a valid request ID")
