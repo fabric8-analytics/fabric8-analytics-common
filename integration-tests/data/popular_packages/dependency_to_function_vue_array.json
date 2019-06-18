@@ -1,0 +1,8 @@
+{
+  "name": "test-project",
+  "dependencies": {
+    "to-function": "~1.2.1",
+    "vue": "^2.5.2",
+    "array": "latest"
+  }
+}

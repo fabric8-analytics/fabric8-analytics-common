@@ -1,0 +1,6 @@
+{
+  "name": "dependent-on-array",
+  "dependencies": {
+    "array": "latest"
+  }
+}
