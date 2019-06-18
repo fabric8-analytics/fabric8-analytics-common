@@ -1,0 +1,7 @@
+{
+  "name": "test-project",
+  "dependencies": {
+    "react": "latest",
+    "jquery": "latest"
+  }
+}
