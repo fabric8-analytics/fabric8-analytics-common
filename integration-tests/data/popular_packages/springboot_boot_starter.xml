@@ -1,0 +1,15 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.redhat.bayessian.test</groupId>
+  <artifactId>test-app-springboot</artifactId>
+  <version>1.0</version>
+  <dependencies>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>1.5.2.RELEASE</version>
+    </dependency>
+
+  </dependencies>
+</project>
