@@ -122,6 +122,33 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality
          Then I should not find any Visual Studio Code instance
 ```
 
+## Installation and setup
+
+### Litava tool
+
+It is possible to use the `Litava` project [https://github.com/tisnik/litava] to perform fuzzy pattern matching in raster images.
+Using this approach, it is possible to find regions in screenshot even when the GUI is distorted a bit (can be caused by various
+reasons, for example by using the different font rendering engine).
+
+#### Prerequisities
+
+   * GNU C Compiler installed
+   * Stadard dev libraries installed (`libc` or `libc6`)
+
+#### Installation
+
+Just use the script:
+
+```
+./install_litava.sh
+```
+
+#### Setup
+
+Set and export the environment variable `USE_LITAVA`
+
+
+
 ## Common issues
 
 ### Error message: Xlib.error.DisplayConnectionError: Can't connect to display ":0.0": b'No protocol specified\n'
