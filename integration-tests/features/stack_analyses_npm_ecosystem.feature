@@ -40,12 +40,27 @@ Feature: Thorough stack analysis v3 API tests - NPM ecosystem
     Then I should receive JSON response containing the request_id key
      And I should find the attribute request_id equals to id returned by stack analysis request
 
+    # Dependencies checks
+    When I look at recent stack analysis
+    Then I should find at least 4 dependencies
+     And I should find the following dependencies (lodash, moment, request, underscore) in the stack analysis
+     And I should find dependency named lodash with version 4.17.11 in the stack analysis
+     And I should find dependency named moment with version 2.24.0 in the stack analysis
+     And I should find dependency named request with version 2.88.0 in the stack analysis
+     And I should find dependency named underscore with version 1.8.1 in the stack analysis
+
     # Analyzed dependencies checks
     When I look at recent stack analysis
-    Then I should find analyzed dependency named lodash with version 4.17.11 in the stack analysis
-    Then I should find analyzed dependency named moment with version 2.24.0 in the stack analysis
-    Then I should find analyzed dependency named request with version 2.88.0 in the stack analysis
-    Then I should find analyzed dependency named underscore with version 1.8.1 in the stack analysis
+    Then I should find at least 4 analyzed dependencies
+     And I should find the following analyzed dependencies (lodash, moment, request, underscore) in the stack analysis
+     And I should find analyzed dependency named lodash with version 4.17.11 in the stack analysis
+     And I should find analyzed dependency named moment with version 2.24.0 in the stack analysis
+     And I should find analyzed dependency named request with version 2.88.0 in the stack analysis
+     And I should find analyzed dependency named underscore with version 1.8.1 in the stack analysis
+
+    # Unknown dependencies checks
+    When I look at recent stack analysis
+    Then I should find no more than 0 unknown dependencies
 
 
   @requires_authorization_token
@@ -81,10 +96,23 @@ Feature: Thorough stack analysis v3 API tests - NPM ecosystem
     Then I should receive JSON response containing the request_id key
      And I should find the attribute request_id equals to id returned by stack analysis request
 
+    # Dependencies checks
+    When I look at recent stack analysis
+    Then I should find at least 2 dependencies
+     And I should find the following dependencies (base64-encode, commander) in the stack analysis
+     And I should find dependency named base64-encode with version 1.0.1 in the stack analysis
+     And I should find dependency named commander with version 2.20.0 in the stack analysis
+
     # Analyzed dependencies checks
     When I look at recent stack analysis
-    Then I should find analyzed dependency named base64-encode with version 1.0.1 in the stack analysis
+    Then I should find at least 2 analyzed dependencies
+     And I should find the following analyzed dependencies (base64-encode, commander) in the stack analysis
+     And I should find analyzed dependency named base64-encode with version 1.0.1 in the stack analysis
      And I should find analyzed dependency named commander with version 2.20.0 in the stack analysis
+
+    # Unknown dependencies checks
+    When I look at recent stack analysis
+    Then I should find no more than 0 unknown dependencies
 
 
   @requires_authorization_token
@@ -120,7 +148,20 @@ Feature: Thorough stack analysis v3 API tests - NPM ecosystem
     Then I should receive JSON response containing the request_id key
      And I should find the attribute request_id equals to id returned by stack analysis request
 
+    # Dependencies checks
+    When I look at recent stack analysis
+    Then I should find at least 2 dependencies
+     And I should find the following dependencies (base64-encode, commander) in the stack analysis
+     And I should find dependency named base64-encode with version 1.0.1 in the stack analysis
+     And I should find dependency named commander with version 2.20.0 in the stack analysis
+
     # Analyzed dependencies checks
     When I look at recent stack analysis
-    Then I should find analyzed dependency named base64-encode with version 1.0.1 in the stack analysis
+    Then I should find at least 2 analyzed dependencies
+     And I should find the following analyzed dependencies (base64-encode, commander) in the stack analysis
+     And I should find analyzed dependency named base64-encode with version 1.0.1 in the stack analysis
      And I should find analyzed dependency named commander with version 2.20.0 in the stack analysis
+
+    # Unknown dependencies checks
+    When I look at recent stack analysis
+    Then I should find no more than 0 unknown dependencies
