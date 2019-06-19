@@ -2,7 +2,10 @@
 
 """Common functions for GUI-related tests."""
 
+from PIL import Image
+
 from os import path
+from src.litava import locate_on_screen_using_litava
 
 
 TYPING_INTERVAL = 0.25
@@ -87,10 +90,25 @@ def save_screenshot(context, region):
     context.pyautogui.screenshot(filename)
 
 
+def find_the_pattern(context, filename):
+    """Try to find the pattern in a screenshot."""
+    SCREENSHOT_FILENAME = "screenshot.bmp"
+    PATTERN_FILENAME = "pattern.bmp"
+
+    # fuzzy search
+    if context.use_litava:
+        context.pyautogui.screenshot(SCREENSHOT_FILENAME)
+        img = Image.open(filename)
+        img.save(PATTERN_FILENAME)
+        return locate_on_screen_using_litava(SCREENSHOT_FILENAME, PATTERN_FILENAME)
+    else:
+        return None
+
+
 def perform_find_the_region(context, region, alternate_region=None):
     """Try to find region on screen based on specified pattern."""
     entry_region_check(context, region)
-    context.location = None
+    location = context.location = None
 
     try:
         # first step - try to localize primary region
@@ -100,17 +118,13 @@ def perform_find_the_region(context, region, alternate_region=None):
     except Exception:
         # the primary region can't be found: try the alternate region, if any
         if alternate_region is not None:
-            try:
-                filename = filename_for_region(context, alternate_region)
-                location = context.pyautogui.locateOnScreen(filename)
-                check_location_existence(location)
-            except Exception:
-                save_screenshot(context, alternate_region)
-                raise Exception("Alternate region '{r}' can not be found on the screen".format(
-                                r=region))
+            perform_find_the_region(context, alternate_region)
+
         # first region can't be found and alternate region is not specified -> a problem
         else:
-            save_screenshot(context, region)
-            raise Exception("Primary region '{r}' can not be found on the screen".format(r=region))
+            location = find_the_pattern(context, filename)
+            if location in None:
+                save_screenshot(context, region)
+                raise Exception("Region '{r}' can not be found on the screen".format(r=region))
 
     context.location = location

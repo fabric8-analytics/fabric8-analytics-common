@@ -122,6 +122,68 @@ Feature: Visual Studio Code + the Analytics plugin basic functionality
          Then I should not find any Visual Studio Code instance
 ```
 
+## Installation and setup
+
+### Litava tool
+
+It is possible to use the `Litava` project [https://github.com/tisnik/litava] to perform fuzzy pattern matching in raster images.
+Using this approach, it is possible to find regions in screenshot even when the GUI is distorted a bit (can be caused by various
+reasons, for example by using the different font rendering engine).
+
+When the `Litava` project is enabled (see Setup), the pattern on the image is found by using the following algorithm:
+
+1. the internal algorithm implemented in `PyAutoGUI` is used to find the exact pattern
+2. if the pattern is not found, then the `Litava` tool is called to find the region using the fuzzy search
+
+#### Internal algorithm used by the `Litava` tool
+
+1. Inputs: a source image (usually screenshot), a pattern (image to be found in the source image)
+2. Source image pixel values are converted to floats & shifted by computed offset, so the sum of all pixels is zero
+3. Pattern image pixel values are converted to floats & shifted by computed offset, so the sum of all pixels is zero
+4. Autocorrelation is computed for the pattern
+5. Now the pattern is moved over the image in all possible combinations and correlation coefficient is computed for all those combinations
+6. Maximum value of correlation + pattern position are remembered
+7. If maximum correlation == autocorrelation, the exact pattern has been found
+8. If maximum correlation / autocorrelation >= 0.9 (90%) the tool report it as 'fuzzy found'
+9. Otherwise the results is that pattern can't be found
+
+References: https://patents.justia.com/patent/9298598
+
+#### Examples
+
+##### Example 1
+
+![Source image](doc/source.png)
+![Pattern](doc/pattern1.png)
+![Pattern found in the image](doc/destination1.png)
+
+##### Example 2
+
+![Source image](doc/source.png)
+![Pattern](doc/pattern2.png)
+![Pattern found in the image](doc/destination2.png)
+
+
+
+#### Prerequisities
+
+   * GNU C Compiler installed
+   * Stadard dev libraries installed (`libc` or `libc6`)
+
+#### Installation
+
+Just use the script:
+
+```
+./install_litava.sh
+```
+
+#### Setup
+
+Set and export the environment variable `USE_LITAVA`
+
+
+
 ## Common issues
 
 ### Error message: Xlib.error.DisplayConnectionError: Can't connect to display ":0.0": b'No protocol specified\n'
