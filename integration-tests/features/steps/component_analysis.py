@@ -27,6 +27,12 @@ def component_analysis_url(context, ecosystem, component, version):
                                                                   v=version))
 
 
+def context_reponse_existence_check(context):
+    """Preliminary check if the context.response exists."""
+    assert context is not None
+    assert context.response is not None
+
+
 def perform_component_search(context, component, use_token):
     """Call API endpoint to search for component."""
     path = "api/v1/component-search/{component}".format(component=component)
@@ -67,7 +73,7 @@ def read_analysis_for_component(context, ecosystem, component, version, token='w
 @when("I start analysis for component {ecosystem}/{component}/{version}")
 @when("I start analysis for component {ecosystem}/{component}/{version} "
       "{token} authorization token")
-def start_analysis_for_component(context, ecosystem, component, version, token=None):
+def start_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Start the component analysis.
 
     Start the analysis for given component and version in selected ecosystem.
@@ -134,25 +140,25 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
 @then('I should find no recommendations in the component analysis')
 def check_analyzed_reccomendation(context):
     """Check number of analyzed packages."""
-    assert context is not None
-    assert context.response is not None
+    context_reponse_existence_check(context)
     json_data = context.response.json()
-    assert "result" in json_data, "'result' node is expected in the component analysis"
+    assert "result" in json_data, "'result' node is expected to be found in the component analysis"
     result = json_data["result"]
     assert "recommendation" in result
     recommendation = result["recommendation"]
-    assert recommendation == {}, "no recommendations are expected in component analysis"
+    assert recommendation == {}, "no recommendations are expected to be found in component analysis"
 
 
 @then('I should find one analyzed package in the component analysis')
 @then('I should find {num:d} analyzed packages in the component analysis')
 def check_analyzed_packages_count(context, num=1):
     """Check number of analyzed packages."""
-    assert context is not None
-    assert context.response is not None
+    context_reponse_existence_check(context)
     json_data = context.response.json()
+
     assert "result" in json_data, "'result' node is expected in the component analysis"
     result = json_data["result"]
+
     assert "data" in result
     data = result["data"]
     assert len(data) == num, "{} packages expected, but found {} instead".format(num, len(data))
@@ -161,8 +167,7 @@ def check_analyzed_packages_count(context, num=1):
 @then('I should find the package {package} from {ecosystem} ecosystem in the component analysis')
 def check_analyzed_packages(context, package, ecosystem):
     """Check the package in component analysis."""
-    assert context is not None
-    assert context.response is not None
+    context_reponse_existence_check(context)
     json_data = context.response.json()
 
     package_data = get_value_using_path(json_data, "result/data/0/package")
@@ -179,8 +184,7 @@ def check_analyzed_packages(context, package, ecosystem):
       'the component analysis')
 def check_analyzed_component(context, package, version, ecosystem):
     """Check the component in component analysis."""
-    assert context is not None
-    assert context.response is not None
+    context_reponse_existence_check(context)
     json_data = context.response.json()
 
     version_data = get_value_using_path(json_data, "result/data/0/version")
