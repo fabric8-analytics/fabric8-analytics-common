@@ -33,7 +33,7 @@ Feature: Three Scale Analyse API functionality check
     Given Three scale preview service is running
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I wait 10 seconds
+    When I wait 5 seconds
     When I send NPM package manifest package.json to stack analysis through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive JSON response with the correct id
@@ -46,7 +46,7 @@ Feature: Three Scale Analyse API functionality check
     Given Three scale preview service is running
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I wait 10 seconds
+    When I wait 5 seconds
     When I send NPM package manifest package.json to stack analysis 40 times in a minute through 3scale gateway with user_key
     Then I should get 429 status code
      And I should get Limits exceeded text response
@@ -54,7 +54,7 @@ Feature: Three Scale Analyse API functionality check
   Scenario: Check the /api/v1/submit-feedback response via 3scale gateway
     Given System is running
     Given Three scale preview service is running
-    When I wait 60 seconds
+    When I wait 5 seconds
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
     When I access /api/v1/submit-feedback without valid values via 3scale gateway
