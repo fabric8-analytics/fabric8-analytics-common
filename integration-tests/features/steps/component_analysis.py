@@ -8,6 +8,7 @@ from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
 from src.utils import split_comma_separated_list
+from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization
 
 
@@ -128,6 +129,19 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
         time.sleep(sleep_amount)
     else:
         raise Exception('Timeout waiting for the component analysis results')
+
+
+@then('I should find no recommendations in the component analysis')
+def check_analyzed_reccomendation(context):
+    """Check number of analyzed packages."""
+    assert context is not None
+    assert context.response is not None
+    json_data = context.response.json()
+    assert "result" in json_data, "'result' node is expected in the component analysis"
+    result = json_data["result"]
+    assert "recommendation" in result
+    recommendation = result["recommendation"]
+    assert recommendation == {}, "no recommendations are expected in component analysis"
 
 
 @then('I should see 0 components')
