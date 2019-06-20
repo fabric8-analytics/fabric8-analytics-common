@@ -64,7 +64,9 @@ def read_analysis_for_component(context, ecosystem, component, version, token='w
 
 
 @when("I start analysis for component {ecosystem}/{component}/{version}")
-def start_analysis_for_component(context, ecosystem, component, version):
+@when("I start analysis for component {ecosystem}/{component}/{version} "
+      "{token} authorization token")
+def start_analysis_for_component(context, ecosystem, component, version, token=None):
     """Start the component analysis.
 
     Start the analysis for given component and version in selected ecosystem.
@@ -76,8 +78,13 @@ def start_analysis_for_component(context, ecosystem, component, version):
     """
     url = component_analysis_url(context, ecosystem, component, version)
 
+    use_token = parse_token_clause(token)
+
     # first check that the analysis is really new
-    response = requests.get(url)
+    if use_token:
+        response = requests.get(url, headers=authorization(context))
+    else:
+        response = requests.get(url)
 
     # remember the response for further test steps
     context.response = response
