@@ -144,6 +144,59 @@ def check_analyzed_reccomendation(context):
     assert recommendation == {}, "no recommendations are expected in component analysis"
 
 
+@then('I should find one analyzed package in the component analysis')
+@then('I should find {num:d} analyzed packages in the component analysis')
+def check_analyzed_packages(context, num=1):
+    """Check number of analyzed packages."""
+    assert context is not None
+    assert context.response is not None
+    json_data = context.response.json()
+    assert "result" in json_data, "'result' node is expected in the component analysis"
+    result = json_data["result"]
+    assert "data" in result
+    data = result["data"]
+    assert len(data) == num, "{} packages expected, but found {} instead".format(num, len(data))
+
+
+@then('I should find the package {package} from {ecosystem} ecosystem in the component analysis')
+def check_analyzed_packages(context, package, ecosystem):
+    """Check the package in component analysis."""
+    assert context is not None
+    assert context.response is not None
+    json_data = context.response.json()
+
+    package_data = get_value_using_path(json_data, "result/data/0/package")
+    assert package_data is not None
+
+    assert "ecosystem" in package_data, "Improper component analysis, no 'ecosystem' attribute"
+    assert package_data["ecosystem"][0] == ecosystem
+
+    assert "name" in package_data, "Improper component analysis, no 'name' attribute"
+    assert package_data["name"][0] == package
+
+
+@then('I should find the component {package} version {version} from {ecosystem} ecosystem in '
+      'the component analysis')
+def check_analyzed_component(context, package, version, ecosystem):
+    """Check the component in component analysis."""
+    assert context is not None
+    assert context.response is not None
+    json_data = context.response.json()
+
+    version_data = get_value_using_path(json_data, "result/data/0/version")
+    assert version_data is not None
+
+    assert "pecosystem" in version_data, "Improper component analysis, no 'pecosystem' attribute"
+    assert version_data["pecosystem"][0] == ecosystem
+
+    assert "pname" in version_data, "Improper component analysis, no 'pname' attribute"
+    assert version_data["pname"][0] == package
+
+    assert "version" in version_data, "Improper component analysis, no 'version' attribute"
+    assert version_data["version"][0] == version
+
+
+@then('I should find {num:d} components ({components}), all from {ecosystem} ecosystem')
 @then('I should see 0 components')
 @then('I should see {num:d} components ({components}), all from {ecosystem} ecosystem')
 def check_components(context, num=0, components='', ecosystem=''):
