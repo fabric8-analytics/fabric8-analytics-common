@@ -146,7 +146,7 @@ def check_analyzed_reccomendation(context):
 
 @then('I should find one analyzed package in the component analysis')
 @then('I should find {num:d} analyzed packages in the component analysis')
-def check_analyzed_packages(context, num=1):
+def check_analyzed_packages_count(context, num=1):
     """Check number of analyzed packages."""
     assert context is not None
     assert context.response is not None
