@@ -93,6 +93,12 @@ def check_status_code(context, status):
     assert context.response.status_code == status
 
 
+@then('I should not get {status:d} status code')
+def check_status_code_negative_relation(context, status):
+    """Check the HTTP status code returned by the REST API."""
+    assert context.response.status_code != status
+
+
 @then('I should get {status:d} status code for all calls')
 def check_status_code_for_all_calls(context, status):
     """Check the HTTP status codes returned by the REST API."""
@@ -136,6 +142,16 @@ def check_id_in_json_response(context):
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
     check_id_value_in_json_response(context, "id")
+
+
+@then('I should receive JSON response with the correct request_id')
+def check_request_id_in_json_response(context):
+    """Check the ID attribute in the JSON response.
+
+    Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
+    ie. it is a string with 32 characters containing 32 hexadecimal digits
+    """
+    check_id_value_in_json_response(context, "request_id")
 
 
 @then('I should receive JSON response with the correct timestamp in attribute {attribute}')

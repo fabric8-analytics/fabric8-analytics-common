@@ -40,6 +40,14 @@ def run_tests_with_tags(cfg, fuzzer_settings, tests, results, tags):
             log.info("Skipping test #{n} with name '{desc}'".format(n=i, desc=test["Name"]))
 
 
+def log_tests_loaded(tests):
+    """Log info that n tests has been loaded."""
+    if len(tests) == 1:
+        log.success("Loaded 1 test")
+    else:
+        log.success("Loaded {n} tests".format(n=len(tests)))
+
+
 def start_tests(cfg, fuzzer_settings, tests, results, tags):
     """Start all tests using the already loaded configuration and fuzzer settings."""
     log.info("Run tests")
@@ -47,10 +55,7 @@ def start_tests(cfg, fuzzer_settings, tests, results, tags):
         if not tests or len(tests) == 0:
             log.error("No tests loaded!")
             sys.exit(-1)
-        if len(tests) == 1:
-            log.success("Loaded 1 test")
-        else:
-            log.success("Loaded {n} tests".format(n=len(tests)))
+        log_tests_loaded(tests)
         if not tags:
             run_all_loaded_tests(cfg, fuzzer_settings, tests, results)
         else:
@@ -85,7 +90,14 @@ def main():
         cfg = setup(cli_arguments)
         fuzzer_settings = read_fuzzer_settings("fuzzer_settings.csv")
         results = Results()
-        tests = read_csv_as_dicts(cfg["input_file"])
+
+        try:
+            tests = read_csv_as_dicts(cfg["input_file"])
+        except Exception as e:
+            log.error("Test description can not be read")
+            log.error(e)
+            sys.exit(0)
+
         t1 = time()
         tags = cfg["tags"]
         start_tests(cfg, fuzzer_settings, tests, results, tags)

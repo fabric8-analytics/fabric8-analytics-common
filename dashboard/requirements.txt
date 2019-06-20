@@ -21,8 +21,8 @@ numpy==1.13.1             # via matplotlib
 pyparsing==2.2.0          # via matplotlib
 python-dateutil==2.6.1    # via botocore, matplotlib
 pytz==2017.2              # via matplotlib
-requests==2.18.4
+requests==2.20.0
 s3transfer==0.1.11        # via boto3
 six==1.10.0               # via cycler, matplotlib, python-dateutil
-urllib3==1.22             # via requests
+urllib3==1.24.2           # via requests
 svgwrite

@@ -1,0 +1,7 @@
+# Order of the features in this file is significant, so shuffle them carefully.
+
+features/smoketest.feature
+#features/vscode_start_stop.feature
+#features/vscode_analytics_extension.feature
+#features/vscode_install_extension.feature
+features/vscode_install_extension_hla.feature

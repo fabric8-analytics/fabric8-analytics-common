@@ -1,0 +1,15 @@
+{
+  "name": "foo-no-dependencies",
+  "version": "0.0.1-01",
+  "description": "A project without dependencies",
+  "main": "hello.js",
+  "scripts": {
+    "start": "node hello.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/foo/bar.baz.git"
+  },
+  "dependencies": {
+  }
+}

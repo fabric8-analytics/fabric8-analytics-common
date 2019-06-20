@@ -1,0 +1,17 @@
+{
+  "_resolved": [
+    {
+      "package": "org.wildfly.swarm:monitor",
+      "version": "2018.3.3"
+    },
+    {
+      "package": "org.wildfly.swarm:cdi",
+      "version": "2018.3.3"
+    },
+    {
+      "package": "org.wildfly.swarm:jaxrs",
+      "version": "2018.3.3"
+    }
+  ],
+  "ecosystem": "maven"
+}

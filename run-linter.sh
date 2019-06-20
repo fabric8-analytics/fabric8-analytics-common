@@ -1,17 +1,21 @@
 #!/bin/bash
 
-directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests db-integrity-tests taas job-checker baf e2e_tests_bot"
+directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests db-integrity-tests taas job-checker baf e2e_tests_bot vscode-visual-tests a2t tools"
 pass=0
 fail=0
 
 function prepare_venv() {
     VIRTUALENV=$(which virtualenv)
     if [ $? -eq 1 ]; then
-        # python34 which is in CentOS does not have virtualenv binary
+        # python36 which is in CentOS does not have virtualenv binary
         VIRTUALENV=$(which virtualenv-3)
     fi
-
-    ${VIRTUALENV} -p python3 venv && source venv/bin/activate && python3 "$(which pip3)" install pycodestyle
+    if [ $? -eq 1 ]; then
+        # still don't have virtual environment -> use python3.6 directly
+        python3.6 -m venv venv && source venv/bin/activate && python3 "$(which pip3)" install pycodestyle
+    else
+        ${VIRTUALENV} -p python3 venv && source venv/bin/activate && python3 "$(which pip3)" install pycodestyle
+    fi
 }
 
 echo "----------------------------------------------------"

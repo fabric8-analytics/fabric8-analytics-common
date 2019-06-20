@@ -5,6 +5,7 @@
 import requests
 
 from behave import given, when, then
+from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
@@ -64,6 +65,55 @@ def set_dependency_files(context):
         ))
 
 
+@when('I access the {endpoint} endpoint of Gemini service')
+@when('I access the {endpoint} endpoint of Gemini service {token} authorization token')
+def access_gemini_url(context, endpoint, token="without"):
+    """Access the Gemini service API using the HTTP GET method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    use_token = parse_token_clause(token)
+    headers = {}
+    if use_token:
+        headers = authorization(context)
+    context.response = requests.get(url, headers=headers)
+
+
+@when('I access the {endpoint} endpoint of Gemini service for {parameter} report {history}')
+@when('I access the {endpoint} endpoint of Gemini service for {parameter} report')
+def access_stacks_report_list(context, endpoint, parameter='', history=''):
+    """Access the Gemini stacks-report/list API endpoint using the HTTP GET method."""
+    url = urljoin(context.gemini_api_url, '{ep}/{param}'.format(ep=endpoint, param=parameter))
+    context.response = requests.get(url)
+    context.history = True if history == 'history' else False
+
+
+@when('I call the {endpoint} endpoint of Gemini service using the HTTP PUT method')
+def access_gemini_url_put_method(context, endpoint):
+    """Access the Gemini service API using the HTTP PUT method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    context.response = requests.put(url)
+
+
+@when('I call the {endpoint} endpoint of Gemini service using the HTTP PATCH method')
+def access_gemini_url_patch_method(context, endpoint):
+    """Access the Gemini service API using the HTTP PATCH method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    context.response = requests.patch(url)
+
+
+@when('I call the {endpoint} endpoint of Gemini service using the HTTP DELETE method')
+def access_gemini_url_delete_method(context, endpoint):
+    """Access the Gemini service API using the HTTP DELETE method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    context.response = requests.delete(url)
+
+
+@when('I call the {endpoint} endpoint of Gemini service using the HTTP HEAD method')
+def access_gemini_url_head_method(context, endpoint):
+    """Access the Gemini service API using the HTTP HEAD method."""
+    url = urljoin(context.gemini_api_url, endpoint)
+    context.response = requests.head(url)
+
+
 @when('I {method} to Gemini API {endpoint}')
 @when('I {method} to Gemini API {endpoint} {token} authorization token')
 def call_backbone_api(context, method="get", endpoint="/api/v1/register", token="without"):
@@ -120,3 +170,13 @@ def check_cves_for_epv(context, cves, p, v, e):
                 "{exp} CVEs expected, but {found} was found".format(exp=cves, found=cve_count)
             return
     raise Exception("{e}/{p}/{v} was not found".format(e=e, p=p, v=v))
+
+
+@then('I should get a valid report')
+def check_valid_report(context):
+    """Check if the stacks report is a valid one."""
+    response = context.response.json()
+    if context.history:
+        assert(isinstance(response['objects'], list))
+    else:
+        assert(isinstance(response, dict))

@@ -1,0 +1,8 @@
+{
+  "name": "test-project",
+  "dependencies": {
+    "underscore": "latest",
+    "react": "latest",
+    "jquery": "latest"
+  }
+}

@@ -23,8 +23,19 @@ fabric8-analytics-version-comparator
 fabric8-analytics-ingestion
 fabric8-analytics-npm-insights
 fabric8-analytics-jenkins-plugin
+fabric8-analytics-notification-scheduler
+fabric8-analytics-utils
+fabric8-analytics-release-monitor
+fabric8-analytics-github-refresh-cronjob
+fabric8-analytics-github-events-monitor
+fabric8-analytics-rudra
 f8a-server-backbone
-f8a-hpf-insights"
+f8a-hpf-insights
+f8a-golang-insights
+f8a-pypi-insights
+f8a-stacks-report
+cvejob
+victimsdb-lib"
 
 pushd repositories
 

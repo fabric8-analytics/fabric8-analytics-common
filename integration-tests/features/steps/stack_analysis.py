@@ -12,7 +12,7 @@ from src.parsing import parse_token_clause
 from src.utils import split_comma_separated_list
 from src.json_utils import check_id_value_in_json_response
 from src.json_utils import get_value_using_path
-from src.authorization_tokens import authorization
+from src.authorization_tokens import authorization, authorization_with_eco_origin
 from src.stack_analysis_common import contains_alternate_node
 
 
@@ -101,6 +101,22 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
     context.response = response
 
 
+def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, endpoint):
+    """Send the selected dependencies file for stack analysis."""
+    filename = 'data/{manifest}'.format(manifest=manifest)
+    manifest_file_dir = os.path.abspath(os.path.dirname(filename))
+
+    # in the new API version the manifest names are hard coded
+    if ecosystem == "pypi" and manifest != "pylist.json":
+        manifest = "requirements.txt"
+
+    files = {'manifest[]': (manifest, open(filename, 'rb')),
+             'filePath[]': (None, manifest_file_dir)}
+    context.response = requests.post(endpoint, files=files,
+                                     headers=authorization_with_eco_origin(
+                                         context, ecosystem, origin))
+
+
 def stack_analysis_endpoint(context, version):
     """Return endpoint for the stack analysis of selected version."""
     # Two available endpoints for stack analysis are /stack-analyses and /analyse
@@ -139,8 +155,15 @@ def python_manifest_stack_analysis(context, manifest, version=3, token="without"
     """Send the Python package manifest file to the stack analysis."""
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, 'requirements.txt',
+    send_manifest_to_stack_analysis(context, manifest, 'pylist.json',
                                     endpoint, use_token)
+
+
+@when("I test {ecosystem} dependencies file {manifest} for stack analysis from {origin}")
+def process_deps_file_from_origin(context, ecosystem, manifest, origin, version=3):
+    """Test stack analyses of an ecosystem specific dependencies file from an integration point."""
+    endpoint = stack_analysis_endpoint(context, version)
+    test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, endpoint)
 
 
 @when("I send Maven package manifest {manifest} to stack analysis")
@@ -571,8 +594,23 @@ def check_analyzed_dependency(context, package, version):
                         format(package=package, version=version))
 
 
+@then('I should find the following dependencies ({packages}) in the stack analysis')
+def check_all_dependencies(context, packages):
+    """Check all dependencies in the stack analysis."""
+    packages = split_comma_separated_list(packages)
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/dependencies"
+    analyzed_dependencies = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies is not None
+    dependencies = get_attribute_values(analyzed_dependencies, "package")
+    for package in packages:
+        if package not in dependencies:
+            raise Exception('Package {package} not found'.format(package=package))
+
+
 @then('I should find the following analyzed dependencies ({packages}) in the stack analysis')
-def check_all_analyzed_dependency(context, packages):
+def check_all_analyzed_dependencies(context, packages):
     """Check all analyzed dependencies in the stack analysis."""
     packages = split_comma_separated_list(packages)
     jsondata = context.response.json()
@@ -584,6 +622,44 @@ def check_all_analyzed_dependency(context, packages):
     for package in packages:
         if package not in dependencies:
             raise Exception('Package {package} not found'.format(package=package))
+
+
+@then("I should find at least one dependency")
+@then("I should find at least {expected:n} dependencies")
+def check_dependencies_count(context, expected=1):
+    """Check number of dependencies."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/dependencies"
+    dependencies_count = len(get_value_using_path(jsondata, path))
+    assert dependencies_count >= expected, \
+        "Found only {} dependencies, but at least {} is expected".format(
+            dependencies_count, expected)
+
+
+@then("I should find at least one analyzed dependency")
+@then("I should find at least {expected:n} analyzed dependencies")
+def check_analyzed_dependencies_count(context, expected=1):
+    """Check number of analyzed dependencies."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/analyzed_dependencies_count"
+    analyzed_dependencies_count = get_value_using_path(jsondata, path)
+    assert analyzed_dependencies_count >= expected, \
+        "Found only {} analyzed dependencies, but at least {} is expected".format(
+            analyzed_dependencies_count, expected)
+
+
+@then("I should find no more than {expected:n} unknown dependencies")
+def check_unknown_dependencies_count(context, expected):
+    """Check number of unknown dependencies."""
+    jsondata = context.response.json()
+    assert jsondata is not None
+    path = "result/0/user_stack_info/unknown_dependencies_count"
+    unknown_dependencies_count = get_value_using_path(jsondata, path)
+    assert unknown_dependencies_count <= expected, \
+        "Found {} unknown dependencies, but at most {} is expected".format(
+            unknown_dependencies_count, expected)
 
 
 @then("I should get a valid request ID")
@@ -621,6 +697,14 @@ def check_stack_analysis_id(context):
     assert previous_id is not None
     assert request_id is not None
     assert previous_id == request_id
+
+
+@when('I look at recent stack analysis')
+def look_at_recent_stack_analysis(context):
+    """Just dummy step to make test scenarios more readable."""
+    assert context is not None
+    json_data = context.response.json()
+    assert json_data is not None
 
 
 @then('I should find matching topic lists for all {key} components')

@@ -1,0 +1,4 @@
+behave
+pytest
+pyautogui
+python3-xlib

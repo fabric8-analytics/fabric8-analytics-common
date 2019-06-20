@@ -24,19 +24,19 @@ def three_scale_register_url(context):
 
 
 def get_data(context, use_token):
-        """Construct data for 3scale REST API POST call."""
-        if use_token:
-            token = authorization(context).get("Authorization", None)
-            token = token.split("Bearer ")[-1]
-            data = {
-                "auth_token": token,
-                "service_id": context.service_id[:-1]
-            }
-        else:
-            data = {
-                "service_id": context.service_id[:-1]
-            }
-        return data
+    """Construct data for 3scale REST API POST call."""
+    if use_token:
+        token = authorization(context).get("Authorization", None)
+        token = token.split("Bearer ")[-1]
+        data = {
+            "auth_token": token,
+            "service_id": context.service_id[:-1]
+        }
+    else:
+        data = {
+            "service_id": context.service_id[:-1]
+        }
+    return data
 
 
 def get_headers():
@@ -44,16 +44,18 @@ def get_headers():
     return {'Content-type': 'application/json'}
 
 
-def register_3scale(context, use_token):
+def register_3scale(context, use_token, data=None):
     """Call API endpoint get_route."""
     if use_token:
-        data = get_data(context, use_token)
+        if data is None:
+            data = get_data(context, use_token)
         headers = get_headers()
         context.response = requests.post(three_scale_register_url(context),
                                          data=json.dumps(data),
                                          headers=headers)
     else:
-        data = get_data(context, use_token)
+        if data is None:
+            data = get_data(context, use_token)
         headers = get_headers()
         context.response = requests.post(three_scale_register_url(context),
                                          data=json.dumps(data),
@@ -72,6 +74,21 @@ def register_3scale_with_token(context):
     register_3scale(context, True)
 
 
+@when("I make a post call to 3scale with proper authentication token and improper payload")
+def register_3scale_with_token_improper_payload(context):
+    """Try to register to 3scale with authentication, but using improper payload."""
+    payload = {"foo": "x",
+               "bar": "y"}
+    register_3scale(context, True, payload)
+
+
+@when("I make a post call to 3scale with proper authentication token and empty payload")
+def register_3scale_with_token_empty_payload(context):
+    """Try to register to 3scale with authentication, but using empty payload."""
+    payload = {}
+    register_3scale(context, True, payload)
+
+
 @then('I should get proper 3scale response')
 def validate_result_post_registration(context):
     """Check that json response contains appropriate data."""
@@ -87,3 +104,17 @@ def validate_result_post_registration(context):
 
     # stage_url = check_and_get_attribute(endpoints, "stage")
     # assert stage_url.startswith("http://")
+
+
+@then('I should get proper 3scale error message')
+def validate_result_post_registration_error_message(context):
+    """Check that json response contains expected error message."""
+    json_data = context.response.json()
+    assert context.response.status_code == 404
+    assert json_data
+
+    msg = check_and_get_attribute(json_data, "error")
+
+    assert "missing" in msg
+    assert "invalid" in msg
+    assert "auth token" in msg

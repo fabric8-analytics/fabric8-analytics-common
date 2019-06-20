@@ -48,6 +48,14 @@ def generate_coverage_pages(results):
     generate_coverage_page(results, "coverage2txt.html")
 
 
+def log_improvements(repositories, results):
+    """Log improvements in repositories."""
+    with log.indent():
+        for repository in repositories:
+            log.info("{repository} : {improvement}".format(
+                repository=repository, improvement=results.improvement[repository]))
+
+
 def prepare_data_for_repositories(repositories, results, config):
     """Accumulate results."""
     results.repositories = repositories
@@ -66,10 +74,7 @@ def prepare_data_for_repositories(repositories, results, config):
             update_coverage_delta(results, repository)
             update_coverage_threshold_pass(results, repository, config)
     log.info("Improvements")
-    with log.indent():
-        for repository in repositories:
-            log.info("{repository} : {improvement}".format(
-                repository=repository, improvement=results.improvement[repository]))
+    log_improvements(repositories, results)
 
 
 def update_coverage_threshold_pass(results, repository, config):

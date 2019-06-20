@@ -1,0 +1,20 @@
+{
+  "name": "foo-five-dependencies",
+  "version": "0.0.1-01",
+  "description": "A project with five dependencies and five CVEs",
+  "main": "hello.js",
+  "scripts": {
+    "start": "node hello.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/foo/bar.baz.git"
+  },
+  "dependencies": {
+          "jingo" : "1.9.1",
+          "moment": "2.15.1",
+          "lodash": "4.17.5",
+          "request": "2.67.0",
+          "jquery": "1.6.2"
+  }
+}

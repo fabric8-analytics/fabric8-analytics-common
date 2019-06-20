@@ -90,7 +90,7 @@ def run_tests_with_removed_items(url, http_method, dry_run, original_payload, cf
         items_count = len(original_payload)
         # lexicographics ordering
         remove_flags_list = list(itertools.product([True, False], repeat=items_count))
-        # the last item contains (False, False, False...) and we are not interesting
+        # the last item contains (False, False, False...) and we are not interested
         # in removing ZERO items
         remove_flags_list = remove_flags_list[:-1]
 
@@ -108,31 +108,33 @@ def run_tests_with_removed_items(url, http_method, dry_run, original_payload, cf
 def run_tests_with_added_items_one_iteration(url, http_method, dry_run, original_payload, cfg,
                                              expected_status, how_many, test, results):
     """One iteration for the run_tests_with_added_items()."""
-    # deep copy
-    new_payload = copy.deepcopy(original_payload)
-    rpg = RandomPayloadGenerator()
+    with log.indent():
+        # deep copy
+        new_payload = copy.deepcopy(original_payload)
+        rpg = RandomPayloadGenerator()
 
-    for i in range(how_many):
-        log.info("Removing item #{n} into the payload".format(n=i))
-        new_key = rpg.generate_random_key_for_dict(new_payload)
-        new_value = rpg.generate_random_payload()
-        new_payload[new_key] = new_value
-    perform_test(url, http_method, dry_run, new_payload, cfg, expected_status, test, results)
+        for i in range(how_many):
+            log.info("Adding item #{n} into the payload".format(n=i))
+            new_key = rpg.generate_random_key_for_dict(new_payload)
+            new_value = rpg.generate_random_payload()
+            new_payload[new_key] = new_value
+        perform_test(url, http_method, dry_run, new_payload, cfg, expected_status, test, results)
 
 
 def run_tests_with_changed_items_one_iteration(url, http_method, dry_run, original_payload, cfg,
                                                expected_status, how_many, test, results):
     """One iteration for the run_tests_with_changed_items()."""
-    # deep copy
-    new_payload = copy.deepcopy(original_payload)
-    rpg = RandomPayloadGenerator()
+    with log.indent():
+        # deep copy
+        new_payload = copy.deepcopy(original_payload)
+        rpg = RandomPayloadGenerator()
 
-    for i in range(how_many):
-        log.info("Removing item #{n} into the payload".format(n=i))
-        selected_key = random.choice(list(original_payload.keys()))
-        new_value = rpg.generate_random_payload()
-        new_payload[selected_key] = new_value
-    perform_test(url, http_method, dry_run, new_payload, cfg, expected_status, test, results)
+        for i in range(0, how_many):
+            log.info("Changing item #{n} in the payload".format(n=i))
+            selected_key = random.choice(list(original_payload.keys()))
+            new_value = rpg.generate_random_payload()
+            new_payload[selected_key] = new_value
+        perform_test(url, http_method, dry_run, new_payload, cfg, expected_status, test, results)
 
 
 def run_tests_with_added_items(url, http_method, dry_run, original_payload, cfg, expected_status,
@@ -142,14 +144,13 @@ def run_tests_with_added_items(url, http_method, dry_run, original_payload, cfg,
         iteration = 1
         # TODO: make it configurable
         for how_many in range(1, 4):
-            for i in range(1, 3):
+            for i in range(1, 4):
                 with log.indent():
                     log.info("Iteration #{n}".format(n=iteration))
-                    with log.indent():
-                        run_tests_with_added_items_one_iteration(url, http_method, dry_run,
-                                                                 original_payload, cfg,
-                                                                 expected_status, how_many,
-                                                                 test, results)
+                    run_tests_with_added_items_one_iteration(url, http_method, dry_run,
+                                                             original_payload, cfg,
+                                                             expected_status, how_many,
+                                                             test, results)
                     iteration += 1
 
 
@@ -158,17 +159,22 @@ def run_tests_with_changed_items(url, http_method, dry_run, original_payload, cf
     """Run tests with items changed from the original payload."""
     with log.indent():
         iteration = 1
-        for how_many in range(1, len(original_payload)):
+        for how_many in range(1, 1 + len(original_payload)):
             # TODO: make it configurable
-            for i in range(1, 3):
+            for i in range(1, 5):
                 with log.indent():
                     log.info("Iteration #{n}".format(n=iteration))
-                    with log.indent():
-                        run_tests_with_changed_items_one_iteration(url, http_method, dry_run,
-                                                                   original_payload, cfg,
-                                                                   expected_status, how_many,
-                                                                   test, results)
+                    run_tests_with_changed_items_one_iteration(url, http_method, dry_run,
+                                                               original_payload, cfg,
+                                                               expected_status, how_many,
+                                                               test, results)
                     iteration += 1
+
+
+def run_tests_with_mutated_items(url, http_method, dry_run, original_payload, cfg, expected_status,
+                                 test, results):
+    """Run tests with items mutated comparing to the original payload."""
+    pass
 
 
 def get_fuzzer_setting(fuzzer_settings, fuzzer_setting_name):
@@ -205,6 +211,31 @@ def log_fuzzer_setting(fuzzer_setting):
                  fuzzer_setting["SQL injection strings"])
         log.info("Generate strings for Gremlin injection: " +
                  fuzzer_setting["Gremlin injection strings"])
+
+
+def run_all_setup_tests(remove_items, add_items, change_types, mutate_payload,
+                        url, http_method, dry_run, original_payload, cfg,
+                        expected_status, test, results):
+    """Run all tests that has been setup."""
+    if remove_items:
+        log.info("Run tests with items removed from original payload")
+        run_tests_with_removed_items(url, http_method, dry_run, original_payload, cfg,
+                                     expected_status, test, results)
+
+    if add_items:
+        log.info("Run tests with items added into the original payload")
+        run_tests_with_added_items(url, http_method, dry_run, original_payload, cfg,
+                                   expected_status, test, results)
+
+    if change_types:
+        log.info("Run tests with items changed from original payload")
+        run_tests_with_changed_items(url, http_method, dry_run, original_payload, cfg,
+                                     expected_status, test, results)
+
+    if mutate_payload:
+        log.info("Run tests with items mutated")
+        run_tests_with_mutated_items(url, http_method, dry_run, original_payload, cfg,
+                                     expected_status, test, results)
 
 
 def run_test(cfg, fuzzer_settings, test, results):
@@ -265,20 +296,9 @@ def run_test(cfg, fuzzer_settings, test, results):
         perform_test(url, http_method, dry_run, original_payload, cfg, expected_status, test,
                      results)
 
-    if remove_items:
-        log.info("Run tests with items removed from original payload")
-        run_tests_with_removed_items(url, http_method, dry_run, original_payload, cfg,
-                                     expected_status, test, results)
-
-    if add_items:
-        log.info("Run tests with items added into the original payload")
-        run_tests_with_added_items(url, http_method, dry_run, original_payload, cfg,
-                                   expected_status, test, results)
-
-    if change_types:
-        log.info("Run tests with items changed from original payload")
-        run_tests_with_changed_items(url, http_method, dry_run, original_payload, cfg,
-                                     expected_status, test, results)
+    run_all_setup_tests(remove_items, add_items, change_types, mutate_payload,
+                        url, http_method, dry_run, original_payload, cfg,
+                        expected_status, test, results)
 
     log.success("Finished")
     return

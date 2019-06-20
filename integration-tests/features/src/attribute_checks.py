@@ -186,3 +186,11 @@ def check_cve_value(cve, with_score=False):
     if with_score:
         score = float(match.group(2))
         assert score >= 0.0 and score <= 10.0
+
+
+def check_hash_value(hash_value):
+    """Check if the value is proper hash in hex."""
+    assert hash_value is not None
+    pattern = r"[A-Za-z0-9]+"
+    match = re.fullmatch(pattern, hash_value)
+    assert match is not None, "Improper hash value %s" % hash_value

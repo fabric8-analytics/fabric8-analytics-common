@@ -1,10 +1,8 @@
 """The main module of the QA Dashboard."""
 import json
-import datetime
 import os
 import sys
 import requests
-import csv
 import shutil
 
 from fastlog import log
@@ -30,6 +28,7 @@ from git_utils import clone_or_fetch_repository
 from external_tools import run_pylint, run_docstyle_check
 from external_tools import run_maintainability_index, run_cyclomatic_complexity_tool
 from external_tools import run_dead_code_detector, run_common_errors_detector
+from csv_exporter import export_into_csv
 
 
 def check_environment_variable(env_var_name):
@@ -385,35 +384,6 @@ def cleanup_repository(repository):
     if '/' not in repository:
         print("Cleanup the repository " + repository)
         shutil.rmtree(repository, ignore_errors=True)
-
-
-def export_into_csv(results, repositories):
-    """Export the results into CSV file."""
-    record = [
-        datetime.date.today().strftime("%Y-%m-%d"),
-        int(results.stage["core_api_available"]),
-        int(results.stage["jobs_api_available"]),
-        int(results.stage["core_api_auth_token"]),
-        int(results.stage["jobs_api_auth_token"]),
-        int(results.production["core_api_available"]),
-        int(results.production["jobs_api_available"]),
-        int(results.production["core_api_auth_token"]),
-        int(results.production["jobs_api_auth_token"])
-    ]
-
-    for repository in repositories:
-        record.append(results.source_files[repository]["count"])
-        record.append(results.source_files[repository]["total_lines"])
-        record.append(results.repo_linter_checks[repository]["total"])
-        record.append(results.repo_linter_checks[repository]["passed"])
-        record.append(results.repo_linter_checks[repository]["failed"])
-        record.append(results.repo_docstyle_checks[repository]["total"])
-        record.append(results.repo_docstyle_checks[repository]["passed"])
-        record.append(results.repo_docstyle_checks[repository]["failed"])
-
-    with open('dashboard.csv', 'a') as fout:
-        writer = csv.writer(fout)
-        writer.writerow(record)
 
 
 def prepare_data_for_liveness_table(results, ci_jobs, job_statuses):

@@ -1,0 +1,6 @@
+{
+  "name": "dependent-on-emitter-component",
+  "dependencies": {
+    "emitter-component": "~1.1.0"
+  }
+}
