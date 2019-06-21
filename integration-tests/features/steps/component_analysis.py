@@ -10,6 +10,7 @@ from src.parsing import parse_token_clause
 from src.utils import split_comma_separated_list
 from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization
+from src.attribute_checks import check_attribute_presence, check_cve_value
 
 
 @given('Component search service is running')
@@ -138,15 +139,63 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
 
 
 @then('I should find no recommendations in the component analysis')
-def check_analyzed_reccomendation(context):
-    """Check number of analyzed packages."""
+def check_analyzed_no_reccomendation(context):
+    """Check the number analyzed recommendations."""
     context_reponse_existence_check(context)
     json_data = context.response.json()
+
     assert "result" in json_data, "'result' node is expected to be found in the component analysis"
     result = json_data["result"]
+
     assert "recommendation" in result
     recommendation = result["recommendation"]
     assert recommendation == {}, "no recommendations are expected to be found in component analysis"
+
+
+@then('I should find recommendation to change to version {version} in the component analysis')
+def check_analyzed_reccomendation_version(context, version):
+    """Check the the analyzed recommendations."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    assert "result" in json_data, "'result' node is expected to be found in the component analysis"
+    result = json_data["result"]
+
+    assert "recommendation" in result
+    recommendation = result["recommendation"]
+
+    assert "change_to" in recommendation
+    change_to = recommendation["change_to"]
+    assert change_to == version, "different version found {} != {}".format(version, change_to)
+
+
+@then('I should find CVE report {cve} with score {score} in the component analysis')
+def check_analyzed_cve(context, cve, score):
+    """Check the the analyzed CVE."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    check_attribute_presence(json_data, "result")
+    result = json_data["result"]
+
+    check_attribute_presence(result, "recommendation")
+    recommendation = result["recommendation"]
+
+    check_attribute_presence(recommendation, "component-analyses")
+    component_analyses = recommendation["component-analyses"]
+
+    check_attribute_presence(component_analyses, "cve")
+    cves = component_analyses["cve"]
+    assert len(cves) >= 1
+
+    for c in cves:
+        check_attribute_presence(c, "id")
+        check_attribute_presence(c, "cvss")
+        check_cve_value(c["id"])
+        if c["id"] == cve and str(c["cvss"]) == score:
+            return
+
+    raise Exception("Can not find CVE {} with score {}".format(cve, score))
 
 
 @then('I should find one analyzed package in the component analysis')
@@ -156,10 +205,10 @@ def check_analyzed_packages_count(context, num=1):
     context_reponse_existence_check(context)
     json_data = context.response.json()
 
-    assert "result" in json_data, "'result' node is expected in the component analysis"
+    check_attribute_presence(json_data, "result")
     result = json_data["result"]
 
-    assert "data" in result
+    check_attribute_presence(result, "data")
     data = result["data"]
     assert len(data) == num, "{} packages expected, but found {} instead".format(num, len(data))
 
@@ -173,10 +222,10 @@ def check_analyzed_packages(context, package, ecosystem):
     package_data = get_value_using_path(json_data, "result/data/0/package")
     assert package_data is not None
 
-    assert "ecosystem" in package_data, "Improper component analysis, no 'ecosystem' attribute"
+    check_attribute_presence(package_data, "ecosystem")
     assert package_data["ecosystem"][0] == ecosystem
 
-    assert "name" in package_data, "Improper component analysis, no 'name' attribute"
+    check_attribute_presence(package_data, "name")
     assert package_data["name"][0] == package
 
 
@@ -190,13 +239,13 @@ def check_analyzed_component(context, package, version, ecosystem):
     version_data = get_value_using_path(json_data, "result/data/0/version")
     assert version_data is not None
 
-    assert "pecosystem" in version_data, "Improper component analysis, no 'pecosystem' attribute"
+    check_attribute_presence(version_data, "pecosystem")
     assert version_data["pecosystem"][0] == ecosystem
 
-    assert "pname" in version_data, "Improper component analysis, no 'pname' attribute"
+    check_attribute_presence(version_data, "pname")
     assert version_data["pname"][0] == package
 
-    assert "version" in version_data, "Improper component analysis, no 'version' attribute"
+    check_attribute_presence(version_data, "version")
     assert version_data["version"][0] == version
 
 
