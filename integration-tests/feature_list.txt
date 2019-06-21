@@ -6,6 +6,7 @@ features/server_api.feature
 #features/ecosystems.feature
 # Not used in real production: features/component_search.feature
 features/components.feature
+features/component_analysis.feature
 features/stack_analyses.feature
 features/stack_analyses_pypi_ecosystem.feature
 features/stack_analyses_maven_ecosystem.feature
