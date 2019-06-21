@@ -155,13 +155,13 @@ References: https://patents.justia.com/patent/9298598
 
 ![Source image](doc/source.png)
 ![Pattern](doc/pattern1.png)
-![Pattern found in the image](doc/destination1.png)
+![Pattern found in the image](doc/result1.png)
 
 ##### Example 2
 
 ![Source image](doc/source.png)
 ![Pattern](doc/pattern2.png)
-![Pattern found in the image](doc/destination2.png)
+![Pattern found in the image](doc/result2.png)
 
 
 
