@@ -167,6 +167,35 @@ def check_analyzed_reccomendation(context, version):
     assert change_to == version, "different version found {} != {}".format(version, change_to)
 
 
+@then('I should find CVE report {cve} with score {score} in the component analysis')
+def check_analyzed_cve(context, cve, score):
+    """Check the the analyzed CVE."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    check_attribute_presence(json_data, "result")
+    result = json_data["result"]
+
+    check_attribute_presence(result, "recommendation")
+    recommendation = result["recommendation"]
+
+    check_attribute_presence(recommendation, "component-analyses")
+    component_analyses = recommendation["component-analyses"]
+
+    check_attribute_presence(component_analyses, "cve")
+    cves = component_analyses["cve"]
+    assert len(cves) >= 1
+
+    for c in cves:
+        check_attribute_presence(c, "id")
+        check_attribute_presence(c, "cvss")
+        check_cve_value(c["id"])
+        if c["id"] == cve and str(c["cvss"]) == score:
+            return
+
+    raise Exception("Can not find CVE {} with score {}".format(cve, score))
+
+
 @then('I should find one analyzed package in the component analysis')
 @then('I should find {num:d} analyzed packages in the component analysis')
 def check_analyzed_packages_count(context, num=1):
