@@ -650,10 +650,10 @@ def check_analyzed_dependencies_count(context, expected=1):
             analyzed_dependencies_count, expected)
 
 
-@then("I should find exactly one unknown dependency")
-@then("I should find exactly {expected:n} unknown dependencies")
+@then("I should find exactly one really unknown dependency")
+@then("I should find exactly {expected:n} really unknown dependencies")
 def check_unknown_dependencies_count_exact_check(context, expected=1):
-    """Check number of unknown dependencies."""
+    """Check number of really unknown dependencies (for specific manifests)."""
     jsondata = context.response.json()
     assert jsondata is not None
     path = "result/0/user_stack_info/unkwnown_dependencies_count"

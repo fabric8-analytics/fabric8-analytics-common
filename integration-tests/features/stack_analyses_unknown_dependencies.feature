@@ -23,4 +23,4 @@ Feature: Thorough stack analysis v3 API tests
     # Licence and dependency counters checks
     When I look at recent stack analysis
     Then I should find the value requirements.txt under the path result/0/manifest_name in the JSON response
-     And I should find exactly one unknown dependency
+     And I should find exactly one really unknown dependency
