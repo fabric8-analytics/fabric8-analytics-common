@@ -8,6 +8,7 @@ from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
 from src.utils import split_comma_separated_list
+from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization
 
 
@@ -24,6 +25,12 @@ def component_analysis_url(context, ecosystem, component, version):
                    'api/v1/component-analyses/{e}/{c}/{v}'.format(e=ecosystem,
                                                                   c=component,
                                                                   v=version))
+
+
+def context_reponse_existence_check(context):
+    """Preliminary check if the context.response exists."""
+    assert context is not None
+    assert context.response is not None
 
 
 def perform_component_search(context, component, use_token):
@@ -64,20 +71,29 @@ def read_analysis_for_component(context, ecosystem, component, version, token='w
 
 
 @when("I start analysis for component {ecosystem}/{component}/{version}")
-def start_analysis_for_component(context, ecosystem, component, version):
+@when("I start analysis for component {ecosystem}/{component}/{version} "
+      "{token} authorization token")
+def start_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Start the component analysis.
 
     Start the analysis for given component and version in selected ecosystem.
     Current API implementation returns just two HTTP codes:
     200 OK : analysis is already finished
+    202 ACCEPTED: analysis is not finished, might be planned (or not)
+    400 BAD REQUST: unknown ecosystem etc. etc.
     401 UNAUTHORIZED : missing or inproper authorization token
     404 NOT FOUND : analysis is started or is in progress
     It means that this test step should check if 200 OK is NOT returned.
     """
     url = component_analysis_url(context, ecosystem, component, version)
 
+    use_token = parse_token_clause(token)
+
     # first check that the analysis is really new
-    response = requests.get(url)
+    if use_token:
+        response = requests.get(url, headers=authorization(context))
+    else:
+        response = requests.get(url)
 
     # remember the response for further test steps
     context.response = response
@@ -85,7 +101,7 @@ def start_analysis_for_component(context, ecosystem, component, version):
     if response.status_code == 200:
         raise Exception('Bad state: the analysis for component has been '
                         'finished already')
-    elif response.status_code not in (401, 404):
+    elif response.status_code not in (202, 400, 401, 404):
         raise Exception('Improper response: expected HTTP status code 401 or 404, '
                         'received {c}'.format(c=response.status_code))
 
@@ -121,6 +137,70 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
         raise Exception('Timeout waiting for the component analysis results')
 
 
+@then('I should find no recommendations in the component analysis')
+def check_analyzed_reccomendation(context):
+    """Check number of analyzed packages."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+    assert "result" in json_data, "'result' node is expected to be found in the component analysis"
+    result = json_data["result"]
+    assert "recommendation" in result
+    recommendation = result["recommendation"]
+    assert recommendation == {}, "no recommendations are expected to be found in component analysis"
+
+
+@then('I should find one analyzed package in the component analysis')
+@then('I should find {num:d} analyzed packages in the component analysis')
+def check_analyzed_packages_count(context, num=1):
+    """Check number of analyzed packages."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    assert "result" in json_data, "'result' node is expected in the component analysis"
+    result = json_data["result"]
+
+    assert "data" in result
+    data = result["data"]
+    assert len(data) == num, "{} packages expected, but found {} instead".format(num, len(data))
+
+
+@then('I should find the package {package} from {ecosystem} ecosystem in the component analysis')
+def check_analyzed_packages(context, package, ecosystem):
+    """Check the package in component analysis."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    package_data = get_value_using_path(json_data, "result/data/0/package")
+    assert package_data is not None
+
+    assert "ecosystem" in package_data, "Improper component analysis, no 'ecosystem' attribute"
+    assert package_data["ecosystem"][0] == ecosystem
+
+    assert "name" in package_data, "Improper component analysis, no 'name' attribute"
+    assert package_data["name"][0] == package
+
+
+@then('I should find the component {package} version {version} from {ecosystem} ecosystem in '
+      'the component analysis')
+def check_analyzed_component(context, package, version, ecosystem):
+    """Check the component in component analysis."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    version_data = get_value_using_path(json_data, "result/data/0/version")
+    assert version_data is not None
+
+    assert "pecosystem" in version_data, "Improper component analysis, no 'pecosystem' attribute"
+    assert version_data["pecosystem"][0] == ecosystem
+
+    assert "pname" in version_data, "Improper component analysis, no 'pname' attribute"
+    assert version_data["pname"][0] == package
+
+    assert "version" in version_data, "Improper component analysis, no 'version' attribute"
+    assert version_data["version"][0] == version
+
+
+@then('I should find {num:d} components ({components}), all from {ecosystem} ecosystem')
 @then('I should see 0 components')
 @then('I should see {num:d} components ({components}), all from {ecosystem} ecosystem')
 def check_components(context, num=0, components='', ecosystem=''):
