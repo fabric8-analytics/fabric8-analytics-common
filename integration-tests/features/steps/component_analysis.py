@@ -139,19 +139,21 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
 
 
 @then('I should find no recommendations in the component analysis')
-def check_analyzed_reccomendation(context):
+def check_analyzed_no_reccomendation(context):
     """Check the number analyzed recommendations."""
     context_reponse_existence_check(context)
     json_data = context.response.json()
+
     assert "result" in json_data, "'result' node is expected to be found in the component analysis"
     result = json_data["result"]
+
     assert "recommendation" in result
     recommendation = result["recommendation"]
     assert recommendation == {}, "no recommendations are expected to be found in component analysis"
 
 
 @then('I should find recommendation to change to version {version} in the component analysis')
-def check_analyzed_reccomendation(context, version):
+def check_analyzed_reccomendation_version(context, version):
     """Check the the analyzed recommendations."""
     context_reponse_existence_check(context)
     json_data = context.response.json()
