@@ -10,6 +10,7 @@ from src.parsing import parse_token_clause
 from src.utils import split_comma_separated_list
 from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization
+from src.attribute_checks import check_attribute_presence, check_cve_value
 
 
 @given('Component search service is running')
@@ -156,10 +157,10 @@ def check_analyzed_packages_count(context, num=1):
     context_reponse_existence_check(context)
     json_data = context.response.json()
 
-    assert "result" in json_data, "'result' node is expected in the component analysis"
+    check_attribute_presence(json_data, "result")
     result = json_data["result"]
 
-    assert "data" in result
+    check_attribute_presence(result, "data")
     data = result["data"]
     assert len(data) == num, "{} packages expected, but found {} instead".format(num, len(data))
 
@@ -173,10 +174,10 @@ def check_analyzed_packages(context, package, ecosystem):
     package_data = get_value_using_path(json_data, "result/data/0/package")
     assert package_data is not None
 
-    assert "ecosystem" in package_data, "Improper component analysis, no 'ecosystem' attribute"
+    check_attribute_presence(package_data, "ecosystem")
     assert package_data["ecosystem"][0] == ecosystem
 
-    assert "name" in package_data, "Improper component analysis, no 'name' attribute"
+    check_attribute_presence(package_data, "name")
     assert package_data["name"][0] == package
 
 
@@ -190,13 +191,13 @@ def check_analyzed_component(context, package, version, ecosystem):
     version_data = get_value_using_path(json_data, "result/data/0/version")
     assert version_data is not None
 
-    assert "pecosystem" in version_data, "Improper component analysis, no 'pecosystem' attribute"
+    check_attribute_presence(version_data, "pecosystem")
     assert version_data["pecosystem"][0] == ecosystem
 
-    assert "pname" in version_data, "Improper component analysis, no 'pname' attribute"
+    check_attribute_presence(version_data, "pname")
     assert version_data["pname"][0] == package
 
-    assert "version" in version_data, "Improper component analysis, no 'version' attribute"
+    check_attribute_presence(version_data, "version")
     assert version_data["version"][0] == version
 
 
