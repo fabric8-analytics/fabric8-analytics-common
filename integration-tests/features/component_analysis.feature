@@ -136,3 +136,47 @@ Feature: Unknown licenses
   #   When I start analysis for component maven/really_unknown_component/1.0.0 with authorization token
   #   Then I should get 202 status code
   #    And I should receive a valid JSON response
+
+
+  Scenario Outline: Check the component analysis REST API endpoint for components with recommendation and one CVE
+    Given System is running
+     When I acquire the authorization token
+     Then I should get the proper authorization token
+
+     When I read <ecosystem>/<package>/<version> component analysis with authorization token
+     Then I should get 200 status code
+      And I should receive a valid JSON response
+      And I should receive JSON response containing the result key
+      And I should find the package <package> from <ecosystem> ecosystem in the component analysis
+      And I should find the component <package> version <version> from <ecosystem> ecosystem in the component analysis
+      And I should find recommendation to change to version <recommended-version> in the component analysis
+      And I should find CVE report <cve> with score <score> in the component analysis
+
+     Examples: EPV
+     | ecosystem  | package             | version   | recommended-version | cve              | score |
+     | npm        | lodash              | 4.17.2    | 4.17.11             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.3    | 4.17.11             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.4    | 4.17.11             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.5    | 4.17.11             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.9    | 4.17.11             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.10   | 4.17.11             | CVE-2018-16487   | 7.5   |
+     | maven      | io.vertx:vertx-core | 3.5.3     | 3.7.1               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.3.CR1 | 3.7.1               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2     | 3.7.1               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR3 | 3.7.1               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR2 | 3.7.1               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR1 | 3.7.1               | CVE-2018-12541   | 5.0   |
+     | pypi       | flask               | 0.12      | 1.0.3               | CVE-2018-1000656 | 5.0   |
+     | pypi       | flask               | 0.12.1    | 1.0.3               | CVE-2018-1000656 | 5.0   |
+     | pypi       | flask               | 0.12.2    | 1.0.3               | CVE-2018-1000656 | 5.0   |
+     | pypi       | numpy               | 1.16.0    | 1.16.4              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.15.4    | 1.16.4              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.15.3    | 1.16.4              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.15.2    | 1.16.4              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.15.1    | 1.16.4              | CVE-2019-6446    | 7.5   |
+     | pypi       | requests            | 2.19.1    | 2.22.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.19.0    | 2.22.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.18.4    | 2.22.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.18.3    | 2.22.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.18.2    | 2.22.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.17.3    | 2.22.0              | CVE-2018-18074   | 5.0   |
