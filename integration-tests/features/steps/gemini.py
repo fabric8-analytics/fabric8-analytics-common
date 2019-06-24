@@ -154,6 +154,13 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
         context.response = requests.get(api_url, headers=headers)
 
 
+def check_cve_count(cve_count, cves):
+    """Check if number of returned CVEs is expected."""
+        assert cve_count is not None
+    assert int(cve_count) == int(cves), \
+        "{exp} CVEs expected, but {found} was found".format(exp=cves, found=cve_count)
+
+
 @then('I should find {cves} CVEs for package {p} version {v} from ecosystem {e} in dependencies')
 def check_cves_for_epv(context, cves, p, v, e):
     """Check number of CVEs reported for given e/p/v in dependencies."""
@@ -166,8 +173,7 @@ def check_cves_for_epv(context, cves, p, v, e):
         package = check_and_get_attribute(dependency, "name")
         version = check_and_get_attribute(dependency, "version")
         if ecosystem == e and package == p and version == v:
-            assert int(cve_count) == int(cves), \
-                "{exp} CVEs expected, but {found} was found".format(exp=cves, found=cve_count)
+            check_cve_count(cve_count, cves)
             return
     raise Exception("{e}/{p}/{v} was not found".format(e=e, p=p, v=v))
 
