@@ -44,7 +44,7 @@ def check_valid_response(context, worker):
     check_id_value_in_json_response(context, 'external_request_id')
 
 
-def try_to_find_worker(worker, json_data):
+def try_to_find_worker(worker_name, json_data):
     """Try to find worker in JSON data returned from the service."""
     found = False
     for t in json_data['tasks']:
@@ -70,4 +70,4 @@ def verify_database_entry(context, worker):
     json_data = resp.json()
     assert len(json_data['tasks']) >= 1
 
-    try_to_find_worker(worker, json_data)
+    try_to_find_worker(worker_name, json_data)

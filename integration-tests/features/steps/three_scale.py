@@ -106,6 +106,14 @@ def validate_result_post_registration(context):
     # assert stage_url.startswith("http://")
 
 
+def check_error_message_attributes(message):
+    """Check basic attributes of error message."""
+    # TODO: add more detailed check for attribute values
+    assert "missing" in message
+    assert "invalid" in message
+    assert "auth token" in message
+
+
 @then('I should get proper 3scale error message')
 def validate_result_post_registration_error_message(context):
     """Check that json response contains expected error message."""
@@ -114,7 +122,4 @@ def validate_result_post_registration_error_message(context):
     assert json_data
 
     msg = check_and_get_attribute(json_data, "error")
-
-    assert "missing" in msg
-    assert "invalid" in msg
-    assert "auth token" in msg
+    check_error_message_attributes(msg)

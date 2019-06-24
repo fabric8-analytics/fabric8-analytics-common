@@ -156,7 +156,7 @@ def call_backbone_api(context, method="get", endpoint="/api/v1/register", token=
 
 def check_cve_count(cve_count, cves):
     """Check if number of returned CVEs is expected."""
-        assert cve_count is not None
+    assert cve_count is not None
     assert int(cve_count) == int(cves), \
         "{exp} CVEs expected, but {found} was found".format(exp=cves, found=cve_count)
 
