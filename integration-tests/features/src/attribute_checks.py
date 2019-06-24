@@ -44,6 +44,12 @@ def check_uuid(uuid):
     return bool(match)
 
 
+def is_string(attribute):
+    """Check if given attribute is a string."""
+    assert timestamp is not None
+    assert isinstance(timestamp, str)
+
+
 def check_timestamp(timestamp):
     """Check if the string contains proper timestamp value.
 
@@ -53,8 +59,7 @@ def check_timestamp(timestamp):
     2017-07-19 13:05:25
     2017-07-17T09:05:29
     """
-    assert timestamp is not None
-    assert isinstance(timestamp, str)
+    is_string(timestamp)
 
     # some attributes contains timestamp without the millisecond part
     # so we need to take care of it
@@ -162,16 +167,21 @@ def get_details_node(context):
     return check_and_get_attribute(data, 'details')
 
 
-def check_cve_value(cve, with_score=False):
-    """Check CVE values in CVE records."""
+def check_cve_pattern(with_score):
+    """Return the pattern for matching CVE entry."""
     if with_score:
         # please note that in graph DB, the CVE entries have the following format:
         # CVE-2012-1150:5.0
         # don't ask me why, but the score is stored in one field together with ID itself
         # the : character is used as a separator
-        pattern = r"CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
+        return r"CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
     else:
-        pattern = r"CVE-(\d{4})-\d{4,}"
+        return r"CVE-(\d{4})-\d{4,}"
+
+
+def check_cve_value(cve, with_score=False):
+    """Check CVE values in CVE records."""
+    pattern = check_cve_pattern(with_score)
 
     match = re.fullmatch(pattern, cve)
     assert match is not None, "Improper CVE number %s" % cve
