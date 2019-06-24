@@ -51,9 +51,21 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
     When I look at recent stack analysis
     Then I should receive JSON response containing the request_id key
 
-    # Analyzed component check
+    # Dependencies checks
     When I look at recent stack analysis
-    Then I should find analyzed dependency named junit:junit with version 3.8.1 in the stack analysis
+    Then I should find at least 1 dependencies
+     And I should find the following dependencies (junit:junit) in the stack analysis
+     And I should find dependency named junit:junit with version 3.8.1 in the stack analysis
+
+    # Analyzed dependencies checks
+    When I look at recent stack analysis
+    Then I should find at least 1 analyzed dependencies
+     And I should find the following analyzed dependencies (junit:junit) in the stack analysis
+     And I should find analyzed dependency named junit:junit with version 3.8.1 in the stack analysis
+
+    # Unknown dependencies checks
+    When I look at recent stack analysis
+    Then I should find no more than 0 unknown dependencies
 
 
   @requires_authorization_token
@@ -90,10 +102,25 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
 
     # Analyzed component check
     When I look at recent stack analysis
-    Then I should find analyzed dependency named org.springframework:spring-messaging with version 4.3.7.RELEASE in the stack analysis
+    Then I should find at least 4 dependencies
+     And I should find the following dependencies (org.springframework.boot:spring-boot-starter-web, org.springframework.boot:spring-boot-starter, org.springframework:spring-messaging, org.springframework:spring-websocket) in the stack analysis
+     And I should find analyzed dependency named org.springframework:spring-messaging with version 4.3.7.RELEASE in the stack analysis
      And I should find analyzed dependency named org.springframework.boot:spring-boot-starter-web with version 1.5.2.RELEASE in the stack analysis
      And I should find analyzed dependency named org.springframework:spring-websocket with version 4.3.7.RELEASE in the stack analysis
      And I should find analyzed dependency named org.springframework.boot:spring-boot-starter with version 1.5.2.RELEASE in the stack analysis
+
+    # Analyzed dependencies checks
+    When I look at recent stack analysis
+    Then I should find at least 4 analyzed dependencies
+     And I should find the following analyzed dependencies (org.springframework.boot:spring-boot-starter-web, org.springframework.boot:spring-boot-starter, org.springframework:spring-messaging, org.springframework:spring-websocket) in the stack analysis
+     And I should find analyzed dependency named org.springframework.boot:spring-boot-starter-web with version 1.5.2.RELEASE in the stack analysis
+     And I should find analyzed dependency named org.springframework.boot:spring-boot-starter with version 1.5.2.RELEASE in the stack analysis
+     And I should find analyzed dependency named org.springframework:spring-messaging with version 4.3.7.RELEASE in the stack analysis
+     And I should find analyzed dependency named org.springframework:spring-websocket with version 4.3.7.RELEASE in the stack analysis
+
+    # Unknown dependencies checks
+    When I look at recent stack analysis
+    Then I should find no more than 0 unknown dependencies
 
 
   @requires_authorization_token
@@ -129,7 +156,9 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
 
     # Analyzed component check
     When I look at recent stack analysis
-    Then I should find analyzed dependency named io.vertx:vertx-core with version 3.4.1 in the stack analysis
+    Then I should find at least 7 dependencies
+     And I should find the following dependencies (io.vertx:vertx-core, io.vertx:vertx-jdbc-client, io.vertx:vertx-rx-java, io.vertx:vertx-web-client, io.vertx:vertx-web-templ-freemarker, io.vertx:vertx-web-templ-handlebars, io.vertx:vertx-web) in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-core with version 3.4.1 in the stack analysis
      And I should find analyzed dependency named io.vertx:vertx-web-templ-freemarker with version 3.4.1 in the stack analysis
      And I should find analyzed dependency named io.vertx:vertx-jdbc-client with version 3.4.1 in the stack analysis
      And I should find analyzed dependency named io.vertx:vertx-web with version 3.4.1 in the stack analysis
@@ -137,3 +166,18 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
      And I should find analyzed dependency named io.vertx:vertx-rx-java with version 3.4.1 in the stack analysis
      And I should find analyzed dependency named io.vertx:vertx-web-client with version 3.4.1 in the stack analysis
 
+    # Analyzed dependencies checks
+    When I look at recent stack analysis
+    Then I should find at least 7 analyzed dependencies
+     And I should find the following analyzed dependencies (io.vertx:vertx-core, io.vertx:vertx-jdbc-client, io.vertx:vertx-rx-java, io.vertx:vertx-web-client, io.vertx:vertx-web-templ-freemarker, io.vertx:vertx-web-templ-handlebars, io.vertx:vertx-web) in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-core with version 3.4.1 in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-jdbc-client with version 3.4.1 in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-rx-java with version 3.4.1 in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-web-client with version 3.4.1 in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-web-templ-freemarker with version 3.4.1 in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-web-templ-handlebars with version 3.4.1 in the stack analysis
+     And I should find analyzed dependency named io.vertx:vertx-web with version 3.4.1 in the stack analysis
+
+    # Unknown dependencies checks
+    When I look at recent stack analysis
+    Then I should find no more than 0 unknown dependencies
