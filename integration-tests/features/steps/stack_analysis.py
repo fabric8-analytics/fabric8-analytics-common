@@ -87,6 +87,7 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
     filename = 'data/{manifest}'.format(manifest=manifest)
     manifest_file_dir = os.path.dirname(filename)
     path_to_manifest_file = os.path.abspath(manifest_file_dir)
+    context.manifest = manifest
 
     # please note that the trick with (None, path_to_manifest_file) has to be
     # used here so the REST API call would work properly. It is similar to use
@@ -106,9 +107,17 @@ def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, end
     filename = 'data/{manifest}'.format(manifest=manifest)
     manifest_file_dir = os.path.abspath(os.path.dirname(filename))
 
+    context.manifest = manifest
+
     # in the new API version the manifest names are hard coded
-    if ecosystem == "pypi" and manifest != "pylist.json":
-        manifest = "requirements.txt"
+    if ecosystem == "pypi":
+        # only two manifest names are supported ATM:
+        # 1) pylist.json
+        # 2) requirements.txt
+        if manifest.endswith(".json"):
+            manifest = "pylist.json"
+        else:
+            manifest = "requirements.txt"
 
     files = {'manifest[]': (manifest, open(filename, 'rb')),
              'filePath[]': (None, manifest_file_dir)}
