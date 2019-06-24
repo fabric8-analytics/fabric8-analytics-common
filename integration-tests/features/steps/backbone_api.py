@@ -44,6 +44,16 @@ def check_valid_response(context, worker):
     check_id_value_in_json_response(context, 'external_request_id')
 
 
+def try_to_find_worker(worker, json_data):
+    """Try to find worker in JSON data returned from the service."""
+    found = False
+    for t in json_data['tasks']:
+        if t['task_name'] == worker_name:
+            found = True
+            break
+    assert found
+
+
 @then('I should find a valid {worker} database entry')
 def verify_database_entry(context, worker):
     """Check if backbone API call creates a database entry."""
@@ -60,9 +70,4 @@ def verify_database_entry(context, worker):
     json_data = resp.json()
     assert len(json_data['tasks']) >= 1
 
-    found = False
-    for t in json_data['tasks']:
-        if t['task_name'] == worker_name:
-            found = True
-            break
-    assert (found)
+    try_to_find_worker(worker, json_data)
