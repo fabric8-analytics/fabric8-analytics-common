@@ -46,8 +46,8 @@ def check_uuid(uuid):
 
 def is_string(attribute):
     """Check if given attribute is a string."""
-    assert timestamp is not None
-    assert isinstance(timestamp, str)
+    assert attribute is not None
+    assert isinstance(attribute, str)
 
 
 def check_timestamp(timestamp):
