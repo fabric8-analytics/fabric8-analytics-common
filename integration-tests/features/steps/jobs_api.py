@@ -46,6 +46,17 @@ def list_of_jobs(context, type=None, token=None):
         context.response = requests.get(endpoint)
 
 
+def check_all_report_attributes(report):
+    """Check all report attributes."""
+    attributes = ["analyses", "analyses_finished", "analyses_finished_unique",
+                  "analyses_unfinished", "analyses_unique", "packages",
+                  "packages_finished", "versions"]
+
+    for attribute in attributes:
+        assert attribute in report
+        assert int(report[attribute]) >= 0
+
+
 @then('I should see proper analyses report')
 def check_job_debug_analyses_report(context):
     """Check the analyses report returned by job API."""
@@ -58,13 +69,7 @@ def check_job_debug_analyses_report(context):
     assert "report" in json_data
     report = json_data["report"]
 
-    attributes = ["analyses", "analyses_finished", "analyses_finished_unique",
-                  "analyses_unfinished", "analyses_unique", "packages",
-                  "packages_finished", "versions"]
-
-    for attribute in attributes:
-        assert attribute in report
-        assert int(report[attribute]) >= 0
+    check_all_report_attributes(report)
 
 
 def flow_sheduling_endpoint(context, state, job_id=None):
@@ -297,6 +302,13 @@ def get_job_by_id(jobs, job_id):
     return next((job for job in jobs if job["job_id"] == job_id), None)
 
 
+def check_job_state(job, state):
+    """Check the state of given job."""
+    assert job is not None
+    assert job["state"] is not None
+    assert job["state"] == state
+
+
 @then('I should find job with ID {job_id}')
 @then('I should find job with ID {job_id} and state {state}')
 def find_job(context, job_id, state=None):
@@ -312,9 +324,7 @@ def find_job(context, job_id, state=None):
     assert job_id in job_ids
     if state is not None:
         job = get_job_by_id(jobs, job_id)
-        assert job is not None
-        assert job["state"] is not None
-        assert job["state"] == state
+        check_job_state(job, state)
 
 
 @then('I should not find job with ID {job_id}')
@@ -334,6 +344,24 @@ def acquire_jobs_api_authorization_token(context):
     # TODO: authorization via GitHub?
 
 
+def check_token_attributes(token):
+    """Check if given token has all required attributes."""
+    assert "token" in token
+    assert "rate" in token
+    assert "resources" in token
+
+
+def check_token_name(token):
+    """Check token name."""
+    resources = token["resources"]
+
+    token_names = ["core", "graphql", "search"]
+
+    for token_name in token_names:
+        assert token_name in resources
+        check_job_token_attributes(resources[token_name])
+
+
 @then('I should see proper information about job API tokens')
 def check_job_api_tokens_information(context):
     """Check the tokens information returned by job API."""
@@ -346,20 +374,11 @@ def check_job_api_tokens_information(context):
     assert len(tokens) > 0
 
     for token in tokens:
-        assert "token" in token
-        assert "rate" in token
-        assert "resources" in token
+        check_token_attributes(token)
 
         rate_token = token["rate"]
         check_job_token_attributes(rate_token)
-
-        resources = token["resources"]
-
-        token_names = ["core", "graphql", "search"]
-
-        for token_name in token_names:
-            assert token_name in resources
-            check_job_token_attributes(resources[token_name])
+        check_token_name(token)
 
 
 @when('I generate unique job ID prefix')
