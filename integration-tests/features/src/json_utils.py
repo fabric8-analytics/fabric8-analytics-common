@@ -39,13 +39,21 @@ def check_timestamp_in_json_response(context, attribute):
     check_timestamp(timestamp)
 
 
+def get_response_payload(context):
+    """Get the payload retrieved in response."""
+    assert context is not None
+    assert context.response is not None
+
+    response = context.response
+    return response
+
+
 def check_request_id_value_in_json_response(context, attribute_name):
     """Check the request ID attribute in the JSON response.
 
     Check if ID is stored in a format like: '71769af6-0a39-4242-94be-1f84f04c8a56'
     """
-    response = context.response
-    assert response is not None
+    response = get_response_payload(context)
 
     json_data = response.json()
     assert json_data is not None
@@ -63,8 +71,7 @@ def check_id_value_in_json_response(context, id_attribute_name):
     Check if ID is stored in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    response = context.response
-    assert response is not None
+    response = get_response_payload(context)
 
     json_data = response.json()
     assert json_data is not None
