@@ -24,11 +24,15 @@ class S3Interface():
         self.s3_resource = None
         self.s3_session = None
 
-    def connect(self):
-        """Connect to the AWS S3 database."""
+    def check_connection_parameters(self):
+        """Check all parameters needed to connect to S3."""
         assert self.aws_access_key_id is not None
         assert self.aws_secret_access_key is not None
         assert self.s3_region_name is not None
+
+    def connect(self):
+        """Connect to the AWS S3 database."""
+        self.check_connection_parameters()
 
         # we are already connected -> let's use this connection
         if self.s3_resource is not None:
