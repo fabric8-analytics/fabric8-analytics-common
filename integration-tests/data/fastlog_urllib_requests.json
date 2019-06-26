@@ -1,0 +1,17 @@
+[
+    {
+        "package": "fastlog",
+        "version": "1.0.0b1",
+        "deps": []
+    },
+    {
+        "package": "requests",
+        "version": "2.18.4",
+        "deps": []
+    },
+    {
+        "package": "urllib3",
+        "version": "1.22",
+        "deps": []
+    }
+]
