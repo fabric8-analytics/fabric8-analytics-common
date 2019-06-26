@@ -1,0 +1,11 @@
+requests
+scikit-learn
+coverage
+cycler
+numpy
+mock
+nose
+scipy
+matplotlib
+nltk
+pandas
