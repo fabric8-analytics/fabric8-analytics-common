@@ -141,6 +141,11 @@ class StackAnalysis(Api):
         else:
             raise Exception('Timeout waiting for the stack analysis results')
 
+    def check_analysis(self, analysis):
+        """Check the results of component analysis."""
+        assert analysis is not None, "Analysis report expected"
+        return "OK"
+
     def start(self, thread_id=None, ecosystem=None, manifest=None, queue=None):
         """Start the component analysis and check the status code."""
         start_time = time()
@@ -154,10 +159,13 @@ class StackAnalysis(Api):
 
         json_response_post = None
 
+        check = "N/A"
+
         if status_code_post == 200:
             if self._dump_json_responses:
                 json_response_post = response.json()
                 self.dump_analysis("request", ecosystem, manifest, response.json())
+                check = self.check_analysis(response.json())
 
         post_time = time()
         post_duration = post_time - start_time
@@ -167,8 +175,9 @@ class StackAnalysis(Api):
         log.info("job ID: " + job_id)
 
         try:
-            self.wait_for_stack_analysis(ecosystem, manifest, job_id, thread_id)
+            response = self.wait_for_stack_analysis(ecosystem, manifest, job_id, thread_id)
             status_code = response.status_code
+            check = self.check_analysis(response.json())
         except Exception as e:
             status_code = str(e)
 
@@ -186,6 +195,7 @@ class StackAnalysis(Api):
               "started": start_time,
               "finished": post_time,
               "duration": post_duration,
+              "analysis": "N/A (POST call)",
               "manifest": manifest
               }
 
@@ -200,6 +210,7 @@ class StackAnalysis(Api):
               "started": post_time,
               "finished": end_time,
               "duration": duration,
+              "analysis": check,
               "manifest": manifest
               }
 

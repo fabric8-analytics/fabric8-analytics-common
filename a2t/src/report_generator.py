@@ -29,6 +29,7 @@ def export_header(csv_writer):
                          "Ecosystem", "Package", "Version",
                          "Manifest",
                          "Thread#", "Status code",
+                         "Analysis results",
                          "Start time", "End time", "Duration"])
 
 
@@ -63,6 +64,7 @@ def export_test_results(csv_writer, results):
                              result["manifest"],
                              result["thread_id"],
                              result["status_code"],
+                             result["analysis"],
                              result["started"], result["finished"], result["duration"]])
 
 
