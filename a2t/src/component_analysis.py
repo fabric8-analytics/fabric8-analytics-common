@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import datetime
 from time import time
 import json
+import re
 from urllib.parse import urljoin
 
 from api import Api
@@ -63,6 +64,18 @@ class ComponentAnalysis(Api):
         with open(filename, 'w') as fout:
             json.dump(json_response, fout)
 
+    def check_analysis(self, analysis, ecosystem, package, version):
+        """Check the results of component analysis."""
+        try:
+            assert analysis is not None, "Analysis not available"
+            assert "result" in analysis, "Can not find the 'result' node."
+            result = analysis["result"]
+            self.check_recommendation_part(result)
+            self.check_data_part(result, ecosystem, package, version)
+            return "OK"
+        except Exception as e:
+            return "Failed: " + str(e)
+
     def start(self, thread_id=None, ecosystem=None, component=None, version=None, queue=None):
         """Start the component analysis and check the status code."""
         start_time = time()
@@ -80,8 +93,14 @@ class ComponentAnalysis(Api):
         duration = end_time - start_time
 
         json_response = ""
+        check = "N/A"
+
         try:
             json_response = response.json()
+            if status_code == 200:
+                check = self.check_analysis(json_response, ecosystem, component, version)
+            else:
+                check = "N/A, analysis in progress"
         except Exception:
             pass
 
@@ -96,6 +115,7 @@ class ComponentAnalysis(Api):
              "started": start_time,
              "finished": end_time,
              "duration": duration,
+             "analysis": check,
              "manifest": "N/A"
              }
 
