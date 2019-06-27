@@ -165,6 +165,13 @@ def check_ecosystems(context, num):
         assert 'ecosystem' in e
 
 
+def check_package_version(v, ecosystem, package, versions):
+    """Check package version."""
+    assert v['ecosystem'] == ecosystem
+    assert v['package'] == package
+    assert v['version'] in versions
+
+
 @then('I should see {num:d} versions ({versions}), all for {ecosystem}/{package} package')
 def check_versions(context, num=0, versions='', ecosystem='', package=''):
     """Check the versions for the selected ecosystems and package."""
@@ -172,9 +179,7 @@ def check_versions(context, num=0, versions='', ecosystem='', package=''):
     vrsns = context.response.json()['items']
     assert len(vrsns) == num
     for v in vrsns:
-        assert v['ecosystem'] == ecosystem
-        assert v['package'] == package
-        assert v['version'] in versions
+        check_package_version(v, ecosystem, package, versions)
 
 
 @then('I should find the endpoint {endpoint} in the list of supported endpoints')

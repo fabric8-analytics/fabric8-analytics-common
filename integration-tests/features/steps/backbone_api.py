@@ -36,12 +36,22 @@ def post_backbone_api(context, input_file, endpoint):
 @then('I should receive a valid {worker} json response')
 def check_valid_response(context, worker):
     """Check if backbone API call response is valid."""
-    assert (context.response.status_code == 200)
+    assert context.response.status_code == 200
 
     json_data = context.response.json()
-    assert (json_data[worker] == 'success')
+    assert json_data[worker] == 'success'
 
     check_id_value_in_json_response(context, 'external_request_id')
+
+
+def try_to_find_worker(worker_name, json_data):
+    """Try to find worker in JSON data returned from the service."""
+    found = False
+    for t in json_data['tasks']:
+        if t['task_name'] == worker_name:
+            found = True
+            break
+    assert found
 
 
 @then('I should find a valid {worker} database entry')
@@ -55,14 +65,9 @@ def verify_database_entry(context, worker):
                                                       context.external_request_id)
 
     resp = requests.get(url, headers=headers)
-    assert (resp.status_code == 200)
+    assert resp.status_code == 200
 
     json_data = resp.json()
-    assert (len(json_data['tasks']) >= 1)
+    assert len(json_data['tasks']) >= 1
 
-    found = False
-    for t in json_data['tasks']:
-        if t['task_name'] == worker_name:
-            found = True
-            break
-    assert (found)
+    try_to_find_worker(worker_name, json_data)
