@@ -76,6 +76,106 @@ class ComponentAnalysis(Api):
         except Exception as e:
             return "Failed: " + str(e)
 
+    def check_recommendation_part(self, result):
+        """Check the recommendation part of component analysis."""
+        assert "recommendation" in result, "Can not find the 'recommendation' node."
+        recommendation = result["recommendation"]
+        assert recommendation == {} or "component-analyses" in recommendation, \
+            "Wrong content of recommendation node"
+        if "component_analyses" in recommendation:
+            self.check_component_analyses_recommendation(recommendation)
+
+    def check_component_analyses_recommendation(self, recommendation):
+        """Check the recommendation node in the component analysis."""
+        assert "change_to" in recommendation, "Expected node 'change_to'"
+        assert "message" in recommendation, "Expected node 'message'"
+        assert "component_analyses" in recommendation, "Expected node 'component-analyses'"
+        component_analyses = recommendation["component_analyses"]
+        assert "cve" in component_analyses
+        self.check_cves(component_analyses)
+
+    def check_cves(self, component_analyses):
+        """Check CVEs that might be part of component analyses."""
+        cves = component_analyses["cve"]
+        for c in cves:
+            assert "id" in c
+            assert "cvss" in c
+            self.check_cve_value(c["id"])
+
+    def get_cve_pattern(self, with_score):
+        """Return the CVE pattern."""
+        if with_score:
+            # please note that in graph DB, the CVE entries have the following format:
+            # CVE-2012-1150:5.0
+            # don't ask me why, but the score is stored in one field together with ID itself
+            # the : character is used as a separator
+            return r"CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
+        else:
+            return r"CVE-(\d{4})-\d{4,}"
+
+    def check_cve_value(self, cve, with_score=False):
+        """Check CVE values in CVE records."""
+        pattern = self.get_cve_pattern(with_score)
+
+        match = re.fullmatch(pattern, cve)
+        assert match is not None, "Improper CVE number %s" % cve
+
+        year = int(match.group(1))
+        current_year = datetime.datetime.now().year
+
+        # well the lower limit is a bit arbitrary
+        # (according to SRT guys it should be 1999)
+        assert year >= 1999 and year <= current_year, "Improper year of CVE"
+
+        if with_score:
+            score = float(match.group(2))
+            assert score >= 0.0 and score <= 10.0, "Improper score value of CVE"
+
+    def check_data_part(self, result, ecosystem, package, version):
+        """Check the data part of component analysis."""
+        assert "data" in result, "Can not find the 'data' node."
+        data = result["data"]
+        assert len(data) >= 0, "At least one package expected in analysis"
+        for node in data:
+            self.check_package_version(node, ecosystem, package, version)
+
+    def check_package_version(self, node, ecosystem, package, version):
+        """Check the package in component analysis."""
+        assert "package" in node, "'package' node is expected"
+        assert "version" in node, "'version' node is expected"
+        self.check_package_part(node, ecosystem, package)
+        self.check_version_part(node, ecosystem, package, version)
+
+    def check_package_part(self, node, ecosystem, package):
+        """Self package part of E/P/V analysis response."""
+        package_node = node["package"]
+        assert "ecosystem" in package_node, "Package node does not contain attribute 'ecosystem'"
+        assert "name" in package_node, "Package node does not contain attribute 'node'"
+        assert len(package_node["ecosystem"]) >= 1, "Expecting at least one 'ecosystem' value"
+        assert len(package_node["name"]) >= 1, "Expecting at least one 'name' value"
+
+        e = package_node["ecosystem"][0]
+        p = package_node["name"][0]
+        assert e == ecosystem, "Unexpected ecosystem found {}".format(e)
+        assert p == package, "Unexpected component name found {}".format(p)
+
+    def check_version_part(self, node, ecosystem, package, version):
+        """Self version part of E/P/V analysis response."""
+        version_node = node["version"]
+        assert "pecosystem" in version_node, "Version node does not contain attribute 'pecosystem'"
+        assert "pname" in version_node, "Version node does not contain attribute 'pname'"
+        assert "version" in version_node, "Version node does not contain attribute 'version'"
+        assert len(version_node["pecosystem"]) >= 1, "Expecting at least one 'pecosystem' value"
+        assert len(version_node["pname"]) >= 1, "Expecting at least one 'pname' value"
+        assert len(version_node["version"]) >= 1, "Expecting at least one 'version' value"
+
+        e = version_node["pecosystem"][0]
+        p = version_node["pname"][0]
+        v = version_node["version"][0]
+        assert e == ecosystem, "Unexpected ecosystem found {}".format(e)
+        assert p == package, "Unexpected name found {}".format(p)
+        assert v == version, "Unexpected version found {}".format(v)
+
     def start(self, thread_id=None, ecosystem=None, component=None, version=None, queue=None):
         """Start the component analysis and check the status code."""
         start_time = time()
