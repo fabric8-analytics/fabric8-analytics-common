@@ -475,8 +475,8 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find the value requirements.txt under the path result/0/manifest_name in the JSON response
      And I should find the value 6 under the path result/0/user_stack_info/total_licenses in the JSON response
      And I should find the value 0 under the path result/0/user_stack_info/transitive_count in the JSON response
-     And I should find the value 1 under the path result/0/user_stack_info/unknown_dependencies_count in the JSON response
-     And I should find the value 10 under the path result/0/user_stack_info/analyzed_dependencies_count in the JSON response
+     And I should find the value 0 under the path result/0/user_stack_info/unknown_dependencies_count in the JSON response
+     And I should find the value 11 under the path result/0/user_stack_info/analyzed_dependencies_count in the JSON response
      And I should find the value pypi under the path result/0/user_stack_info/ecosystem in the JSON response
  
     # Dependencies checks
@@ -505,7 +505,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find analyzed dependency named mock with version 3.0.5 in the stack analysis
      And I should find analyzed dependency named nose with version 1.3.7 in the stack analysis
      And I should find analyzed dependency named scipy with version 1.3.0 in the stack analysis
-     # And I should find analyzed dependency named matplotlib with version 3.1.0 in the stack analysis
+     And I should find analyzed dependency named matplotlib with version 3.1.0 in the stack analysis
      And I should find analyzed dependency named nltk with version 3.4.3 in the stack analysis
      And I should find analyzed dependency named pandas with version 0.24.2 in the stack analysis
 
