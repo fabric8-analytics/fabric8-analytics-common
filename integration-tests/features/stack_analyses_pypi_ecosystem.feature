@@ -473,7 +473,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     # Licence and dependency counters checks
     When I look at recent stack analysis
     Then I should find the value requirements.txt under the path result/0/manifest_name in the JSON response
-     And I should find the value 7 under the path result/0/user_stack_info/total_licenses in the JSON response
+     And I should find the value 6 under the path result/0/user_stack_info/total_licenses in the JSON response
      And I should find the value 0 under the path result/0/user_stack_info/transitive_count in the JSON response
      And I should find the value 0 under the path result/0/user_stack_info/unknown_dependencies_count in the JSON response
      And I should find the value 11 under the path result/0/user_stack_info/analyzed_dependencies_count in the JSON response
