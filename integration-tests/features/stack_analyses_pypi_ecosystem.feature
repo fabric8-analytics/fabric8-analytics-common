@@ -486,7 +486,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find dependency named requests with version 2.22.0 in the stack analysis
      And I should find dependency named scikit-learn with version 0.21.2 in the stack analysis
      And I should find dependency named cycler with version 0.10.0 in the stack analysis
-     And I should find dependency named numpy with version 1.16.4 in the stack analysis
+     And I should find dependency named numpy with version 1.17.0rc1 in the stack analysis
      And I should find dependency named mock with version 3.0.5 in the stack analysis
      And I should find dependency named nose with version 1.3.7 in the stack analysis
      And I should find dependency named scipy with version 1.3.0 in the stack analysis
