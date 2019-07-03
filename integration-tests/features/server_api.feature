@@ -63,7 +63,7 @@ Feature: Server API
          |/api/v1/get-core-dependencies/<runtime>|
          |/api/v1/empty-booster|
          |/api/v1/recommendation_feedback/<ecosystem>|
-         |/api/v1/cves/bydate/<modified_date>/<ecosystem>|
+         |/api/v1/cves/bydate/<end_date>/<ecosystem>|
 
 
   @production
