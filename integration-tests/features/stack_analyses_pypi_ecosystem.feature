@@ -473,7 +473,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     # Licence and dependency counters checks
     When I look at recent stack analysis
     Then I should find the value requirements.txt under the path result/0/manifest_name in the JSON response
-     And I should find the value 7 under the path result/0/user_stack_info/total_licenses in the JSON response
+     And I should find the value 6 under the path result/0/user_stack_info/total_licenses in the JSON response
      And I should find the value 0 under the path result/0/user_stack_info/transitive_count in the JSON response
      And I should find the value 0 under the path result/0/user_stack_info/unknown_dependencies_count in the JSON response
      And I should find the value 11 under the path result/0/user_stack_info/analyzed_dependencies_count in the JSON response
@@ -486,11 +486,11 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find dependency named requests with version 2.22.0 in the stack analysis
      And I should find dependency named scikit-learn with version 0.21.2 in the stack analysis
      And I should find dependency named cycler with version 0.10.0 in the stack analysis
-     And I should find dependency named numpy with version 1.16.4 in the stack analysis
+     And I should find dependency named numpy with version 1.17.0rc1 in the stack analysis
      And I should find dependency named mock with version 3.0.5 in the stack analysis
      And I should find dependency named nose with version 1.3.7 in the stack analysis
      And I should find dependency named scipy with version 1.3.0 in the stack analysis
-     And I should find dependency named matplotlib with version 3.1.0 in the stack analysis
+     And I should find dependency named matplotlib with version 3.1.1 in the stack analysis
      And I should find dependency named nltk with version 3.4.3 in the stack analysis
      And I should find dependency named pandas with version 0.24.2 in the stack analysis
 
@@ -501,15 +501,15 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find analyzed dependency named requests with version 2.22.0 in the stack analysis
      And I should find analyzed dependency named scikit-learn with version 0.21.2 in the stack analysis
      And I should find analyzed dependency named cycler with version 0.10.0 in the stack analysis
-     And I should find analyzed dependency named numpy with version 1.16.4 in the stack analysis
+     And I should find analyzed dependency named numpy with version 1.17.0rc1 in the stack analysis
      And I should find analyzed dependency named mock with version 3.0.5 in the stack analysis
      And I should find analyzed dependency named nose with version 1.3.7 in the stack analysis
      And I should find analyzed dependency named scipy with version 1.3.0 in the stack analysis
-     And I should find analyzed dependency named matplotlib with version 3.1.0 in the stack analysis
+     And I should find analyzed dependency named matplotlib with version 3.1.1 in the stack analysis
      And I should find analyzed dependency named nltk with version 3.4.3 in the stack analysis
      And I should find analyzed dependency named pandas with version 0.24.2 in the stack analysis
 
     # Unknown dependencies checks
     When I look at recent stack analysis
-    Then I should find no more than 0 unknown dependencies
+    Then I should find no more than 1 unknown dependencies
 
