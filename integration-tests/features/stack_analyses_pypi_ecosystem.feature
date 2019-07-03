@@ -490,22 +490,22 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find dependency named mock with version 3.0.5 in the stack analysis
      And I should find dependency named nose with version 1.3.7 in the stack analysis
      And I should find dependency named scipy with version 1.3.0 in the stack analysis
-     And I should find dependency named matplotlib with version 3.1.0 in the stack analysis
+     And I should find dependency named matplotlib with version 3.1.1 in the stack analysis
      And I should find dependency named nltk with version 3.4.3 in the stack analysis
      And I should find dependency named pandas with version 0.24.2 in the stack analysis
 
     # Analyzed dependencies checks
     When I look at recent stack analysis
-    Then I should find at least 10 analyzed dependencies
+    Then I should find at least 11 analyzed dependencies
      And I should find the following analyzed dependencies (requests, scikit-learn, coverage, cycler, numpy, mock, nose, scipy, matplotlib, nltk, pandas) in the stack analysis
      And I should find analyzed dependency named requests with version 2.22.0 in the stack analysis
      And I should find analyzed dependency named scikit-learn with version 0.21.2 in the stack analysis
      And I should find analyzed dependency named cycler with version 0.10.0 in the stack analysis
-     And I should find analyzed dependency named numpy with version 1.16.4 in the stack analysis
+     And I should find analyzed dependency named numpy with version 1.17.0rc1 in the stack analysis
      And I should find analyzed dependency named mock with version 3.0.5 in the stack analysis
      And I should find analyzed dependency named nose with version 1.3.7 in the stack analysis
      And I should find analyzed dependency named scipy with version 1.3.0 in the stack analysis
-     And I should find analyzed dependency named matplotlib with version 3.1.0 in the stack analysis
+     And I should find analyzed dependency named matplotlib with version 3.1.1 in the stack analysis
      And I should find analyzed dependency named nltk with version 3.4.3 in the stack analysis
      And I should find analyzed dependency named pandas with version 0.24.2 in the stack analysis
 
