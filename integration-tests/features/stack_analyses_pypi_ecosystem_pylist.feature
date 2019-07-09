@@ -1,6 +1,6 @@
 Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.json as input
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for newer version of click package (6.7)
     Given System is running
     When I acquire the authorization token
@@ -41,7 +41,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for newer version of click package (7.0)
     Given System is running
     When I acquire the authorization token
@@ -82,7 +82,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for array split package (7.0)
     Given System is running
     When I acquire the authorization token
@@ -123,7 +123,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -168,7 +168,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
 
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -208,7 +208,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -248,7 +248,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -288,7 +288,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -328,7 +328,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -370,7 +370,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -410,7 +410,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -450,7 +450,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -490,7 +490,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -530,7 +530,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -564,7 +564,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 0 analyzed dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -604,7 +604,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -644,7 +644,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
@@ -684,7 +684,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
     When I acquire the authorization token
