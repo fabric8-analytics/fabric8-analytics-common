@@ -491,8 +491,8 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find dependency named nose with version 1.3.7 in the stack analysis
      And I should find dependency named scipy with version 1.3.0 in the stack analysis
      And I should find dependency named matplotlib with version 3.1.1 in the stack analysis
-     And I should find dependency named nltk with version 3.4.3 in the stack analysis
-     And I should find dependency named pandas with version 0.24.2 in the stack analysis
+     And I should find dependency named nltk with version 3.4.4 in the stack analysis
+     And I should find dependency named pandas with version 0.25.0rc0 in the stack analysis
 
     # Analyzed dependencies checks
     When I look at recent stack analysis
@@ -506,8 +506,8 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find analyzed dependency named nose with version 1.3.7 in the stack analysis
      And I should find analyzed dependency named scipy with version 1.3.0 in the stack analysis
      And I should find analyzed dependency named matplotlib with version 3.1.1 in the stack analysis
-     And I should find analyzed dependency named nltk with version 3.4.3 in the stack analysis
-     And I should find analyzed dependency named pandas with version 0.24.2 in the stack analysis
+     And I should find analyzed dependency named nltk with version 3.4.4 in the stack analysis
+     And I should find analyzed dependency named pandas with version 0.25.0rc0 in the stack analysis
 
     # Unknown dependencies checks
     When I look at recent stack analysis
