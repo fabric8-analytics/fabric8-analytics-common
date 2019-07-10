@@ -7,7 +7,7 @@ Feature: Thorough stack analysis v3 API tests - NPM ecosystem
     Then I should get 401 status code
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the stack analysis response when called with proper authorization token
     Given System is running
     When I acquire the authorization token
@@ -63,7 +63,7 @@ Feature: Thorough stack analysis v3 API tests - NPM ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the stack analysis response when called with proper authorization token
     Given System is running
     When I acquire the authorization token
@@ -115,7 +115,7 @@ Feature: Thorough stack analysis v3 API tests - NPM ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the stack analysis response when called with proper authorization token
     Given System is running
     When I acquire the authorization token
