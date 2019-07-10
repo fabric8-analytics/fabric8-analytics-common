@@ -1,8 +1,5 @@
 """The main module of the QA Dashboard."""
 import json
-import datetime
-import os
-import sys
 import requests
 
 from fastlog import log
@@ -84,6 +81,16 @@ def check_ci_status(url, repository):
         print()
 
 
+def check_job_status(job_status):
+    """Check the job status existence."""
+    assert job_status is not None
+
+
+def check_job_badge(badge):
+    """Check the job badge existence."""
+    assert badge is not None
+
+
 def run_checker_for_repository(ci_jobs, config, job_statuses, repository):
     """Run job checker for selected repository."""
     for job_type in ci_job_types:
@@ -95,6 +102,8 @@ def run_checker_for_repository(ci_jobs, config, job_statuses, repository):
 
             if url is not None:
                 check_ci_status(url, repository)
+                check_job_status(job_status)
+                check_job_badge(badge)
 
 
 def main():
