@@ -294,20 +294,30 @@ def check_companion_count(context, min_count=0):
     assert len(companions) > int(min_count)
 
 
+def check_for_unexpected_licenses(licenses, expected_licenses):
+    """Check that none unexpected licenses can be found."""
+    for license in licenses:
+        if license not in expected_licenses:
+            raise Exception("Unexpected license found: {license}".format(
+                            license=license))
+
+
+def check_for_expected_licenses(licenses, expected_licenses):
+    """Check that all licenses are also included in expected licenses."""
+    for expected_license in expected_licenses:
+        if expected_license not in licenses:
+            raise Exception("Required license could not be found: {license}".format(
+                            license=expected_license))
+
+
 def check_licenses(licenses, expected_licenses):
     """Compare list of read licenses with list of expected licenses.
 
     Check that all expected licenses and only such licenses can be found in the list of licenses.
     """
     assert licenses is not None
-    for license in licenses:
-        if license not in expected_licenses:
-            raise Exception("Unexpected license found: {license}".format(
-                            license=license))
-    for expected_license in expected_licenses:
-        if expected_license not in licenses:
-            raise Exception("Required license could not be found: {license}".format(
-                            license=expected_license))
+    check_for_unexpected_licenses(licenses, expected_licenses)
+    check_for_expected_licenses(licenses, expected_licenses)
 
 
 @then('I should find the following licenses ({licenses}) under the path {path}')
