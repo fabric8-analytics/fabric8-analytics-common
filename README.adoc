@@ -81,6 +81,8 @@ Use the following scripts to check if the code follows PEP 8 and PEP 257 coding 
 
 Ensure that you fix any warnings and errors reported by these scripts.
 
+List of directories containing source code, that needs to be checked, are stored in a file `directories.txt`
+
 == Code complexity measurement
 Use the following scripts to measure code complexity. These scripts can be run w/o any arguments:
 
@@ -99,6 +101,8 @@ Please note that due to Python's dynamic nature, static code analyzers are likel
 
 Because of this potential problems, only code detected with more than 90% of confidence is reported.
 
+List of directories containing source code, that needs to be checked, are stored in a file `directories.txt`
+
 == Common issues detection
 
 The script `detect-common-errors.sh` can be used to detect common errors in the repository. This script can be run w/o any arguments:
@@ -108,5 +112,7 @@ The script `detect-common-errors.sh` can be used to detect common errors in the 
 ----
 
 Please note that only semantical problems are reported.
+
+List of directories containing source code, that needs to be checked, are stored in a file `directories.txt`
 
 ////
