@@ -1,6 +1,10 @@
 #!/bin/bash
 
-directories="integration-tests ui-tests perf-tests dashboard reproducers load-tests db-integrity-tests taas baf e2e_tests_bot vscode-visual-tests a2t tools"
+IFS=$'\n'
+
+# list of directories with sources to check
+directories=$(cat directories.txt)
+
 pass=0
 fail=0
 
