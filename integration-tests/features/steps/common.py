@@ -252,7 +252,7 @@ def compare_value_from_json(value, expected):
     """Compare value read from JSON with the expected value, ignoring the type."""
     # fallback for int value in the JSON file
     if type(value) is int:
-        assert value == int(expected)
+        assert value <= int(expected)
     else:
         assert value == expected
 
