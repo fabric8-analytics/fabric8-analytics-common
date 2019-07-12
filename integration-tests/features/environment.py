@@ -545,6 +545,7 @@ def before_all(context):
     else:
         # If we're not running Kubernetes, use the local Docker Compose setup
         _set_default_compose_path(context)
+
     # for now, we just assume we know what compose file looks like (what services need what images)
     context.images = {}
     context.images['bayesian/bayesian-api'] = context.config.userdata.get(

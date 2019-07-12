@@ -1,7 +1,7 @@
 Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for newer version of click package (6.7)
     Given System is running
     When I acquire the authorization token
@@ -42,7 +42,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for newer version of click package (7.0)
     Given System is running
     When I acquire the authorization token
@@ -83,7 +83,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for exact version of click package (arbitrary equality)
     Given System is running
     When I acquire the authorization token
@@ -124,7 +124,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for older version of click package with click>=5.0 in requirements
     Given System is running
     When I acquire the authorization token
@@ -165,7 +165,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for older version (5.0) of click package
     Given System is running
     When I acquire the authorization token
@@ -206,7 +206,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for older version of click package with click>=5.0, <=6.0 in requirements
     Given System is running
     When I acquire the authorization token
@@ -247,7 +247,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
  
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for older version of click package with click>=5.0, <6.0 in requirements
     Given System is running
     When I acquire the authorization token
@@ -288,7 +288,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
  
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for older version of click package with click>5.0, <6.0 in requirements
     Given System is running
     When I acquire the authorization token
@@ -329,7 +329,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
  
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for older version of click package with click>5.0, <=6.0 in requirements
     Given System is running
     When I acquire the authorization token
@@ -370,7 +370,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
  
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for click 6.7.*
     Given System is running
     When I acquire the authorization token
@@ -411,7 +411,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
     Given System is running
     When I acquire the authorization token
@@ -450,7 +450,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find analyzed dependency named click with version 6.7 in the stack analysis
 
 
-  @requires_authorization_token
+  @requires_authorization_token @data-sanity
   Scenario: Check the stack analysis output
     Given System is running
     When I acquire the authorization token
@@ -491,8 +491,8 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find dependency named nose with version 1.3.7 in the stack analysis
      And I should find dependency named scipy with version 1.3.0 in the stack analysis
      And I should find dependency named matplotlib with version 3.1.1 in the stack analysis
-     And I should find dependency named nltk with version 3.4.3 in the stack analysis
-     And I should find dependency named pandas with version 0.24.2 in the stack analysis
+     And I should find dependency named nltk with version 3.4.4 in the stack analysis
+     And I should find dependency named pandas with version 0.25.0rc0 in the stack analysis
 
     # Analyzed dependencies checks
     When I look at recent stack analysis
@@ -506,8 +506,8 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
      And I should find analyzed dependency named nose with version 1.3.7 in the stack analysis
      And I should find analyzed dependency named scipy with version 1.3.0 in the stack analysis
      And I should find analyzed dependency named matplotlib with version 3.1.1 in the stack analysis
-     And I should find analyzed dependency named nltk with version 3.4.3 in the stack analysis
-     And I should find analyzed dependency named pandas with version 0.24.2 in the stack analysis
+     And I should find analyzed dependency named nltk with version 3.4.4 in the stack analysis
+     And I should find analyzed dependency named pandas with version 0.25.0rc0 in the stack analysis
 
     # Unknown dependencies checks
     When I look at recent stack analysis
