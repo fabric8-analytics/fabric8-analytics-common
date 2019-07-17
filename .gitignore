@@ -115,3 +115,4 @@ latex/
 baf/run_my.sh
 
 .DS_Store
+*.err
