@@ -73,10 +73,6 @@ run_all_checkers() {
     run_checker run-linter
     check_results $? run-linter
 
-    echo "  Unit tests for this project"
-    run_checker runtest
-    check_results $? runtest
-
     printf "%sDone%s\n\n" "${YELLOW}" "${NORMAL}"
 }
 
