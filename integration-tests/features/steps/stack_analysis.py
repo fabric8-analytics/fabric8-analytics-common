@@ -72,6 +72,8 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
     else:
         raise Exception('Timeout waiting for the stack analysis results')
     end_time = time.time()
+    # compute the duration
+    # plase note that duration==None in case of any errors (which is to be expected)
     context.duration = end_time - start_time
 
 
@@ -755,9 +757,11 @@ def look_at_stack_analysis_duration(context):
 @then('I should see that the duration is less than {duration:d} seconds')
 def check_stack_analysis_duration_in_seconds(context, duration):
     """Check the stack analysis duration when the duration is specified in seconds."""
+    # with very low probability, leap second might occur
     assert context.duration > 0, \
         "Duration is negative, it means that the leap second occured during stack analysis"
 
+    # check if the measured duration is less than maximum expected threshold
     assert context.duration < duration, \
         "Stack analysis duration is too long: {} seconds instead of {}".format(
             duration, context.duration)
@@ -767,6 +771,7 @@ def check_stack_analysis_duration_in_seconds(context, duration):
 @then('I should see that the duration is less than {duration:d} minutes')
 def check_stack_analysis_duration_in_minutes(context, duration):
     """Check the stack analysis duration when the duration is specified in minutes."""
+    # just use the existing code, with different units
     check_stack_analysis_duration_in_seconds(context, duration * 60)
 
 
