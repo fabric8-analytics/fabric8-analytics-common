@@ -38,6 +38,9 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
     202 Accepted: analysis is started or is in progress (or other state!)
     401 UNAUTHORIZED : missing or improper authorization token
     """
+    context.duration = None
+    start_time = time.time()
+
     timeout = context.stack_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
     use_token = parse_token_clause(token)
@@ -68,6 +71,8 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
         time.sleep(sleep_amount)
     else:
         raise Exception('Timeout waiting for the stack analysis results')
+    end_time = time.time()
+    context.duration = end_time - start_time
 
 
 @when("I post a valid {manifest} to {url}")
@@ -737,6 +742,32 @@ def look_at_recent_stack_analysis(context):
     assert context is not None
     json_data = context.response.json()
     assert json_data is not None
+
+
+@when('I look at the stack analysis duration')
+def look_at_stack_analysis_duration(context):
+    """Just dummy step to make test scenarios more readable."""
+    assert context is not None
+    assert context.duration is not None
+
+
+@then('I should see that the duration is less than {duration:d} second')
+@then('I should see that the duration is less than {duration:d} seconds')
+def check_stack_analysis_duration_in_seconds(context, duration):
+    """Check the stack analysis duration when the duration is specified in seconds."""
+    assert context.duration > 0, \
+        "Duration is negative, it means that the leap second occured during stack analysis"
+
+    assert context.duration < duration, \
+        "Stack analysis duration is too long: {} seconds instead of {}".format(
+            duration, context.duration)
+
+
+@then('I should see that the duration is less than {duration:d} minute')
+@then('I should see that the duration is less than {duration:d} minutes')
+def check_stack_analysis_duration_in_minutes(context, duration):
+    """Check the stack analysis duration when the duration is specified in minutes."""
+    check_stack_analysis_duration_in_seconds(context, duration * 60)
 
 
 @then('I should find matching topic lists for all {key} components')
