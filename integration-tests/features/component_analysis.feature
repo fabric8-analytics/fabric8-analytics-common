@@ -154,12 +154,12 @@ Feature: Unknown licenses
 
      Examples: EPV
      | ecosystem  | package             | version   | recommended-version | cve              | score |
-     | npm        | lodash              | 4.17.2    | 4.17.11             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.3    | 4.17.11             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.4    | 4.17.11             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.5    | 4.17.11             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.9    | 4.17.11             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.10   | 4.17.11             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.2    | 4.17.15             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.3    | 4.17.15             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.4    | 4.17.15             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.5    | 4.17.15             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.9    | 4.17.15             | CVE-2018-16487   | 7.5   |
+     | npm        | lodash              | 4.17.10   | 4.17.15             | CVE-2018-16487   | 7.5   |
      | maven      | io.vertx:vertx-core | 3.5.3     | 3.7.1               | CVE-2018-12541   | 5.0   |
      | maven      | io.vertx:vertx-core | 3.5.3.CR1 | 3.7.1               | CVE-2018-12541   | 5.0   |
      | maven      | io.vertx:vertx-core | 3.5.2     | 3.7.1               | CVE-2018-12541   | 5.0   |
