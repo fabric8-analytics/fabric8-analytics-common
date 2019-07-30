@@ -13,8 +13,8 @@ from src.utils import split_comma_separated_list
 from src.json_utils import check_id_value_in_json_response
 from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization, authorization_with_eco_origin
-from src.stack_analysis_common import contains_alternate_node
-from src.stack_analysis_common import get_json_data
+from src.stack_analysis_common import contains_alternate_node, stack_analysis_endpoint
+from src.stack_analysis_common import get_components_with_cve, get_json_data
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -134,20 +134,6 @@ def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, end
                                          context, ecosystem, origin))
 
 
-def stack_analysis_endpoint(context, version):
-    """Return endpoint for the stack analysis of selected version."""
-    # Two available endpoints for stack analysis are /stack-analyses and /analyse
-    # /analyse endpoint was developed to meet the performance norms at production
-    endpoints = ["/api/v1/stack-analyses-v1",
-                 "/api/v1/analyse",
-                 "/api/v1/stack-analyses/"]
-
-    if version < 1 or version > len(endpoints):
-        raise Exception("Wrong version specified: {v}".format(v=version))
-
-    endpoint = endpoints[version - 1]
-
-    return urljoin(context.coreapi_url, endpoint)
 
 
 @when("I send NPM package manifest {manifest} to stack analysis")
