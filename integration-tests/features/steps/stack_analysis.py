@@ -14,6 +14,7 @@ from src.json_utils import check_id_value_in_json_response
 from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization, authorization_with_eco_origin
 from src.stack_analysis_common import contains_alternate_node
+from src.stack_analysis_common import get_json_data
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -266,7 +267,7 @@ def check_frequency_count(usage_outliers, package_name):
 @then('I should find the proper outlier record for the {component} component')
 def stack_analysis_check_outliers(context, component):
     """Check the outlier record in the stack analysis."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     check_frequency_count(usage_outliers, component)
@@ -275,7 +276,7 @@ def stack_analysis_check_outliers(context, component):
 @then('I should find that total {count} outliers are reported')
 def check_outlier_count(context, count=2):
     """Check the number of outliers in the stack analysis."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     assert len(usage_outliers) == int(count)
@@ -284,7 +285,7 @@ def check_outlier_count(context, count=2):
 @then('I should find that valid outliers are reported')
 def check_outlier_validity(context):
     """Check the outlier validity in the stack analysis."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     path = "result/0/recommendation/usage_outliers"
     usage_outliers = get_value_using_path(json_data, path)
     for usage_outlier in usage_outliers:
@@ -295,7 +296,7 @@ def check_outlier_validity(context):
 @then('I should find that greater than {min_count} companions are reported')
 def check_companion_count(context, min_count=0):
     """Check that we have more than min_count companions."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     path = "result/0/recommendation/companion"
     companions = get_value_using_path(json_data, path)
     assert len(companions) > int(min_count)
@@ -331,7 +332,7 @@ def check_licenses(licenses, expected_licenses):
 def stack_analysis_check_licenses(context, licenses, path):
     """Check the license(s) in the stack analysis."""
     licenses = split_comma_separated_list(licenses)
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     node = get_value_using_path(json_data, path)
     assert node is not None
     check_licenses(node, licenses)
@@ -359,7 +360,7 @@ def get_companion_packages(json_data):
 @then('I should find that none analyzed package can be found in companion packages as well')
 def stack_analysis_check_companion_packages(context):
     """Check that the analyze packages and companion packages has no common item(s)."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
 
     # those two lists should have no element in common
     analyzed_packages = get_analyzed_packages(json_data)
@@ -374,7 +375,7 @@ def stack_analysis_check_companion_packages(context):
 @then('I should get {field_name} field in stack report')
 def verify_stack_level_field_presence_in_stack_report(context, field_name):
     """Check that the given field can be found in the stack report."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     path = 'result/0/user_stack_info'
     user_stack_info = get_value_using_path(json_data, path)
     assert user_stack_info.get(field_name, None) is not None
@@ -383,7 +384,7 @@ def verify_stack_level_field_presence_in_stack_report(context, field_name):
 @then('I should find {field_name} field in recommendation')
 def verify_stack_level_field_presence_in_recommendation(context, field_name):
     """Check that the given field can be found in the recommendation."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     path = 'result/0/recommendation'
     recommendation = get_value_using_path(json_data, path)
     assert recommendation.get(field_name, None) is not None
@@ -412,7 +413,7 @@ def find_replacements(alternates, component, version):
       'component {replaced_by} version {replacement_version}')
 def stack_analysis_check_replaces(context, component, version, replaced_by, replacement_version):
     """Check that the component is replaced by the given package and version."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     path = "result/0/recommendation/alternate"
     alternates = get_value_using_path(json_data, path)
     replacements = find_replacements(alternates, component, version)
@@ -432,7 +433,7 @@ def stack_analysis_check_replaces(context, component, version, replaced_by, repl
       '{expected_replacements:d} replacements')
 def stack_analysis_check_replaces_count(context, component, version, expected_replacements=1):
     """Check that the component is replaced only once in the alternate analysis."""
-    json_data = context.response.json()
+    json_data = get_json_data(context)
     path = "result/0/recommendation/alternate"
     alternates = get_value_using_path(json_data, path)
     replacements = find_replacements(alternates, component, version)
@@ -487,9 +488,7 @@ def perform_alternate_components_validation(json_data):
 @then('I should find that alternate components replace user components')
 def stack_analysis_validate_alternate_components(context):
     """Check that all alternate components replace user components."""
-    json_data = context.response.json()
-    assert json_data is not None, \
-        "JSON response from the previous request does not exist"
+    json_data = get_json_data(context)
     perform_alternate_components_validation(json_data)
 
 
@@ -504,8 +503,7 @@ def check_cvss_value(cvss):
 
 def check_security_node(context, path):
     """Check the content of security node."""
-    json_data = context.response.json()
-    assert json_data is not None
+    json_data = get_json_data(context)
 
     components = get_value_using_path(json_data, path)
     assert components is not None
@@ -536,8 +534,7 @@ def stack_analysis_check_security_node_for_alternate_components(context):
 
 def get_analyzed_components(context):
     """Return all analyzed components from the deserialized JSON file."""
-    json_data = context.response.json()
-    assert json_data is not None
+    json_data = get_json_data(context)
 
     path = "result/0/user_stack_info/analyzed_dependencies"
     components = get_value_using_path(json_data, path)
@@ -588,10 +585,9 @@ def check_security_issue_nonexistence(context, package):
       'analysis')
 def check_dependency(context, package, version):
     """Check for the existence of dependency for given package."""
-    jsondata = context.response.json()
-    assert jsondata is not None
+    json_data = get_json_data(context)
     path = "result/0/user_stack_info/dependencies"
-    dependencies = get_value_using_path(jsondata, path)
+    dependencies = get_value_using_path(json_data, path)
     assert dependencies is not None
     for dependency in dependencies:
         if dependency["package"] == package \
@@ -606,10 +602,9 @@ def check_dependency(context, package, version):
       'analysis')
 def check_analyzed_dependency(context, package, version):
     """Check for the existence of analyzed dependency for given package."""
-    jsondata = context.response.json()
-    assert jsondata is not None
+    json_data = get_json_data(context)
     path = "result/0/user_stack_info/analyzed_dependencies"
-    analyzed_dependencies = get_value_using_path(jsondata, path)
+    analyzed_dependencies = get_value_using_path(json_data, path)
     assert analyzed_dependencies is not None
     for analyzed_dependency in analyzed_dependencies:
         if analyzed_dependency["name"] == package \
@@ -623,11 +618,10 @@ def check_analyzed_dependency(context, package, version):
 @then('I should find the following dependencies ({packages}) in the stack analysis')
 def check_all_dependencies(context, packages):
     """Check all dependencies in the stack analysis."""
+    json_data = get_json_data(context)
     packages = split_comma_separated_list(packages)
-    jsondata = context.response.json()
-    assert jsondata is not None
     path = "result/0/user_stack_info/dependencies"
-    analyzed_dependencies = get_value_using_path(jsondata, path)
+    analyzed_dependencies = get_value_using_path(json_data, path)
     assert analyzed_dependencies is not None
     dependencies = get_attribute_values(analyzed_dependencies, "package")
     for package in packages:
@@ -638,11 +632,10 @@ def check_all_dependencies(context, packages):
 @then('I should find the following analyzed dependencies ({packages}) in the stack analysis')
 def check_all_analyzed_dependencies(context, packages):
     """Check all analyzed dependencies in the stack analysis."""
+    json_data = get_json_data(context)
     packages = split_comma_separated_list(packages)
-    jsondata = context.response.json()
-    assert jsondata is not None
     path = "result/0/user_stack_info/analyzed_dependencies"
-    analyzed_dependencies = get_value_using_path(jsondata, path)
+    analyzed_dependencies = get_value_using_path(json_data, path)
     assert analyzed_dependencies is not None
     dependencies = get_attribute_values(analyzed_dependencies, "name")
     for package in packages:
@@ -654,10 +647,9 @@ def check_all_analyzed_dependencies(context, packages):
 @then("I should find at least {expected:n} dependencies")
 def check_dependencies_count(context, expected=1):
     """Check number of dependencies."""
-    jsondata = context.response.json()
-    assert jsondata is not None
+    json_data = get_json_data(context)
     path = "result/0/user_stack_info/dependencies"
-    dependencies_count = len(get_value_using_path(jsondata, path))
+    dependencies_count = len(get_value_using_path(json_data, path))
     assert dependencies_count >= expected, \
         "Found only {} dependencies, but at least {} is expected".format(
             dependencies_count, expected)
@@ -667,10 +659,9 @@ def check_dependencies_count(context, expected=1):
 @then("I should find at least {expected:n} analyzed dependencies")
 def check_analyzed_dependencies_count(context, expected=1):
     """Check number of analyzed dependencies."""
-    jsondata = context.response.json()
-    assert jsondata is not None
+    json_data = get_json_data(context)
     path = "result/0/user_stack_info/analyzed_dependencies_count"
-    analyzed_dependencies_count = get_value_using_path(jsondata, path)
+    analyzed_dependencies_count = get_value_using_path(json_data, path)
     assert analyzed_dependencies_count >= expected, \
         "Found only {} analyzed dependencies, but at least {} is expected".format(
             analyzed_dependencies_count, expected)
@@ -680,10 +671,9 @@ def check_analyzed_dependencies_count(context, expected=1):
 @then("I should find exactly {expected:n} really unknown dependencies")
 def check_unknown_dependencies_count_exact_check(context, expected=1):
     """Check number of really unknown dependencies (for specific manifests)."""
-    jsondata = context.response.json()
-    assert jsondata is not None
+    json_data = get_json_data(context)
     path = "result/0/user_stack_info/unkwnown_dependencies_count"
-    unknown_dependencies_count = get_value_using_path(jsondata, path)
+    unknown_dependencies_count = get_value_using_path(json_data, path)
     assert unknown_dependencies_count == expected, \
         "Found {} unknown dependencies, but {} is expected".format(
             unknown_dependencies_count, expected)
@@ -692,10 +682,9 @@ def check_unknown_dependencies_count_exact_check(context, expected=1):
 @then("I should find no more than {expected:n} unknown dependencies")
 def check_unknown_dependencies_count(context, expected):
     """Check number of unknown dependencies."""
-    jsondata = context.response.json()
-    assert jsondata is not None
+    json_data = get_json_data(context)
     path = "result/0/user_stack_info/unknown_dependencies_count"
-    unknown_dependencies_count = get_value_using_path(jsondata, path)
+    unknown_dependencies_count = get_value_using_path(json_data, path)
     assert unknown_dependencies_count <= expected, \
         "Found {} unknown dependencies, but at most {} is expected".format(
             unknown_dependencies_count, expected)
