@@ -14,7 +14,7 @@ from src.json_utils import check_id_value_in_json_response
 from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization, authorization_with_eco_origin
 from src.stack_analysis_common import contains_alternate_node, stack_analysis_endpoint
-from src.stack_analysis_common import get_components_with_cve, get_json_data
+from src.stack_analysis_common import check_frequency_count, get_json_data
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -134,8 +134,6 @@ def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, end
                                          context, ecosystem, origin))
 
 
-
-
 @when("I send NPM package manifest {manifest} to stack analysis")
 @when("I send NPM package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send NPM package manifest {manifest} to stack analysis version {version:d}")
@@ -218,36 +216,6 @@ def check_stack_analyses_response(context, url):
     # ensure that the response is in accordance to the Stack Analyses schema
     schema = requests.get(resp_json["schema"]["url"]).json()
     jsonschema.validate(resp_json, schema)
-
-
-def check_frequency_count(usage_outliers, package_name):
-    """Check the frequency count attribute.
-
-    Try to find frequency count value for given package and check that
-    the value is within permitted range.
-    """
-    frequency_count_attribute = "frequency_count"
-
-    for usage_outlier in usage_outliers:
-        if usage_outlier["package_name"] == package_name:
-            assert frequency_count_attribute in usage_outlier, \
-                "'%s' attribute is expected in the node, " \
-                "found: %s attributes " % (frequency_count_attribute,
-                                           ", ".join(usage_outlier.keys()))
-            value = usage_outlier[frequency_count_attribute]
-            assert value is not None, \
-                "Value of '%s' attribute should be set, but it is null" % frequency_count_attribute
-            try:
-                v = int(value)
-                # check if the value represents non-negative integer
-                assert v >= 0, \
-                    "frequency_count must represent non-negative integer" \
-                    "found %f value instead" % (v)
-            except ValueError:
-                raise Exception("Invalid value {v} found in {a} attribute for the package {p}".
-                                format(v=value, a=frequency_count_attribute, p=package_name))
-            return
-    raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
 
 
 @then('I should find the proper outlier record for the {component} component')
