@@ -15,6 +15,7 @@ from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization, authorization_with_eco_origin
 from src.stack_analysis_common import contains_alternate_node, stack_analysis_endpoint
 from src.stack_analysis_common import check_frequency_count, get_json_data
+from src.stack_analysis_common import get_components_with_cve
 
 
 STACK_ANALYSIS_CONSTANT_FILE_URL = "https://raw.githubusercontent.com/" \
@@ -716,6 +717,22 @@ def check_stack_analysis_duration_in_minutes(context, duration):
     """Check the stack analysis duration when the duration is specified in minutes."""
     # just use the existing code, with different units
     check_stack_analysis_duration_in_seconds(context, duration * 60)
+
+
+@then('I should find a recommended version when a CVE is found')
+def check_recommended_version_for_cve(context):
+    """Check that all E/P/V with CVE detected also have recommended versions."""
+    # retrieve all components
+    components = get_analyzed_components(context)
+
+    # retrieve components with CVE record(s)
+    components_with_cve = get_components_with_cve(components)
+
+    # check if at least one recommendation is found for a component with CVE
+    for component_with_cve in components_with_cve:
+        check_attribute_presence(component_with_cve, "recommended_latest_version")
+        recommended = component_with_cve["recommended_latest_version"]
+        assert len(recommended) >= 1
 
 
 @then('I should find matching topic lists for all {key} components')
