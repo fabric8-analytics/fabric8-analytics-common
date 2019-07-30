@@ -1,6 +1,14 @@
 """Common functions used to test stack analysis API."""
 
 
+def get_json_data(context):
+    """Retrieve JSON data."""
+    json_data = context.response.json()
+    assert json_data is not None, \
+        "JSON response from the previous request does not exist"
+    return json_data
+
+
 def get_result_from_payload(json_resp):
     """Try to get result node from the payload."""
     assert json_resp is not None
