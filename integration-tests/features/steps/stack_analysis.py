@@ -721,8 +721,7 @@ def check_stack_analysis_duration_in_minutes(context, duration):
 
 @then('I should find a recommended version when a CVE is found')
 def check_recommended_version_for_cve(context):
-    json_data = get_json_data(context)
-
+    """Check that all E/P/V with CVE detected also have recommended versions."""
     # retrieve all components
     components = get_analyzed_components(context)
 
