@@ -25,7 +25,7 @@ from auth import retrieve_access_token
 # The following endpoint is used to get the access token from OSIO AUTH service
 _AUTH_ENDPOINT = "/api/token/refresh"
 
-DEFAULT_INPUT_FILE = "scenarios.csv"
+DEFAULT_INPUT_FILE_NAME = "scenarios.csv"
 
 
 def add_slash(url):
