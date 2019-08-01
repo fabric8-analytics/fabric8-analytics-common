@@ -51,12 +51,12 @@ def check_number_of_results(queue_size, component_analysis_count, stack_analysis
             n=expected - queue_size))
 
 
-def component_analysis_benchmark(queue, threads, component_analysis, thread_count,
-                                 python_payload, maven_payload, npm_payload):
-    """Component analysis benchmark."""
-    g_python = ComponentGenerator().generator_for_ecosystem("pypi")
-    g_maven = ComponentGenerator().generator_for_ecosystem("maven")
-    g_npm = ComponentGenerator().generator_for_ecosystem("npm")
+def prepare_component_generators(python_payload, maven_payload, npm_payload):
+    """Prepare all required component generators for selected payload types."""
+    component_generator = ComponentGenerator()
+    g_python = component_generator.generator_for_ecosystem("pypi")
+    g_maven = component_generator.generator_for_ecosystem("maven")
+    g_npm = component_generator.generator_for_ecosystem("npm")
     generators = []
 
     if python_payload:
@@ -66,10 +66,22 @@ def component_analysis_benchmark(queue, threads, component_analysis, thread_coun
     if npm_payload:
         generators.append(g_npm)
 
-    # don't start the generators from the 1st item
+    return generators
+
+
+def initialize_generators(generators):
+    """Initialize the generators randomly so we don't start from the 1st item."""
     for i in range(randint(10, 100)):
         for g in generators:
             next(g)
+
+
+def component_analysis_benchmark(queue, threads, component_analysis, thread_count,
+                                 python_payload, maven_payload, npm_payload):
+    """Component analysis benchmark."""
+    generators = prepare_component_generators(python_payload, maven_payload, npm_payload)
+
+    initialize_generators(generators)
 
     for t in range(thread_count):
         g = generators[randint(0, len(generators) - 1)]
