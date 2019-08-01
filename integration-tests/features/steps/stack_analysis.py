@@ -165,7 +165,7 @@ def python_manifest_stack_analysis(context, manifest, version=3, token="without"
 def process_deps_file_from_origin(context, ecosystem, manifest, origin, version=3):
     """Test stack analyses of an ecosystem specific dependencies file from an integration point."""
     endpoint = stack_analysis_endpoint(context, version)
-    test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, endpoint)
+    test_stack_analyses_with_deps_file(context, ecosystem.lower(), manifest, origin, endpoint)
 
 
 @when("I send Maven package manifest {manifest} to stack analysis")
