@@ -25,7 +25,7 @@ from auth import retrieve_access_token
 # The following endpoint is used to get the access token from OSIO AUTH service
 _AUTH_ENDPOINT = "/api/token/refresh"
 
-DEFAULT_INPUT_FILE = "scenarios.csv"
+DEFAULT_INPUT_FILE_NAME = "scenarios.csv"
 
 
 def add_slash(url):
@@ -71,7 +71,7 @@ def enabled_disabled(b):
     return "enabled" if b else "disabled"
 
 
-def get_access_token(dry_run, refresh_token, license_service_url):
+def get_access_token_from_refresh_token(dry_run, refresh_token, license_service_url):
     """Get the access token if possible."""
     if not dry_run:
         log.info("Auth. token generation")
@@ -108,15 +108,31 @@ def user_key_as_str(refresh_token):
     return refresh_token if refresh_token else "not set"
 
 
+def get_input_file(cli_arguments):
+    """Retrieve the input file name."""
+    return cli_arguments.input or DEFAULT_INPUT_FILE_NAME
+
+
+def get_access_token(api_token, user_key, dry_run, refresh_token, license_service_url):
+    """Get the access token, but only when user_key is not set."""
+    if api_token is not None:
+        return api_token
+    elif user_key is None:
+        return get_access_token_from_refresh_token(dry_run, refresh_token, license_service_url)
+    else:
+        return None
+
+
 def setup(cli_arguments):
     """Perform BAF setup."""
     log.info("Setup")
 
     refresh_token = None
     api_token = None
+    access_token = None
 
     with log.indent():
-        input_file = cli_arguments.input or DEFAULT_INPUT_FILE
+        input_file = get_input_file(cli_arguments)
         dry_run = cli_arguments.dry
         tags = parse_tags(cli_arguments.tags)
 
@@ -141,12 +157,8 @@ def setup(cli_arguments):
         log.info("User key:         " + user_key_as_str(user_key))
         log.success("Success")
 
-    if api_token is not None:
-        access_token = api_token
-    elif user_key is None:
-        access_token = get_access_token(dry_run, refresh_token, license_service_url)
-    else:
-        access_token = None
+    access_token = get_access_token(api_token, user_key, dry_run, refresh_token,
+                                    license_service_url)
 
     return {"access_token": access_token,
             "user_key": user_key,
