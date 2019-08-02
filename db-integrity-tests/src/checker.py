@@ -39,6 +39,11 @@ class Checker:
         status = self.check_and_get_attribute(data, "status")
         assert status in ["success", "error"]
 
+    def is_string(self, attribute):
+        """Check if given attribute is a string."""
+        assert attribute is not None
+        assert isinstance(attribute, str)
+
     def check_timestamp(self, timestamp):
         """Check if the string contains proper timestamp value.
 
@@ -48,8 +53,7 @@ class Checker:
         2017-07-19 13:05:25
         2017-07-17T09:05:29
         """
-        assert timestamp is not None
-        assert isinstance(timestamp, str)
+        self.is_string(timestamp)
 
         # some attributes contains timestamp without the millisecond part
         # so we need to take care of it
