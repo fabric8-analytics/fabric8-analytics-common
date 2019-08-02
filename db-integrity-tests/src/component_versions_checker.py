@@ -87,6 +87,31 @@ class ComponentVersionsChecker(Checker):
         versions = directories | version_jsons
         return directories, version_jsons, versions, metadata_list
 
+    def check_data_exist(self, data):
+        """Check that the given data exists."""
+        assert data, "N/A"
+
+    def compare_ecosystems(self, actual_ecosystem):
+        """Compare two ecosystems: the setup ecosystem with the actual one."""
+        assert self.ecosystem is not None, "Missing ecosystem to compare"
+        assert actual_ecosystem is not None, "Missing ecosystem to compare"
+        assert self.ecosystem == actual_ecosystem, "Ecosystem {e1} differs from expected " \
+            "ecosystem {e2}".format(e1=actual_ecosystem, e2=self.ecosystem)
+
+    def compare_packages(self, actual_package):
+        """Compare two packages: the setup package with the actual one."""
+        assert self.package_name is not None, "Missing package to compare"
+        assert actual_package is not None, "Missing package to compare"
+        assert self.package_name == actual_package, "Package {p1} differs from expected " \
+            "package {p2}".format(p1=actual_package, p2=self.package_name)
+
+    def compare_versions(self, actual_version):
+        """Compare two versions: the setup version with the actual one."""
+        assert self._version is not None, "Missing version to compare"
+        assert actual_version is not None, "Missing version to compare"
+        assert self._version == actual_version, "Version {v1} differs from expected " \
+            "version {v2}".format(v1=actual_version, v2=self._version)
+
     def check_core_data(self):
         """Check the component core data read from the AWS S3 database.
 
@@ -119,7 +144,7 @@ class ComponentVersionsChecker(Checker):
         """
         try:
             data = self.read_core_metadata()
-            assert data, "N/A"
+            self.check_data_exist(data)
             started_at = self.check_and_get_attribute(data, "started_at")
             self.check_timestamp(started_at)
 
@@ -127,17 +152,13 @@ class ComponentVersionsChecker(Checker):
             self.check_timestamp(finished_at)
 
             actual_ecosystem = self.check_and_get_attribute(data, "ecosystem")
-
-            assert self.ecosystem == actual_ecosystem, "Ecosystem {e1} differs from expected " \
-                "ecosystem {e2}".format(e1=actual_ecosystem, e2=self.ecosystem)
+            self.compare_ecosystems(self, actual_ecosystem)
 
             actual_package = self.check_and_get_attribute(data, "package")
-            assert self.package_name == actual_package, "Package {p1} differs from expected " \
-                "package {p2}".format(p1=actual_package, p2=self.package_name)
+            self.compare_packages(self, actual_package)
 
             actual_version = self.check_and_get_attribute(data, "version")
-            assert self._version == actual_version, "Version {v1} differs from expected " \
-                "version {v2}".format(v1=actual_version, v2=self._version)
+            self.compare_versions(self, actual_version)
 
             # the following attributes are expected to be presented for all component
             # toplevel metadata
@@ -245,7 +266,7 @@ class ComponentVersionsChecker(Checker):
         """Check the content of package version metadata taken from metadata.json."""
         try:
             data = self.read_metadata("metadata")
-            assert data, "N/A"
+            self.check_data_exist(data)
             self.check_audit_metadata(data)
             self.check_release_attribute(data)
             self.check_status_attribute(data)
@@ -264,7 +285,7 @@ class ComponentVersionsChecker(Checker):
         """Check the content of package version metadata taken from security_issues.json."""
         try:
             data = self.read_metadata("security_issues")
-            assert data, "N/A"
+            self.check_data_exist(data)
             self.check_audit_metadata(data)
             self.check_release_attribute(data)
             self.check_status_attribute(data)
