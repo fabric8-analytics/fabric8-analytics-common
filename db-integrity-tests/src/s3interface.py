@@ -155,7 +155,7 @@ class S3Interface():
         """Return list of all ecosystems from core-data bucket."""
         return self.read_ecosystems_from_bucket("bayesian-core-data")
 
-    def update_ecosystem_name(ecosystem):
+    def update_ecosystem_name(self, ecosystem):
         """Update the name of ecosystem to be in standard normalized format."""
         if not ecosystem.endswith("/"):
             ecosystem += "/"
@@ -163,7 +163,7 @@ class S3Interface():
 
     def read_packages_from_bucket_for_ecosystem(self, ecosystem, bucket_name):
         """Return list of all packages found for the selected ecosystem."""
-        ecosystem = update_ecosystem_name(ecosystem)
+        ecosystem = self.update_ecosystem_name(ecosystem)
         bucket = self.s3_resource.Bucket(self.full_bucket_name(bucket_name))
 
         # parameters to be passed to list_objects_v2 method
@@ -195,7 +195,7 @@ class S3Interface():
         """Return list of all packages for the selected ecosystem."""
         return self.read_packages_from_bucket_for_ecosystem(ecosystem, "bayesian-core-data")
 
-    def get_json_files(contents):
+    def get_json_files(self, contents):
         """Get JSON file names from the S3 content."""
         return [o["Key"] for o in contents]
 
@@ -207,7 +207,7 @@ class S3Interface():
         bucket = self.s3_resource.Bucket(bucket_name)
         result = bucket.meta.client.list_objects_v2(Bucket=bucket.name, Prefix=prefix)
         contents = result["Contents"]
-        json_files = get_json_files(contents)
+        json_files = self.get_json_files(contents)
         if update_names:
             return [json_file[json_file.rfind("/") + 1:] for json_file in json_files]
         elif remove_prefix:
