@@ -1,16 +1,36 @@
 """Helper functions to run external tools like Pylint, docstyle checker etc."""
 
 import os
+import os.path
 from fastlog import log
+
+
+def path_to_qa_file(repository, filename):
+    """Find the directory where the given QA file is stored."""
+    # currently, only two directories needs to be checked:
+    # 1) repository root directory
+    # 2) the QA subdirectory
+    in_root_dir = os.path.isfile("repositories/{repo}/{filename}".format(
+                                 repo=repository, filename=filename))
+    in_qa_dir = os.path.isfile("repositories/{repo}/qa/{filename}".format(
+                                 repo=repository, filename=filename))
+    if in_root_dir:
+        return "./{filename}".format(filename=filename)
+    elif in_qa_dir:
+        return "./qa/{filename}".format(filename=filename)
+    else:
+        # passthru
+        return "./{filename}".format(filename=filename)
 
 
 def run_pylint(repository):
     """Run Pylint checker against the selected repository."""
     with log.indent():
         log.info("Running Pylint for the repository " + repository)
+        script = path_to_qa_file(repository, "run-linter.sh")
         command = ("pushd repositories/{repo} >> /dev/null;" +
-                   "./run-linter.sh > ../../{repo}.linter.txt;" +
-                   "popd >> /dev/null").format(repo=repository)
+                   "{script} > ../../{repo}.linter.txt;" +
+                   "popd >> /dev/null").format(repo=repository, script=script)
         os.system(command)
         log.success("Done")
 
@@ -19,10 +39,11 @@ def run_docstyle_check(repository):
     """Run PyDocsStyle checker against the selected repository."""
     with log.indent():
         log.info("Running DocStyle checker for the repository " + repository)
+        script = path_to_qa_file(repository, "check-docstyle.sh")
         command = ("pushd repositories/{repo} >> /dev/null;" +
-                   "./check-docstyle.sh > ../../{repo}.pydocstyle.txt;" +
+                   "{script} > ../../{repo}.pydocstyle.txt;" +
                    "popd >> /dev/null").format(
-            repo=repository)
+            repo=repository, script=script)
         os.system(command)
         log.success("Done")
 
@@ -69,9 +90,10 @@ def run_dead_code_detector(repository):
     """Run dead code detector tool against the selected repository."""
     with log.indent():
         log.info("Running dead code detector for the repository " + repository)
+        script = path_to_qa_file(repository, "detect-dead-code.sh")
         command = ("pushd repositories/{repo} >> /dev/null;" +
-                   "./detect-dead-code.sh > ../../{repo}.dead_code.txt;" +
-                   "popd >> /dev/null").format(repo=repository)
+                   "{script} > ../../{repo}.dead_code.txt;" +
+                   "popd >> /dev/null").format(repo=repository, script=script)
         os.system(command)
         log.success("Done")
 
@@ -80,8 +102,9 @@ def run_common_errors_detector(repository):
     """Run common issues detector tool against the selected repository."""
     with log.indent():
         log.info("Running common issues detector for the repository " + repository)
+        script = path_to_qa_file(repository, "detect-common-errors.sh")
         command = ("pushd repositories/{repo} >> /dev/null;" +
-                   "./detect-common-errors.sh > ../../{repo}.common_errors.txt;" +
-                   "popd >> /dev/null").format(repo=repository)
+                   "{script} > ../../{repo}.common_errors.txt;" +
+                   "popd >> /dev/null").format(repo=repository, script=script)
         os.system(command)
         log.success("Done")
