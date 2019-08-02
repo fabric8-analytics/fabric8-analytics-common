@@ -74,17 +74,20 @@ class Checker:
         # the ValueError exception is raised or not
         datetime.datetime.strptime(timestamp, timeformat)
 
-    def check_cve_value(self, cve, with_score=False):
-        """Check CVE values in CVE records."""
+    def get_cve_pattern(self, with_score):
+        """Return the pattern for matching CVE entry."""
         if with_score:
             # please note that in graph DB, the CVE entries have the following format:
             # CVE-2012-1150:5.0
             # don't ask me why, but the score is stored in one field together with ID itself
             # the : character is used as a separator
-            pattern = r"CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
+            return r"CVE-(\d{4})-\d{4,}:(\d+\.\d+)"
         else:
-            # the 'classis' CVE
-            pattern = r"CVE-(\d{4})-\d{4,}"
+            return r"CVE-(\d{4})-\d{4,}"
+
+    def check_cve_value(self, cve, with_score=False):
+        """Check CVE values in CVE records."""
+        pattern = self.get_cve_pattern(with_score)
 
         match = re.fullmatch(pattern, cve)
         assert match is not None, "Improper CVE number %s" % cve
