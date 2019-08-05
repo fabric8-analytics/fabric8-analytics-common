@@ -85,7 +85,7 @@ def start_analysis_for_component(context, ecosystem, component, version, token='
     """Start the component analysis.
 
     Start the analysis for given component and version in selected ecosystem.
-    Current API implementation returns just two HTTP codes:
+    Current API implementation returns several HTTP codes:
     200 OK : analysis is already finished
     202 ACCEPTED: analysis is not finished, might be planned (or not)
     400 BAD REQUST: unknown ecosystem etc. etc.
@@ -143,6 +143,21 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
         time.sleep(sleep_amount)
     else:
         raise Exception('Timeout waiting for the component analysis results')
+
+
+@when('I look at recent component analysis')
+def look_at_recent_component_analysis(context):
+    """Just dummy step to make test scenarios more readable."""
+    assert context is not None
+    json_data = context.response.json()
+    assert json_data is not None
+
+
+@when('I look at the component analysis duration')
+def look_at_component_analysis_duration(context):
+    """Just dummy step to make test scenarios more readable."""
+    assert context is not None
+    assert context.duration is not None
 
 
 @then('I should find no recommendations in the component analysis')
