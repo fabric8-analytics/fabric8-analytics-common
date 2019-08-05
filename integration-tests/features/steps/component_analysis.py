@@ -160,6 +160,28 @@ def look_at_component_analysis_duration(context):
     assert context.duration is not None
 
 
+@then('I should see that the component analysis duration is less than {duration:d} second')
+@then('I should see that the component analysis duration is less than {duration:d} seconds')
+def check_component_analysis_duration_in_seconds(context, duration):
+    """Check the component analysis duration when the duration is specified in seconds."""
+    # with very low probability, leap second might occur
+    assert context.duration > 0, \
+        "Duration is negative, it means that the leap second occured during component analysis"
+
+    # check if the measured duration is less than maximum expected threshold
+    assert context.duration < duration, \
+        "Component analysis duration is too long: {} seconds instead of {}".format(
+            duration, context.duration)
+
+
+@then('I should see that the duration is less than {duration:d} minute')
+@then('I should see that the duration is less than {duration:d} minutes')
+def check_component_analysis_duration_in_minutes(context, duration):
+    """Check the component analysis duration when the duration is specified in minutes."""
+    # just use the existing code, with different units
+    check_component_analysis_duration_in_seconds(context, duration * 60)
+
+
 @then('I should find no recommendations in the component analysis')
 def check_analyzed_no_reccomendation(context):
     """Check the number analyzed recommendations."""
