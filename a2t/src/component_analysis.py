@@ -167,18 +167,30 @@ class ComponentAnalysis(Api):
         assert v == version, "Unexpected version found {}".format(v)
         # TODO: add more thorough checks
 
-    def check_package_part(self, node, ecosystem, package):
-        """Self package part of E/P/V analysis response."""
-        package_node = node["package"]
-        assert "ecosystem" in package_node, "Package node does not contain attribute 'ecosystem'"
-        assert "name" in package_node, "Package node does not contain attribute 'node'"
-        assert len(package_node["ecosystem"]) >= 1, "Expecting at least one 'ecosystem' value"
-        assert len(package_node["name"]) >= 1, "Expecting at least one 'name' value"
+    def check_ecosystem(self, node):
+        """Check the 'ecosystem' attribute in a node."""
+        assert "ecosystem" in node, "Package node does not contain attribute 'ecosystem'"
+        assert len(node["ecosystem"]) >= 1, "Expecting at least one 'ecosystem' value"
+        # TODO: add more thorough checks
 
+    def check_name(self, node):
+        """Check the 'name' attribute in a node."""
+        assert "name" in node, "Package node does not contain attribute 'node'"
+        assert len(node["name"]) >= 1, "Expecting at least one 'name' value"
+        # TODO: add more thorough checks
+
+    def check_package_part(self, node, ecosystem, package):
+        """Self package part of E/P analysis response."""
+        package_node = node["package"]
+        # check the ecosystem and name attributes that are required for a package
+        self.check_ecosystem(package_node)
+        self.check_name(package_node)
+
+        # compare with expected values
         e = package_node["ecosystem"][0]
         p = package_node["name"][0]
-        assert e == ecosystem, "Unexpected ecosystem found {}".format(e)
-        assert p == package, "Unexpected component name found {}".format(p)
+        self.compare_ecosystems(e, ecosystem)
+        self.compare_packages(p, package)
 
     def check_pecosystem(self, node):
         """Check the 'pecosystem' attribute in a node."""
