@@ -145,6 +145,7 @@ class ComponentAnalysis(Api):
         assert "version" in node, "'version' node is expected"
         self.check_package_part(node, ecosystem, package)
         self.check_version_part(node, ecosystem, package, version)
+        # TODO: add more thorough checks
 
     def compare_ecosystems(self, e, ecosystem):
         """Compare two ecosystems: the setup one and the checked one."""
@@ -226,17 +227,22 @@ class ComponentAnalysis(Api):
         self.compare_packages(p, package)
         self.compare_versions(v, version)
 
+    def dump_response_if_enabled(self, ecosystem, component, version, response):
+        """Dump response gathered from server, but only if dumping is enabled."""
+        if self._dump_json_responses:
+            try:
+                self.dump_analysis(ecosystem, component, version, response.json())
+            except Exception:
+                self.print_error_response(response, "error")
+                # not need to fail there - we'll fail later properly
+
     def start(self, thread_id=None, ecosystem=None, component=None, version=None, queue=None):
         """Start the component analysis and check the status code."""
         start_time = time()
         endpoint = self.analysis_url(ecosystem, component, version)
         response = self.perform_get_request(endpoint)
 
-        if self._dump_json_responses:
-            try:
-                self.dump_analysis(ecosystem, component, version, response.json())
-            except Exception:
-                self.print_error_response(response, "error")
+        self.dump_response_if_enabled(ecosystem, component, version, response)
 
         status_code = response.status_code
         end_time = time()
