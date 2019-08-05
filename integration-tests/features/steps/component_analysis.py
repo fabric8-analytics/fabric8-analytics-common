@@ -61,6 +61,9 @@ def search_for_component_with_token(context, component):
       "{token} authorization token")
 def read_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Read component analysis (or an error message) for the selected ecosystem."""
+    context.duration = None
+    start_time = time.time()
+
     url = component_analysis_url(context, ecosystem, component, version)
 
     use_token = parse_token_clause(token)
@@ -69,6 +72,10 @@ def read_analysis_for_component(context, ecosystem, component, version, token='w
         context.response = requests.get(url, headers=authorization(context))
     else:
         context.response = requests.get(url)
+    end_time = time.time()
+    # compute the duration
+    # plase note that duration==None in case of any errors (which is to be expected)
+    context.duration = end_time - start_time
 
 
 @when("I start analysis for component {ecosystem}/{component}/{version}")
@@ -78,7 +85,7 @@ def start_analysis_for_component(context, ecosystem, component, version, token='
     """Start the component analysis.
 
     Start the analysis for given component and version in selected ecosystem.
-    Current API implementation returns just two HTTP codes:
+    Current API implementation returns several HTTP codes:
     200 OK : analysis is already finished
     202 ACCEPTED: analysis is not finished, might be planned (or not)
     400 BAD REQUST: unknown ecosystem etc. etc.
@@ -136,6 +143,43 @@ def finish_analysis_for_component(context, ecosystem, component, version, token=
         time.sleep(sleep_amount)
     else:
         raise Exception('Timeout waiting for the component analysis results')
+
+
+@when('I look at recent component analysis')
+def look_at_recent_component_analysis(context):
+    """Just dummy step to make test scenarios more readable."""
+    assert context is not None
+    json_data = context.response.json()
+    assert json_data is not None
+
+
+@when('I look at the component analysis duration')
+def look_at_component_analysis_duration(context):
+    """Just dummy step to make test scenarios more readable."""
+    assert context is not None
+    assert context.duration is not None
+
+
+@then('I should see that the component analysis duration is less than {duration:d} second')
+@then('I should see that the component analysis duration is less than {duration:d} seconds')
+def check_component_analysis_duration_in_seconds(context, duration):
+    """Check the component analysis duration when the duration is specified in seconds."""
+    # with very low probability, leap second might occur
+    assert context.duration > 0, \
+        "Duration is negative, it means that the leap second occured during component analysis"
+
+    # check if the measured duration is less than maximum expected threshold
+    assert context.duration < duration, \
+        "Component analysis duration is too long: {} seconds instead of {}".format(
+            duration, context.duration)
+
+
+@then('I should see that the duration is less than {duration:d} minute')
+@then('I should see that the duration is less than {duration:d} minutes')
+def check_component_analysis_duration_in_minutes(context, duration):
+    """Check the component analysis duration when the duration is specified in minutes."""
+    # just use the existing code, with different units
+    check_component_analysis_duration_in_seconds(context, duration * 60)
 
 
 @then('I should find no recommendations in the component analysis')
@@ -211,6 +255,22 @@ def check_analyzed_packages_count(context, num=1):
     check_attribute_presence(result, "data")
     data = result["data"]
     assert len(data) == num, "{} packages expected, but found {} instead".format(num, len(data))
+
+
+@then('I should find at least one analyzed package in the component analysis')
+@then('I should find at least {num:d} analyzed packages in the component analysis')
+def check_analyzed_packages_count_at_least(context, num=1):
+    """Check number of analyzed packages."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    check_attribute_presence(json_data, "result")
+    result = json_data["result"]
+
+    check_attribute_presence(result, "data")
+    data = result["data"]
+    assert len(data) >= num, \
+        "At least {} packages expected, but found {} instead".format(num, len(data))
 
 
 @then('I should find the package {package} from {ecosystem} ecosystem in the component analysis')
@@ -315,3 +375,44 @@ def check_component_analysis_nonexistence_in_any_ecosystem(context, component):
             ecosystem = search_result['ecosystem']
             raise Exception('Component {component} for ecosystem {ecosystem} was found'.
                             format(component=component, ecosystem=ecosystem))
+
+
+@then('I should find new recommended version in case the CVE is detected for an analyzed component')
+def check_recommended_version_if_cve_is_detected(context):
+    """Check the existence of recommended version in case the CVE is detected."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    check_attribute_presence(json_data, "result")
+    result = json_data["result"]
+
+    check_attribute_presence(result, "recommendation")
+    recommendation = result["recommendation"]
+
+    if "component_analyses" in recommendation:
+        assert "change_to" in recommendation, \
+            "The new version should be recommended for the component"
+
+
+@then('I should find CVE report in case the CVE is detected for an analyzed component')
+def check_cve_report_for_analyzed_component(context):
+    """Check the existence of CVE version in case the CVE is detected."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    check_attribute_presence(json_data, "result")
+    result = json_data["result"]
+
+    check_attribute_presence(result, "recommendation")
+    recommendation = result["recommendation"]
+
+    if "component_analyses" in recommendation:
+        component_analyses = recommendation["component-analyses"]
+
+        check_attribute_presence(component_analyses, "cve")
+        cves = component_analyses["cve"]
+        if len(cves) >= 1:
+            for c in cves:
+                check_attribute_presence(c, "id")
+                check_attribute_presence(c, "cvss")
+                check_cve_value(c["id"])
