@@ -115,6 +115,11 @@ def check_packages_in_ecosystem(s3interface, csvReporter, ecosystem):
                                       core_package_git_stats, core_package_leftovers)
 
 
+def check_metadata(all_jsons):
+    """Check the metadata read from S3."""
+    assert all_jsons
+
+
 def check_package_versions_in_ecosystem(s3interface, csvReporter, ecosystem):
     """Check all package versions in selected ecosystem."""
     packages = s3interface.read_packages_for_ecosystem(ecosystem)
@@ -126,7 +131,7 @@ def check_package_versions_in_ecosystem(s3interface, csvReporter, ecosystem):
     for package_name in packages:
         component_versions_checker = ComponentVersionsChecker(s3interface, ecosystem, package_name)
         all_jsons = component_versions_checker.read_metadata_list()
-        assert all_jsons
+        check_metadata(all_jsons)
         directories, version_jsons, versions, metadata_list = \
             component_versions_checker.read_versions()
 
