@@ -26,6 +26,10 @@ class S3Configuration:
         assert self.region_name, \
             "Please set up S3_REGION_NAME environment variable"
 
+        self.check_deployment_prefix()
+
+    def check_deployment_prefix(self):
+        """Check the deployment_prefix settings."""
         assert self.deployment_prefix, \
             "Please set up DEPLOYMENT_PREFIX environment variable"
 
