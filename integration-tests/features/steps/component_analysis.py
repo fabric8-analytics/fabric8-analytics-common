@@ -257,6 +257,22 @@ def check_analyzed_packages_count(context, num=1):
     assert len(data) == num, "{} packages expected, but found {} instead".format(num, len(data))
 
 
+@then('I should find at least one analyzed package in the component analysis')
+@then('I should find at least {num:d} analyzed packages in the component analysis')
+def check_analyzed_packages_count_at_least(context, num=1):
+    """Check number of analyzed packages."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    check_attribute_presence(json_data, "result")
+    result = json_data["result"]
+
+    check_attribute_presence(result, "data")
+    data = result["data"]
+    assert len(data) >= num, \
+        "At least {} packages expected, but found {} instead".format(num, len(data))
+
+
 @then('I should find the package {package} from {ecosystem} ecosystem in the component analysis')
 def check_analyzed_packages(context, package, ecosystem):
     """Check the package in component analysis."""
@@ -359,3 +375,44 @@ def check_component_analysis_nonexistence_in_any_ecosystem(context, component):
             ecosystem = search_result['ecosystem']
             raise Exception('Component {component} for ecosystem {ecosystem} was found'.
                             format(component=component, ecosystem=ecosystem))
+
+
+@then('I should find new recommended version in case the CVE is detected for an analyzed component')
+def check_recommended_version_if_cve_is_detected(context):
+    """Check the existence of recommended version in case the CVE is detected."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    check_attribute_presence(json_data, "result")
+    result = json_data["result"]
+
+    check_attribute_presence(result, "recommendation")
+    recommendation = result["recommendation"]
+
+    if "component_analyses" in recommendation:
+        assert "change_to" in recommendation, \
+            "The new version should be recommended for the component"
+
+
+@then('I should find CVE report in case the CVE is detected for an analyzed component')
+def check_cve_report_for_analyzed_component(context):
+    """Check the existence of CVE version in case the CVE is detected."""
+    context_reponse_existence_check(context)
+    json_data = context.response.json()
+
+    check_attribute_presence(json_data, "result")
+    result = json_data["result"]
+
+    check_attribute_presence(result, "recommendation")
+    recommendation = result["recommendation"]
+
+    if "component_analyses" in recommendation:
+        component_analyses = recommendation["component-analyses"]
+
+        check_attribute_presence(component_analyses, "cve")
+        cves = component_analyses["cve"]
+        if len(cves) >= 1:
+            for c in cves:
+                check_attribute_presence(c, "id")
+                check_attribute_presence(c, "cvss")
+                check_cve_value(c["id"])
