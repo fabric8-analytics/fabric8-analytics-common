@@ -146,6 +146,27 @@ class ComponentAnalysis(Api):
         self.check_package_part(node, ecosystem, package)
         self.check_version_part(node, ecosystem, package, version)
 
+    def compare_ecosystems(self, e, ecosystem):
+        """Compare two ecosystems: the setup one and the checked one."""
+        assert e is not None, "Missing ecosystem to compare"
+        assert ecosystem is not None, "Missing ecosystem to compare"
+        assert e == ecosystem, "Unexpected ecosystem found {}".format(e)
+        # TODO: add more thorough checks
+
+    def compare_packages(self, p, package):
+        """Compare two packages: the setup one and the checked one."""
+        assert p is not None, "Missing package to compare"
+        assert package is not None, "Missing package to compare"
+        assert p == package, "Unexpected component name found {}".format(p)
+        # TODO: add more thorough checks
+
+    def compare_versions(self, v, version):
+        """Compare two versions: the setup one and the checked one."""
+        assert v is not None, "Missing version to compare"
+        assert version is not None, "Missing version to compare"
+        assert v == version, "Unexpected version found {}".format(v)
+        # TODO: add more thorough checks
+
     def check_package_part(self, node, ecosystem, package):
         """Self package part of E/P/V analysis response."""
         package_node = node["package"]
@@ -159,22 +180,39 @@ class ComponentAnalysis(Api):
         assert e == ecosystem, "Unexpected ecosystem found {}".format(e)
         assert p == package, "Unexpected component name found {}".format(p)
 
+    def check_pecosystem(self, node):
+        """Check the 'pecosystem' attribute in a node."""
+        assert "pecosystem" in node, "Version node does not contain attribute 'pecosystem'"
+        assert len(node["pecosystem"]) >= 1, "Expecting at least one 'pecosystem' value"
+        # TODO: add more thorough checks
+
+    def check_pname(self, node):
+        """Check the 'pname' attribute in a node."""
+        assert "pname" in node, "Version node does not contain attribute 'pname'"
+        assert len(node["pname"]) >= 1, "Expecting at least one 'pname' value"
+        # TODO: add more thorough checks
+
+    def check_version(self, node):
+        """Check the 'version' attribute in a node."""
+        assert "version" in node, "Version node does not contain attribute 'version'"
+        assert len(node["version"]) >= 1, "Expecting at least one 'version' value"
+        # TODO: add more thorough checks
+
     def check_version_part(self, node, ecosystem, package, version):
         """Self version part of E/P/V analysis response."""
         version_node = node["version"]
-        assert "pecosystem" in version_node, "Version node does not contain attribute 'pecosystem'"
-        assert "pname" in version_node, "Version node does not contain attribute 'pname'"
-        assert "version" in version_node, "Version node does not contain attribute 'version'"
-        assert len(version_node["pecosystem"]) >= 1, "Expecting at least one 'pecosystem' value"
-        assert len(version_node["pname"]) >= 1, "Expecting at least one 'pname' value"
-        assert len(version_node["version"]) >= 1, "Expecting at least one 'version' value"
+        # check the ecosystem, version, and name attributes that are required for a version
+        self.check_pecosystem(version_node)
+        self.check_pname(version_node)
+        self.check_version(version_node)
 
+        # compare with expected values
         e = version_node["pecosystem"][0]
         p = version_node["pname"][0]
         v = version_node["version"][0]
-        assert e == ecosystem, "Unexpected ecosystem found {}".format(e)
-        assert p == package, "Unexpected name found {}".format(p)
-        assert v == version, "Unexpected version found {}".format(v)
+        self.compare_ecosystems(e, ecosystem)
+        self.compare_packages(p, package)
+        self.compare_versions(v, version)
 
     def start(self, thread_id=None, ecosystem=None, component=None, version=None, queue=None):
         """Start the component analysis and check the status code."""
