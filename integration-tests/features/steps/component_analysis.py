@@ -61,6 +61,9 @@ def search_for_component_with_token(context, component):
       "{token} authorization token")
 def read_analysis_for_component(context, ecosystem, component, version, token='without'):
     """Read component analysis (or an error message) for the selected ecosystem."""
+    context.duration = None
+    start_time = time.time()
+
     url = component_analysis_url(context, ecosystem, component, version)
 
     use_token = parse_token_clause(token)
@@ -69,6 +72,10 @@ def read_analysis_for_component(context, ecosystem, component, version, token='w
         context.response = requests.get(url, headers=authorization(context))
     else:
         context.response = requests.get(url)
+    end_time = time.time()
+    # compute the duration
+    # plase note that duration==None in case of any errors (which is to be expected)
+    context.duration = end_time - start_time
 
 
 @when("I start analysis for component {ecosystem}/{component}/{version}")
