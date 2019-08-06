@@ -352,11 +352,14 @@ def generate_quality_label_for_repository(repository, results):
     dead_code_perc = perc(files - dead_code, files)
     dead_code_mark = percentage_to_mark(dead_code_perc)
 
+    # we need to compute just the ranks from 'A' to 'F', not the overall status
     del cyclomatic_complexity["status"]
     cc_sum = sum(cyclomatic_complexity.values())
     cc_perc = perc(cyclomatic_complexity["A"], cc_sum)
     cc_mark = percentage_to_mark(cc_perc)
 
+    # we need to compute just the ranks from 'A' to 'C', not the overall status
+    del maintainability_index["status"]
     mi_sum = sum(maintainability_index.values())
     mi_perc = perc(maintainability_index["A"], mi_sum)
     mi_mark = percentage_to_mark(mi_perc)
