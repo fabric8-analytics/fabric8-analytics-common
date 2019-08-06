@@ -15,13 +15,13 @@ def measurement_log(thread_id, i, delta, measurement_count):
         print("    #{i}    {delta}".format(i=i + 1, delta=delta))
 
 
-def call_callback_function(function_to_call, s3):
+def call_callback_function(function_to_call, s3, i):
     """Call the specified callback function."""
     assert function_to_call is not None, "Callback function is not specified."
     if s3 is None:
-        retval = function_to_call(i)
+        return function_to_call(i)
     else:
-        retval = function_to_call(i, s3)
+        return function_to_call(i, s3)
 
 
 def measure(function_to_call, check_function, measurement_count, pause_time, thread_id, s3=None):
@@ -36,7 +36,7 @@ def measure(function_to_call, check_function, measurement_count, pause_time, thr
         t1 = time.time()
         started_at = datetime.datetime.utcnow()
 
-        call_callback_function(function_to_call, s3)
+        retval = call_callback_function(function_to_call, s3, i)
 
         print("Return value: ", retval)
 
