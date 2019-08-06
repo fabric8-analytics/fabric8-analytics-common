@@ -204,6 +204,16 @@ def check_number_of_results(queue_size, thread_count):
             n=thread_count - queue_size))
 
 
+def export_concurrent_benchmark_results(name_prefix, thread_counts,
+                                        summary_min_times, summary_max_times, summary_avg_times):
+    """Export concurrent benchmark results into a CSV file."""
+    with open(name_prefix + ".csv", "w") as csvfile:
+        csv_writer = csv.writer(csvfile)
+        for i in range(0, len(thread_counts)):
+            csv_writer.writerow([i, thread_counts[i],
+                                 summary_min_times[i], summary_max_times[i], summary_avg_times[i]])
+
+
 def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to_call,
                                       thread_counts=None):
     """Universal function to call any callback function in more threads and collect results."""
@@ -281,11 +291,8 @@ def run_analysis_concurrent_benchmark(api, s3, message, name_prefix, function_to
                                                   summary_max_times,
                                                   summary_avg_times)
 
-    with open(name_prefix + ".csv", "w") as csvfile:
-        csv_writer = csv.writer(csvfile)
-        for i in range(0, len(thread_counts)):
-            csv_writer.writerow([i, thread_counts[i],
-                                 summary_min_times[i], summary_max_times[i], summary_avg_times[i]])
+    export_concurrent_benchmark_results(name_prefix, thread_counts,
+                                        summary_min_times, summary_max_times, summary_avg_times)
 
 
 def run_component_analysis_concurrent_calls_benchmark(jobs_api, s3):
