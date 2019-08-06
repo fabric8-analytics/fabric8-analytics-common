@@ -103,6 +103,11 @@ class JobsApi(Api):
         print(response)
         print(response.json())
 
+    def dump_response_if_enabled(self, s3, bucket, key, ecosystem, package, version):
+        """Dump response gathered from server, but only if dumping is enabled."""
+        if self._dump_json_responses:
+            JobsApi.dump_job_data(s3, bucket, key, ecosystem, package, version)
+
     def wait_for_component_analysis(self, s3, ecosystem, package, version, thread_id=""):
         """Wait for the component analysis by looking at metadata stored in the S3 database."""
         timeout = 300 * 60
@@ -125,8 +130,7 @@ class JobsApi(Api):
                       "    ", current_date - start_time)
                 if delta.days == 0 and delta.seconds < sleep_amount * 2:
                     print("done!", thread_id, "   ", key)
-                    if self._dump_json_responses:
-                        JobsApi.dump_job_data(s3, bucket, key, ecosystem, package, version)
+                    self.dump_response_if_enabled(s3, bucket, key, ecosystem, package, version)
                     return True
             except ClientError:
                 print("No analyses yet (waiting for {t})".format(t=current_date - start_time))
