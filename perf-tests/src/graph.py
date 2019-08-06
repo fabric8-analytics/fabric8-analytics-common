@@ -57,6 +57,12 @@ def stacked_column(measurements, ind, ax, columndata, colors, width, offset):
     return column
 
 
+def compute_data_values(durations, selector):
+    """Compute core or package data values to be appended into the graph."""
+    return np.array([duration[selector]["overall"].duration_seconds
+                    for duration in durations.values()])
+
+
 def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
                                            height=DEFAULT_HEIGHT, dpi=DPI):
     """Create graph with component analysis timings."""
@@ -76,15 +82,13 @@ def create_component_analysis_timing_graph(durations, width=DEFAULT_WIDTH,
     fig, ax = plt.subplots(figsize=(1.0 * width / dpi, 1.0 * height / dpi), dpi=dpi)
 
     columndata = []
-    columndata.append(np.array([duration["core-data"]["overall"].duration_seconds
-                      for duration in durations.values()]))
+    columndata.append(compute_data_values(durations, "core-data"))
 
     columndata.append([np.array([seconds_for_analysis(duration, "core-data", selector)
                                 for duration in durations.values()])
                       for selector in component_selectors])
 
-    columndata.append(np.array([duration["core-package-data"]["overall"].duration_seconds
-                      for duration in durations.values()]))
+    columndata.append(compute_data_values(durations, "core-package-data"))
 
     columndata.append([np.array([seconds_for_analysis(duration, "core-package-data", selector)
                                 for duration in durations.values()])
