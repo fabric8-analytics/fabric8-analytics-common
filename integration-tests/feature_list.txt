@@ -7,6 +7,7 @@ features/server_api.feature
 # Not used in real production: features/component_search.feature
 features/components.feature
 features/component_analysis.feature
+features/component_analysis_smoke_tests.feature
 features/stack_analyses.feature
 features/stack_analyses_pypi_ecosystem.feature
 features/stack_analyses_pypi_ecosystem_pylist.feature
