@@ -352,6 +352,7 @@ def generate_quality_label_for_repository(repository, results):
     dead_code_perc = perc(files - dead_code, files)
     dead_code_mark = percentage_to_mark(dead_code_perc)
 
+    del cyclomatic_complexity["status"]
     cc_sum = sum(cyclomatic_complexity.values())
     cc_perc = perc(cyclomatic_complexity["A"], cc_sum)
     cc_mark = percentage_to_mark(cc_perc)
