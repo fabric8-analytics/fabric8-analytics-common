@@ -43,32 +43,36 @@ def stack_analysis_endpoint(context, version):
     return urljoin(context.coreapi_url, endpoint)
 
 
+def check_frequency_count_attribute(usage_outlier, package_name):
+    """Check one frequency count attribute."""
+    frequency_count_attribute = "frequency_count"
+    assert frequency_count_attribute in usage_outlier, \
+        "'%s' attribute is expected in the node, " \
+        "found: %s attributes " % (frequency_count_attribute,
+                                   ", ".join(usage_outlier.keys()))
+    value = usage_outlier[frequency_count_attribute]
+    assert value is not None, \
+        "Value of '%s' attribute should be set, but it is null" % frequency_count_attribute
+    try:
+        v = int(value)
+        # check if the value represents non-negative integer
+        assert v >= 0, \
+            "frequency_count must represent non-negative integer" \
+            "found %f value instead" % (v)
+    except ValueError:
+        raise Exception("Invalid value {v} found in {a} attribute for the package {p}".
+                        format(v=value, a=frequency_count_attribute, p=package_name))
+
+
 def check_frequency_count(usage_outliers, package_name):
     """Check the frequency count attribute.
 
     Try to find frequency count value for given package and check that
     the value is within permitted range.
     """
-    frequency_count_attribute = "frequency_count"
-
     for usage_outlier in usage_outliers:
         if usage_outlier["package_name"] == package_name:
-            assert frequency_count_attribute in usage_outlier, \
-                "'%s' attribute is expected in the node, " \
-                "found: %s attributes " % (frequency_count_attribute,
-                                           ", ".join(usage_outlier.keys()))
-            value = usage_outlier[frequency_count_attribute]
-            assert value is not None, \
-                "Value of '%s' attribute should be set, but it is null" % frequency_count_attribute
-            try:
-                v = int(value)
-                # check if the value represents non-negative integer
-                assert v >= 0, \
-                    "frequency_count must represent non-negative integer" \
-                    "found %f value instead" % (v)
-            except ValueError:
-                raise Exception("Invalid value {v} found in {a} attribute for the package {p}".
-                                format(v=value, a=frequency_count_attribute, p=package_name))
+            check_frequency_count_attribute(usage_outlier, package_name)
             return
     raise Exception("Can not find usage outlier for the package {p}".format(p=package_name))
 
