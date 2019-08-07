@@ -66,7 +66,7 @@ def filter_component_names(raw_npm_list):
                 if is_proper_component_name(component):
                     components.append(component)
                 else:
-                    print("Ingoring the following component:", component)
+                    print("Ignoring the following component:", component)
             except Exception as e:
                 print("Ignoring line:", line, "exception:", str(e))
     return components
