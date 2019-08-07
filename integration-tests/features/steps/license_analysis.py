@@ -392,6 +392,13 @@ def check_license_analysis_status_for_package_version(context, status, package, 
                                              "Wrong license analysis status has been reported")
 
 
+def check_license_presence(conflict_licenses, license):
+    """Check the presence of given license in set of conflict licenses."""
+    assert license in conflict_licenses, \
+        "The license {license} is expected in conflict_licenses {licenses}".format(
+            license=license, licenses=conflict_licenses)
+
+
 @then("I should find the {license} license in conflict licenses for the package " +
       "{package} version {version}")
 def check_license_analysis_conflicts_for_package_version(context, license, package, version):
@@ -406,9 +413,7 @@ def check_license_analysis_conflicts_for_package_version(context, license, packa
             license_analysis = check_and_get_attribute(p, "license_analysis")
             conflict_licenses_list = check_and_get_attribute(license_analysis, "conflict_licenses")
             for conflict_licenses in conflict_licenses_list:
-                assert license in conflict_licenses, \
-                    "The license {license} is expected in conflict_licenses {licenses}".format(
-                        license=license, licenses=conflict_licenses)
+                check_license_presence(conflict_licenses, license)
                 # are we here? -> we have found the expected attribute value in license analysis
                 # -> everything's fine
                 return
