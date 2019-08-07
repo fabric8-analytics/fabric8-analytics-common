@@ -185,6 +185,16 @@ def check_timestamp_for_all_packages_in_gremlin_response(context):
         test_last_updated_attribute(properties)
 
 
+def check_last_updated_value(comparison, value, remembered_time):
+    """Check the 'last_update' attribute for data item stored in Gremlin."""
+    if comparison == "older":
+        assert value < remembered_time, "The last_updated attribute is less than current time"
+    elif comparison == "newer":
+        assert value > remembered_time, "The last_updated attribute is higher than current time"
+    else:
+        raise Exception("Wrong 'comparison' argument in test step {}".format(comparison))
+
+
 @then('I should find that the package data is {comparison} than remembered time')
 def package_data_timestamp_comparison_with_remembered_time(context, comparison):
     """Check if the last_updated attribute is older or newer than remembered time.
@@ -198,10 +208,7 @@ def package_data_timestamp_comparison_with_remembered_time(context, comparison):
         properties = check_and_get_attribute(package, "properties")
         last_updated = check_and_get_attribute(properties, "last_updated")
         value = check_and_get_attribute(last_updated[0], "value")
-        if comparison == "older":
-            assert value < remembered_time
-        elif comparison == "newer":
-            assert value > remembered_time
+        check_last_updated_value(comparison, value, remembered_time)
 
 
 def get_results_from_gremlin(context):
