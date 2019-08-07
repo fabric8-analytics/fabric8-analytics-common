@@ -509,9 +509,14 @@ def test_cm_num_files(properties, expected_property=False):
         check_integer_property_value(properties, "cm_num_files")
 
 
+def perform_libio_property_check(expected_properties, properties, property_name):
+    """Return true if the selected Libio property should be checked."""
+    return expected_properties or property_name in properties
+
+
 def test_libio_related_properties(properties, expected_properties=False):
     """Check all properties related to Libraries.io."""
-    if expected_properties or "libio_latest_release" in properties:
+    if perform_libio_property_check(expected_properties, properties, "libio_latest_release"):
         check_float_property_value(properties, "libio_latest_release", lambda v: v >= 0.0)
 
     numeric_property_names = [
@@ -520,7 +525,7 @@ def test_libio_related_properties(properties, expected_properties=False):
         "libio_total_releases"
     ]
     for numeric_property_name in numeric_property_names:
-        if expected_properties or numeric_property_name in properties:
+        if perform_libio_property_check(expected_properties, properties, numeric_property_name):
             check_libio_number_property_value(properties, "libio_dependents_projects",
                                               lambda v: v >= -1)
 
