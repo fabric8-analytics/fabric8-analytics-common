@@ -62,13 +62,13 @@ def filter_component_names(raw_npm_list):
             try:
                 i1 = line.index("[")
                 i2 = line.index("]")
-                component = line[i1+1:i2]
+                component = line[i1 + 1:i2]
                 if is_proper_component_name(component):
                     components.append(component)
                 else:
                     print("Ingoring the following component:", component)
             except Exception as e:
-                print("Ignoring line:", line)
+                print("Ignoring line:", line, "exception:", str(e))
     return components
 
 
