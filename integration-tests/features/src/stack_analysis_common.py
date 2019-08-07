@@ -70,7 +70,6 @@ def check_frequency_count(usage_outliers, package_name):
     Try to find frequency count value for given package and check that
     the value is within permitted range.
     """
-
     for usage_outlier in usage_outliers:
         if usage_outlier["package_name"] == package_name:
             check_frequency_count_attribute(usage_outlier, package_name)
