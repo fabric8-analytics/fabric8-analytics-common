@@ -231,21 +231,26 @@ def check_valid_schema(context):
     validate_schema(data)
 
 
+def generate_data_for_user_feedback(is_valid):
+    """Generate data for generating user feedback."""
+    if is_valid == "valid":
+        return {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
+    elif is_valid == "invalid":
+        return {"foo": "x", "bar": "y", "baz": []}
+    elif is_valid == "incomplete":
+        return {"request_id": "test_id"}
+    elif is_valid == "empty":
+        return {}
+    else:
+        return None
+
+
 @when("I post {is_valid} input to the {endpoint} endpoint {token} authorization token")
 def post_input_to_user_feedback(context, is_valid, endpoint, token):
     """Send feedback to user feedback endpoint."""
     use_token = parse_token_clause(token)
     api_url = urljoin(context.coreapi_url, endpoint)
-    if is_valid == "valid":
-        data = {"request_id": "test_id", "feedback": [{"ques": "what", "ans": "got it"}]}
-    elif is_valid == "invalid":
-        data = {"foo": "x", "bar": "y", "baz": []}
-    elif is_valid == "incomplete":
-        data = {"request_id": "test_id"}
-    elif is_valid == "empty":
-        data = {}
-    else:
-        data = None
+    data = generate_data_for_user_feedback(is_valid)
     if use_token:
         response = requests.post(api_url, json=data,
                                  headers=authorization(context))
