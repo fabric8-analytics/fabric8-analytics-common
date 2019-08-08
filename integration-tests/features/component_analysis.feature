@@ -138,6 +138,7 @@ Feature: Unknown licenses
   #    And I should receive a valid JSON response
 
 
+  @data-sanity
   Scenario Outline: Check the component analysis REST API endpoint for components with recommendation and one CVE
     Given System is running
      When I acquire the authorization token
