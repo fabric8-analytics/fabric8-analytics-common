@@ -358,11 +358,11 @@ def verify_stack_level_field_presence_in_recommendation(context, field_name):
 
 def replaces_component(replacement, component, version):
     """Check the component replacement info in the stack analysis."""
-    assert "replaces" in replacement
+    check_attribute_presence(replacement, "replaces")
     replaces = replacement["replaces"]
     for replace in replaces:
-        assert "name" in replace
-        assert "version" in replace
+        check_attribute_presence(replace, "name")
+        check_attribute_presence(replace, "version")
         if replace["name"] == component and replace["version"] == version:
             return True
     return False
