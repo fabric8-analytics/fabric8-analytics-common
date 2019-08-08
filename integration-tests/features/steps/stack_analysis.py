@@ -181,13 +181,24 @@ def maven_manifest_stack_analysis(context, manifest, version=3, token="without")
                                     endpoint, use_token)
 
 
+def check_result_node(resp):
+    """Check result node in stack analysis response."""
+    assert resp is not None
+    assert len(resp["results"]) >= 1
+
+
+def check_stack_analysis_status(resp_json, err):
+    """Ensure that the stack analyses result has been asserted in the loop."""
+    assert resp_json.get("status") == "success", err
+
+
 @then("stack analyses response is available via {url}")
 def check_stack_analyses_response(context, url):
     """Check the stack analyses response available on the given URL."""
     response = context.response
     resp = response.json()
 
-    assert len(resp["results"]) >= 1
+    check_result_node(resp)
     request_id = resp["results"][0]["id"]
     url = "{base_url}{endpoint}{request_id}".format(
                 base_url=context.coreapi_url,
@@ -212,7 +223,7 @@ def check_stack_analyses_response(context, url):
     resp_json = get_resp.json()
 
     # ensure that the stack analyses result has been asserted in the loop
-    assert resp_json.get("status") == "success", err
+    check_stack_analysis_status(resp_json, err)
 
     # ensure that the response is in accordance to the Stack Analyses schema
     schema = requests.get(resp_json["schema"]["url"]).json()
