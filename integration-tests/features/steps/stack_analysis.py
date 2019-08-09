@@ -566,6 +566,17 @@ def test_dependency_for_package_version(dependencies, package, version):
                         format(package=package, version=version))
 
 
+def test_analyzed_dependency_for_package_version(analyzed_dependencies, package, version):
+    """Test if the analyzed_dependency attribute contains a given name + version pair."""
+    for analyzed_dependency in analyzed_dependencies:
+        if analyzed_dependency["name"] == package \
+           and analyzed_dependency["version"] == version:
+            break
+    else:
+        raise Exception('Package {package} with version {version} not found'.
+                        format(package=package, version=version))
+
+
 @then('I should find dependency named {package} with version {version} in the stack '
       'analysis')
 def check_dependency(context, package, version):
@@ -587,14 +598,11 @@ def check_analyzed_dependency(context, package, version):
     json_data = get_json_data(context)
     path = "result/0/user_stack_info/analyzed_dependencies"
     analyzed_dependencies = get_value_using_path(json_data, path)
-    assert analyzed_dependencies is not None
-    for analyzed_dependency in analyzed_dependencies:
-        if analyzed_dependency["name"] == package \
-           and analyzed_dependency["version"] == version:
-            break
-    else:
-        raise Exception('Package {package} with version {version} not found'.
-                        format(package=package, version=version))
+
+    assert analyzed_dependencies is not None, \
+        "Empty or missing attribute user_stack_info/analyzed_dependencies"
+
+    test_analyzed_dependency_for_package_version(analyzed_dependencies, package, version)
 
 
 @then('I should find the following dependencies ({packages}) in the stack analysis')
