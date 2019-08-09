@@ -23,7 +23,7 @@ Feature: Unknown licenses
      | npm | jquery | 3.4.0 |
      | npm | mocha | 6.1.4 |
      | npm | underscore | 1.9.1 |
-     | npm | lodash | 4.17.11 |
+     | npm | lodash | 4.17.15 |
      | npm | babel-core | 6.26.3 |
      | npm | babel-core | 6.26.2 |
      | npm | babel-core | 7.0.0-bridge.0 |
