@@ -525,7 +525,6 @@ def check_security_issue_existence(context, cve, package):
 
     for component in components:
         if component["name"] == package:
-            check_cve_attribute(component, cve)
             check_attribute_presence(component, "security")
             cve_items = component["security"]
             if cve_found(cve_items, cve):
