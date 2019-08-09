@@ -179,6 +179,31 @@ def check_cves_for_epv(context, cves, p, v, e):
     raise Exception("{e}/{p}/{v} was not found".format(e=e, p=p, v=v))
 
 
+@when('I retrieve at most {num:d} stacks from the stacks report')
+def retrieve_stacks_from_report(context, num):
+    """Retrieve stacks from Gemini stacks report."""
+    response = context.response.json()
+    assert not context.history
+
+    check_attribute_presence(response, "report")
+    stacks_details = check_and_get_attribute(response, "stacks_details")
+    i = 0
+    stacks = []
+    for stack_detail in stacks_details:
+        ecosystem = check_and_get_attribute(stack_detail, "ecosystem")
+        stack = stack_detail["stack"]
+        i += 1
+        if i > num:
+            break
+        item = {
+            "ecosystem": ecosystem,
+            "stack": stack}
+
+        stacks.append(item)
+
+    context.stacks = stacks
+
+
 @then('I should get a valid report')
 def check_valid_report(context):
     """Check if the stacks report is a valid one."""
