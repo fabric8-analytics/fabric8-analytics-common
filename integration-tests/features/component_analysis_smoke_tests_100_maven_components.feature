@@ -108,12 +108,12 @@ Feature: Smoke tests for the component analysis REST API
      | maven      | org.apache.zookeeper:zookeeper                          | 3.5.5                | #83
      | maven      | org.apache.logging.log4j:log4j-slf4j-impl               | 2.12.1               | #84
      | maven      | org.json:json                                           | 20190722             | #85
-     | maven      | org.codehaus.groovy:groovy-all                          | 3.0.0-beta-3         | #86
+     # | maven      | org.codehaus.groovy:groovy-all                          | 3.0.0-beta-3         | #86
      | maven      | org.powermock:powermock-module-junit4                   | 2.0.2                | #87
      | maven      | org.apache.hadoop:hadoop-annotations                    | 3.2.0                | #88
      | maven      | com.google.gms:google-services                          | 3.1.1                | #89
      | maven      | org.apache.logging.log4j:log4j-api                      | 2.12.1               | #90
-     | maven      | org.wso2.carbon:org.wso2.carbon.logging                 | 5.1.0-m2             | #91
+     # | maven      | org.wso2.carbon:org.wso2.carbon.logging                 | 5.1.0-m2             | #91
      | maven      | io.vertx:vertx-core                                     | 3.4.1                | #92
      | maven      | io.vertx:vertx-jdbc-client                              | 3.4.1                | #93
      | maven      | io.vertx:vertx-rx-java                                  | 3.4.1                | #94
