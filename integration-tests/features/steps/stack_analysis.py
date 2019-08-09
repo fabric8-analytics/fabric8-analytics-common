@@ -509,6 +509,15 @@ def get_analyzed_components(context):
     return components
 
 
+def cve_found(cve_items, cve):
+    """Look for CVE in security node."""
+    for cve_item in cve_items:
+        check_attribute_presence(cve_item, "CVE")
+        if cve_item["CVE"] == cve:
+            return True
+    return False
+
+
 @then('I should find the {cve} security issue for the dependency {package}')
 def check_security_issue_existence(context, cve, package):
     """Check if the security issue CVE-yyyy-xxxx can be found for the given analyzed package."""
@@ -516,12 +525,12 @@ def check_security_issue_existence(context, cve, package):
 
     for component in components:
         if component["name"] == package:
+            check_cve_attribute(component, cve)
             check_attribute_presence(component, "security")
             cve_items = component["security"]
-            for cve_item in cve_items:
-                check_attribute_presence(cve_item, "CVE")
-                if cve_item["CVE"] == cve:
-                    return
+            if cve_found(cve_items, cve):
+                # CVE for the component has been found - > let's finish this check
+                return
             else:
                 raise Exception('Could not find the CVE {c} for the '
                                 'package {p}'.format(c=cve, p=package))
