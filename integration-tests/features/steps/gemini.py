@@ -9,7 +9,7 @@ from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
-from src.attribute_checks import check_and_get_attribute
+from src.attribute_checks import check_attribute_presence, check_and_get_attribute
 from src.utils import read_data_gemini
 import os
 import json
@@ -177,6 +177,44 @@ def check_cves_for_epv(context, cves, p, v, e):
             check_cve_count(cve_count, cves)
             return
     raise Exception("{e}/{p}/{v} was not found".format(e=e, p=p, v=v))
+
+
+@when('I retrieve at most {num:d} stacks from the stacks report')
+def retrieve_stacks_from_report(context, num):
+    """Retrieve stacks from Gemini stacks report."""
+    response = context.response.json()
+    assert not context.history
+
+    check_attribute_presence(response, "report")
+    stacks_details = check_and_get_attribute(response, "stacks_details")
+    i = 0
+    stacks = []
+    for stack_detail in stacks_details:
+        ecosystem = check_and_get_attribute(stack_detail, "ecosystem")
+        stack = stack_detail["stack"]
+        i += 1
+        if i > num:
+            break
+        item = {
+            "ecosystem": ecosystem,
+            "stack": stack}
+
+        stacks.append(item)
+
+    context.stacks = stacks
+
+
+@then('I should be able to export stacks into JSON format')
+def export_stacks_from_report_into_json(context):
+    """Export stacks retrieved from Gemini stacks report."""
+    i = 0
+    for record in context.stacks:
+        i += 1
+        ecosystem = record["ecosystem"]
+        filename = "stack_{}_{:04}.json".format(ecosystem, i)
+        with open(filename, "w") as fout:
+            stack = record["stack"]
+            json.dump(stack, fout)
 
 
 @then('I should get a valid report')
