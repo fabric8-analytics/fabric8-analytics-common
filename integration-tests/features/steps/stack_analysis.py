@@ -566,7 +566,7 @@ def test_dependency_for_package_version(dependencies, package, version):
                         format(package=package, version=version))
 
 
-def test_analyzed_dependency_for_package_version(analyzed_dependencies, name, version):
+def test_analyzed_dependency_for_package_version(analyzed_dependencies, package, version):
     """Test if the analyzed_dependency attribute contains a given name + version pair."""
     for analyzed_dependency in analyzed_dependencies:
         if analyzed_dependency["name"] == package \
@@ -602,7 +602,7 @@ def check_analyzed_dependency(context, package, version):
     assert analyzed_dependencies is not None, \
         "Empty or missing attribute user_stack_info/analyzed_dependencies"
 
-    test_analyzed_dependency_for_package_version(analyzed_dependencies, name, version)
+    test_analyzed_dependency_for_package_version(analyzed_dependencies, package, version)
 
 
 @then('I should find the following dependencies ({packages}) in the stack analysis')
