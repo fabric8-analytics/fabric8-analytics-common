@@ -555,14 +555,8 @@ def check_security_issue_nonexistence(context, package):
                         .format(p=package))
 
 
-@then('I should find dependency named {package} with version {version} in the stack '
-      'analysis')
-def check_dependency(context, package, version):
-    """Check for the existence of dependency for given package."""
-    json_data = get_json_data(context)
-    path = "result/0/user_stack_info/dependencies"
-    dependencies = get_value_using_path(json_data, path)
-    assert dependencies is not None
+def test_dependency_for_package_version(dependencies, package, version):
+    """Test if the dependency attribute contains a given package + version pair."""
     for dependency in dependencies:
         if dependency["package"] == package \
            and dependency["version"] == version:
@@ -570,6 +564,20 @@ def check_dependency(context, package, version):
     else:
         raise Exception('Package {package} with version {version} not found'.
                         format(package=package, version=version))
+
+
+@then('I should find dependency named {package} with version {version} in the stack '
+      'analysis')
+def check_dependency(context, package, version):
+    """Check for the existence of dependency for given package."""
+    json_data = get_json_data(context)
+    path = "result/0/user_stack_info/dependencies"
+    dependencies = get_value_using_path(json_data, path)
+
+    assert dependencies is not None, \
+        "Empty or missing attribute user_stack_info/dependencies"
+
+    test_dependency_for_package_version(dependencies, package, version)
 
 
 @then('I should find analyzed dependency named {package} with version {version} in the stack '
