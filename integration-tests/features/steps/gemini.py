@@ -204,6 +204,19 @@ def retrieve_stacks_from_report(context, num):
     context.stacks = stacks
 
 
+@then('I should be able to export stacks into JSON format')
+def export_stacks_from_report_into_json(context):
+    """Export stacks retrieved from Gemini stacks report."""
+    i = 0
+    for record in context.stacks:
+        i += 1
+        ecosystem = record["ecosystem"]
+        filename = "stack_{}_{:04}.json".format(ecosystem, i)
+        with open(filename, "w") as fout:
+            stack = record["stack"]
+            json.dump(stack, fout)
+
+
 @then('I should get a valid report')
 def check_valid_report(context):
     """Check if the stacks report is a valid one."""
