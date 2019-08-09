@@ -9,7 +9,7 @@ from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
-from src.attribute_checks import check_and_get_attribute
+from src.attribute_checks import check_attribute_presence, check_and_get_attribute
 from src.utils import read_data_gemini
 import os
 import json
