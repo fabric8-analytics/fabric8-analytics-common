@@ -1,0 +1,1 @@
+[{"package": "codecov", "version": "2.0.15", "deps": [{"package": "coverage", "version": "4.4.1"}]}, {"package": "traitlets", "version": "4.3.2", "deps": [{"package": "ipython-genutils", "version": "0.2.0"}]}]

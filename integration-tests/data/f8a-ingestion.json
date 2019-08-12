@@ -1,0 +1,1 @@
+[{"package": "codecov", "version": "2.0.15", "deps": [{"package": "requests", "version": "2.13.0"}]}, {"package": "jinja2", "version": "2.10", "deps": [{"package": "markupsafe", "version": "1.0"}]}, {"package": "mako", "version": "1.0.7", "deps": [{"package": "markupsafe", "version": "1.0"}]}]

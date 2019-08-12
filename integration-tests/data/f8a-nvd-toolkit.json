@@ -1,0 +1,1 @@
+[{"package": "python-dateutil", "version": "2.7.2", "deps": [{"package": "six", "version": "1.12.0"}]}, {"package": "traitlets", "version": "4.3.2", "deps": [{"package": "ipython-genutils", "version": "0.2.0"}]}]
