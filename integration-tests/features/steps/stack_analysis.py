@@ -127,6 +127,11 @@ def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, end
             manifest = "pylist.json"
         else:
             manifest = "requirements.txt"
+    elif ecosystem == "node":
+        # only two manifest names are supported ATM:
+        # 1) packages.json
+        # 2) npm.json
+        manifest = "npmlist.json"
 
     files = {'manifest[]': (manifest, open(filename, 'rb')),
              'filePath[]': (None, manifest_file_dir)}
