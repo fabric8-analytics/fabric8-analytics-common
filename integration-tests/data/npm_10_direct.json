@@ -1,0 +1,270 @@
+{
+  "name": "node-js-sample",
+  "version": "0.2.0",
+  "problems": [
+    "peer dep missing: zone.js@^0.8.26, required by angular2-notifications@1.0.2",
+    "missing: mkdirp@0.5.1, required by node-pre-gyp@0.12.0",
+    "missing: minimist@0.0.8, required by mkdirp@0.5.1",
+    "missing: minimatch@3.0.4, required by ignore-walk@3.0.1",
+    "missing: brace-expansion@1.1.11, required by minimatch@3.0.4",
+    "missing: balanced-match@1.0.0, required by brace-expansion@1.1.11",
+    "missing: concat-map@0.0.1, required by brace-expansion@1.1.11",
+    "missing: console-control-strings@1.1.0, required by npmlog@4.1.2",
+    "missing: inherits@2.0.3, required by readable-stream@2.3.6",
+    "missing: safe-buffer@5.1.2, required by readable-stream@2.3.6",
+    "missing: safe-buffer@5.1.2, required by string_decoder@1.1.1",
+    "missing: console-control-strings@1.1.0, required by gauge@2.7.4",
+    "missing: string-width@1.0.2, required by gauge@2.7.4",
+    "missing: strip-ansi@3.0.1, required by gauge@2.7.4",
+    "missing: code-point-at@1.1.0, required by string-width@1.0.2",
+    "missing: is-fullwidth-code-point@1.0.0, required by string-width@1.0.2",
+    "missing: strip-ansi@3.0.1, required by string-width@1.0.2",
+    "missing: number-is-nan@1.0.1, required by is-fullwidth-code-point@1.0.0",
+    "missing: ansi-regex@2.1.1, required by strip-ansi@3.0.1",
+    "missing: string-width@1.0.2, required by wide-align@1.1.3",
+    "missing: inherits@2.0.3, required by glob@7.1.3",
+    "missing: minimatch@3.0.4, required by glob@7.1.3",
+    "missing: once@1.4.0, required by glob@7.1.3",
+    "missing: once@1.4.0, required by inflight@1.0.6",
+    "missing: wrappy@1.0.2, required by inflight@1.0.6",
+    "missing: wrappy@1.0.2, required by once@1.4.0",
+    "missing: minipass@2.3.5, required by tar@4.4.8",
+    "missing: mkdirp@0.5.1, required by tar@4.4.8",
+    "missing: safe-buffer@5.1.2, required by tar@4.4.8",
+    "missing: yallist@3.0.3, required by tar@4.4.8",
+    "missing: minipass@2.3.5, required by fs-minipass@1.2.5",
+    "missing: safe-buffer@5.1.2, required by minipass@2.3.5",
+    "missing: yallist@3.0.3, required by minipass@2.3.5",
+    "missing: minipass@2.3.5, required by minizlib@1.2.1"
+  ],
+  "dependencies": {
+    "svg.filter.js": {
+      "version": "2.0.2",
+      "from": "svg.filter.js@2.0.2",
+      "resolved": "https://registry.npmjs.org/svg.filter.js/-/svg.filter.js-2.0.2.tgz",
+      "dependencies": {
+        "svg.js": {
+          "version": "2.6.6",
+          "from": "svg.js@2.6.6",
+          "resolved": "https://registry.npmjs.org/svg.js/-/svg.js-2.6.6.tgz"
+        }
+      }
+    },
+    "svg.js": {
+      "version": "2.6.6",
+      "from": "svg.js@2.6.6",
+      "resolved": "https://registry.npmjs.org/svg.js/-/svg.js-2.6.6.tgz"
+    },
+    "ts-helpers": {
+      "version": "1.1.2",
+      "from": "ts-helpers@1.1.2",
+      "resolved": "https://registry.npmjs.org/ts-helpers/-/ts-helpers-1.1.2.tgz"
+    },
+    "vue": {
+      "version": "2.6.10",
+      "from": "vue@2.6.10",
+      "resolved": "https://registry.npmjs.org/vue/-/vue-2.6.10.tgz"
+    },
+    "vue-class-component": {
+      "version": "7.1.0",
+      "from": "vue-class-component@7.1.0",
+      "resolved": "https://registry.npmjs.org/vue-class-component/-/vue-class-component-7.1.0.tgz"
+    },
+    "vue-property-decorator": {
+      "version": "8.2.1",
+      "from": "vue-property-decorator@8.2.1",
+      "resolved": "https://registry.npmjs.org/vue-property-decorator/-/vue-property-decorator-8.2.1.tgz",
+      "dependencies": {
+        "vue": {
+          "version": "2.6.10",
+          "from": "vue@2.6.10",
+          "resolved": "https://registry.npmjs.org/vue/-/vue-2.6.10.tgz"
+        },
+        "vue-class-component": {
+          "version": "7.1.0",
+          "from": "vue-class-component@7.1.0",
+          "resolved": "https://registry.npmjs.org/vue-class-component/-/vue-class-component-7.1.0.tgz"
+        }
+      }
+    },
+    "vue-router": {
+      "version": "3.0.7",
+      "from": "vue-router@3.0.7",
+      "resolved": "https://registry.npmjs.org/vue-router/-/vue-router-3.0.7.tgz"
+    },
+    "vuex": {
+      "version": "3.1.1",
+      "from": "vuex@3.1.1",
+      "resolved": "https://registry.npmjs.org/vuex/-/vuex-3.1.1.tgz"
+    },
+    "web-animations-js": {
+      "version": "2.3.1",
+      "from": "web-animations-js@2.3.1",
+      "resolved": "https://registry.npmjs.org/web-animations-js/-/web-animations-js-2.3.1.tgz"
+    },
+    "zone.js": {
+      "required": {
+        "_from": "zone.js@0.9.1",
+        "_id": "zone.js@0.9.1",
+        "_integrity": "sha512-GkPiJL8jifSrKReKaTZ5jkhrMEgXbXYC+IPo1iquBjayRa0q86w3Dipjn8b415jpitMExe9lV8iTsv8tk3DGag==",
+        "_location": "/zone.js",
+        "_phantomChildren": {},
+        "_requested": {
+          "type": "version",
+          "registry": true,
+          "raw": "zone.js@0.9.1",
+          "name": "zone.js",
+          "escapedName": "zone.js",
+          "rawSpec": "0.9.1",
+          "saveSpec": null,
+          "fetchSpec": "0.9.1"
+        },
+        "_requiredBy": [
+          "/"
+        ],
+        "_resolved": "https://registry.npmjs.org/zone.js/-/zone.js-0.9.1.tgz",
+        "_shasum": "e37c6e5c54c13fae4de26b5ffe8d8e9212da6d9b",
+        "_spec": "0.9.1",
+        "_where": "/home/yzainee/GitRepo/fabric8-Core/node-js-sample",
+        "author": {
+          "name": "Brian Ford"
+        },
+        "browser": "dist/zone.js",
+        "bugs": {
+          "url": "https://github.com/angular/zone.js/issues"
+        },
+        "bundleDependencies": false,
+        "dependencies": {},
+        "deprecated": false,
+        "description": "Zones for JavaScript",
+        "devDependencies": {
+          "@types/jasmine": "2.2.33",
+          "@types/node": "^9.x",
+          "@types/systemjs": "^0.19.30",
+          "assert": "^1.4.1",
+          "bluebird": "^3.5.1",
+          "clang-format": "^1.2.3",
+          "concurrently": "^2.2.0",
+          "conventional-changelog": "^1.1.7",
+          "core-js": "^2.5.7",
+          "core-js-bundle": "^3.0.0-alpha.1",
+          "es6-promise": "^3.0.2",
+          "google-closure-compiler": "^20170409.0.0",
+          "gulp": "^3.8.11",
+          "gulp-clang-format": "^1.0.25",
+          "gulp-conventional-changelog": "^1.1.7",
+          "gulp-rename": "^1.2.2",
+          "gulp-rollup": "^2.16.1",
+          "gulp-terser": "^1.1.7",
+          "gulp-tsc": "^1.1.4",
+          "gulp-tslint": "^7.0.1",
+          "gulp-uglify": "^1.2.0",
+          "gulp-util": "^3.0.7",
+          "jasmine": "^3.3.1",
+          "jasmine-core": "^2.9.1",
+          "karma": "^0.13.14",
+          "karma-chrome-launcher": "^0.2.1",
+          "karma-firefox-launcher": "^0.1.4",
+          "karma-jasmine": "^1.1.1",
+          "karma-mocha": "^1.2.0",
+          "karma-phantomjs-launcher": "^1.0.4",
+          "karma-safari-launcher": "^0.1.1",
+          "karma-sauce-launcher": "^0.2.10",
+          "karma-sourcemap-loader": "^0.3.6",
+          "mocha": "^3.1.2",
+          "nodejs-websocket": "^1.2.0",
+          "phantomjs": "^2.1.7",
+          "promises-aplus-tests": "^2.1.2",
+          "pump": "^1.0.1",
+          "rxjs": "^6.2.1",
+          "selenium-webdriver": "^3.4.0",
+          "systemjs": "^0.19.37",
+          "terser": "^3.16.1",
+          "ts-loader": "^0.6.0",
+          "tslint": "^4.1.1",
+          "tslint-eslint-rules": "^3.1.0",
+          "typescript": "^3.2.2",
+          "vrsource-tslint-rules": "^4.0.0",
+          "webdriver-manager": "^12.0.6",
+          "webdriverio": "^4.8.0",
+          "whatwg-fetch": "^2.0.1"
+        },
+        "directories": {
+          "lib": "lib",
+          "test": "test"
+        },
+        "files": [
+          "lib",
+          "dist"
+        ],
+        "homepage": "https://github.com/angular/zone.js#readme",
+        "license": "MIT",
+        "main": "dist/zone-node.js",
+        "name": "zone.js",
+        "repository": {
+          "type": "git",
+          "url": "git://github.com/angular/zone.js.git"
+        },
+        "scripts": {
+          "changelog": "gulp changelog",
+          "ci": "npm run lint && npm run format && npm run promisetest && npm run test:single && npm run test-node",
+          "closure:test": "scripts/closure/closure_compiler.sh",
+          "format": "gulp format:enforce",
+          "karma-jasmine": "karma start karma-build-jasmine.conf.js",
+          "karma-jasmine-phantomjs:autoclose": "npm run karma-jasmine:phantomjs && npm run ws-client",
+          "karma-jasmine:autoclose": "npm run karma-jasmine:single && npm run ws-client",
+          "karma-jasmine:es2015": "karma start karma-build-jasmine.es2015.conf.js",
+          "karma-jasmine:phantomjs": "karma start karma-build-jasmine-phantomjs.conf.js --single-run",
+          "karma-jasmine:single": "karma start karma-build-jasmine.conf.js --single-run",
+          "lint": "gulp lint",
+          "prepublish": "tsc && gulp build",
+          "promisefinallytest": "mocha promise.finally.spec.js",
+          "promisetest": "gulp promisetest",
+          "serve": "python -m SimpleHTTPServer 8000",
+          "test": "npm run tsc && concurrently \"npm run tsc:w\" \"npm run ws-server\" \"npm run karma-jasmine\"",
+          "test-bluebird": "gulp test/bluebird",
+          "test-dist": "concurrently \"npm run tsc:w\" \"npm run ws-server\" \"karma start karma-dist-jasmine.conf.js\"",
+          "test-mocha": "npm run tsc && concurrently \"npm run tsc:w\" \"npm run ws-server\" \"karma start karma-build-mocha.conf.js\"",
+          "test-node": "gulp test/node",
+          "test:es2015": "npm run tsc && concurrently \"npm run tsc:w\" \"npm run ws-server\" \"npm run karma-jasmine:es2015\"",
+          "test:phantomjs": "npm run tsc && concurrently \"npm run tsc:w\" \"npm run ws-server\" \"npm run karma-jasmine:phantomjs\"",
+          "test:phantomjs-single": "npm run tsc && concurrently \"npm run ws-server\" \"npm run karma-jasmine-phantomjs:autoclose\"",
+          "test:single": "npm run tsc && concurrently \"npm run ws-server\" \"npm run karma-jasmine:autoclose\"",
+          "tsc": "tsc -p .",
+          "tsc:esm2015": "tsc -p tsconfig-esm-2015.json",
+          "tsc:w": "tsc -w -p .",
+          "tslint": "tslint -c tslint.json 'lib/**/*.ts'",
+          "webdriver-http": "node simple-server.js",
+          "webdriver-sauce-test": "node test/webdriver/test.sauce.js",
+          "webdriver-start": "webdriver-manager update && webdriver-manager start",
+          "webdriver-test": "node test/webdriver/test.js",
+          "ws-client": "node ./test/ws-client.js",
+          "ws-server": "node ./test/ws-server.js"
+        },
+        "typings": "dist/zone.js.d.ts",
+        "unpkg": "dist/zone.js",
+        "version": "0.9.1",
+        "readme": "# Zone.js\n\n[![Build Status](https://travis-ci.org/angular/zone.js.png)](https://travis-ci.org/angular/zone.js)\n[![CDNJS](https://img.shields.io/cdnjs/v/zone.js.svg)](https://cdnjs.com/libraries/zone.js)\n\nImplements _Zones_ for JavaScript, inspired by [Dart](https://www.dartlang.org/articles/zones/).\n\n> If you're using zone.js via unpkg (i.e. using `https://unpkg.com/zone.js`)\n> and you're using any of the following libraries, make sure you import them first \n\n> * 'newrelic' as it patches global.Promise before zone.js does\n> * 'async-listener' as it patches global.setTimeout, global.setInterval before zone.js does\n> * 'continuation-local-storage' as it uses async-listener\n\n# NEW Zone.js POST-v0.6.0\n\nSee the new API [here](./dist/zone.js.d.ts).\n\nRead up on [Zone Primer](https://docs.google.com/document/d/1F5Ug0jcrm031vhSMJEOgp1l-Is-Vf0UCNDY-LsQtAIY).\n\n## What's a Zone?\n\nA Zone is an execution context that persists across async tasks.\nYou can think of it as [thread-local storage](http://en.wikipedia.org/wiki/Thread-local_storage) for JavaScript VMs.\n\nSee this video from ng-conf 2014 for a detailed explanation:\n\n[![screenshot of the zone.js presentation and ng-conf 2014](/presentation.png)](//www.youtube.com/watch?v=3IqtmUscE_U&t=150)\n\n## See also\n* [async-listener](https://github.com/othiym23/async-listener) - a similar library for node\n* [Async stack traces in Chrome](http://www.html5rocks.com/en/tutorials/developertools/async-call-stack/)\n* [strongloop/zone](https://github.com/strongloop/zone) (Deprecated)\n* [vizone](https://github.com/gilbox/vizone) - control flow visualizer that uses zone.js\n\n## Standard API support\n\nzone.js patched most standard web APIs (such as DOM events, `XMLHttpRequest`, ...) and nodejs APIs\n(`EventEmitter`, `fs`, ...), for more details, please see [STANDARD-APIS.md](STANDARD-APIS.md).\n\n## Nonstandard API support\n\nWe are adding support to some nonstandard APIs, such as MediaQuery and\nNotification. Please see [NON-STANDARD-APIS.md](NON-STANDARD-APIS.md) for more details.\n\n## Examples\n\nYou can find some samples to describe how to use zone.js in [SAMPLE.md](SAMPLE.md).\n\n## Modules\n\nzone.js patches the async APIs described above, but those patches will have some overhead.\nStarting from zone.js v0.8.9, you can choose which web API module you want to patch.\nFor more details, please\nsee [MODULE.md](MODULE.md).\n\n## Bundles\nThere are several bundles under `dist` folder.\n\n|Bundle|Summary|\n|---|---|\n|zone.js|the default bundle, contains the most used APIs such as `setTimeout/Promise/EventTarget...`, also this bundle supports all evergreen and legacy (IE/Legacy Firefox/Legacy Safari) Browsers|\n|zone-evergreen.js|the bundle for evergreen browsers, doesn't include the `patch` for `legacy` browsers such as `IE` or old versions of `Firefox/Safari`|\n|zone-legacy.js|the patch bundle for legacy browsers, only includes the `patch` for `legacy` browsers such as `IE` or old versions of `Firefox/Safari`. This bundle must be loaded after `zone-evergreen.js`, **`zone.js`=`zone-evergreen.js` + `zone-legacy.js`**|\n|zone-testing.js|the bundle for zone testing support, including `jasmine/mocha` support and `async/fakeAsync/sync` test utilities|\n|zone-externs.js|the API definitions for `closure compiler`|\n\nAnd here are the additional optional patches not included in the main zone.js bundles\n\n|Patch|Summary|\n|---|---|\n|webapis-media-query.js|patch for `MediaQuery APIs`|\n|webapis-notification.js|patch for `Notification APIs`|\n|webapis-rtc-peer-connection.js|patch for `RTCPeerConnection APIs`|\n|webapis-shadydom.js|patch for `Shady DOM APIs`|\n|zone-bluebird.js|patch for `Bluebird APIs`|\n|zone-error.js|patch for `Error Global Object`, supports remove `Zone StackTrace`|\n|zone-patch-canvas.js|patch for `Canvas API`|\n|zone-patch-cordova.js|patch for `Cordova API`|\n|zone-patch-electron.js|patch for `Electron API`|\n|zone-patch-fetch.js|patch for `Fetch API`|\n|zone-patch-jsonp.js|utility for `jsonp API`|\n|zone-patch-resize-observer.js|patch for `ResizeObserver API`|\n|zone-patch-rxjs.js|patch for `rxjs API`|\n|zone-patch-rxjs-fake-async.js|patch for `rxjs fakeasync test`|\n|zone-patch-socket-io.js|patch for `socket-io`|\n|zone-patch-user-media.js|patch for `UserMedia API`|\n\n## Promise A+ test passed\n[![Promises/A+ 1.1 compliant](https://promisesaplus.com/assets/logo-small.png)](https://promisesaplus.com/)\n\n## License\nMIT\n",
+        "readmeFilename": "README.md",
+        "_args": [
+          [
+            "zone.js@0.9.1",
+            "/home/yzainee/GitRepo/fabric8-Core/node-js-sample"
+          ]
+        ],
+        "optionalDependencies": {},
+        "_dependencies": {},
+        "path": "/home/yzainee/GitRepo/fabric8-Core/node-js-sample/node_modules/zone.js",
+        "error": "[Circular]",
+        "extraneous": false,
+        "peerMissing": [
+          {
+            "requiredBy": "angular2-notifications@1.0.2",
+            "requires": "zone.js@^0.8.26"
+          }
+        ]
+      },
+      "peerMissing": true
+    }
+  }
+}
