@@ -132,6 +132,11 @@ def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, end
         # 1) packages.json
         # 2) npm.json
         manifest = "npmlist.json"
+    elif ecosystem == "maven":
+        # only two manifest names are supported ATM:
+        # 1) pox.xml
+        # 2) dependencies.txt
+        manifest = "dependencies.txt"
 
     files = {'manifest[]': (manifest, open(filename, 'rb')),
              'filePath[]': (None, manifest_file_dir)}
