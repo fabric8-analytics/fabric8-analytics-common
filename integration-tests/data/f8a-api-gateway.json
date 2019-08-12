@@ -1,0 +1,1 @@
+[{"package": "flask", "version": "0.12.2", "deps": [{"package": "itsdangerous", "version": "0.24"}]}, {"package": "jinja2", "version": "2.10", "deps": [{"package": "markupsafe", "version": "1.0"}]}]
