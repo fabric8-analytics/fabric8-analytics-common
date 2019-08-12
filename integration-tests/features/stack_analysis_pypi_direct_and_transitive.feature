@@ -69,7 +69,7 @@ Feature: Smoketests for stack analysis API tests for PyPi ecosystem
      | pytest_2_0_1.json            |
      | pytest_3_2_2.json            |
      | requests_2_20_0.json         |
-     | requests_2_20_1.json         |
+     # | requests_2_20_1.json         |
      | requests_2_21_0.json         |
      | scipy_1_1_0.json             |
      | scipy_1_2_0.json             |
