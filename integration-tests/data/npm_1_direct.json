@@ -1,0 +1,54 @@
+{
+  "name": "node-js-sample",
+  "version": "0.2.0",
+  "problems": [
+    "peer dep missing: zone.js@^0.8.26, required by angular2-notifications@1.0.2",
+    "missing: mkdirp@0.5.1, required by node-pre-gyp@0.12.0",
+    "missing: minimist@0.0.8, required by mkdirp@0.5.1",
+    "missing: minimatch@3.0.4, required by ignore-walk@3.0.1",
+    "missing: brace-expansion@1.1.11, required by minimatch@3.0.4",
+    "missing: balanced-match@1.0.0, required by brace-expansion@1.1.11",
+    "missing: concat-map@0.0.1, required by brace-expansion@1.1.11",
+    "missing: console-control-strings@1.1.0, required by npmlog@4.1.2",
+    "missing: inherits@2.0.3, required by readable-stream@2.3.6",
+    "missing: safe-buffer@5.1.2, required by readable-stream@2.3.6",
+    "missing: safe-buffer@5.1.2, required by string_decoder@1.1.1",
+    "missing: console-control-strings@1.1.0, required by gauge@2.7.4",
+    "missing: string-width@1.0.2, required by gauge@2.7.4",
+    "missing: strip-ansi@3.0.1, required by gauge@2.7.4",
+    "missing: code-point-at@1.1.0, required by string-width@1.0.2",
+    "missing: is-fullwidth-code-point@1.0.0, required by string-width@1.0.2",
+    "missing: strip-ansi@3.0.1, required by string-width@1.0.2",
+    "missing: number-is-nan@1.0.1, required by is-fullwidth-code-point@1.0.0",
+    "missing: ansi-regex@2.1.1, required by strip-ansi@3.0.1",
+    "missing: string-width@1.0.2, required by wide-align@1.1.3",
+    "missing: inherits@2.0.3, required by glob@7.1.3",
+    "missing: minimatch@3.0.4, required by glob@7.1.3",
+    "missing: once@1.4.0, required by glob@7.1.3",
+    "missing: once@1.4.0, required by inflight@1.0.6",
+    "missing: wrappy@1.0.2, required by inflight@1.0.6",
+    "missing: wrappy@1.0.2, required by once@1.4.0",
+    "missing: minipass@2.3.5, required by tar@4.4.8",
+    "missing: mkdirp@0.5.1, required by tar@4.4.8",
+    "missing: safe-buffer@5.1.2, required by tar@4.4.8",
+    "missing: yallist@3.0.3, required by tar@4.4.8",
+    "missing: minipass@2.3.5, required by fs-minipass@1.2.5",
+    "missing: safe-buffer@5.1.2, required by minipass@2.3.5",
+    "missing: yallist@3.0.3, required by minipass@2.3.5",
+    "missing: minipass@2.3.5, required by minizlib@1.2.1"
+  ],
+  "dependencies": {
+    "svg.filter.js": {
+      "version": "2.0.2",
+      "from": "svg.filter.js@2.0.2",
+      "resolved": "https://registry.npmjs.org/svg.filter.js/-/svg.filter.js-2.0.2.tgz",
+      "dependencies": {
+        "svg.js": {
+          "version": "2.6.6",
+          "from": "svg.js@2.6.6",
+          "resolved": "https://registry.npmjs.org/svg.js/-/svg.js-2.6.6.tgz"
+        }
+      }
+    }
+  }
+}
