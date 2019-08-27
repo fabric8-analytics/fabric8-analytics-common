@@ -352,6 +352,12 @@ CAUTION: Make sure that the file don't end with a new line. It will cause
 problems because the Vault CLI tool will use the whole content of a file,
 including newline, which is not correct.
 
+TIP for VIM users: use the following settings to remove EOLN
+
+```
+:set binary
+:set noendofline
+```
 
 === Store token into Vault
 
