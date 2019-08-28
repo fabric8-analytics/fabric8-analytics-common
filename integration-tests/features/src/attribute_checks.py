@@ -187,7 +187,7 @@ def check_cve_value(cve, with_score=False):
     assert match is not None, "Improper CVE number %s" % cve
 
     year = int(match.group(1))
-    current_year = datetime.datetime.now().year
+    current_year = datetime.datetime.utcnow().year
 
     # well the lower limit is a bit arbitrary
     # (according to SRT guys it should be 1999)
