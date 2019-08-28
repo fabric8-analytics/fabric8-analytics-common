@@ -204,10 +204,10 @@ def _post_startup(context, started_all, wait_for_server):
 
 
 def _wait_for_system(context, wait_for_server=60):
-    start = datetime.datetime.now()
+    start = datetime.datetime.utcnow()
     wait_till = start + datetime.timedelta(seconds=wait_for_server)
     # try to wait for server to start for some time
-    while datetime.datetime.now() < wait_till:
+    while datetime.datetime.utcnow() < wait_till:
         time.sleep(1)
         started_all = False
         if context.kubernetes_dir_path:
