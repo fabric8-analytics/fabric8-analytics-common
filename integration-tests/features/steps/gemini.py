@@ -222,6 +222,6 @@ def check_valid_report(context):
     """Check if the stacks report is a valid one."""
     response = context.response.json()
     if context.history:
-        assert(isinstance(response['objects'], list))
+        assert isinstance(response['objects'], list)
     else:
-        assert(isinstance(response, dict))
+        assert isinstance(response, dict)
