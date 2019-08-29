@@ -10,6 +10,7 @@ Requirements:
        - additional libraries: requests, xmltodict, BeautifulSoup
 """
 
+import sys
 import requests
 import xmltodict
 from bs4 import BeautifulSoup
@@ -43,6 +44,7 @@ def get_version_for_component(component):
         versions = doc["metadata"]["versioning"]["versions"]["version"]
         return versions[-1]
     except Exception as e:
+        sys.stderr.write(str(e))
         return None  # for now
 
 
