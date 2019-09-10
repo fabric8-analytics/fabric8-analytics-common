@@ -5,10 +5,20 @@ This repository contains integration tests for the fabric8-analytics services.
 
 The tests can be run against existing deployment, or locally by using docker-compose.
 
-The following environment variables can be used to test specific deployments:
+Set values of following environment variables in `runtest.sh`, to test specific deployments:
 
 * `F8A_API_URL` - API server URL
 * `F8A_JOB_API_URL` - Jobs service URL
+* `AWS_ACCESS_KEY_ID` - Access Key for Staging/Prod AWS (Optional)
+* `AWS_SECRET_ACCESS_KEY` - Secret Key for Staging/Prod AWS (Optional)
+* `S3_REGION_NAME` - S3 Region name (Optional)
+* `THREE_SCALE_PREVIEW_USER_KEY` - Staging/Prod 3 Scale User Key
+* `OSIO_AUTH_SERVICE` - Staging/Prod Auth Url
+* `F8A_THREE_SCALE_PREVIEW_URL` - Staging/Prod 3 Scale Authentication Url
+* `F8A_SERVICE_ID` - Service Id
+* `F8A_GREMLIN_URL` - Staging/Prod Gremlin Url for DB Queries
+* `F8A_GEMINI_API_URL` - Staging/Prod Gremlin API Url.
+* `RECOMMENDER_REFRESH_TOKEN` - Refer link:#acquire-token-needed-for-most-rest-api-tests[this]
 
 By default, the system running on the localhost is tested. The integration tests are not containerized currently hence they start and stop Fabric8 Analytics multiple times. Thus the following prerequisites need to be met:
 
@@ -359,78 +369,9 @@ TIP for VIM users: use the following settings to remove EOLN
 :set noendofline
 ```
 
-=== Store token into Vault
 
-You will need the Vault CLI tool installed to store token into the Vault service.
+For CI, Please Refer link:CI_README.adoc[CI_README.adoc]
 
-==== Get the GH token to be able to use Vault:
-
-Go to the page
-https://github.com/settings/tokens
-
-Select Vault
-
-Select Refresh token or Regenerate token button (UI change from time to time)
-
-Copy and use the token displayed.
-
-
-==== Push token into Vault
-
-Login into vault:
-
-```
-export VAULT_ADDR=https://vault.devshift.net
-vault login -method=github token="MY_GH_TOKEN"
-```
-
-Use the following command to store token into Vault
-
-```
-vault write devtools-osio-ci/recommender-refresh-token token=@refresh_token.txt
-```
-
-=== Use token on CI
-
-Definition of secret object:
-
-```
-- recommender-refresh-token: &recommender-refresh-token
-    name: "recommender-refresh-token"
-    secret-path: 'devtools-osio-ci/recommender-refresh-token'
-    secret-values:
-      - env-var: 'RECOMMENDER_REFRESH_TOKEN'
-        vault-key: 'token'
-```
-
-The job template needs to contain reference to a secret object:
-
-```
-- job-template:
-    wrappers:
-        - vault-secrets:
-            <<: *vault_defaults
-            secrets:
-              - *recommender-api-token
-              - *3scale-user-key
-              - *recommender-refresh-token
-```
-
-The token will be stored in environment variable named `RECOMMENDER_REFRESH_TOKEN` and can be used by tests:
-
-```
-load_jenkins_vars() {
-    if [ -e "jenkins-env" ]; then
-        cat jenkins-env \
-          | grep -E "(FRECOMMENDER_REFRESH_TOKEN|JENKINS_URL|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER)=" \
-          | sed 's/^/export /g' \
-          > ~/.jenkins-env
-        source ~/.jenkins-env
-    fi
-    echo "Jenkins URL: $JENKINS_URL"
-    echo "Build URL: $BUILD_URL"
-}
-```
 
 === More information about tokens:
 
