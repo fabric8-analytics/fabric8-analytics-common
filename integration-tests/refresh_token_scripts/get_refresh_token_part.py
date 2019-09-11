@@ -3,7 +3,7 @@
 """Script to retrieve the refresh_token attribute value from token.json file.
 
 Information about usage of this script can be found in:
-integration_tests.adoc
+README.adoc
 """
 
 import json
