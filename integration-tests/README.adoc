@@ -5,7 +5,7 @@ This repository contains integration tests for the fabric8-analytics services.
 
 The tests can be run against existing deployment, or locally by using docker-compose.
 
-Set values of following environment variables in `runtest.sh`, to test specific deployments:
+For Local System only, Set values of following environment variables in `env.sh`, to test specific deployments:
 
 * `F8A_API_URL` - API server URL
 * `F8A_JOB_API_URL` - Jobs service URL
