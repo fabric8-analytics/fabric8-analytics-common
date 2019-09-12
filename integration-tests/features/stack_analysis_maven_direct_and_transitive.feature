@@ -25,7 +25,7 @@ Feature: Smoketests for stack analysis API tests for Maven ecosystem
 
     # SLA/SLO-related checks
     When I look at the stack analysis duration
-    Then I should see that the duration is less than 30 seconds
+    Then I should see that the duration is less than 180 seconds
 
     # Timestamp checks
     When I look at recent stack analysis
