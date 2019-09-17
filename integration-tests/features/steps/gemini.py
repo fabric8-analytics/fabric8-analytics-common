@@ -9,10 +9,15 @@ from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
-from src.attribute_checks import check_attribute_presence, check_and_get_attribute
+from src.attribute_checks import check_attribute_presence, check_and_get_attribute, is_string
+from src.attribute_checks import check_year, check_month, check_day, check_date, check_timestamp
+from src.attribute_checks import check_response_time, check_cve_value, check_cve_score
+from src.attribute_checks import is_posint_or_zero
 from src.utils import read_data_gemini
 import os
+import datetime
 import json
+import re
 
 
 @given('Gemini service is running')
@@ -225,3 +230,33 @@ def check_valid_report(context):
         assert isinstance(response['objects'], list)
     else:
         assert isinstance(response, dict)
+
+
+def check_one_weekly_report_item(obj):
+    """Check one item from the list of weekly reports."""
+    assert obj is not None
+    is_string(obj)
+
+    # path to weekly report should contain the date in format YYYY-MM-DD
+    # also the path is always the same
+    pattern = re.compile("^weekly/(20[0-9][0-9]-[0-1][0-9]-[0-3][0-9]).json$")
+    m = pattern.match(obj)
+    assert m is not None
+
+    # ok, input string matches the pattern, let's check actual date
+    date = m.group(1)
+    check_date(date)
+
+
+@then('I should get valid list of weekly reports')
+def check_list_of_weekly_reports(context):
+    """Check the validity of list of weekly reports."""
+    response = context.response.json()
+    objects = check_and_get_attribute(response, "objects")
+
+    # ATM we have at least one weekly report
+    assert len(objects) > 1
+
+    # check details about are listed reports
+    for obj in objects:
+        check_one_weekly_report_item(obj)
