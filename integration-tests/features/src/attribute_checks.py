@@ -50,6 +50,18 @@ def is_string(attribute):
     assert isinstance(attribute, str)
 
 
+def is_posint(value):
+    """Check if given attribute is positive integer."""
+    assert isinstance(value, int)
+    assert value > 0
+
+
+def is_posint_or_zero(value):
+    """Check if given attribute is positive integer or zero."""
+    assert isinstance(value, int)
+    assert value >= 0
+
+
 def check_date(date):
     """Check if the string contains proper date value."""
     is_string(date)
