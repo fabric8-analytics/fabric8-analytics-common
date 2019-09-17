@@ -292,3 +292,20 @@ def check_list_of_monthly_reports(context):
     # check details about are listed reports
     for obj in objects:
         check_one_monthly_report_item(obj)
+
+
+@then('I should get a valid weekly report')
+def check_valid_weekly_report(context):
+    """Check if the weekly stacks report is valid."""
+    response = context.response.json()
+    assert response is not None
+
+    # try to retrieve all required attributes
+    report = check_and_get_attribute(response, "report")
+    stacks_details = check_and_get_attribute(response, "stacks_details")
+    stacks_summary = check_and_get_attribute(response, "stacks_summary")
+
+    # check actual values of required attributes
+    check_report_from_to_dates_weekly(report)
+    check_stacks_details(stacks_details)
+    check_stacks_summary(stacks_summary)
