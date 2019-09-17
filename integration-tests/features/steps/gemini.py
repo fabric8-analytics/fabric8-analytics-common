@@ -19,6 +19,8 @@ import datetime
 import json
 import re
 
+SUPPORTED_ECOSYSTEMS = ("pypi", "npm", "maven")
+
 
 @given('Gemini service is running')
 def running_gemini_api(context):
@@ -345,7 +347,7 @@ def check_stacks_detail(detail):
     unknown_dependencies = check_and_get_attribute(detail, "unknown_dependencies")
 
     # check actual values of required attributes
-    assert ecosystem in ("pypi", "npm", "maven")
+    assert ecosystem in SUPPORTED_ECOSYSTEMS
     check_response_time(response_time)
 
     for package in stack:
@@ -386,7 +388,7 @@ def check_report_for_ecosystem(summary, ecosystem):
 def check_stacks_summary(summary):
     """Check the stacks summary in generated stack report."""
     assert summary is not None
-    for ecosystem in ("maven", "npm", "pypi"):
+    for ecosystem in SUPPORTED_ECOSYSTEMS:
         if ecosystem in summary:
             check_report_for_ecosystem(summary, ecosystem)
 
