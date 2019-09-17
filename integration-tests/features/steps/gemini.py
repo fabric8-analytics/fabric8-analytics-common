@@ -309,3 +309,20 @@ def check_valid_weekly_report(context):
     check_report_from_to_dates_weekly(report)
     check_stacks_details(stacks_details)
     check_stacks_summary(stacks_summary)
+
+
+@then('I should get a valid monthly report')
+def check_valid_monthly_report(context):
+    """Check if the monthly stacks report is valid."""
+    response = context.response.json()
+    assert response is not None
+
+    # try to retrieve all required attributes
+    report = check_and_get_attribute(response, "report")
+    stacks_details = check_and_get_attribute(response, "stacks_details")
+    stacks_summary = check_and_get_attribute(response, "stacks_summary")
+
+    # check actual values of required attributes
+    check_report_from_to_dates_monthly(report)
+    check_stacks_details(stacks_details)
+    check_stacks_summary(stacks_summary)
