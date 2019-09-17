@@ -204,3 +204,34 @@ def check_hash_value(hash_value):
     pattern = r"[A-Za-z0-9]+"
     match = re.fullmatch(pattern, hash_value)
     assert match is not None, "Improper hash value %s" % hash_value
+
+
+def check_year(year):
+    """Check the attribute with year value."""
+    # sometimes the attribute is stored as a string
+    if isinstance(year, str):
+        year = int(year)
+
+    assert year >= 1970
+    # some sane max value is needed
+    assert year < 2100
+
+
+def check_month(month):
+    """Check the attribute with month number."""
+    # sometimes the attribute is stored as a string
+    if isinstance(month, str):
+        month = int(month)
+
+    assert month >= 1
+    assert month <= 12
+
+
+def check_day(day):
+    """Check the attribute with day number."""
+    # sometimes the attribute is stored as a string
+    if isinstance(day, str):
+        day = int(day)
+
+    assert day >= 1
+    assert day <= 31
