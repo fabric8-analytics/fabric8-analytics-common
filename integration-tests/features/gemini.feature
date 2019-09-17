@@ -127,20 +127,20 @@ Feature: Gemini Analytics API
      And I should find 0 CVEs for package org.hamcrest:hamcrest-core version 1.3 from ecosystem maven in dependencies
 
 
-  Scenario: Check the Gemini API /api/v1/user-repo/scan response
-    Given Gemini service is running
-        And Gemini service git url is https://github.com/jitpack/maven-simple
-        And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
-    When I post to Gemini API /api/v1/user-repo/scan
-    Then I should get 401 status code
-     And I should receive JSON response containing the error key
-     And I should find the text "Authentication failed" stored under the key error
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I post to Gemini API /api/v1/user-repo/scan with authorization token
-    Then I should get 200 status code
-     And I should find that the status is set to success in the JSON response
-     And I should find the text "https://github.com/heroku/node-js-sample.git" stored under the key summary
+  #Scenario: Check the Gemini API /api/v1/user-repo/scan response
+  #  Given Gemini service is running
+  #      And Gemini service git url is https://github.com/jitpack/maven-simple
+  #      And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
+  #  When I post to Gemini API /api/v1/user-repo/scan
+  #  Then I should get 401 status code
+  #   And I should receive JSON response containing the error key
+  #   And I should find the text "Authentication failed" stored under the key error
+  #  When I acquire the authorization token
+  #  Then I should get the proper authorization token
+  #  When I post to Gemini API /api/v1/user-repo/scan with authorization token
+  #  Then I should get 200 status code
+  #   And I should find that the status is set to success in the JSON response
+  #   And I should find the text "https://github.com/heroku/node-js-sample.git" stored under the key summary
 
 
   Scenario: Check the Gemini API /api/v1/user-repo/notify response
