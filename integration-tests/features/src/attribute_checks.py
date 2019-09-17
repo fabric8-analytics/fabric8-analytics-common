@@ -50,6 +50,33 @@ def is_string(attribute):
     assert isinstance(attribute, str)
 
 
+def is_posint(value):
+    """Check if given attribute is positive integer."""
+    assert isinstance(value, int)
+    assert value > 0
+
+
+def is_posint_or_zero(value):
+    """Check if given attribute is positive integer or zero."""
+    assert isinstance(value, int)
+    assert value >= 0
+
+
+def check_date(date):
+    """Check if the string contains proper date value."""
+    is_string(date)
+    # just try to parse the string to check whether
+    # the ValueError exception is raised or not
+    datetime.datetime.strptime(date, "%Y-%m-%d")
+
+
+def check_response_time(time):
+    """Check the response time which is a real number with 'ms' appended."""
+    is_string(time)
+    regex = re.compile("^[0-9]+\\.[0-9]+ ms$")
+    assert regex.match(time)
+
+
 def check_timestamp(timestamp):
     """Check if the string contains proper timestamp value.
 
@@ -198,9 +225,46 @@ def check_cve_value(cve, with_score=False):
         assert score >= 0.0 and score <= 10.0
 
 
+def check_cve_score(score):
+    """Check the CVE score value."""
+    assert isinstance(score, float)
+    assert score >= 0.0 and score <= 10.0
+
+
 def check_hash_value(hash_value):
     """Check if the value is proper hash in hex."""
     assert hash_value is not None
     pattern = r"[A-Za-z0-9]+"
     match = re.fullmatch(pattern, hash_value)
     assert match is not None, "Improper hash value %s" % hash_value
+
+
+def check_year(year):
+    """Check the attribute with year value."""
+    # sometimes the attribute is stored as a string
+    if isinstance(year, str):
+        year = int(year)
+
+    assert year >= 1970
+    # some sane max value is needed
+    assert year < 2100
+
+
+def check_month(month):
+    """Check the attribute with month number."""
+    # sometimes the attribute is stored as a string
+    if isinstance(month, str):
+        month = int(month)
+
+    assert month >= 1
+    assert month <= 12
+
+
+def check_day(day):
+    """Check the attribute with day number."""
+    # sometimes the attribute is stored as a string
+    if isinstance(day, str):
+        day = int(day)
+
+    assert day >= 1
+    assert day <= 31

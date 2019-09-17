@@ -9,10 +9,17 @@ from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
-from src.attribute_checks import check_attribute_presence, check_and_get_attribute
+from src.attribute_checks import check_attribute_presence, check_and_get_attribute, is_string
+from src.attribute_checks import check_year, check_month, check_date, check_timestamp
+from src.attribute_checks import check_response_time, check_cve_value, check_cve_score
+from src.attribute_checks import is_posint_or_zero
 from src.utils import read_data_gemini
 import os
+import datetime
 import json
+import re
+
+SUPPORTED_ECOSYSTEMS = ("pypi", "npm", "maven")
 
 
 @given('Gemini service is running')
@@ -225,3 +232,218 @@ def check_valid_report(context):
         assert isinstance(response['objects'], list)
     else:
         assert isinstance(response, dict)
+
+
+def check_one_weekly_report_item(obj):
+    """Check one item from the list of weekly reports."""
+    assert obj is not None
+    is_string(obj)
+
+    # path to weekly report should contain the date in format YYYY-MM-DD
+    # also the path is always the same
+    pattern = re.compile("^weekly/(20[0-9][0-9]-[0-1][0-9]-[0-3][0-9]).json$")
+    m = pattern.match(obj)
+    assert m is not None
+
+    # ok, input string matches the pattern, let's check actual date
+    date = m.group(1)
+    check_date(date)
+
+
+def check_one_monthly_report_item(obj):
+    """Check one item from the list of monthly reports."""
+    assert obj is not None
+    is_string(obj)
+
+    # path to monthly report should contain the date in format YYYY-MM (day is not specified)
+    # also the path is always the same
+    pattern = re.compile("^monthly/(20[0-9][0-9])-([0-1][0-9]).json$")
+    m = pattern.match(obj)
+    assert m is not None
+
+    # ok, input string matches the pattern, let's check actual values
+    year = m.group(1)
+    month = m.group(2)
+    check_year(year)
+    check_month(month)
+
+
+@then('I should get valid list of weekly reports')
+def check_list_of_weekly_reports(context):
+    """Check the validity of list of weekly reports."""
+    response = context.response.json()
+    objects = check_and_get_attribute(response, "objects")
+
+    # ATM we have at least one weekly report
+    assert len(objects) > 1
+
+    # check details about are listed reports
+    for obj in objects:
+        check_one_weekly_report_item(obj)
+
+
+@then('I should get valid list of monthly reports')
+def check_list_of_monthly_reports(context):
+    """Check the validity of list of monthly reports."""
+    response = context.response.json()
+    objects = check_and_get_attribute(response, "objects")
+
+    # ATM we have at least one monthly report
+    assert len(objects) > 1
+
+    # check details about are listed reports
+    for obj in objects:
+        check_one_monthly_report_item(obj)
+
+
+def check_report_from_to_dates(report):
+    """Check all attributes stored in 'report' node from the stack analysis."""
+    assert report is not None
+    from_date = check_and_get_attribute(report, "from")
+    to_date = check_and_get_attribute(report, "to")
+    generated_on = check_and_get_attribute(report, "generated_on")
+
+    # 'generated_on' attribute should contain a proper timestamp
+    check_timestamp(generated_on)
+
+    # 'from' and 'to' attributes should contain a date in format YYYY-MM-DD
+    check_date(from_date)
+    check_date(to_date)
+
+
+def parse_date(date_str):
+    """Parse date from given string."""
+    return datetime.datetime.strptime(date_str, "%Y-%m-%d")
+
+
+def check_report_from_to_dates_weekly(report):
+    """Check the content of 'report' node in weekly report."""
+    check_report_from_to_dates(report)
+    from_date = parse_date(check_and_get_attribute(report, "from"))
+    to_date = parse_date(check_and_get_attribute(report, "to"))
+    # work week (at least)
+    diff = to_date - from_date
+    assert diff.days >= 5
+
+
+def check_report_from_to_dates_monthly(report):
+    """Check the content of 'report' node in monthly report."""
+    check_report_from_to_dates(report)
+    from_date = parse_date(check_and_get_attribute(report, "from"))
+    to_date = parse_date(check_and_get_attribute(report, "to"))
+    # more than four weeks
+    diff = to_date - from_date
+    assert diff.days >= 28
+
+
+def check_license(license):
+    """Check the license from the stack detail."""
+    # TODO: better checks needs to be added
+    assert license is not None
+
+
+def check_stacks_detail(detail):
+    """Check selected stacks detail in generated stack report."""
+    # try to retrieve all required attributes
+    ecosystem = check_and_get_attribute(detail, "ecosystem")
+    license = check_and_get_attribute(detail, "license")
+    response_time = check_and_get_attribute(detail, "response_time")
+    security = check_and_get_attribute(detail, "security")
+    stack = check_and_get_attribute(detail, "stack")
+    unknown_dependencies = check_and_get_attribute(detail, "unknown_dependencies")
+
+    # check actual values of required attributes
+    assert ecosystem in SUPPORTED_ECOSYSTEMS
+    check_response_time(response_time)
+
+    for package in stack:
+        # TODO: add some package+version check
+        is_string(package)
+
+    for package in unknown_dependencies:
+        # TODO: add some package+version check
+        is_string(package)
+
+    cve_list = check_and_get_attribute(security, "cve_list")
+
+    check_license(license)
+
+    for cve_record in cve_list:
+        cve = check_and_get_attribute(cve_record, "CVE")
+        cvss = check_and_get_attribute(cve_record, "CVSS")
+        check_cve_value(cve, with_score=False)
+        check_cve_score(cvss)
+
+
+def check_stacks_details(details):
+    """Check the stacks details in generated stack report."""
+    assert details is not None
+    for detail in details:
+        check_stacks_detail(detail)
+
+
+def check_report_for_ecosystem(summary, ecosystem):
+    """Check the stack report for the selected ecosystem."""
+    report = check_and_get_attribute(summary, ecosystem)
+
+    # try to retrieve all required attributes
+    response_time = check_and_get_attribute(report, "average_response_time")
+
+    # check actual values of required attributes
+    check_response_time(response_time)
+
+
+def check_stacks_summary(summary):
+    """Check the stacks summary in generated stack report."""
+    assert summary is not None
+    for ecosystem in SUPPORTED_ECOSYSTEMS:
+        if ecosystem in summary:
+            check_report_for_ecosystem(summary, ecosystem)
+
+    # try to retrieve all required attributes
+    cves = check_and_get_attribute(summary, "unique_cves")
+    requests = check_and_get_attribute(summary, "total_stack_requests_count")
+    response_time = check_and_get_attribute(summary, "total_average_response_time")
+
+    # check actual values of required attributes
+    check_response_time(response_time)
+    is_posint_or_zero(requests)
+
+    # check all reported CVEs
+    for cve, count in cves.items():
+        check_cve_value(cve, with_score=True)
+        is_posint_or_zero(count)
+
+
+@then('I should get a valid weekly report')
+def check_valid_weekly_report(context):
+    """Check if the weekly stacks report is valid."""
+    response = context.response.json()
+    assert response is not None
+
+    # try to retrieve all required attributes
+    report = check_and_get_attribute(response, "report")
+    stacks_details = check_and_get_attribute(response, "stacks_details")
+    stacks_summary = check_and_get_attribute(response, "stacks_summary")
+
+    # check actual values of required attributes
+    check_report_from_to_dates_weekly(report)
+    check_stacks_details(stacks_details)
+    check_stacks_summary(stacks_summary)
+
+
+@then('I should get a valid monthly report')
+def check_valid_monthly_report(context):
+    """Check if the monthly stacks report is valid."""
+    response = context.response.json()
+    assert response is not None
+
+    # try to retrieve all required attributes
+    report = check_and_get_attribute(response, "report")
+    stacks_details = check_and_get_attribute(response, "stacks_details")
+    stacks_summary = check_and_get_attribute(response, "stacks_summary")
+
+    # check actual values of required attributes
+    check_report_from_to_dates_monthly(report)
+    check_stacks_details(stacks_details)
+    check_stacks_summary(stacks_summary)
