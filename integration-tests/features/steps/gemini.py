@@ -10,7 +10,7 @@ from urllib.parse import urljoin
 from src.parsing import parse_token_clause
 from src.authorization_tokens import authorization
 from src.attribute_checks import check_attribute_presence, check_and_get_attribute, is_string
-from src.attribute_checks import check_year, check_month, check_day, check_date, check_timestamp
+from src.attribute_checks import check_year, check_month, check_date, check_timestamp
 from src.attribute_checks import check_response_time, check_cve_value, check_cve_score
 from src.attribute_checks import is_posint_or_zero
 from src.utils import read_data_gemini
@@ -336,6 +336,12 @@ def check_report_from_to_dates_monthly(report):
     assert diff.days >= 28
 
 
+def check_license(license):
+    """Check the license from the stack detail."""
+    # TODO: better checks needs to be added
+    assert license is not None
+
+
 def check_stacks_detail(detail):
     """Check selected stacks detail in generated stack report."""
     # try to retrieve all required attributes
@@ -359,6 +365,8 @@ def check_stacks_detail(detail):
         is_string(package)
 
     cve_list = check_and_get_attribute(security, "cve_list")
+
+    check_license(license)
 
     for cve_record in cve_list:
         cve = check_and_get_attribute(cve_record, "CVE")
