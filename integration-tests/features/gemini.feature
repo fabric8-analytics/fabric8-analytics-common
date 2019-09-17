@@ -214,10 +214,15 @@ Feature: Gemini Analytics API
      Then I should get valid list of monthly reports
 
 
-
-
-  Scenario: Check the Gemini API endpoint 'stacks-report/report'
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for monthly report
     Given System is running
-     When I access the /api/v1/stacks-report/report endpoint of Gemini service for STAGE/monthly/2019-02.json report
+     When I access the /api/v1/stacks-report/report endpoint of Gemini service for monthly/2019-07.json report
      Then I should get 200 status code
-     Then I should get a valid report
+     Then I should get a valid monthly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for weekly report
+    Given System is running
+     When I access the /api/v1/stacks-report/report endpoint of Gemini service for weekly/2019-02-28.json report
+     Then I should get 200 status code
+     Then I should get a valid weekly report
