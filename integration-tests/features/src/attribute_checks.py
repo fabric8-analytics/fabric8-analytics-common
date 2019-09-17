@@ -73,7 +73,7 @@ def check_date(date):
 def check_response_time(time):
     """Check the response time which is a real number with 'ms' appended."""
     is_string(time)
-    regex = re.compile("^[0-9]+\.[0-9]+ ms$")
+    regex = re.compile("^[0-9]+\\.[0-9]+ ms$")
     assert regex.match(time)
 
 
