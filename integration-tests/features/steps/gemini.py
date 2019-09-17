@@ -248,6 +248,24 @@ def check_one_weekly_report_item(obj):
     check_date(date)
 
 
+def check_one_monthly_report_item(obj):
+    """Check one item from the list of monthly reports."""
+    assert obj is not None
+    is_string(obj)
+
+    # path to monthly report should contain the date in format YYYY-MM (day is not specified)
+    # also the path is always the same
+    pattern = re.compile("^monthly/(20[0-9][0-9])-([0-1][0-9]).json$")
+    m = pattern.match(obj)
+    assert m is not None
+
+    # ok, input string matches the pattern, let's check actual values
+    year = m.group(1)
+    month = m.group(2)
+    check_year(year)
+    check_month(month)
+
+
 @then('I should get valid list of weekly reports')
 def check_list_of_weekly_reports(context):
     """Check the validity of list of weekly reports."""
@@ -260,3 +278,17 @@ def check_list_of_weekly_reports(context):
     # check details about are listed reports
     for obj in objects:
         check_one_weekly_report_item(obj)
+
+
+@then('I should get valid list of monthly reports')
+def check_list_of_monthly_reports(context):
+    """Check the validity of list of monthly reports."""
+    response = context.response.json()
+    objects = check_and_get_attribute(response, "objects")
+
+    # ATM we have at least one monthly report
+    assert len(objects) > 1
+
+    # check details about are listed reports
+    for obj in objects:
+        check_one_monthly_report_item(obj)
