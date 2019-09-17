@@ -198,6 +198,12 @@ def check_cve_value(cve, with_score=False):
         assert score >= 0.0 and score <= 10.0
 
 
+def check_cve_score(score):
+    """Check the CVE score value."""
+    assert isinstance(score, float)
+    assert score >= 0.0 and score <= 10.0
+
+
 def check_hash_value(hash_value):
     """Check if the value is proper hash in hex."""
     assert hash_value is not None
