@@ -50,6 +50,21 @@ def is_string(attribute):
     assert isinstance(attribute, str)
 
 
+def check_date(date):
+    """Check if the string contains proper date value."""
+    is_string(date)
+    # just try to parse the string to check whether
+    # the ValueError exception is raised or not
+    datetime.datetime.strptime(date, "%Y-%m-%d")
+
+
+def check_response_time(time):
+    """Check the response time which is a real number with 'ms' appended."""
+    is_string(time)
+    regex = re.compile("^[0-9]+\.[0-9]+ ms$")
+    assert regex.match(time)
+
+
 def check_timestamp(timestamp):
     """Check if the string contains proper timestamp value.
 
