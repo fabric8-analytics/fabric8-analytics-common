@@ -91,7 +91,7 @@ def perform_valid_manifest_post(context, manifest, url):
     print(response.json())
 
 
-def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token):
+def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token, **kwargs):
     """Send the selected manifest file to stack analysis."""
     filename = 'data/{manifest}'.format(manifest=manifest)
     manifest_file_dir = os.path.dirname(filename)
@@ -105,7 +105,10 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
              'filePath[]': (None, path_to_manifest_file)}
     if use_token:
         response = requests.post(endpoint, files=files,
-                                 headers=authorization(context))
+                                 headers=authorization_with_eco_origin(
+                                     context,
+                                     ecosystem=kwargs.get('ecosystem', None),
+                                     origin=kwargs.get('origin', None)))
     else:
         response = requests.post(endpoint, files=files)
     context.response = response
@@ -155,7 +158,7 @@ def npm_manifest_stack_analysis(context, manifest, version=3, token="without"):
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'package.json',
-                                    endpoint, use_token)
+                                    endpoint, use_token, ecosystem='npm', origin='vscode')
 
 
 @when("I send Python package manifest {manifest} to stack analysis")
@@ -168,7 +171,7 @@ def python_manifest_stack_analysis(context, manifest, version=3, token="without"
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'pylist.json',
-                                    endpoint, use_token)
+                                    endpoint, use_token, ecosystem='pypi', origin='vscode')
 
 
 @when("I test {ecosystem} dependencies file {manifest} for stack analysis from {origin}")
@@ -188,7 +191,7 @@ def maven_manifest_stack_analysis(context, manifest, version=3, token="without")
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
-                                    endpoint, use_token)
+                                    endpoint, use_token, ecosystem='maven', origin='vscode')
 
 
 def check_result_node(resp):
