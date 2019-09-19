@@ -54,11 +54,15 @@ code changes, running tests etc.
 == Testing Fabric8-Analytics Code
 The following tests can be run to test your code in Fabric8-Analytics. Detailed information about each type of test is included in the corresponding folder in the repository.
 
-* Integration tests: The <<integration_tests>> for fabric8-analytics services can be run against existing deployment, or locally using docker-compose.
+* Integration tests: The link:integration-tests/README.adoc[integration tests] for fabric8-analytics services can be run against existing deployment, or locally using docker-compose.
 
-* Performance tests: A basic set of <<performance_tests>> measures the component search and stack analysis at this moment.
+* Performance tests: A basic set of link:perf-tests/performance_tests.adoc[performance tests] measures the component search and stack analysis at this moment.
 
-* UI tests: The <<ui_tests>> access OpenShift.io and check whether it is possible to create a new space, configure the project in that space, and get the stack and license analysis for this project.
+* link:a2t/README.md[Analytics API load tests] to measure component and stack analysis throughput.
+
+* UI tests: The link:ui-tests/ui_tests.adoc[UI tests] access OpenShift.io and check whether it is possible to create a new space, configure the project in that space, and get the stack and license analysis for this project.
+
+* VS Code visual tests: Visual (UI) tests for the Analytics extension for the Visual Studio Code. For further explanation please view the link:vscode-visual-tests/README.md[VS Code README document]
 
 * Database integrity tests: Database integrity tests are described in the <<database_integrity_tests,following document>>.
 
