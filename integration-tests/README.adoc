@@ -379,3 +379,7 @@ link:https://fabric8-services.github.io/fabric8-auth/reference.html#_token_valid
 link:https://fabric8-services.github.io/fabric8-auth/reference.html#_offline_tokens[Offline Tokens]
 link:https://www.vaultproject.io/[Vault: Manage Secrets and Protect Sensitive Data]
 link:https://gitlab.cee.redhat.com/dtsd/devguide/blob/master/devguide.md#credentials-mgmt[Credentials Management in Vault]
+
+== Common issues
+
+Please look into link:../SOP.md[Standard operating procedures] document for exlanation of most common issues.
