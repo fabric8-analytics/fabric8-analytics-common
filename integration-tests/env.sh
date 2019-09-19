@@ -25,7 +25,7 @@ GREEN=$(tput bold && tput setaf 2)
 YELLOW=$(tput bold && tput setaf 3)
 
 
-if [ $AWS_ACCESS_KEY_ID == 'not-set' ]
+if [ $RECOMMENDER_REFRESH_TOKEN == 'not-set' ]
 then
     echo ""
     printf "%sPlease set all Environment Variables before proceeding.%s" "${RED}" "${NORMAL}"
@@ -33,9 +33,6 @@ then
     exit 1
 fi
 
-echo AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID >> ~/.profile
-echo S3_REGION_NAME=$S3_REGION_NAME >> ~/.profile
-echo AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY >> ~/.profile
 echo THREE_SCALE_PREVIEW_USER_KEY=$THREE_SCALE_PREVIEW_USER_KEY >> ~/.profile
 echo F8A_API_URL=$F8A_API_URL >> ~/.profile
 echo F8A_JOB_API_URL=$F8A_JOB_API_URL >> ~/.profile
@@ -46,6 +43,19 @@ echo F8A_GREMLIN_URL=$F8A_GREMLIN_URL >> ~/.profile
 echo F8A_GEMINI_API_URL=$F8A_GEMINI_API_URL >> ~/.profile
 echo RECOMMENDER_REFRESH_TOKEN=$RECOMMENDER_REFRESH_TOKEN >> ~/.profile
 
+if [ $AWS_ACCESS_KEY_ID != 'not-set' ]
+then
+    echo ""
+    echo AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID >> ~/.profile
+    echo S3_REGION_NAME=$S3_REGION_NAME >> ~/.profile
+    echo AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY >> ~/.profile
+    echo ""
+fi
+
+#Waiting to complete I/O Operation
+sleep 2
+
 source ~/.profile
 
 printf "%sSuccesss: Environment Variables set.%s" "${GREEN}" "${NORMAL}"
+echo ""
