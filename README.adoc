@@ -62,6 +62,9 @@ The following tests can be run to test your code in Fabric8-Analytics. Detailed 
 
 * Database integrity tests: Database integrity tests are described in the <<database_integrity_tests,following document>>.
 
+== Standard operating procedures
+In case of any issue with tests or with CI, please refer to the link:SOP.md[Standard operating procedures] document.
+
 == QA Dashboard generator
 The <<about_qa_dashboard_code_coverage,QA dashboard>> provides a consolidated report on the status of code coverage, performance tests and CI jobs for all the repositories in Fabric8-Analytics that contain source files.
 
