@@ -426,8 +426,11 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
     """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
     log.info("Preparing data for QA Dashboard")
     with log.indent():
+        all_repos = len(repositories)
+        i = 0
         for repository in repositories:
-            log.info("Repository " + repository)
+            i += 1
+            log.info("Repository {}  ({}/{})".format(repository, i, all_repos))
 
             # clone or fetch the repository, but only if the cloning/fetching
             # is not disabled via CLI arguments
