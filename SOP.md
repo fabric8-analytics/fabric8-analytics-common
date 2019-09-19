@@ -45,3 +45,19 @@ Finished: FAILURE
 
 - this is temporary issue caused by insufficient number of nodes on CI
 - rerun the job after some time by adding `[test]` message to the pull request
+
+### CI jobs failure with messages "cico node get' failed, trying again in Ns (x/y)"
+
+Typical error message is repeated several times:
+
+```
+'cico node get' failed, trying again in 60s (1/15)
++ n=2
++ sleep 60
++ true
+++ cico node get -f value -c ip_address -c comment
+The requested operation failed as no inventory is available.
+```
+
+- this is temporary issue caused by insufficient number of nodes on CI
+- rerun the job after some time by adding `[test]` message to the pull request
