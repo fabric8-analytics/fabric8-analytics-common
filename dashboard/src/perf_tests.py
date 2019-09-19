@@ -26,12 +26,16 @@ class PerfTests:
     def read_csv(filename, skip_first_line=False):
         """Read the given CSV file, parse it, and return as list of records."""
         output = []
-        with open(filename, 'r') as fin:
-            csv_content = csv.reader(fin, delimiter=',')
-            if skip_first_line:
-                next(csv_content, None)
-            for row in csv_content:
-                output.append(row)
+        # it is expected that the input CSV might not exists at the beginning
+        try:
+            with open(filename, 'r') as fin:
+                csv_content = csv.reader(fin, delimiter=',')
+                if skip_first_line:
+                    next(csv_content, None)
+                for row in csv_content:
+                    output.append(row)
+        except Exception as e:
+            print("Unable to load CSV file", e)
         return output
 
     def __init__(self):
@@ -64,6 +68,9 @@ class PerfTests:
         COLUMN_AVG_VALUES = 4
 
         n = len(results)
+        # don't fail when no results are computed (yet)
+        if n == 0:
+            return
         columns = len(results[0])
 
         # initial values to be updated later
