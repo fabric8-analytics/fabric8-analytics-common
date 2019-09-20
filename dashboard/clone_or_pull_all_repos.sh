@@ -34,6 +34,7 @@ f8a-hpf-insights
 f8a-golang-insights
 f8a-pypi-insights
 f8a-stacks-report
+f8a-emr-deployment
 cvejob
 victimsdb-lib"
 
