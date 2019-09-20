@@ -29,11 +29,13 @@ fabric8-analytics-release-monitor
 fabric8-analytics-github-refresh-cronjob
 fabric8-analytics-github-events-monitor
 fabric8-analytics-rudra
+fabric8-analytics-scaler
 f8a-server-backbone
 f8a-hpf-insights
 f8a-golang-insights
 f8a-pypi-insights
 f8a-stacks-report
+f8a-data-ingestion-service
 f8a-emr-deployment
 cvejob
 victimsdb-lib"
