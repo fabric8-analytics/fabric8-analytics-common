@@ -316,6 +316,16 @@ def parse_date(date_str):
     return datetime.datetime.strptime(date_str, "%Y-%m-%d")
 
 
+def check_report_from_to_dates_daily(report):
+    """Check the content of 'report' node in daily report."""
+    check_report_from_to_dates(report)
+    from_date = parse_date(check_and_get_attribute(report, "from"))
+    to_date = parse_date(check_and_get_attribute(report, "to"))
+    # a day (at least)
+    diff = to_date - from_date
+    assert diff.days >= 1
+
+
 def check_report_from_to_dates_weekly(report):
     """Check the content of 'report' node in weekly report."""
     check_report_from_to_dates(report)
