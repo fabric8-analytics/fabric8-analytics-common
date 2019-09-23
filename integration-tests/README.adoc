@@ -45,6 +45,7 @@ the component analysis endpoints under `/api/v1/component-analyses/`.
 * link:features/selfcheck.feature[Selfcheck]: Some checks to ensure that the steps work correctly.
 * link:features/resilient_infrastructure.feature[Resilient
 infrastructure]: Tests that check the resiliency of the entire infrastructure. These tests use the OpenShift Console, which needs to be installed.
+* link:featurs/gemini.feature[Gemini]: Tests for the Gemini API.
 
 === Older tests that have to be updated
 

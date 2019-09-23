@@ -93,6 +93,46 @@ def access_stacks_report_list(context, endpoint, parameter='', history=''):
     context.history = True if history == 'history' else False
 
 
+def get_list_of_reports_for_period(context, endpoint, period):
+    """Get list of stack reports for selected period."""
+    assert period in ("daily", "weekly", "monthly")
+
+    # call the REST API
+    url = urljoin(context.gemini_api_url, '{ep}/list/{param}'.format(ep=endpoint, param=period))
+    response = requests.get(url).json()
+    assert response is not None
+    objects = check_and_get_attribute(response, "objects")
+
+    # ATM we have at least one daily, weekly, monthly report
+    assert len(objects) > 1
+    return objects
+
+
+def select_stack_report(objects, what):
+    """Select the first or the last stack report."""
+    assert what in ("first", "last")
+    if what == "first":
+        return objects[0]
+    else:
+        return objects[-1]
+
+
+@when('I access the {endpoint} endpoint of Gemini service to get the {what} {period} report')
+def access_stacks_report_for_given_time(context, endpoint, what, period):
+    """Access the Gemini endpoint to get the first or last list of reports."""
+    objects = get_list_of_reports_for_period(context, endpoint, period)
+
+    # select the first or the last stack report
+    stack_report = select_stack_report(objects, what)
+    assert stack_report is not None
+
+    # retrieve the selected stack report
+    url = urljoin(context.gemini_api_url,
+                  '{ep}/report/{stack_report}'.format(ep=endpoint, stack_report=stack_report))
+    context.response = requests.get(url)
+    assert context.response is not None
+
+
 @when('I call the {endpoint} endpoint of Gemini service using the HTTP PUT method')
 def access_gemini_url_put_method(context, endpoint):
     """Access the Gemini service API using the HTTP PUT method."""
@@ -234,6 +274,22 @@ def check_valid_report(context):
         assert isinstance(response, dict)
 
 
+def check_one_daily_report_item(obj):
+    """Check one item from the list of daily reports."""
+    assert obj is not None
+    is_string(obj)
+
+    # path to daily report should contain the date in format YYYY-MM-DD
+    # also the path is always the same
+    pattern = re.compile("^daily/(20[0-9][0-9]-[0-1][0-9]-[0-3][0-9]).json$")
+    m = pattern.match(obj)
+    assert m is not None
+
+    # ok, input string matches the pattern, let's check actual date
+    date = m.group(1)
+    check_date(date)
+
+
 def check_one_weekly_report_item(obj):
     """Check one item from the list of weekly reports."""
     assert obj is not None
@@ -266,6 +322,20 @@ def check_one_monthly_report_item(obj):
     month = m.group(2)
     check_year(year)
     check_month(month)
+
+
+@then('I should get valid list of daily reports')
+def check_list_of_daily_reports(context):
+    """Check the validity of list of daily reports."""
+    response = context.response.json()
+    objects = check_and_get_attribute(response, "objects")
+
+    # ATM we have at least one daily report
+    assert len(objects) > 1
+
+    # check details about are listed reports
+    for obj in objects:
+        check_one_daily_report_item(obj)
 
 
 @then('I should get valid list of weekly reports')
@@ -316,24 +386,39 @@ def parse_date(date_str):
     return datetime.datetime.strptime(date_str, "%Y-%m-%d")
 
 
-def check_report_from_to_dates_weekly(report):
-    """Check the content of 'report' node in weekly report."""
-    check_report_from_to_dates(report)
+def check_dates_difference(report, days_threshold):
+    """Compute the difference between two dates and compare it with given threshold value."""
     from_date = parse_date(check_and_get_attribute(report, "from"))
     to_date = parse_date(check_and_get_attribute(report, "to"))
-    # work week (at least)
+    assert from_date is not None
+    assert to_date is not None
+    # a day (at least)
     diff = to_date - from_date
-    assert diff.days >= 5
+    assert diff.days >= days_threshold
+
+
+def check_report_from_to_dates_daily(report):
+    """Check the content of 'report' node in daily report."""
+    # check all the required attributes in 'report' node
+    check_report_from_to_dates(report)
+    # a day (at least)
+    check_dates_difference(report, 1)
+
+
+def check_report_from_to_dates_weekly(report):
+    """Check the content of 'report' node in weekly report."""
+    # check all the required attributes in 'report' node
+    check_report_from_to_dates(report)
+    # work week (at least)
+    check_dates_difference(report, 5)
 
 
 def check_report_from_to_dates_monthly(report):
     """Check the content of 'report' node in monthly report."""
+    # check all the required attributes in 'report' node
     check_report_from_to_dates(report)
-    from_date = parse_date(check_and_get_attribute(report, "from"))
-    to_date = parse_date(check_and_get_attribute(report, "to"))
     # more than four weeks
-    diff = to_date - from_date
-    assert diff.days >= 28
+    check_dates_difference(report, 27)
 
 
 def check_license(license):
@@ -413,6 +498,23 @@ def check_stacks_summary(summary):
     for cve, count in cves.items():
         check_cve_value(cve, with_score=True)
         is_posint_or_zero(count)
+
+
+@then('I should get a valid daily report')
+def check_valid_daily_report(context):
+    """Check if the daily stacks report is valid."""
+    response = context.response.json()
+    assert response is not None
+
+    # try to retrieve all required attributes
+    report = check_and_get_attribute(response, "report")
+    stacks_details = check_and_get_attribute(response, "stacks_details")
+    stacks_summary = check_and_get_attribute(response, "stacks_summary")
+
+    # check actual values of required attributes
+    check_report_from_to_dates_daily(report)
+    check_stacks_details(stacks_details)
+    check_stacks_summary(stacks_summary)
 
 
 @then('I should get a valid weekly report')

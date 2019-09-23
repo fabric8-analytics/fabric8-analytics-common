@@ -58,6 +58,8 @@ Feature: Gemini Analytics API
     Given System is running
      When I call the /api/v1/liveness endpoint of Gemini service using the HTTP HEAD method
      Then I should get 200 status code
+
+
   Scenario: Check the 'readiness' REST API point for the Gemini service with using authorization token
     Given System is running
      When I acquire the authorization token
@@ -88,13 +90,13 @@ Feature: Gemini Analytics API
     Then I should get 200 status code
 
 
-  Scenario: Gemini /api/v1/report check when called without arguments
+  Scenario: Gemini /api/v1/report check when called without arguments and without authorization token
     Given Gemini service is running
      When I access the /api/v1/report endpoint of Gemini service without authorization token
      Then I should not get 200 status code
 
 
-  Scenario: Gemini /api/v1/report check when called without arguments
+  Scenario: Gemini /api/v1/report check when called without arguments but with authorization token
     Given Gemini service is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -102,7 +104,7 @@ Feature: Gemini Analytics API
      Then I should not get 200 status code
 
 
-  Scenario: Check the Gemini API /api/v1/report response
+  Scenario: Check the Gemini API /api/v1/report response, basic test
     Given Gemini service is running
       And Gemini service git url is https://github.com/jitpack/maven-simple
       And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
@@ -112,7 +114,7 @@ Feature: Gemini Analytics API
      And I should find the text "Authentication failed" stored under the key error
 
 
-  Scenario: Check the Gemini API /api/v1/report response
+  Scenario: Check the Gemini API /api/v1/report response, complete test
     Given Gemini service is running
       And Gemini service git url is https://github.com/jitpack/maven-simple
       And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
@@ -200,6 +202,13 @@ Feature: Gemini Analytics API
      Then I should not get 200 status code
 
 
+  Scenario: Check the Gemini API endpoint 'stacks-report/list' for daily report list
+    Given System is running
+     When I access the /api/v1/stacks-report/list endpoint of Gemini service for daily report history
+     Then I should get 200 status code
+     Then I should get valid list of daily reports
+
+
   Scenario: Check the Gemini API endpoint 'stacks-report/list' for weekly report list
     Given System is running
      When I access the /api/v1/stacks-report/list endpoint of Gemini service for weekly report history
@@ -214,15 +223,64 @@ Feature: Gemini Analytics API
      Then I should get valid list of monthly reports
 
 
-  Scenario: Check the Gemini API endpoint 'stacks-report/report' for monthly report
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for selected daily report
+    Given System is running
+     When I access the /api/v1/stacks-report/report endpoint of Gemini service for daily/2019-03-17.json report
+     Then I should get 200 status code
+     Then I should get a valid daily report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for selected weekly report
+    Given System is running
+     When I access the /api/v1/stacks-report/report endpoint of Gemini service for weekly/2019-02-28.json report
+     Then I should get 200 status code
+     Then I should get a valid weekly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for selected monthly report
     Given System is running
      When I access the /api/v1/stacks-report/report endpoint of Gemini service for monthly/2019-07.json report
      Then I should get 200 status code
      Then I should get a valid monthly report
 
 
-  Scenario: Check the Gemini API endpoint 'stacks-report/report' for weekly report
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for daily report - the first daily report
     Given System is running
-     When I access the /api/v1/stacks-report/report endpoint of Gemini service for weekly/2019-02-28.json report
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the first daily report
+     Then I should get 200 status code
+     Then I should get a valid daily report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for weekly report - the first weekly report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the first weekly report
      Then I should get 200 status code
      Then I should get a valid weekly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for monthly report - the first monthly report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the first monthly report
+     Then I should get 200 status code
+     Then I should get a valid monthly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for daily report - the last daily report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the last daily report
+     Then I should get 200 status code
+     Then I should get a valid daily report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for weekly report - the last weekly report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the last weekly report
+     Then I should get 200 status code
+     Then I should get a valid weekly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for monthly report - the last monthly report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the last monthly report
+     Then I should get 200 status code
+     Then I should get a valid monthly report
