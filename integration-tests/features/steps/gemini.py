@@ -234,6 +234,22 @@ def check_valid_report(context):
         assert isinstance(response, dict)
 
 
+def check_one_daily_report_item(obj):
+    """Check one item from the list of daily reports."""
+    assert obj is not None
+    is_string(obj)
+
+    # path to daily report should contain the date in format YYYY-MM-DD
+    # also the path is always the same
+    pattern = re.compile("^daily/(20[0-9][0-9]-[0-1][0-9]-[0-3][0-9]).json$")
+    m = pattern.match(obj)
+    assert m is not None
+
+    # ok, input string matches the pattern, let's check actual date
+    date = m.group(1)
+    check_date(date)
+
+
 def check_one_weekly_report_item(obj):
     """Check one item from the list of weekly reports."""
     assert obj is not None
@@ -266,6 +282,20 @@ def check_one_monthly_report_item(obj):
     month = m.group(2)
     check_year(year)
     check_month(month)
+
+
+@then('I should get valid list of daily reports')
+def check_list_of_daily_reports(context):
+    """Check the validity of list of daily reports."""
+    response = context.response.json()
+    objects = check_and_get_attribute(response, "objects")
+
+    # ATM we have at least one daily report
+    assert len(objects) > 1
+
+    # check details about are listed reports
+    for obj in objects:
+        check_one_daily_report_item(obj)
 
 
 @then('I should get valid list of weekly reports')
