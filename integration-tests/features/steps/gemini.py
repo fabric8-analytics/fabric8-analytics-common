@@ -93,6 +93,46 @@ def access_stacks_report_list(context, endpoint, parameter='', history=''):
     context.history = True if history == 'history' else False
 
 
+def get_list_of_reports_for_period(context, endpoint, period):
+    """Get list of stack reports for selected period."""
+    assert period in ("daily", "weekly", "monthly")
+
+    # call the REST API
+    url = urljoin(context.gemini_api_url, '{ep}/list/{param}'.format(ep=endpoint, param=period))
+    response = requests.get(url).json()
+    assert response is not None
+    objects = check_and_get_attribute(response, "objects")
+
+    # ATM we have at least one daily, weekly, monthly report
+    assert len(objects) > 1
+    return objects
+
+
+def select_stack_report(objects, what):
+    """Select the first or the last stack report."""
+    assert what in ("first", "last")
+    if what == "first":
+        return objects[0]
+    else:
+        return objects[-1]
+
+
+@when('I access the {endpoint} endpoint of Gemini service to get the {what} {period} report')
+def access_stacks_report_for_given_time(context, endpoint, what, period):
+    """Access the Gemini endpoint to get the first or last list of reports."""
+    objects = get_list_of_reports_for_period(context, endpoint, period)
+
+    # select the first or the last stack report
+    stack_report = select_stack_report(objects, what)
+    assert stack_report is not None
+
+    # retrieve the selected stack report
+    url = urljoin(context.gemini_api_url,
+                  '{ep}/report/{stack_report}'.format(ep=endpoint, stack_report=stack_report))
+    context.response = requests.get(url)
+    assert context.response is not None
+
+
 @when('I call the {endpoint} endpoint of Gemini service using the HTTP PUT method')
 def access_gemini_url_put_method(context, endpoint):
     """Access the Gemini service API using the HTTP PUT method."""
@@ -378,7 +418,7 @@ def check_report_from_to_dates_monthly(report):
     # check all the required attributes in 'report' node
     check_report_from_to_dates(report)
     # more than four weeks
-    check_dates_difference(report, 28)
+    check_dates_difference(report, 27)
 
 
 def check_license(license):
