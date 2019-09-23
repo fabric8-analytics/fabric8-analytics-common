@@ -58,6 +58,8 @@ Feature: Gemini Analytics API
     Given System is running
      When I call the /api/v1/liveness endpoint of Gemini service using the HTTP HEAD method
      Then I should get 200 status code
+
+
   Scenario: Check the 'readiness' REST API point for the Gemini service with using authorization token
     Given System is running
      When I acquire the authorization token
@@ -88,13 +90,13 @@ Feature: Gemini Analytics API
     Then I should get 200 status code
 
 
-  Scenario: Gemini /api/v1/report check when called without arguments
+  Scenario: Gemini /api/v1/report check when called without arguments and without authorization token
     Given Gemini service is running
      When I access the /api/v1/report endpoint of Gemini service without authorization token
      Then I should not get 200 status code
 
 
-  Scenario: Gemini /api/v1/report check when called without arguments
+  Scenario: Gemini /api/v1/report check when called without arguments but with authorization token
     Given Gemini service is running
      When I acquire the authorization token
      Then I should get the proper authorization token
@@ -102,7 +104,7 @@ Feature: Gemini Analytics API
      Then I should not get 200 status code
 
 
-  Scenario: Check the Gemini API /api/v1/report response
+  Scenario: Check the Gemini API /api/v1/report response, basic test
     Given Gemini service is running
       And Gemini service git url is https://github.com/jitpack/maven-simple
       And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
@@ -112,7 +114,7 @@ Feature: Gemini Analytics API
      And I should find the text "Authentication failed" stored under the key error
 
 
-  Scenario: Check the Gemini API /api/v1/report response
+  Scenario: Check the Gemini API /api/v1/report response, complete test
     Given Gemini service is running
       And Gemini service git url is https://github.com/jitpack/maven-simple
       And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
