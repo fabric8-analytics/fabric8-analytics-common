@@ -346,34 +346,39 @@ def parse_date(date_str):
     return datetime.datetime.strptime(date_str, "%Y-%m-%d")
 
 
-def check_report_from_to_dates_daily(report):
-    """Check the content of 'report' node in daily report."""
-    check_report_from_to_dates(report)
+def check_dates_difference(report, days_threshold):
+    """Compute the difference between two dates and compare it with given threshold value."""
     from_date = parse_date(check_and_get_attribute(report, "from"))
     to_date = parse_date(check_and_get_attribute(report, "to"))
+    assert from_date is not None
+    assert to_date is not None
     # a day (at least)
     diff = to_date - from_date
-    assert diff.days >= 1
+    assert diff.days >= days_threshold
+
+
+def check_report_from_to_dates_daily(report):
+    """Check the content of 'report' node in daily report."""
+    # check all the required attributes in 'report' node
+    check_report_from_to_dates(report)
+    # a day (at least)
+    check_dates_difference(report, 1)
 
 
 def check_report_from_to_dates_weekly(report):
     """Check the content of 'report' node in weekly report."""
+    # check all the required attributes in 'report' node
     check_report_from_to_dates(report)
-    from_date = parse_date(check_and_get_attribute(report, "from"))
-    to_date = parse_date(check_and_get_attribute(report, "to"))
     # work week (at least)
-    diff = to_date - from_date
-    assert diff.days >= 5
+    check_dates_difference(report, 5)
 
 
 def check_report_from_to_dates_monthly(report):
     """Check the content of 'report' node in monthly report."""
+    # check all the required attributes in 'report' node
     check_report_from_to_dates(report)
-    from_date = parse_date(check_and_get_attribute(report, "from"))
-    to_date = parse_date(check_and_get_attribute(report, "to"))
     # more than four weeks
-    diff = to_date - from_date
-    assert diff.days >= 28
+    check_dates_difference(report, 28)
 
 
 def check_license(license):
