@@ -200,6 +200,13 @@ Feature: Gemini Analytics API
      Then I should not get 200 status code
 
 
+  Scenario: Check the Gemini API endpoint 'stacks-report/list' for daily report list
+    Given System is running
+     When I access the /api/v1/stacks-report/list endpoint of Gemini service for daily report history
+     Then I should get 200 status code
+     Then I should get valid list of daily reports
+
+
   Scenario: Check the Gemini API endpoint 'stacks-report/list' for weekly report list
     Given System is running
      When I access the /api/v1/stacks-report/list endpoint of Gemini service for weekly report history
