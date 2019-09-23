@@ -240,3 +240,45 @@ Feature: Gemini Analytics API
      When I access the /api/v1/stacks-report/report endpoint of Gemini service for monthly/2019-07.json report
      Then I should get 200 status code
      Then I should get a valid monthly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for daily report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the first daily report
+     Then I should get 200 status code
+     Then I should get a valid daily report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for weekly report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the first weekly report
+     Then I should get 200 status code
+     Then I should get a valid weekly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for monthly report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the first monthly report
+     Then I should get 200 status code
+     Then I should get a valid monthly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for daily report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the last daily report
+     Then I should get 200 status code
+     Then I should get a valid daily report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for weekly report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the last weekly report
+     Then I should get 200 status code
+     Then I should get a valid weekly report
+
+
+  Scenario: Check the Gemini API endpoint 'stacks-report/report' for monthly report
+    Given System is running
+     When I access the /api/v1/stacks-report endpoint of Gemini service to get the last monthly report
+     Then I should get 200 status code
+     Then I should get a valid monthly report
