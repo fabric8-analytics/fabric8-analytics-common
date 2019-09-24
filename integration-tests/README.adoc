@@ -39,12 +39,27 @@ To add new feature tests:
 * link:features/smoketest.feature[Smoke tests]: Smoke tests for checking if main API endpoints are available and work as expected.
 * link:features/server_api.feature[Server API]: API tests for the server module.
 * link:features/gemini.feature[Gemini]: Tests for the Gemini API.
+* link:features/api_backbone.feature[API Backbone]: Tests for the API backbone.
 * link:features/jobs_api.feature[Jobs API]: API tests for the jobs module.
+* link:features/jobs_debug_api.feature[Jobs API]: Debug API tests for the jobs module.
+* link:features/license_analysis.feature[License analysis]: Tests for license analysis API
 * link:features/stack_analyses_v2.feature[Stack analysis v2]: API tests for the stack analysis endpoint `/api/v2/stack-analyses/`.
+* link:features/stack_analyses_v2_minimal.feature[Stack analysis v2]: API smoke tests for the stack analysis endpoint `/api/v2/stack-analyses/`.
 * link:features/components.feature[Component analysis]: API tests for the component analysis endpoints under `/api/v1/component-analyses/`.
+* link:features/components_in_s3.feature[Checks for components stored in S3]: Check how/if components are stored in the S3 database.
+* link:features/components_in_s3_vertx.feature[Checks for components stored in S3]: Specific tests for vertx components.
+* link:features/packages_in_s3.feature[Checks for packages stored in S3]: Check how/if packages are stored in the S3 database.
+* link:features/packages_in_s3_vertx.feature[Checks for packages stored in S3]: Specific tests for vertx packages.
+* link:features/component_analysis_smoke_tests.feature[Component analysis smoke tests]: Smoke tests for the component analysis REST API
+* link:features/component_analysis.feature[Component analysis basic tests]: Basic set of component analysis REST API tests
+* link:features/component_analysis_smoke_tests_100_pypi_components.feature[Component analysis: 100 most popular PyPi packages]: Component analysis for the 100 most popular PyPi packages
+* link:features/component_analysis_smoke_tests_1000_pypi_components.feature[Component analysis: 1000 most popular PyPi packages]: Component analysis for the 1000 most popular PyPi packages
+* link:features/component_analysis_smoke_tests_100_npm_components.feature[Component analysis: 100 most popular NPM packages]: Component analysis for the 100 most popular NPM packages
+* link:features/component_analysis_smoke_tests_960_npm_components.feature[Component analysis: 960 most popular NPM packages]: Component analysis for the 960 most popular NPM packages
+* link:features/component_analysis_smoke_tests_100_maven_components.feature[Component analysis: 100 most popular Maven packages]: Component analysis for the 100 most popular Maven packages
 * link:features/resilient_infrastructure.feature[Resilient infrastructure]: Tests that check the resiliency of the entire infrastructure. These tests use the OpenShift Console, which needs to be installed.
 
-=== Older tests that have to be updated
+=== Older tests that have to be updated or deprecated
 
 * link:features/stack_analyses.feature[Stack analysis]: API tests for the stack analysis endpoint `/api/v1/stack-analyses/`.
 * link:features/ecosystems.feature[Known ecosystems]: API tests for the known ecosystems endpoint `/api/v1/ecosystems/`.
