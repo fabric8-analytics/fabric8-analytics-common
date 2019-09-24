@@ -127,8 +127,8 @@ The available methods include:
 * `start_system()`: Starts the API service in its default configuration using Docker Compose.
 * `teardown_system()`: Shuts down the API service and removes all related container volumes.
 * `restart_system()`: Tears down and restarts the API service in its default configuration.
-* `run_command_in_service`: See  <<features/environment.py>> for more information.
-* `exec_command_in_container`: See  <<features/environment.py>> for more information.
+* `run_command_in_service`: See  link:features/environment.py[features/environment.py] for more information.
+* `exec_command_in_container`: See  link:features/environment.py[features/environment.py] for more information.
 
 The available attributes include:
 
