@@ -75,6 +75,9 @@ To add new feature tests:
 * link:features/dependency_editor_categories.feature[Dependency editor categories]: Tests for the dependency editor - categories
 * link:features/dependency_editor_cve_analyses.feature[Dependency editor CVE analyses]: Tests for the dependency editor - CVE analyses
 * link:features/regression_tests.feature[Regression tests]: All regression tests
+* link:features/three_scale.feature[Three scale basic tests]: Basic tests for the Three scale gateway
+* link:features/three_scale_component_analyses.feature[Three scale component analyses]: Component analysis run via Three scale gateway
+* link:features/three_scale_stack_analyses.feature[Three scale stack analyses]: Stack analysis run via Three scale gateway
 
 === Older tests that have to be updated or deprecated
 
