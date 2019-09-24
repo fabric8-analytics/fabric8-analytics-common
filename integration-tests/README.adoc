@@ -35,28 +35,21 @@ To add new feature tests:
 
 === Currently defined feature tests
 
+* link:features/selfcheck.feature[Selfcheck]: Some checks to ensure that the steps work correctly.
 * link:features/smoketest.feature[Smoke tests]: Smoke tests for checking if main API endpoints are available and work as expected.
 * link:features/server_api.feature[Server API]: API tests for the server module.
+* link:features/gemini.feature[Gemini]: Tests for the Gemini API.
 * link:features/jobs_api.feature[Jobs API]: API tests for the jobs module.
-* link:features/stack_analyses_v2.feature[Stack analysis v2]: API tests
-for the stack analysis endpoint `/api/v2/stack-analyses/`.
-* link:features/components.feature[Component analysis]: API tests for
-the component analysis endpoints under `/api/v1/component-analyses/`.
-* link:features/selfcheck.feature[Selfcheck]: Some checks to ensure that the steps work correctly.
-* link:features/resilient_infrastructure.feature[Resilient
-infrastructure]: Tests that check the resiliency of the entire infrastructure. These tests use the OpenShift Console, which needs to be installed.
-* link:featurs/gemini.feature[Gemini]: Tests for the Gemini API.
+* link:features/stack_analyses_v2.feature[Stack analysis v2]: API tests for the stack analysis endpoint `/api/v2/stack-analyses/`.
+* link:features/components.feature[Component analysis]: API tests for the component analysis endpoints under `/api/v1/component-analyses/`.
+* link:features/resilient_infrastructure.feature[Resilient infrastructure]: Tests that check the resiliency of the entire infrastructure. These tests use the OpenShift Console, which needs to be installed.
 
 === Older tests that have to be updated
 
-* link:features/stackanalysis.feature[Stack analysis]: API tests for the
-stack analysis endpoint `/api/v1/stack-analyses/`.
-* link:features/ecosystems.feature[Known ecosystems]: API tests for the
-known ecosystems endpoint `/api/v1/ecosystems/`.
-* link:features/packages.feature[Known packages]: API tests for the
-per-ecosystem known packages endpoints under `/api/v1/packages/`.
-* link:features/versions.feature[Known versions]: API tests for the
-per-package known versions endpoints under `/api/v1/versions/`.
+* link:features/stack_analyses.feature[Stack analysis]: API tests for the stack analysis endpoint `/api/v1/stack-analyses/`.
+* link:features/ecosystems.feature[Known ecosystems]: API tests for the known ecosystems endpoint `/api/v1/ecosystems/`.
+* link:features/packages.feature[Known packages]: API tests for the per-ecosystem known packages endpoints under `/api/v1/packages/`.
+* link:features/versions.feature[Known versions]: API tests for the per-package known versions endpoints under `/api/v1/versions/`.
 
 === Adding new feature files
 
