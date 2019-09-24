@@ -78,6 +78,9 @@ To add new feature tests:
 * link:features/three_scale.feature[Three scale basic tests]: Basic tests for the Three scale gateway
 * link:features/three_scale_component_analyses.feature[Three scale component analyses]: Component analysis run via Three scale gateway
 * link:features/three_scale_stack_analyses.feature[Three scale stack analyses]: Stack analysis run via Three scale gateway
+* link:features/gremlin.feature[Gremlin]: Check the Gremlin instance and its behaviour
+* link:features/e2e_to_gremlin.feature[Analysis to Gremlin]: The end to end tests, from the start of analysis to the graph database
+* link:features/gremlin_db_content.feature[Gremlin DB content]: Check the content written into the graph database
 
 === Older tests that have to be updated or deprecated
 
@@ -85,6 +88,9 @@ To add new feature tests:
 * link:features/ecosystems.feature[Known ecosystems]: API tests for the known ecosystems endpoint `/api/v1/ecosystems/`.
 * link:features/packages.feature[Known packages]: API tests for the per-ecosystem known packages endpoints under `/api/v1/packages/`.
 * link:features/versions.feature[Known versions]: API tests for the per-package known versions endpoints under `/api/v1/versions/`.
+* link:features/user_feedback.feature[User feedback]: Basic tests for user feedback feature
+* link:features/user_intent.feature[User intente]: Basic tests for user intent feature
+* link:features/user_tag.feature[User tag]: Test for user tagging feature
 * link:features/disabled.feature[Disables]: Tests that are disabled (empty ATM)
 
 === Adding new feature files
