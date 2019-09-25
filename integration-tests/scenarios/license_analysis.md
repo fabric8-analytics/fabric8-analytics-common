@@ -1,0 +1,19 @@
+# Feature: Checks for the license analysis service
+- Scenario: Basic check if the license analysis service is running
+- Scenario Outline: Smoketest if all JSON files with package+license info can be processes by license analysis
+- Scenario: Test the license analysis for one known Maven package
+- Scenario: Test the license analysis for three known Maven packages
+- Scenario: Test the license analysis for one unknown Maven package
+- Scenario Outline: Smoketest if all JSON files with package stack can be processes by the stack_license endpoint
+- Scenario Outline: Check the stack license computation for all correct input files
+- Scenario Outline: Check the stack license computation for all input files where the stack license can't be figured out
+- Scenario: Test the stack license analysis for one package with one license
+- Scenario: Test the stack license analysis for one package with two licenses, variant A
+- Scenario: Test the stack license analysis for one package with two licenses, variant B
+- Scenario: Test the stack license analysis for one package with three licenses, variant A
+- Scenario: Test the stack license analysis for one package with three licenses, variant B
+- Scenario: Test the stack license analysis for package with four licenses
+- Scenario: Test the stack license analysis for one package without any license
+- Scenario: Test the stack license analysis for two packages with compatible licenses
+- Scenario: Test the stack license analysis for two packages that have license conflict
+- Scenario: Test the stack license analysis for two packages that have stack conflict
