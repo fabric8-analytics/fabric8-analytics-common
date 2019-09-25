@@ -1,0 +1,41 @@
+# Feature: Jobs debug API
+- Scenario: Basic check the endpoint for analyses report output w/o authorization token
+- Scenario: Basic check the endpoint for analyses report output w/o authorization token
+- Scenario: Basic check the endpoint for analyses report output w/o authorization token
+- Scenario: Basic check the endpoint for analyses report output w/o authorization token
+- Scenario: Basic check the endpoint for analyses report output with authorization token, maven ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with authorization token, npm ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with authorization token, pypi ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with authorization token, nuget ecosystem is tested
+- Scenario: Check that all expected attributes are presented in analyses report output with authorization token, maven ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with from_date, maven ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with to_date, maven ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with from_date and to_date, maven ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, maven ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, maven ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, maven ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with from_date, pypi ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with to_date, pypi ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with from_date and to_date, pypi ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, pypi ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, pypi ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, pypi ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with from_date, npm ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with to_date, npm ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with from_date and to_date, npm ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, npm ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, npm ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, npm ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with from_date, nuget ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with to_date, nuget ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output with from_date and to_date, nuget ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, nuget ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, nuget ecosystem is tested
+- Scenario: Basic check the endpoint for analyses report output contains zeros for date range that is clearly outside the analysis range, nuget ecosystem is tested
+- Scenario: Check that the endpoint for analyses report does not accept unknown ecosystem
+- Scenario: Check that the endpoint for analyses report does not accept improper from_date
+- Scenario: Check that the endpoint for analyses report does not accept improper to_date
+- Scenario: Check that the endpoint for analyses report does not accept improper from_date nor to_date
+- Scenario: Basic check for the endpoint /debug/github-tokens w/o authorization key
+- Scenario: Basic check for the endpoint /debug/github-tokens with authorization key
+- Scenario: More check for the endpoint /debug/github-tokens with authorization key
