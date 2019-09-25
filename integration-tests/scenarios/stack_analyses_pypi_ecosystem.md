@@ -1,0 +1,13 @@
+# Feature: Thorough stack analysis v3 API tests for PyPi ecosystem
+- Scenario: Check the analyzed dependencies for newer version of click package (6.7)
+- Scenario: Check the analyzed dependencies for newer version of click package (7.0)
+- Scenario: Check the analyzed dependencies for exact version of click package (arbitrary equality)
+- Scenario: Check the analyzed dependencies for older version of click package with click>=5.0 in requirements
+- Scenario: Check the analyzed dependencies for older version (5.0) of click package
+- Scenario: Check the analyzed dependencies for older version of click package with click>=5.0, <=6.0 in requirements
+- Scenario: Check the analyzed dependencies for older version of click package with click>=5.0, <6.0 in requirements
+- Scenario: Check the analyzed dependencies for older version of click package with click>5.0, <6.0 in requirements
+- Scenario: Check the analyzed dependencies for older version of click package with click>5.0, <=6.0 in requirements
+- Scenario: Check the analyzed dependencies for click 6.7.*
+- Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
+- Scenario: Check the stack analysis output
