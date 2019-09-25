@@ -1,0 +1,11 @@
+# Feature: Analyse API functionality check
+- Scenario: Check that the REST API point for the stack analyses accepts authorization tokens
+- Scenario Outline: Check that the stack analysis REST API endpoint requires authorization token even for improper HTTP methods
+- Scenario Outline: Check that the stack analysis REST API endpoint does not accept any HTTP method other than POST
+- Scenario: Check that the REST API point for the stack analyses with external ID accepts authorization tokens
+- Scenario Outline: Check that the stack analysis REST API endpoint requires authorization token even for improper HTTP methods
+- Scenario Outline: Check that the stack analysis REST API endpoint does not accept any HTTP method other than POST
+- Scenario: Check that the API entry point requires authorization token
+- Scenario: Check that the stack-analyses returns a valid response for maven ecosystem
+- Scenario: Check that the stack-analyses returns a valid response for NPM ecosystem
+- Scenario: Check that the stack-analyses returns a valid response for pypi ecosystem
