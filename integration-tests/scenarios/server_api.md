@@ -1,0 +1,17 @@
+# Feature: Server API
+- Scenario: Check the API entry point
+- Scenario: Check the /api/v1/readiness response
+- Scenario: Check the /api/v1/liveness response
+- Scenario: Check the system/version response
+- Scenario Outline: Check the existence of all expected REST API endpoints
+- Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/ endpoint
+- Scenario: Check that the HTTP method is check properly on server side for the /api/v1/ endpoint
+- Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/readiness endpoint
+- Scenario: Check that the HTTP method is check properly on server side for the /api/v1/readiness endpoint
+- Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/liveness endpoint
+- Scenario: Check that the HTTP method is check properly on server side for the /api/v1/liveness endpoint
+- Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/system/version
+- Scenario: Check that the HTTP method is check properly on server side for the /api/v1/system/version
+- Scenario: Check the /api/v1/submit-feedback response with invalid payload
+- Scenario: Check the /api/v1/submit-feedback response with empty payload
+- Scenario: Check the /api/v1/submit-feedback response without any payload

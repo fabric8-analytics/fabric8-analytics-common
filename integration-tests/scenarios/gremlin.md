@@ -1,0 +1,26 @@
+# Feature: Check the Gremlin instance and its behaviour
+- Scenario: Check that the Gremlin is available
+- Scenario: Basic check for Gremlin ability to find vertexes
+- Scenario: Basic check for Gremlin ability to find vertexes for given ecosystems
+- Scenario: Basic check for Gremlin ability to search for given package in any versions for the npm ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package in any versions for the Maven ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package in any versions for the Pypi ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package and version for the npm ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package and version for ecosystem Maven
+- Scenario: Basic check for Gremlin ability to search for given package and version for ecosystem Pypi
+- Scenario: Basic check for Gremlin ability to search for given package in the npm ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package in the Maven ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package in the Pypi ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package
+- Scenario: Basic check for Gremlin ability to read last update timestamp for the selected package from the Pypi ecosystem
+- Scenario: Basic check for Gremlin ability to read last update timestamp for the selected package from the npm ecosystem
+- Scenario: Basic check for Gremlin ability to read last update timestamp for the selected package from the Maven ecosystem
+- Scenario: Check numeric values for GitHub metadata for the package from the pypi ecosystem
+- Scenario: Check numeric values for Libio metadata for the package from the pypi ecosystem
+- Scenario: Check other numeric values for the package from the pypi ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package in the npm ecosystem
+- Scenario: Check numeric values for GitHub metadata for given package in the npm ecosystem
+- Scenario: Check numeric values for Libio metadata for given package in the npm ecosystem
+- Scenario: Basic check for Gremlin ability to search for given package in the Maven ecosystem
+- Scenario: Check numeric values for GitHub metadata for given package in the Maven ecosystem
+- Scenario: Check numeric values for Libio metadata for given package in the Maven ecosystem

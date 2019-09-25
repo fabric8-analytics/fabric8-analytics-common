@@ -1,0 +1,24 @@
+# Feature: Checks the component metadata in AWS S3 database
+- Scenario: Initial check if we are able to login to AWS S3 and that the component and package bucket exists
+- Scenario: Check the toplevel metadata schema for io.vertx:vertx-core (startup)
+- Scenario Outline: Check the toplevel metadata for all versions of the io.vertx packages
+- Scenario: Check the code metrics metadata schema for io.vertx:vertx-core (startup)
+- Scenario Outline: Check the code metrics metadata for all versions of the io.vertx packages
+- Scenario: Check the digests metadata schema for io.vertx:vertx-core (startup)
+- Scenario Outline: Check the digests metadata schema for io.vertx:vertx-core
+- Scenario: Check the source licenses metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario: Check the source licenses metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario Outline: Check the source licenses metadata schema for io.vertx:vertx-core
+- Scenario: Check the dependency snapshot metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario: Check the dependency snapshot metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario Outline: Check the dependency snapshot metadata schema for io.vertx:vertx-core
+- Scenario: Check the security issues metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario: Check the security issues metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario Outline: Check the security issues metadata schema for io.vertx:vertx-core
+- Scenario: Check the metadata metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario: Check the metadata metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario: Check the metadata metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario Outline: Check the metadata metadata schema for io.vertx:vertx-core
+- Scenario: Check the keywords tagging metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario: Check the keywords tagging metadata schema for io.vertx:vertx-core (startup), schema is determined automatically
+- Scenario Outline: Check the keywors tagging schema for io.vertx:vertx-core
