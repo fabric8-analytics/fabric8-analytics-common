@@ -1,0 +1,15 @@
+# Feature: Tests for user intent API version 1.0
+- Scenario Outline: Check the existence of REST API endpoint for user-intent
+- Scenario: Check that the API entry point for user intent requires authorization token
+- Scenario: Check the HTTP POST call for user intent endpoint - the authorization token should be required
+- Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' arguments
+- Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' arguments
+- Scenario: Check that the API entry point for user checks 'user' and 'ecosystem' arguments
+- Scenario Outline: Check that the user intent REST API endpoint requires authorization token even for improper HTTP methods
+- Scenario Outline: Check that the user intent REST API endpoint requires authorization token even for improper HTTP methods
+- Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token, but no payload
+- Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and empty payload
+- Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and incorrect payload
+- Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and manual tagging in JSON
+- Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and manual tagging + user in JSON
+- Scenario: Check the HTTP POST call for user intent endpoint - proper authorization token and ecosystem in JSON
