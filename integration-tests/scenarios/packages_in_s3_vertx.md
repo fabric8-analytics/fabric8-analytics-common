@@ -1,0 +1,13 @@
+# Feature: Checks the package metadata in AWS S3 database
+- Scenario: Initial check if we are able to login to AWS S3 and that the component and package bucket exists
+- Scenario: Check the package toplevel metadata schema for io.vertx:vertx-core package (startup)
+- Scenario Outline: Check the toplevel metadata for all io.vertx packages
+- Scenario: Check the git stats metadata schema for io.vertx:vertx-core package (startup)
+- Scenario Outline: Check the git stats metadata for all io.vertx packages
+- Scenario: Check the github details metadata schema for io.vertx:vertx-core package (startup)
+- Scenario Outline: Check the toplevel metadata for all io.vertx packages
+- Scenario: Check the keywords tagging metadata schema for io.vertx:vertx-core package (startup)
+- Scenario Outline: Check the toplevel metadata for all io.vertx packages
+- Scenario: Check the libraries io metadata schema for io.vertx:vertx-core package (startup)
+- Scenario Outline: Check the toplevel metadata for all io.vertx packages
+- Scenario: Check the package toplevel metadata schema for io.vertx:vertx-core package (startup)
