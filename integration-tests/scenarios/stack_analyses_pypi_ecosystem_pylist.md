@@ -1,0 +1,19 @@
+# Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.json as input
+- Scenario: Check the analyzed dependencies for newer version of click package (6.7)
+- Scenario: Check the analyzed dependencies for newer version of click package (7.0)
+- Scenario: Check the analyzed dependencies for array split package (7.0)
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
+- Scenario: Check the analyzed dependencies for common and popular Python packages
