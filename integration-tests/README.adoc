@@ -35,63 +35,63 @@ To add new feature tests:
 
 === Currently defined feature tests
 
-* link:features/selfcheck.feature[Selfcheck]: Some checks to ensure that the steps work correctly.
-* link:features/smoketest.feature[Smoke tests]: Smoke tests for checking if main API endpoints are available and work as expected.
-* link:features/server_api.feature[Server API]: API tests for the server module.
-* link:features/gemini.feature[Gemini]: Tests for the Gemini API.
-* link:features/api_backbone.feature[API Backbone]: Tests for the API backbone.
-* link:features/jobs_api.feature[Jobs API]: API tests for the jobs module.
-* link:features/jobs_debug_api.feature[Jobs API]: Debug API tests for the jobs module.
-* link:features/license_analysis.feature[License analysis]: Tests for license analysis API
-* link:features/stack_analyses_v2.feature[Stack analysis v2]: API tests for the stack analysis endpoint `/api/v2/stack-analyses/`.
-* link:features/stack_analyses_v2_minimal.feature[Stack analysis v2]: API smoke tests for the stack analysis endpoint `/api/v2/stack-analyses/`.
-* link:features/stack_analyses.feature[Stack analysis: basic tests]: Basic tests for the stack analysis API
-* link:features/stack_analyses_maven_ecosystem.feature[Stack analysis for Maven ecosystem]: Stack analysis tests for Maven ecosystem
-* link:features/stack_analyses_smoke_tests_npm_ecosystem.feature[Stack analysis for NPM ecosystem]: Smoke tests for NPM ecosystem
-* link:features/stack_analyses_npm_ecosystem.feature[Stack analysis for NPN ecosystem]: Stack analysis tests for NPM ecosystem
-* link:features/stack_analyses_smoke_tests_pypi_ecosystem.feature[Stack analysis for PyPi ecosystem]: Smoke tests for PyPi ecosystem
-* link:features/stack_analyses_pypi_ecosystem.feature[Stack analysis for PyPi ecosystem]: Stack analysis tests for PyPi ecosystem
-* link:features/stack_analyses_pypi_ecosystem_pylist.feature[Stack analysis for PyPi ecosystem]: Stack analysis tests for PyPi ecosystem, input is stored in pylist.json
-* link:features/stack_analyses_unknown_dependencies.feature[Stack analysis for unknown dependencies]: Stack analysis tests for unknown dependencies
-* link:features/stack_analysis_maven_direct_and_transitive.feature[Stack analysis for Maven direct and transitive dependencies]: Stack analysis for Maven direct and transitive dependencies
-* link:features/stack_analysis_npm_direct_and_transitive.feature[Stack analysis for NPM direct and transitive dependencies]: Stack analysis for NPM direct and transitive dependencies
-* link:features/stack_analysis_pypi_direct_and_transitive.feature[Stack analysis for PyPi direct and transitive dependencies]: Stack analysis for PyPi direct and transitive dependencies
-* link:features/components.feature[Component analysis]: API tests for the component analysis endpoints under `/api/v1/component-analyses/`.
-* link:features/component_search.feature[Component search]: Tests for the component search functionality
-* link:features/components_in_s3.feature[Checks for components stored in S3]: Check how/if components are stored in the S3 database.
-* link:features/components_in_s3_vertx.feature[Checks for components stored in S3]: Specific tests for vertx components.
-* link:features/packages_in_s3.feature[Checks for packages stored in S3]: Check how/if packages are stored in the S3 database.
-* link:features/packages_in_s3_vertx.feature[Checks for packages stored in S3]: Specific tests for vertx packages.
-* link:features/component_analysis_smoke_tests.feature[Component analysis smoke tests]: Smoke tests for the component analysis REST API
-* link:features/component_analysis.feature[Component analysis basic tests]: Basic set of component analysis REST API tests
-* link:features/component_analysis_smoke_tests_100_pypi_components.feature[Component analysis: 100 most popular PyPi packages]: Component analysis for the 100 most popular PyPi packages
-* link:features/component_analysis_smoke_tests_1000_pypi_components.feature[Component analysis: 1000 most popular PyPi packages]: Component analysis for the 1000 most popular PyPi packages
-* link:features/component_analysis_smoke_tests_100_npm_components.feature[Component analysis: 100 most popular NPM packages]: Component analysis for the 100 most popular NPM packages
-* link:features/component_analysis_smoke_tests_960_npm_components.feature[Component analysis: 960 most popular NPM packages]: Component analysis for the 960 most popular NPM packages
-* link:features/component_analysis_smoke_tests_100_maven_components.feature[Component analysis: 100 most popular Maven packages]: Component analysis for the 100 most popular Maven packages
-* link:features/resilient_infrastructure.feature[Resilient infrastructure]: Tests that check the resiliency of the entire infrastructure. These tests use the OpenShift Console, which needs to be installed.
-* link:features/auth_reproducers.feature[Reproducers for auth issues]: Reproducers for authorization issues
-* link:features/dependency_editor_analyses.feature[Dependency editor analyses]: Tests for the dependency editor - analyses
-* link:features/dependency_editor_categories.feature[Dependency editor categories]: Tests for the dependency editor - categories
-* link:features/dependency_editor_cve_analyses.feature[Dependency editor CVE analyses]: Tests for the dependency editor - CVE analyses
-* link:features/regression_tests.feature[Regression tests]: All regression tests
-* link:features/three_scale.feature[Three scale basic tests]: Basic tests for the Three scale gateway
-* link:features/three_scale_component_analyses.feature[Three scale component analyses]: Component analysis run via Three scale gateway
-* link:features/three_scale_stack_analyses.feature[Three scale stack analyses]: Stack analysis run via Three scale gateway
-* link:features/gremlin.feature[Gremlin]: Check the Gremlin instance and its behaviour
-* link:features/e2e_to_gremlin.feature[Analysis to Gremlin]: The end to end tests, from the start of analysis to the graph database
-* link:features/gremlin_db_content.feature[Gremlin DB content]: Check the content written into the graph database
+* link:features/selfcheck.feature[Selfcheck]: Some checks to ensure that the steps work correctly. link:scenarios/selfcheck.md[list of scenarios]
+* link:features/smoketest.feature[Smoke tests]: Smoke tests for checking if main API endpoints are available and work as expected. link:scenarios/smoketest.md[list of scenarios]
+* link:features/server_api.feature[Server API]: API tests for the server module. link:scenarios/server_api.md[list of scenarios]
+* link:features/gemini.feature[Gemini]: Tests for the Gemini API. link:scenarios/gemini.md[list of scenarios]
+* link:features/api_backbone.feature[API Backbone]: Tests for the API backbone. link:scenarios/api_backbone.md[list of scenarios]
+* link:features/jobs_api.feature[Jobs API]: API tests for the jobs module. link:scenarios/jobs_api.md[list of scenarios]
+* link:features/jobs_debug_api.feature[Jobs API]: Debug API tests for the jobs module. link:scenarios/jobs_debug_api.md[list of scenarios]
+* link:features/license_analysis.feature[License analysis]: Tests for license analysis API link:scenarios/license_analysis.md[list of scenarios]
+* link:features/stack_analyses_v2.feature[Stack analysis v2]: API tests for the stack analysis endpoint `/api/v2/stack-analyses/`. link:scenarios/stack_analyses_v2.md[list of scenarios]
+* link:features/stack_analyses_v2_minimal.feature[Stack analysis v2]: API smoke tests for the stack analysis endpoint `/api/v2/stack-analyses/`. link:scenarios/stack_analyses_v2_minimal.md[list of scenarios]
+* link:features/stack_analyses.feature[Stack analysis: basic tests]: Basic tests for the stack analysis API link:scenarios/stack_analyses.md[list of scenarios]
+* link:features/stack_analyses_maven_ecosystem.feature[Stack analysis for Maven ecosystem]: Stack analysis tests for Maven ecosystem link:scenarios/stack_analyses_maven_ecosystem.md[list of scenarios]
+* link:features/stack_analyses_smoke_tests_npm_ecosystem.feature[Stack analysis for NPM ecosystem]: Smoke tests for NPM ecosystem link:scenarios/stack_analyses_smoke_tests_npm_ecosystem.md[list of scenarios]
+* link:features/stack_analyses_npm_ecosystem.feature[Stack analysis for NPN ecosystem]: Stack analysis tests for NPM ecosystem link:scenarios/stack_analyses_npm_ecosystem.md[list of scenarios]
+* link:features/stack_analyses_smoke_tests_pypi_ecosystem.feature[Stack analysis for PyPi ecosystem]: Smoke tests for PyPi ecosystem link:scenarios/stack_analyses_smoke_tests_pypi_ecosystem.md[list of scenarios]
+* link:features/stack_analyses_pypi_ecosystem.feature[Stack analysis for PyPi ecosystem]: Stack analysis tests for PyPi ecosystem link:scenarios/stack_analyses_pypi_ecosystem.md[list of scenarios]
+* link:features/stack_analyses_pypi_ecosystem_pylist.feature[Stack analysis for PyPi ecosystem]: Stack analysis tests for PyPi ecosystem, input is stored in pylist.json link:scenarios/stack_analyses_pypi_ecosystem_pylist.md[list of scenarios]
+* link:features/stack_analyses_unknown_dependencies.feature[Stack analysis for unknown dependencies]: Stack analysis tests for unknown dependencies link:scenarios/stack_analyses_unknown_dependencies.md[list of scenarios]
+* link:features/stack_analysis_maven_direct_and_transitive.feature[Stack analysis for Maven direct and transitive dependencies]: Stack analysis for Maven direct and transitive dependencies link:scenarios/stack_analysis_maven_direct_and_transitive.md[list of scenarios]
+* link:features/stack_analysis_npm_direct_and_transitive.feature[Stack analysis for NPM direct and transitive dependencies]: Stack analysis for NPM direct and transitive dependencies link:scenarios/stack_analysis_npm_direct_and_transitive.md[list of scenarios]
+* link:features/stack_analysis_pypi_direct_and_transitive.feature[Stack analysis for PyPi direct and transitive dependencies]: Stack analysis for PyPi direct and transitive dependencies link:scenarios/stack_analysis_pypi_direct_and_transitive.md[list of scenarios]
+* link:features/components.feature[Component analysis]: API tests for the component analysis endpoints under `/api/v1/component-analyses/`. link:scenarios/components.md[list of scenarios]
+* link:features/component_search.feature[Component search]: Tests for the component search functionality link:scenarios/component_search.md[list of scenarios]
+* link:features/components_in_s3.feature[Checks for components stored in S3]: Check how/if components are stored in the S3 database. link:scenarios/components_in_s3.md[list of scenarios]
+* link:features/components_in_s3_vertx.feature[Checks for components stored in S3]: Specific tests for vertx components. link:scenarios/components_in_s3_vertx.md[list of scenarios]
+* link:features/packages_in_s3.feature[Checks for packages stored in S3]: Check how/if packages are stored in the S3 database. link:scenarios/packages_in_s3.md[list of scenarios]
+* link:features/packages_in_s3_vertx.feature[Checks for packages stored in S3]: Specific tests for vertx packages. link:scenarios/packages_in_s3_vertx.md[list of scenarios]
+* link:features/component_analysis_smoke_tests.feature[Component analysis smoke tests]: Smoke tests for the component analysis REST API link:scenarios/component_analysis_smoke_tests.md[list of scenarios]
+* link:features/component_analysis.feature[Component analysis basic tests]: Basic set of component analysis REST API tests link:scenarios/component_analysis.md[list of scenarios]
+* link:features/component_analysis_smoke_tests_100_pypi_components.feature[Component analysis: 100 most popular PyPi packages]: Component analysis for the 100 most popular PyPi packages link:scenarios/component_analysis_smoke_tests_100_pypi_components.md[list of scenarios]
+* link:features/component_analysis_smoke_tests_1000_pypi_components.feature[Component analysis: 1000 most popular PyPi packages]: Component analysis for the 1000 most popular PyPi packages link:scenarios/component_analysis_smoke_tests_1000_pypi_components.md[list of scenarios]
+* link:features/component_analysis_smoke_tests_100_npm_components.feature[Component analysis: 100 most popular NPM packages]: Component analysis for the 100 most popular NPM packages link:scenarios/component_analysis_smoke_tests_100_npm_components.md[list of scenarios]
+* link:features/component_analysis_smoke_tests_960_npm_components.feature[Component analysis: 960 most popular NPM packages]: Component analysis for the 960 most popular NPM packages link:scenarios/component_analysis_smoke_tests_960_npm_components.md[list of scenarios]
+* link:features/component_analysis_smoke_tests_100_maven_components.feature[Component analysis: 100 most popular Maven packages]: Component analysis for the 100 most popular Maven packages link:scenarios/component_analysis_smoke_tests_100_maven_components.md[list of scenarios]
+* link:features/resilient_infrastructure.feature[Resilient infrastructure]: Tests that check the resiliency of the entire infrastructure. These tests use the OpenShift Console, which needs to be installed. link:scenarios/resilient_infrastructure.md[list of scenarios]
+* link:features/auth_reproducers.feature[Reproducers for auth issues]: Reproducers for authorization issues link:scenarios/auth_reproducers.md[list of scenarios]
+* link:features/dependency_editor_analyses.feature[Dependency editor analyses]: Tests for the dependency editor - analyses link:scenarios/dependency_editor_analyses.md[list of scenarios]
+* link:features/dependency_editor_categories.feature[Dependency editor categories]: Tests for the dependency editor - categories link:scenarios/dependency_editor_categories.md[list of scenarios]
+* link:features/dependency_editor_cve_analyses.feature[Dependency editor CVE analyses]: Tests for the dependency editor - CVE analyses link:scenarios/dependency_editor_cve_analyses.md[list of scenarios]
+* link:features/regression_tests.feature[Regression tests]: All regression tests link:scenarios/regression_tests.md[list of scenarios]
+* link:features/three_scale.feature[Three scale basic tests]: Basic tests for the Three scale gateway link:scenarios/three_scale.md[list of scenarios]
+* link:features/three_scale_component_analyses.feature[Three scale component analyses]: Component analysis run via Three scale gateway link:scenarios/three_scale_component_analyses.md[list of scenarios]
+* link:features/three_scale_stack_analyses.feature[Three scale stack analyses]: Stack analysis run via Three scale gateway link:scenarios/three_scale_stack_analyses.md[list of scenarios]
+* link:features/gremlin.feature[Gremlin]: Check the Gremlin instance and its behaviour link:scenarios/gremlin.md[list of scenarios]
+* link:features/e2e_to_gremlin.feature[Analysis to Gremlin]: The end to end tests, from the start of analysis to the graph database link:scenarios/e2e_to_gremlin.md[list of scenarios]
+* link:features/gremlin_db_content.feature[Gremlin DB content]: Check the content written into the graph database link:scenarios/gremlin_db_content.md[list of scenarios]
 
 === Older tests that have to be updated or deprecated
 
-* link:features/stack_analyses.feature[Stack analysis]: API tests for the stack analysis endpoint `/api/v1/stack-analyses/`.
-* link:features/ecosystems.feature[Known ecosystems]: API tests for the known ecosystems endpoint `/api/v1/ecosystems/`.
-* link:features/packages.feature[Known packages]: API tests for the per-ecosystem known packages endpoints under `/api/v1/packages/`.
-* link:features/versions.feature[Known versions]: API tests for the per-package known versions endpoints under `/api/v1/versions/`.
-* link:features/user_feedback.feature[User feedback]: Basic tests for user feedback feature
-* link:features/user_intent.feature[User intente]: Basic tests for user intent feature
-* link:features/user_tag.feature[User tag]: Test for user tagging feature
-* link:features/disabled.feature[Disables]: Tests that are disabled (empty ATM)
+* link:features/stack_analyses.feature[Stack analysis]: API tests for the stack analysis endpoint `/api/v1/stack-analyses/`. link:scenarios/stack_analyses.md[list of scenarios]
+* link:features/ecosystems.feature[Known ecosystems]: API tests for the known ecosystems endpoint `/api/v1/ecosystems/`. link:scenarios/ecosystems.md[list of scenarios]
+* link:features/packages.feature[Known packages]: API tests for the per-ecosystem known packages endpoints under `/api/v1/packages/`. link:scenarios/packages.md[list of scenarios]
+* link:features/versions.feature[Known versions]: API tests for the per-package known versions endpoints under `/api/v1/versions/`. link:scenarios/versions.md[list of scenarios]
+* link:features/user_feedback.feature[User feedback]: Basic tests for user feedback feature link:scenarios/user_feedback.md[list of scenarios]
+* link:features/user_intent.feature[User intente]: Basic tests for user intent feature link:scenarios/user_intent.md[list of scenarios]
+* link:features/user_tag.feature[User tag]: Test for user tagging feature link:scenarios/user_tag.md[list of scenarios]
+* link:features/disabled.feature[Disables]: Tests that are disabled (empty ATM) link:scenarios/disabled.md[list of scenarios]
 
 === Adding new feature files
 
