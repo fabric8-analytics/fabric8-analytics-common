@@ -38,7 +38,8 @@ f8a-stacks-report
 f8a-data-ingestion-service
 f8a-emr-deployment
 cvejob
-victimsdb-lib"
+victimsdb-lib
+fabric8-analytics.github.io"
 
 pushd repositories
 
