@@ -394,12 +394,12 @@ def prepare_data_for_liveness_table(results, ci_jobs, job_statuses):
     """Prepare data for sevices liveness/readiness table on the dashboard."""
     cfg = Configuration()
 
-    core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
-    jobs_api = JobsApi(cfg.stage.jobs_api_url, cfg.stage.jobs_api_token)
+    # core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
+    # jobs_api = JobsApi(cfg.stage.jobs_api_url, cfg.stage.jobs_api_token)
     # results.stage = check_system(core_api, jobs_api)
 
-    core_api = CoreApi(cfg.prod.core_api_url, cfg.prod.core_api_token)
-    jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
+    # core_api = CoreApi(cfg.prod.core_api_url, cfg.prod.core_api_token)
+    # jobs_api = JobsApi(cfg.prod.jobs_api_url, cfg.prod.jobs_api_token)
     # results.production = check_system(core_api, jobs_api)
 
     results.stage = {
