@@ -7,8 +7,8 @@ import shutil
 
 from fastlog import log
 
-from coreapi import CoreApi
-from jobsapi import JobsApi
+# from coreapi import CoreApi
+# from jobsapi import JobsApi
 from configuration import Configuration
 from results import Results
 from html_generator import generate_dashboard
@@ -392,7 +392,7 @@ def cleanup_repository(repository):
 
 def prepare_data_for_liveness_table(results, ci_jobs, job_statuses):
     """Prepare data for sevices liveness/readiness table on the dashboard."""
-    cfg = Configuration()
+    # cfg = Configuration()
 
     # core_api = CoreApi(cfg.stage.core_api_url, cfg.stage.core_api_token)
     # jobs_api = JobsApi(cfg.stage.jobs_api_url, cfg.stage.jobs_api_token)
