@@ -1,2 +1,35 @@
-QA,Stage,,,,Production,,,,fabric8-analytics-common,,,,,,,,fabric8-analytics-server,,,,,,,,fabric8-analytics-worker,,,,,,,,fabric8-analytics-jobs,,,,,,,,fabric8-analytics-tagger,,,,,,,,fabric8-analytics-stack-analysis,,,,,,,,fabric8-analytics-license-analysis,,,,,,,,fabric8-analytics-data-model,,,,,,,,fabric8-analytics-recommender
-Date,Core API,Jobs API,Core auth.token,Jobs auth.token,Core API,Jobs API,Core auth.token,Jobs auth.token,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed,Files,Total lines,Linter checks,Passed,Failed,Docstyle checks,Passed,Failed
+Repository,Source files,,Linter results,,,Pydocstyle results,,,Code coverage,,,Dead code,Common issues,Cyclomatic complexity,,,,,,,Maintainability index,,,,Overall status
+,Files,Total lines,Pass,Fail,Pass %,Pass,Fail,Pass %,Statements,Missed,Coverage,,,A,B,C,D,E,F,OK?,A,B,C,OK?,
+fabric8-analytics-common,158,21040,158,0,100%,158,0,100%,N/A,N/A,N/A,0,0,1509,20,0,0,0,0,yes,158,0,0,yes,failure(s) found
+fabric8-analytics-server,23,4998,23,0,100%,23,0,100%,1801,972,46%,0,0,212,34,8,1,0,0,no,21,2,0,no,failure(s) found
+fabric8-analytics-worker,170,15836,170,0,100%,169,0,100%,5384,1889,65%,0,0,831,84,8,1,0,0,no,170,0,0,yes,failure(s) found
+fabric8-analytics-jobs,65,4635,65,0,100%,65,0,100%,1994,1526,23%,0,0,269,31,6,0,0,0,yes,65,0,0,yes,failure(s) found
+fabric8-analytics-tagger,44,4178,44,0,100%,44,0,100%,887,38,96%,0,0,241,31,14,0,0,0,yes,44,0,0,yes,ok
+fabric8-analytics-stack-analysis,92,5531,92,0,100%,92,0,100%,2118,1029,51%,0,0,260,17,3,0,0,0,yes,92,0,0,yes,failure(s) found
+fabric8-analytics-license-analysis,29,3684,28,0,100%,28,0,100%,840,54,94%,0,0,200,26,13,1,0,0,no,29,0,0,yes,failure(s) found
+fabric8-analytics-data-model,27,4398,27,0,100%,27,0,100%,1132,55,95%,0,0,161,35,6,1,1,0,no,27,0,0,yes,failure(s) found
+fabric8-analytics-recommender,17,1052,17,0,100%,17,0,100%,N/A,N/A,N/A,0,0,62,4,0,0,0,0,yes,17,0,0,yes,failure(s) found
+fabric8-analytics-api-gateway,10,453,10,0,100%,10,0,100%,149,69,54%,0,0,27,1,0,0,0,0,yes,10,0,0,yes,failure(s) found
+fabric8-analytics-nvd-toolkit,34,5152,34,0,100%,34,0,100%,1042,93,91%,0,0,222,24,2,0,0,0,yes,34,0,0,yes,ok
+fabric8-analytics-auth,9,883,9,0,100%,9,0,100%,154,31,80%,0,0,59,3,1,0,0,0,yes,9,0,0,yes,failure(s) found
+fabric8-gemini-server,23,2678,23,0,100%,23,0,100%,617,48,92%,0,0,142,13,3,0,0,0,yes,23,0,0,yes,ok
+fabric8-analytics-version-comparator,9,1147,9,0,100%,9,0,100%,217,0,100%,0,0,50,13,2,0,0,0,yes,9,0,0,yes,ok
+fabric8-analytics-ingestion,16,1074,16,0,100%,16,0,100%,228,107,53%,0,0,53,4,0,0,0,0,yes,16,0,0,yes,failure(s) found
+fabric8-analytics-npm-insights,28,1882,28,0,100%,28,0,100%,180,68,62%,0,0,106,0,1,0,0,0,yes,28,0,0,yes,failure(s) found
+fabric8-analytics-notification-scheduler,13,1793,13,0,100%,13,0,100%,554,190,66%,0,0,58,3,4,0,0,0,yes,13,0,0,yes,failure(s) found
+fabric8-analytics-utils,10,1033,10,0,100%,10,0,100%,280,1,99%,0,0,50,11,2,0,0,0,yes,10,0,0,yes,ok
+fabric8-analytics-github-refresh-cronjob,4,216,4,0,100%,4,0,100%,70,6,91%,0,0,13,0,0,0,0,0,yes,4,0,0,yes,ok
+fabric8-analytics-github-events-monitor,15,1182,15,0,100%,15,0,100%,230,20,91%,0,0,57,8,0,0,0,0,yes,15,0,0,yes,ok
+fabric8-analytics-release-monitor,10,819,10,0,100%,10,0,100%,126,21,83%,0,0,51,1,0,0,0,0,yes,10,0,0,yes,failure(s) found
+f8a-server-backbone,12,2926,12,0,100%,12,0,100%,902,82,91%,0,0,96,21,4,0,0,0,yes,12,0,0,yes,ok
+fabric8-analytics-rudra,43,3345,43,0,100%,28,15,65%,N/A,N/A,N/A,0,0,251,30,3,0,0,0,yes,43,0,0,yes,failure(s) found
+fabric8-analytics-scaler,2,157,2,0,100%,2,0,100%,N/A,N/A,N/A,0,0,5,1,0,0,0,0,yes,2,0,0,yes,failure(s) found
+f8a-emr-deployment,9,269,9,0,100%,9,0,100%,88,49,44%,0,0,17,0,0,0,0,0,yes,9,0,0,yes,failure(s) found
+f8a-hpf-insights,18,1093,18,0,100%,18,0,100%,160,16,90%,0,0,63,4,0,0,0,0,yes,18,0,0,yes,ok
+f8a-golang-insights,16,974,16,0,100%,16,0,100%,222,108,51%,0,0,48,4,1,0,0,0,yes,16,0,0,yes,failure(s) found
+f8a-pypi-insights,14,1046,14,0,100%,14,0,100%,149,72,52%,0,0,52,3,3,0,0,0,yes,14,0,0,yes,failure(s) found
+f8a-stacks-report,18,2777,18,0,100%,18,0,100%,1004,127,87%,0,0,113,14,5,0,0,0,yes,18,0,0,yes,failure(s) found
+f8a-data-ingestion-service,5,182,5,0,100%,5,0,100%,N/A,N/A,N/A,0,0,14,0,0,0,0,0,yes,5,0,0,yes,failure(s) found
+cvejob,39,3546,35,0,100%,35,0,100%,684,107,84%,0,0,157,31,7,0,0,0,yes,35,0,0,yes,failure(s) found
+victimsdb-lib,9,843,9,0,100%,9,0,100%,204,0,100%,0,0,71,8,2,0,0,0,yes,9,0,0,yes,ok
+fabric8-analytics-jenkins-plugin,10,1028,0,0,0%,0,0,0%,348,112,67%,0,0,0,0,0,0,0,0,yes,0,0,0,yes,failure(s) found
