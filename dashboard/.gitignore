@@ -24,3 +24,6 @@ venv
 
 # cloned repositories
 fabric8-*/
+f8a-*/
+cvejob/
+victimsdb-lib/
