@@ -252,7 +252,7 @@ Please note that only semantical problems are reported; problems with style are 
                             <!-- One column 'Dead code' -->
                             % if dead_code[repository] is not None and dead_code[repository]["display_results"]:
                                 % if dead_code[repository]["failed"] == 0:
-                                    <td class="numeric ok"><a href="${repository}.common_errors.txt" class="numeric ok">ok</a></td>
+                                    <td class="numeric ok"><a href="${repository}.dead_code.txt" class="numeric ok">ok</a></td>
                                 % else:
                                     <td class="numeric error error_highlight"><a href="${repository}.dead_code.txt" class="numeric error">${dead_code[repository]["failed"]}</a></td>
                                 % endif
