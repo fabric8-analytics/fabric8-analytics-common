@@ -1,7 +1,7 @@
 [[qa-dashboard-and-code-coverage-reporter-for-the-bayesian-project]]
 = QA Dashboard and code coverage reporter for the Fabric8 Analytics project
 
-The QA dashboard provides a consolidated report on the status of code coverage, performance tests, and CI jobs for all the repositories in Fabric8-Analytics that contain source files.
+The QA dashboard provides a consolidated report on the status of code coverage, performance tests, and CI jobs for all the repositories in Fabric8-Analytics that contain source files. Content of the dashboard is reported daily and is available at <https://fabric8-analytics.github.io/dashboard/dashboard.html>.
 
 [[host-environment]]
 == Host environment
@@ -9,13 +9,18 @@ The QA dashboard provides a consolidated report on the status of code coverage, 
 The following environment variables can be used to test specific
 deployments:
 
-* `F8A_API_URL_STAGE` - API server URL for the stage environment* `F8A_JOB_API_URL_STAGE` - Jobs service URL for the stage environment
+* `F8A_API_URL_STAGE` - API server URL for the stage environment
+* `F8A_JOB_API_URL_STAGE` - Jobs service URL for the stage environment
 * `F8A_API_URL_PROD` - API server URL for the production environment
 * `F8A_JOB_API_URL_PROD` - Jobs service URL for the prod environment
 
+These variables are used to check the API liveness state, but it is possible to set them to empty string in case you just need to refresh CI jobs and repo statuses.
+
+
+
 == QA Dashboard generation
 
-This includes:
+The QA Dashboard is usually generated daily and other reports are generated weekly, usually on Fridays:
 
 * Dashboard itself (generated daily)
 * Code coverage report (generated weekly)
@@ -25,32 +30,75 @@ This includes:
 
 === Cloning all repositories with source codes
 
-Use the script `clone_or_pull_all_repos.sh` to clone or pull all repositories that needs to be displayed on the QA Dashboard
+Use the script named `clone_or_pull_all_repos.sh` to clone or pull all repositories that needs to be displayed on the QA Dashboard
 
 * This script clones all newly created/added repositories into the `repositories/` subdirectory
 * If the repository is already cloned, new content is pulled (which is much faster of course)
 * Only the `master` branch is checked, the content of other branches are not important
 
+==== Repositories that are processed and displayed on the QA Dashboard
+
+Currently the following repositories are processed:
+
+* https://github.com/fabric8-analytics/fabric8-analytics-common
+* https://github.com/fabric8-analytics/fabric8-analytics-data-model
+* https://github.com/fabric8-analytics/fabric8-analytics-jobs
+* https://github.com/fabric8-analytics/fabric8-analytics-license-analysis
+* https://github.com/fabric8-analytics/fabric8-analytics-recommender
+* https://github.com/fabric8-analytics/fabric8-analytics-server
+* https://github.com/fabric8-analytics/fabric8-analytics-stack-analysis
+* https://github.com/fabric8-analytics/fabric8-analytics-tagger
+* https://github.com/fabric8-analytics/fabric8-analytics-worker
+* https://github.com/fabric8-analytics/fabric8-analytics-nvd-toolkit
+* https://github.com/fabric8-analytics/fabric8-analytics-auth
+* https://github.com/fabric8-analytics/fabric8-gemini-server
+* https://github.com/fabric8-analytics/fabric8-analytics-api-gateway
+* https://github.com/fabric8-analytics/fabric8-analytics-version-comparator
+* https://github.com/fabric8-analytics/fabric8-analytics-ingestion
+* https://github.com/fabric8-analytics/fabric8-analytics-npm-insights
+* https://github.com/fabric8-analytics/fabric8-analytics-jenkins-plugin
+* https://github.com/fabric8-analytics/fabric8-analytics-notification-scheduler
+* https://github.com/fabric8-analytics/fabric8-analytics-utils
+* https://github.com/fabric8-analytics/fabric8-analytics-release-monitor
+* https://github.com/fabric8-analytics/fabric8-analytics-github-refresh-cronjob
+* https://github.com/fabric8-analytics/fabric8-analytics-github-events-monitor
+* https://github.com/fabric8-analytics/fabric8-analytics-rudra
+* https://github.com/fabric8-analytics/fabric8-analytics-scaler
+* https://github.com/fabric8-analytics/f8a-server-backbone
+* https://github.com/fabric8-analytics/f8a-hpf-insights
+* https://github.com/fabric8-analytics/f8a-golang-insights
+* https://github.com/fabric8-analytics/f8a-pypi-insights
+* https://github.com/fabric8-analytics/f8a-stacks-report
+* https://github.com/fabric8-analytics/f8a-data-ingestion-service
+* https://github.com/fabric8-analytics/f8a-emr-deployment
+* https://github.com/fabric8-analytics/cvejob
+* https://github.com/fabric8-analytics/victimsdb-lib
+* https://github.com/fabric8-analytics/fabric8-analytics.github.io"
 
 
-=== Generating QA Dashboard file
+=== Generating QA Dashboard and all related files
 
-(Generated daily)
+(To be generated daily)
 
 Use the script `dashboard.sh` to generate the file `dashboard.html` and bunch of other files:
 
-* `*.html` files with reports for all repositories (for example <https://fabric8-analytics.github.io/dashboard/repository_fabric8-analytics-server.html>)
-* `*.txt` files with coverage reports, dead code reports, common issues reports etc. (for example <https://fabric8-analytics.github.io/dashboard/fabric8-analytics-server.coverage.txt>)
-* `*.png` files with graphs (like in <https://fabric8-analytics.github.io/dashboard/charts_fabric8-analytics-release-monitor.html>)
-* `*.svg` files with quality labels (like in <https://fabric8-analytics.github.io/dashboard/fabric8-analytics-common.svg>)
-* `dashboard.csv` the same content as in `dashboard.html` but in table format
+* `*.html` files with reports for all repositories (for example https://fabric8-analytics.github.io/dashboard/repository_fabric8-analytics-server.html)
+* `*.txt` files with coverage reports, dead code reports, common issues reports etc. (for example https://fabric8-analytics.github.io/dashboard/fabric8-analytics-server.coverage.txt)
+* `*.png` files with graphs (like images used in https://fabric8-analytics.github.io/dashboard/charts_fabric8-analytics-release-monitor.html)
+* `*.svg` files with quality labels (like label available at https://fabric8-analytics.github.io/dashboard/fabric8-analytics-common.svg)
+* `dashboard.csv` the same content as in `dashboard.html` but in table format that can be imported into all spreadsheets if necessary
 
 
 
 === Pushing all created files into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
 
-All created files needs to be copied, commited, and pushed into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
-Results will be visible at address <https://fabric8-analytics.github.io/dashboard/dashboard.html>
+* All created files needs to be copied, committed, and pushed into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository available at https://github.com/fabric8-analytics/fabric8-analytics.github.io
+
+* There's a script named `commit+push` that do all the jobs, including commit message generation. It is available there https://github.com/fabric8-analytics/fabric8-analytics.github.io/blob/master/dashboard/commit%2Bpush
+
+* Results will be visible at address https://fabric8-analytics.github.io/dashboard/dashboard.html
+
+Please note that it might take some time (approximately one to two minutes) to refresh the Dashboard on wiki (it is delayed on GitHub side).
 
 
 
@@ -58,9 +106,13 @@ Results will be visible at address <https://fabric8-analytics.github.io/dashboar
 
 (Generated weekly)
 
-Use the script `coverage.sh` to generate code coverage report.
-All created files needs to be copied, commited, and pushed into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
-Results will be visible at address <https://fabric8-analytics.github.io/dashboard/coverage.html>
+* Use the script `coverage.sh` to generate code coverage report.
+
+* All created files needs to be copied, commited, and pushed into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
+
+* Results will be visible at address https://fabric8-analytics.github.io/dashboard/coverage.html
+
+Please note that it might take some time (approximately one to two minutes) to refresh the Dashboard on wiki (it is delayed on GitHub side).
 
 
 
@@ -68,8 +120,10 @@ Results will be visible at address <https://fabric8-analytics.github.io/dashboar
 
 (Generated weekly)
 
-Use the script `history.sh` to generate *.png files with graphs with code improvements (see <https://fabric8-analytics.github.io/dashboard/charts_fabric8-analytics-release-monitor.html> for an example)
+* Use the script `history.sh` to generate *.png files with graphs with code improvements (see https://fabric8-analytics.github.io/dashboard/charts_fabric8-analytics-release-monitor.html for an example)
 
-This script takes approximatelly 20 minutes to finish!
+* This script takes approximatelly 20 minutes to finish!
 
-Copy, commit, and push all generated *.png files into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
+* Copy, commit, and push all generated *.png files into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
+
+Please note that it might take some time (approximately one to two minutes) to refresh the Dashboard on wiki (it is delayed on GitHub side).
