@@ -9,7 +9,7 @@ from fastlog import log
 
 # from coreapi import CoreApi
 # from jobsapi import JobsApi
-from configuration import Configuration
+# from configuration import Configuration
 from results import Results
 from html_generator import generate_dashboard
 from code_quality_label import generate_quality_labels
