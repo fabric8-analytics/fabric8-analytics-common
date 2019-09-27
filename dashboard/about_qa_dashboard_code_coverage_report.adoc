@@ -13,4 +13,63 @@ deployments:
 * `F8A_API_URL_PROD` - API server URL for the production environment
 * `F8A_JOB_API_URL_PROD` - Jobs service URL for the prod environment
 
-//== TODO
+== QA Dashboard generation
+
+This includes:
+
+* Dashboard itself (generated daily)
+* Code coverage report (generated weekly)
+* Code improvements graphs (generated weekly)
+
+
+
+=== Cloning all repositories with source codes
+
+Use the script `clone_or_pull_all_repos.sh` to clone or pull all repositories that needs to be displayed on the QA Dashboard
+
+* This script clones all newly created/added repositories into the `repositories/` subdirectory
+* If the repository is already cloned, new content is pulled (which is much faster of course)
+* Only the `master` branch is checked, the content of other branches are not important
+
+
+
+=== Generating QA Dashboard file
+
+(Generated daily)
+
+Use the script `dashboard.sh` to generate the file `dashboard.html` and bunch of other files:
+
+* `*.html` files with reports for all repositories (for example <https://fabric8-analytics.github.io/dashboard/repository_fabric8-analytics-server.html>)
+* `*.txt` files with coverage reports, dead code reports, common issues reports etc. (for example <https://fabric8-analytics.github.io/dashboard/fabric8-analytics-server.coverage.txt>)
+* `*.png` files with graphs (like in <https://fabric8-analytics.github.io/dashboard/charts_fabric8-analytics-release-monitor.html>)
+* `*.svg` files with quality labels (like in <https://fabric8-analytics.github.io/dashboard/fabric8-analytics-common.svg>)
+* `dashboard.csv` the same content as in `dashboard.html` but in table format
+
+
+
+=== Pushing all created files into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
+
+All created files needs to be copied, commited, and pushed into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
+Results will be visible at address <https://fabric8-analytics.github.io/dashboard/dashboard.html>
+
+
+
+=== Code coverage report
+
+(Generated weekly)
+
+Use the script `coverage.sh` to generate code coverage report.
+All created files needs to be copied, commited, and pushed into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
+Results will be visible at address <https://fabric8-analytics.github.io/dashboard/coverage.html>
+
+
+
+=== History of code improvements
+
+(Generated weekly)
+
+Use the script `history.sh` to generate *.png files with graphs with code improvements (see <https://fabric8-analytics.github.io/dashboard/charts_fabric8-analytics-release-monitor.html> for an example)
+
+This script takes approximatelly 20 minutes to finish!
+
+Copy, commit, and push all generated *.png files into the `github.com:fabric8-analytics/fabric8-analytics.github.io` repository
