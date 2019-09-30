@@ -3,6 +3,7 @@ import boto3
 import botocore
 from botocore.exceptions import ClientError
 import json
+import os
 
 
 class S3Interface():
@@ -139,3 +140,21 @@ class S3Interface():
     def selector_to_key(selector):
         """Construct a key from given selector (that is written in tests w/o underscores)."""
         return selector.lower().replace(" ", "_")
+
+    def get_object_from_s3(self, bucket_name):
+        """Download Manifest Files from S3."""
+        self.connect()
+        s3 = self.s3_resource
+        files_to_download = ['package.json', 'pom.xml', 'pylist.json']
+        path = 'data/dynamic_manifests/'
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        for obj in files_to_download:
+            key = "dynamic_manifests/" + obj
+            try:
+                s3.Bucket(bucket_name).download_file(key, path + obj)
+            except botocore.exceptions.ClientError as e:
+                print("The object does not exist.")
+                return 'error in file fetching from s3', 400
+        return 'success', 200

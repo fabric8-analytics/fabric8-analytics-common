@@ -800,3 +800,10 @@ def validate_topic_list(context, key):
         for dep in deps:
             assert len(dep['topic_list']) == len(input_stack_topics[dep['name']])
             assert sorted(dep['topic_list']) == sorted(input_stack_topics[dep['name']])
+
+
+@when('I tried to fetch dynamic manifests from s3')
+def dynamic_manifest_file(context):
+    """Integration for dynamically generated manifests files."""
+    response, status = context.s3interface.get_object_from_s3(bucket_name=context.reports_bucket)
+    assert status == 200, response

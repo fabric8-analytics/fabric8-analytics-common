@@ -134,3 +134,17 @@ Feature: Analyse API functionality check
      And I should find that valid outliers are reported
      And I should get license_analysis field in stack report
      And I should find the security node for all dependencies
+
+
+  Scenario: Check that the stack-analyses returns a valid response for dynamic manifest files
+    Given System is running
+    When I acquire the authorization token
+    Then I should get the proper authorization token
+    When I wait 10 seconds
+    When I tried to fetch dynamic manifests from s3
+    When I send Maven package manifest dynamic_manifests/pom.xml to stack analysis version 3 with authorization token
+    Then I should get 200 status code
+    When I send NPM package manifest dynamic_manifests/package.json to stack analysis version 3 with authorization token
+    Then I should get 200 status code
+    When I send Python package manifest dynamic_manifests/pylist.json to stack analysis version 3 with authorization token
+    Then I should get 200 status code
