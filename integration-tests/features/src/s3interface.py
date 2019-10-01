@@ -3,6 +3,8 @@ import boto3
 import botocore
 from botocore.exceptions import ClientError
 import json
+import os
+import urllib.request as urlrequest
 
 
 class S3Interface():
@@ -139,3 +141,22 @@ class S3Interface():
     def selector_to_key(selector):
         """Construct a key from given selector (that is written in tests w/o underscores)."""
         return selector.lower().replace(" ", "_")
+
+    def get_object_from_s3(self):
+        """Download Manifest Files from S3."""
+        base_url = os.environ.get('MANIFESTS_BUCKET_URL', None)
+        assert base_url is not None, 'Please set MANIFESTS_BUCKET_URL in environment'
+        files_to_download = ['npmlist.json', 'dependencies.json', 'pylist.json']
+        path = 'dynamic_manifests/'
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        for obj in files_to_download:
+            save_path = os.path.join(base_url, path, obj)
+            try:
+                filedata = urlrequest.urlopen(url=save_path).read()
+                with open(path + obj, 'wb') as f:
+                    f.write(filedata)
+            except botocore.exceptions.ClientError:
+                return 'error in file fetching from s3', 400
+        return 'success', 200

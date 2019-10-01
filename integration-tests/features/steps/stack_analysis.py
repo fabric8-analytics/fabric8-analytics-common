@@ -2,11 +2,11 @@
 import requests
 import time
 import os
-
+import json
 from behave import then, when
 from urllib.parse import urljoin
 import jsonschema
-
+import random
 from src.attribute_checks import check_attribute_presence, check_cve_value
 from src.parsing import parse_token_clause
 from src.utils import split_comma_separated_list
@@ -191,6 +191,16 @@ def maven_manifest_stack_analysis(context, manifest, version=3, token="without")
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
     send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
+                                    endpoint, use_token, ecosystem='maven', origin='vscode')
+
+
+@when("I send new Maven package manifest {manifest} to stack analysis version {version:d} {token} "
+      "authorization token")
+def maven_new_manifest_stack_analysis(context, manifest, version=3, token="without"):
+    """Send the Maven package manifest file to the stack analysis."""
+    endpoint = stack_analysis_endpoint(context, version)
+    use_token = parse_token_clause(token)
+    send_manifest_to_stack_analysis(context, manifest, 'dependencies.txt',
                                     endpoint, use_token, ecosystem='maven', origin='vscode')
 
 
@@ -800,3 +810,50 @@ def validate_topic_list(context, key):
         for dep in deps:
             assert len(dep['topic_list']) == len(input_stack_topics[dep['name']])
             assert sorted(dep['topic_list']) == sorted(input_stack_topics[dep['name']])
+
+
+@when('I tried to fetch dynamic manifests from s3')
+def dynamic_manifest_file(context):
+    """Integration for dynamically generated manifests files."""
+    response, status = context.s3interface.get_object_from_s3()
+    assert status == 200, response
+
+
+@then('I should be able to validate them')
+def validate_dynamic_manifest_file(context):
+    """Generate valid manifest files out of Multiple Stacks file from S3."""
+    file_save_path = os.path.join(
+        os.path.abspath(os.curdir), "data", "valid_manifests/")
+    if not os.path.exists(file_save_path):
+        os.makedirs(file_save_path)
+
+    files_to_validate = [
+        ('npmlist.json', validate_file_npm),
+        ('dependencies.json', validate_file_maven),
+        ('pylist.json', validate_file_pypi)
+    ]
+    for file, func in files_to_validate:
+        with open('dynamic_manifests/' + file) as fp:
+            contents = json.load(fp)
+        contents = random.sample(contents, 1)
+        func(contents[0], file, file_save_path)
+
+
+def validate_file_npm(contents, file_name, file_save_path):
+    """Generate file for npm."""
+    data = {'dependencies': {}}
+    with open(file_save_path + file_name, 'w') as manifest:
+        data['dependencies'] = contents.pop('dependencies')
+        json.dump(data, manifest)
+
+
+def validate_file_pypi(contents, file_name, file_save_path):
+    """Generate file for pypi."""
+    with open(file_save_path + file_name, 'w') as manifest:
+        json.dump(contents[0], manifest)
+
+
+def validate_file_maven(contents, file_name, file_save_path):
+    """Generate file for maven."""
+    with open(file_save_path + 'dependencies.txt', 'w') as manifest:
+        manifest.write(contents['content'])

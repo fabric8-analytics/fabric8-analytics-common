@@ -597,6 +597,7 @@ def before_all(context):
     aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
     s3_region_name = os.environ.get('S3_REGION_NAME')
     deployment_prefix = os.environ.get('DEPLOYMENT_PREFIX', 'STAGE')
+    context.reports_bucket = os.environ.get('DEVELOPER_ANALYTICS_REPORTS_BUCKET')
 
     context.s3interface = S3Interface(aws_access_key_id, aws_secret_access_key,
                                       s3_region_name, deployment_prefix)
