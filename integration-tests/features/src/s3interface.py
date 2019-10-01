@@ -154,7 +154,7 @@ class S3Interface():
             key = "dynamic_manifests/" + obj
             try:
                 s3.Bucket(bucket_name).download_file(key, path + obj)
-            except botocore.exceptions.ClientError as e:
+            except botocore.exceptions.ClientError:
                 print("The object does not exist.")
                 return 'error in file fetching from s3', 400
         return 'success', 200
