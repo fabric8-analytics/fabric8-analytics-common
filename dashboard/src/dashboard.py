@@ -539,6 +539,11 @@ def read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled):
         return None
 
 
+def get_total_builds(builds):
+    """Retrieve results for total builds."""
+    return [b for b in builds if b["result"] is not None]
+
+
 def production_smoketests_status(ci_jobs):
     """Read total number of remembered builds and succeeded builds as well."""
     log.info("Read smoketests status")
@@ -546,7 +551,7 @@ def production_smoketests_status(ci_jobs):
     api_query = jenkins_api_query_build_statuses(job_url)
     response = requests.get(api_query)
     builds = response.json()["builds"]
-    total_builds = [b for b in builds if b["result"] is not None]
+    total_builds = get_total_builds(builds)
     success_builds = [b for b in builds if b["result"] == "SUCCESS"]
     total_builds_cnt = len(total_builds)
     success_builds_cnt = len(success_builds)
