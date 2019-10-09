@@ -46,7 +46,7 @@ def parse_check_passed(line, pattern):
 
 
 def try_to_read_summary(filename, summary_postfix, summary_pattern, check_passed_prefix,
-                 check_passed_pattern):
+                        check_passed_pattern):
     """Try to read summary from the specified input file."""
     # it is ok if the file does not exist - the history data don't have to be
     # available in all commits

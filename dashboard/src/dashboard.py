@@ -558,7 +558,7 @@ def production_smoketests_status(ci_jobs):
     builds = response.json()["builds"]
     total_builds = get_total_builds(builds)
     success_builds = get_success_builds(builds)
-    
+
     total_builds_cnt = len(total_builds)
     success_builds_cnt = len(success_builds)
 
