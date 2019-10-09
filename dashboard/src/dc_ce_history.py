@@ -45,18 +45,27 @@ def parse_check_passed(line, pattern):
         return None
 
 
+def try_to_read_summary(filename, summary_postfix, summary_pattern, check_passed_prefix,
+                        check_passed_pattern):
+    """Try to read summary from the specified input file."""
+    # it is ok if the file does not exist - the history data don't have to be
+    # available in all commits
+    with open(filename) as fin:
+        for line in fin:
+            if line_with_summary(line.strip(), summary_postfix):
+                return parse_summary(line, summary_pattern)
+            elif line_with_check_passed(line.strip(), check_passed_prefix):
+                return parse_check_passed(line, check_passed_pattern)
+    return None
+
+
 def read_summary(filename, summary_postfix, summary_pattern, check_passed_prefix,
                  check_passed_pattern):
     """Read dead code summary from the file containing dead code or common errors report."""
     try:
-        # it is ok if the file does not exist - the history data don't have to be
-        # available in all commits
-        with open(filename) as fin:
-            for line in fin:
-                if line_with_summary(line.strip(), summary_postfix):
-                    return parse_summary(line, summary_pattern)
-                elif line_with_check_passed(line.strip(), check_passed_prefix):
-                    return parse_check_passed(line, check_passed_pattern)
+        # this function might throws an exception
+        return try_to_read_summary(filename, summary_postfix, summary_pattern, check_passed_prefix,
+                                   check_passed_pattern)
     except Exception:
         return None
 
