@@ -14,7 +14,7 @@ Feature: Components API V1
       And I search for component sequence without authorization token
      Then I should get 401 status code
 
-  @requires_authorization_token @production
+  @requires_authorization_token
   Scenario: Check the component search API entry point
     Given System is running
       And Component search service is running
@@ -23,7 +23,7 @@ Feature: Components API V1
      When I search for component foobar with authorization token
      Then I should get 200 status code
 
-  @requires_authorization_token @production
+  @requires_authorization_token
   Scenario: Check the component search API entry point for the component that does not exist
     Given System is running
       And Component search service is running
@@ -54,7 +54,7 @@ Feature: Components API V1
      When I access /api/v1/component-analyses/
      Then I should get 404 status code
 
-  @requires_authorization_token @production
+  @requires_authorization_token
   Scenario: Check if search for packages handle empty results
     Given System is running
       And Component search service is running
