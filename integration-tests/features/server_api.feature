@@ -126,7 +126,6 @@ Feature: Server API
      Then I should get 200 status code
 
 
-  @production
   Scenario Outline: Check that the HTTP method is check properly on server side for the /api/v1/system/version
     Given System is running
      When I access /api/v1/system/version/
