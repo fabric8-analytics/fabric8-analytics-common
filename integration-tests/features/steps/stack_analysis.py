@@ -844,13 +844,13 @@ def validate_file_npm(contents, file_name, file_save_path):
     data = {'dependencies': {}}
     with open(file_save_path + file_name, 'w') as manifest:
         data['dependencies'] = contents.pop('dependencies')
-        json.dump(data, manifest)
+        json.dump(data, manifest, indent=4, sort_keys=True)
 
 
 def validate_file_pypi(contents, file_name, file_save_path):
     """Generate file for pypi."""
     with open(file_save_path + file_name, 'w') as manifest:
-        json.dump(contents[0], manifest)
+        json.dump([contents[0]], manifest)
 
 
 def validate_file_maven(contents, file_name, file_save_path):
