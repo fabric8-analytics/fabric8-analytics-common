@@ -21,7 +21,7 @@ features/stack_analyses_npm_ecosystem.feature
 features/stack_analysis_npm_direct_and_transitive.feature
 features/stack_analyses_smoke_tests_pypi_ecosystem.feature
 features/stack_analyses_smoke_tests_npm_ecosystem.feature
-features/user_feedback.feature
+# Not used in real production: features/user_feedback.feature
 #features/versions.feature
 features/selfcheck.feature
 #features/regression_tests.feature
@@ -33,9 +33,12 @@ features/gemini.feature
 features/resilient_infrastructure.feature
 features/three_scale_stack_analyses.feature
 features/three_scale_component_analyses.feature
-features/user_intent.feature
+# Not used in real production: features/user_intent.feature
 
-features/auth_reproducers.feature
+## Redundant with other auth tests. 
+## If needed it should use different endpoint for reproducers
+## as this endpoint is not used in production
+#features/auth_reproducers.feature
 
 #features/components_in_s3_vertx.feature
 #features/packages_in_s3.feature
