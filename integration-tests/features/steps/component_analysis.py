@@ -1,4 +1,4 @@
-"""Tests for API endpoints that performs component search and component analysis."""
+"""Tests for API endpoints that performs component analysis."""
 import requests
 
 import time
@@ -11,13 +11,6 @@ from src.utils import split_comma_separated_list
 from src.json_utils import get_value_using_path
 from src.authorization_tokens import authorization
 from src.attribute_checks import check_attribute_presence, check_cve_value
-
-
-@given('Component search service is running')
-def running_component_search_api(context):
-    """Wait for the component search REST API to be available."""
-    if not context.is_component_search_service_running(context):
-        context.wait_for_component_search_service(context, 60)
 
 
 def component_analysis_url(context, ecosystem, component, version):
@@ -42,18 +35,6 @@ def perform_component_search(context, component, use_token):
         context.response = requests.get(url, headers=authorization(context))
     else:
         context.response = requests.get(url)
-
-
-@when("I search for component {component} without authorization token")
-def search_for_component_without_token(context, component):
-    """Search for given component via the component search REST API call."""
-    perform_component_search(context, component, False)
-
-
-@when("I search for component {component} with authorization token")
-def search_for_component_with_token(context, component):
-    """Search for given component via the component search REST API call."""
-    perform_component_search(context, component, True)
 
 
 @when("I read {ecosystem}/{component}/{version} component analysis")

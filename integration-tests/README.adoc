@@ -57,7 +57,6 @@ To add new feature tests:
 * link:features/stack_analysis_npm_direct_and_transitive.feature[Stack analysis for NPM direct and transitive dependencies]: Stack analysis for NPM direct and transitive dependencies link:scenarios/stack_analysis_npm_direct_and_transitive.md[list of scenarios]
 * link:features/stack_analysis_pypi_direct_and_transitive.feature[Stack analysis for PyPi direct and transitive dependencies]: Stack analysis for PyPi direct and transitive dependencies link:scenarios/stack_analysis_pypi_direct_and_transitive.md[list of scenarios]
 * link:features/components.feature[Component analysis]: API tests for the component analysis endpoints under `/api/v1/component-analyses/`. link:scenarios/components.md[list of scenarios]
-* link:features/component_search.feature[Component search]: Tests for the component search functionality link:scenarios/component_search.md[list of scenarios]
 * link:features/components_in_s3.feature[Checks for components stored in S3]: Check how/if components are stored in the S3 database. link:scenarios/components_in_s3.md[list of scenarios]
 * link:features/components_in_s3_vertx.feature[Checks for components stored in S3]: Specific tests for vertx components. link:scenarios/components_in_s3_vertx.md[list of scenarios]
 * link:features/packages_in_s3.feature[Checks for packages stored in S3]: Check how/if packages are stored in the S3 database. link:scenarios/packages_in_s3.md[list of scenarios]
