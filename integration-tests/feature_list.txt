@@ -33,6 +33,7 @@ features/gemini.feature
 features/resilient_infrastructure.feature
 features/three_scale_stack_analyses.feature
 features/three_scale_component_analyses.feature
+features/dynamic.feature
 # Not used in real production: features/user_intent.feature
 
 ## Redundant with other auth tests. 
