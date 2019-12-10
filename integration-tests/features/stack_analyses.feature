@@ -135,7 +135,6 @@ Feature: Analyse API functionality check
      And I should get license_analysis field in stack report
      And I should find the security node for all dependencies
 
-  @data-sanity
   Scenario: Check that the stack-analyses returns a valid response for dynamic manifest files
     Given System is running
     When I acquire the authorization token
@@ -148,7 +147,7 @@ Feature: Analyse API functionality check
     When I wait 5 seconds
     Then I should get 200 status code
       And I should receive JSON response with the correct id
-    When I wait for stack analysis to finish with authorization token
+    When I wait for dynamic stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should get a valid request ID
      And I should find the attribute request_id equals to id returned by stack analysis request
@@ -160,7 +159,7 @@ Feature: Analyse API functionality check
     When I wait 5 seconds
     Then I should get 200 status code
       And I should receive JSON response with the correct id
-    When I wait for stack analysis to finish with authorization token
+    When I wait for dynamic stack analysis version 3 to finish with authorization token
     Then I should get 200 status code
      And I should get a valid request ID
      And I should find the attribute request_id equals to id returned by stack analysis request
@@ -172,7 +171,7 @@ Feature: Analyse API functionality check
     When I wait 15 seconds
     Then I should get 200 status code
       And I should receive JSON response with the correct id
-    When I wait for stack analysis to finish with authorization token
+    When I wait for dynamic stack analysis version 3 to finish with authorization token
     When I wait 10 seconds
     Then I should get 200 status code
      And I should get a valid request ID
