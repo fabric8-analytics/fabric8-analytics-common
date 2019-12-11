@@ -79,6 +79,19 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
     context.duration = end_time - start_time
 
 
+@when("I wait for dynamic stack analysis version {version:d} to finish {token} authorization token")
+def wait_for_stack_analyses_dynamic(context, attempt=1, version=3, token="with"):
+    """Stack Analyses for dynamic Manifests functionality."""
+    try:
+        wait_for_stack_analysis_completion(context, version=version, token=token)
+    except Exception:
+        attempt += 1
+        assert attempt < 4, "Unable to Perform dynamic stack analyses in 3 retries."
+        # Regenerate files from Stack
+        validate_dynamic_manifest_file(context)
+        wait_for_stack_analyses_dynamic(context, attempt=attempt)
+
+
 @when("I post a valid {manifest} to {url}")
 def perform_valid_manifest_post(context, manifest, url):
     """Post a manifest to selected core API endpont."""
