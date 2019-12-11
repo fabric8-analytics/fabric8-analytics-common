@@ -44,7 +44,6 @@ Feature: Server API
          |endpoint|
          |/api/v1|
          |/api/v1/component-analyses/<ecosystem>/<package>/<version>|
-         |/api/v1/component-search/<package>|
          |/api/v1/generate-file|
          |/api/v1/get-next-component/<ecosystem>|
          |/api/v1/master-tags/<ecosystem>|
