@@ -57,8 +57,6 @@ Feature: Server API
          |/api/v1/master-tags/<ecosystem>|
          |/api/v1/set-tags|
          |/api/v1/categories/<runtime>|
-         |/api/v1/depeditor-analyses|
-         |/api/v1/depeditor-cve-analyses|
          |/api/v1/get-core-dependencies/<runtime>|
          |/api/v1/empty-booster|
          |/api/v1/recommendation_feedback/<ecosystem>|
