@@ -13,5 +13,4 @@ function prepare_venv() {
 
 
 
-
 PYTHONDONTWRITEBYTECODE=1 python3.4 `which behave` --tags=-skip --tags=-data-sanity -D dump_errors=true @feature_list.txt $@
