@@ -129,7 +129,7 @@ Feature: Thorough stack analysis v3 API tests for Node ecosystem
 
     # SLA/SLO-related checks
     When I look at the stack analysis duration
-    Then I should see that the duration is less than 40 second
+    Then I should see that the duration is less than 180 second
 
     # Timestamp checks
     When I look at recent stack analysis
