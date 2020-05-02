@@ -300,7 +300,7 @@ def check_license_for_package_version_none(context, package, version):
             licenses = p["licenses"]
             assert not licenses, \
                 "None license shall be returned, but {licenses} has been found".format(
-                    license=licenses)
+                    licenses=licenses)
             # are we here? -> we have found the expected license -> everything's fine
             return
 
