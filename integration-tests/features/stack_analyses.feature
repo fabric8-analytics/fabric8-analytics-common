@@ -167,7 +167,7 @@ Feature: Analyse API functionality check
      And I should find that valid outliers are reported
      And I should get license_analysis field in stack report
      And I should find the security node for all dependencies
-    When I send NPM package manifest valid_manifests/npmlist.json to stack analysis version 3 with authorization token
+    When I send NPM package manifest valid_manifests/npmlist.json to new stack analysis version 3 with authorization token
     When I wait 15 seconds
     Then I should get 200 status code
       And I should receive JSON response with the correct id
