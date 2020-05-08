@@ -54,4 +54,5 @@ function run_smoketests()
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
+
 python3 -B src/dashboard.py $@
