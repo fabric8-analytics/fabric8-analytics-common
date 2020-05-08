@@ -28,7 +28,8 @@ def get_source_files(repository):
     """Find all source files in the selected repository."""
     log.info("Getting source files")
     command = ("pushd repositories/{repo} > /dev/null; " +
-               r"wc -l `find . -path ./venv -prune -o \( -name '*.py' -o -name '*.java' \) " +
+               r"wc -l `find . -path ./venv -prune -o \( -name '*.py' -o -name '*.java' -o " +
+               r"-name '*.ts' \) " +
                "-print` | head -n -1 > ../../{repo}.count; " +
                "popd > /dev/null").format(repo=repository)
     os.system(command)
