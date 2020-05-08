@@ -363,10 +363,12 @@ def check_numeric_property_value(context, property_name, expected):
     value = read_property_value_from_gremlin_response(context, property_name)
 
     numeric = convert_to_number(value)
-    assert numeric >= expected, ("The property {p} value is set to '{value}', but it should be "
-                                 "greater than or equal to {expected").format(p=property_name,
-                                                                              value=value,
-                                                                              expected=expected)
+    assert numeric >= expected, ("The property {p} value is set to '{value}'," +
+                                 " but it should be " +
+                                 "greater than or equal " +
+                                 "to {expected}").format(p=property_name,
+                                                         value=value,
+                                                         expected=expected)
 
 
 @then('I should find that all information about package have correct structure')
@@ -494,8 +496,11 @@ def check_float_property_value(properties, property_name, additional_check=None)
 def check_string_property_value(properties, property_name, expected_value):
     """Check if the node value is a string with expected value."""
     value = get_node_value(properties, property_name)
-    assert value == expected_value, "Property '{p}' should have the value '{e}', " + \
-        "but the value '{v}' was found instead.".format(p=property_name, e=expected_value, v=value)
+    assert value == expected_value, ("Property '{p}' should have the value '{e}', " +
+                                     "but the value " +
+                                     "'{v}' was found instead.").format(p=property_name,
+                                                                        e=expected_value,
+                                                                        v=value)
 
 
 def test_cm_loc(properties, expected_property=False):
