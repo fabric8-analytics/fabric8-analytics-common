@@ -79,6 +79,19 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
     context.duration = end_time - start_time
 
 
+@when("I wait for dynamic stack analysis version {version:d} to finish {token} authorization token")
+def wait_for_stack_analyses_dynamic(context, attempt=1, version=3, token="with"):
+    """Stack Analyses for dynamic Manifests functionality."""
+    try:
+        wait_for_stack_analysis_completion(context, version=version, token=token)
+    except Exception:
+        attempt += 1
+        assert attempt < 4, "Unable to Perform dynamic stack analyses in 3 retries."
+        # Regenerate files from Stack
+        validate_dynamic_manifest_file(context)
+        wait_for_stack_analyses_dynamic(context, attempt=attempt)
+
+
 @when("I post a valid {manifest} to {url}")
 def perform_valid_manifest_post(context, manifest, url):
     """Post a manifest to selected core API endpont."""
@@ -155,9 +168,24 @@ def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, end
       "authorization token")
 def npm_manifest_stack_analysis(context, manifest, version=3, token="without"):
     """Send the NPM package manifest file to the stack analysis."""
+    name = "package.json"
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, 'package.json',
+    send_manifest_to_stack_analysis(context, manifest, name,
+                                    endpoint, use_token, ecosystem='npm', origin='vscode')
+
+
+@when("I send NPM package manifest {manifest} to new stack analysis")
+@when("I send NPM package manifest {manifest} to new stack analysis {token} authorization token")
+@when("I send NPM package manifest {manifest} to new stack analysis version {version:d}")
+@when("I send NPM package manifest {manifest} to new stack analysis version {version:d} {token} "
+      "authorization token")
+def npm_manifest_new_stack_analysis(context, manifest, version=3, token="without"):
+    """Send the NPM package manifest file to the stack analysis."""
+    name = "npmlist.json"
+    endpoint = stack_analysis_endpoint(context, version)
+    use_token = parse_token_clause(token)
+    send_manifest_to_stack_analysis(context, manifest, name,
                                     endpoint, use_token, ecosystem='npm', origin='vscode')
 
 
@@ -799,6 +827,7 @@ def validate_topic_list(context, key):
     json_data = context.response.json()
     path = "result"
     manifest_results = get_value_using_path(json_data, path)
+    print(manifest_results)
 
     # loop through results for each of the manifest files
     for result in manifest_results:
@@ -808,6 +837,7 @@ def validate_topic_list(context, key):
         deps = get_value_using_path(result, key)
 
         for dep in deps:
+            print(dep)
             assert len(dep['topic_list']) == len(input_stack_topics[dep['name']])
             assert sorted(dep['topic_list']) == sorted(input_stack_topics[dep['name']])
 
