@@ -101,14 +101,14 @@ Feature: Thorough stack analysis v3 API tests - NPM ecosystem
     Then I should find at least 2 dependencies
      And I should find the following dependencies (base64-encode, commander) in the stack analysis
      And I should find dependency named base64-encode with version 1.0.1 in the stack analysis
-     And I should find dependency named commander with version 2.20.0 in the stack analysis
+     And I should find dependency named commander with version 5.1.0 in the stack analysis
 
     # Analyzed dependencies checks
     When I look at recent stack analysis
     Then I should find at least 2 analyzed dependencies
      And I should find the following analyzed dependencies (base64-encode, commander) in the stack analysis
      And I should find analyzed dependency named base64-encode with version 1.0.1 in the stack analysis
-     And I should find analyzed dependency named commander with version 2.20.0 in the stack analysis
+     And I should find analyzed dependency named commander with version 5.1.0 in the stack analysis
 
     # Unknown dependencies checks
     When I look at recent stack analysis
@@ -153,14 +153,14 @@ Feature: Thorough stack analysis v3 API tests - NPM ecosystem
     Then I should find at least 2 dependencies
      And I should find the following dependencies (base64-encode, commander) in the stack analysis
      And I should find dependency named base64-encode with version 1.0.1 in the stack analysis
-     And I should find dependency named commander with version 2.20.0 in the stack analysis
+     And I should find dependency named commander with version 5.1.0 in the stack analysis
 
     # Analyzed dependencies checks
     When I look at recent stack analysis
     Then I should find at least 2 analyzed dependencies
      And I should find the following analyzed dependencies (base64-encode, commander) in the stack analysis
      And I should find analyzed dependency named base64-encode with version 1.0.1 in the stack analysis
-     And I should find analyzed dependency named commander with version 2.20.0 in the stack analysis
+     And I should find analyzed dependency named commander with version 5.1.0 in the stack analysis
 
     # Unknown dependencies checks
     When I look at recent stack analysis

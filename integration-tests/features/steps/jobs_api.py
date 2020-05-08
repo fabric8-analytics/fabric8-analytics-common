@@ -390,8 +390,9 @@ def generate_job_id_prefix(context):
 @when("I perform kerberized {method} request to {url}")
 def perform_kerberized_request(context, method, url):
     """Call REST API on coreapi-server."""
-    command = "curl -s -X {method} --negotiate -u : " + \
-              "http://coreapi-server:5000{url}".format(method=method, url=url)
+    method_name = str(method)
+    command = "curl -s -X " + method_name + " --negotiate -u : " + \
+              "http://coreapi-server:5000{url}".format(url=url)
     context.kerb_request = \
         context.exec_command_in_container(context.client, context.container,
                                           command)

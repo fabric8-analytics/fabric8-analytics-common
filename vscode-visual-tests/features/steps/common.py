@@ -134,8 +134,8 @@ def step_check_extension_name_nonexistence(context, extension):
     for ext in context.output:
         if extension == ext:
             # raise an exception
-            msg = "The extension {} has been found in a " + \
-                  "list of installed extensions".format(extension)
+            msg = "The extension" + str(extension) + " has been found in a " + \
+                  "list of installed extensions"
             raise Exception(msg)
     # all ok
     return

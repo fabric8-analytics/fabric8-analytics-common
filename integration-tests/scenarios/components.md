@@ -1,10 +1,6 @@
 # Feature: Components API V1
 - Scenario: Check the API entry point
 - Scenario: Check if component analysis requires authorization
-- Scenario: Check the component search API entry point
-- Scenario: Check the component search API entry point for the component that does not exist
-- Scenario: Check that the component search API entry point requires component name
-- Scenario: Check that the component search API entry point checks for empty component name
 - Scenario: Check that the component analyses API entry point make sure resources are specified
 - Scenario: Check if search for packages handle empty results
 - Scenario: Check that component analyses endpoint checks if all resources are specified
