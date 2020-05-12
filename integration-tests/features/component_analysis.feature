@@ -20,7 +20,7 @@ Feature: Unknown licenses
      | npm | sequence | 3.0.0 |
      | npm | aargh | 1.1.0 |
      | npm | arrays | 0.1.1 |
-     | npm | jquery | 3.4.0 |
+     | npm | jquery | 3.5.0 |
      | npm | mocha | 6.1.4 |
      | npm | underscore | 1.9.1 |
      | npm | lodash | 4.17.15 |
