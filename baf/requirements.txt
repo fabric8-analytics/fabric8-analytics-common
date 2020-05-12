@@ -4,8 +4,12 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-fastlog==1.0.0b1
-mako==1.0.7
+certifi==2019.11.28       # via requests
+chardet==3.0.4            # via requests
+fastlog==1.0.0b3          # via -r requirements.in
+idna==2.7                 # via requests
+mako==1.0.7               # via -r requirements.in
 markupsafe==1.0           # via mako
-requests==2.18.4
-urllib3==1.22             # via requests
+requests==2.20.0          # via -r requirements.in
+six==1.13.0               # via fastlog
+urllib3==1.24.2           # via requests
