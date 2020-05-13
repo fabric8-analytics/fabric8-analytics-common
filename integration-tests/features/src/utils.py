@@ -14,9 +14,9 @@ def download_file_from_url(url):
     return response.text
 
 
-def split_comma_separated_list(l):
+def split_comma_separated_list(list_var):
     """Split the list into elements separated by commas."""
-    return [i.strip() for i in l.split(',')]
+    return [i.strip() for i in list_var.split(',')]
 
 
 def is_exe(fpath):
