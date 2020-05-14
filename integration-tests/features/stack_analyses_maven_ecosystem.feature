@@ -1,13 +1,13 @@
 Feature: Thorough stack analysis v3 API tests for Maven ecosystem
 
-
+  @skip
   Scenario: Check that the API entry point requires authorization token
     Given System is running
     When I send Maven package manifest pom.xml to stack analysis version 3 without authorization token
     Then I should get 401 status code
 
 
-  @requires_authorization_token
+  @requires_authorization_token @skip
   Scenario: Check that the API entry point requires authorization token
     Given System is running
     When I acquire the authorization token
@@ -18,7 +18,7 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
     Then I should get 200 status code
 
 
-  @requires_authorization_token @data-sanity
+  @requires_authorization_token @data-sanity @skip
   Scenario: Check that the stack analysis response for the pom.xml that contains only one component
     Given System is running
     When I acquire the authorization token
@@ -68,7 +68,7 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token @data-sanity
+  @requires_authorization_token @data-sanity @skip
   Scenario: Check that the stack analysis response for the springboot.xml
     Given System is running
     When I acquire the authorization token
@@ -123,7 +123,7 @@ Feature: Thorough stack analysis v3 API tests for Maven ecosystem
     Then I should find no more than 0 unknown dependencies
 
 
-  @requires_authorization_token @data-sanity
+  @requires_authorization_token @data-sanity @skip
   Scenario: Check that the stack analysis response for the vertx.xml
     Given System is running
     When I acquire the authorization token

@@ -127,40 +127,6 @@ def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token
     context.response = response
 
 
-def test_stack_analyses_with_deps_file(context, ecosystem, manifest, origin, endpoint):
-    """Send the selected dependencies file for stack analysis."""
-    filename = 'data/{manifest}'.format(manifest=manifest)
-    manifest_file_dir = os.path.abspath(os.path.dirname(filename))
-
-    context.manifest = manifest
-
-    # in the new API version the manifest names are hard coded
-    if ecosystem == "pypi":
-        # only two manifest names are supported ATM:
-        # 1) pylist.json
-        # 2) requirements.txt
-        if manifest.endswith(".json"):
-            manifest = "pylist.json"
-        else:
-            manifest = "requirements.txt"
-    elif ecosystem == "node":
-        # only two manifest names are supported ATM:
-        # 1) packages.json
-        # 2) npm.json
-        manifest = "npmlist.json"
-    elif ecosystem == "maven":
-        # only two manifest names are supported ATM:
-        # 1) pox.xml
-        # 2) dependencies.txt
-        manifest = "dependencies.txt"
-
-    files = {'manifest[]': (manifest, open(filename, 'rb')),
-             'filePath[]': (None, manifest_file_dir)}
-    context.response = requests.post(endpoint, files=files,
-                                     headers=authorization_with_eco_origin(
-                                         context, ecosystem, origin))
-
-
 @when("I send NPM package manifest {manifest} to stack analysis")
 @when("I send NPM package manifest {manifest} to stack analysis {token} authorization token")
 @when("I send NPM package manifest {manifest} to stack analysis version {version:d}")
@@ -202,11 +168,13 @@ def python_manifest_stack_analysis(context, manifest, version=3, token="without"
                                     endpoint, use_token, ecosystem='pypi', origin='vscode')
 
 
-@when("I test {ecosystem} dependencies file {manifest} for stack analysis from {origin}")
-def process_deps_file_from_origin(context, ecosystem, manifest, origin, version=3):
-    """Test stack analyses of an ecosystem specific dependencies file from an integration point."""
-    endpoint = stack_analysis_endpoint(context, version)
-    test_stack_analyses_with_deps_file(context, ecosystem.lower(), manifest, origin, endpoint)
+# @when("I test {ecosystem} dependencies file {manifest} for stack analysis from {origin}")
+# def process_deps_file_from_origin(context, ecosystem, manifest, origin, version=3):
+#     """Test stack analyses of an ecosystem specific dependencies file from an integration
+#  point."""
+#     endpoint = stack_analysis_endpoint(context, version)
+#     test_stack_analyses_with_deps_file(context, ecosystem.lower(), manifest, origin, endpoin
+# t)
 
 
 @when("I send Maven package manifest {manifest} to stack analysis")

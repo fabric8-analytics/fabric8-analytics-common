@@ -6,7 +6,8 @@ Feature: Three Scale Analyse API functionality check
     When I wait 10 seconds
     When I send NPM package manifest package.json to stack analysis through 3scale gateway without user_key
     Then I should get 403 status code
-
+  
+  @skip
   Scenario: Check that the stack-analyses returns a valid response for NPM ecosystem
     Given System is running
     Given Three scale preview service is running
@@ -27,7 +28,8 @@ Feature: Three Scale Analyse API functionality check
      And I should find the security node for all dependencies
      And I should find input_stack_topics field in recommendation
      And I should find matching topic lists for all user_stack_info/analyzed_dependencies components
-
+  
+  @skip
   Scenario: Check that the stack-analyses GET returns limits exceeded for NPM ecosystem
     Given System is running
     Given Three scale preview service is running
@@ -41,6 +43,7 @@ Feature: Three Scale Analyse API functionality check
     Then I should get 429 status code
      And I should get Limits exceeded text response
 
+  @skip
   Scenario: Check that the stack-analyses POST returns limits exceeded for NPM ecosystem
     Given System is running
     Given Three scale preview service is running
@@ -59,7 +62,8 @@ Feature: Three Scale Analyse API functionality check
     Then I should get the proper user_key
     When I access /api/v1/submit-feedback without valid values via 3scale gateway
     Then I should get 400 status code
-
+  
+  @skip
   Scenario: Check the /api/v1/submit-feedback response via 3scale gateway
     Given System is running
     Given Three scale preview service is running

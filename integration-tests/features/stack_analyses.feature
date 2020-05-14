@@ -19,7 +19,7 @@ Feature: Analyse API functionality check
      | PUT    |
      | DELETE |
 
-
+  
   Scenario Outline: Check that the stack analysis REST API endpoint does not accept any HTTP method other than POST
     Given System is running
      When I acquire the authorization token
@@ -69,13 +69,14 @@ Feature: Analyse API functionality check
      | DELETE |
 
 
-  @production
+  @production @skip
   Scenario: Check that the API entry point requires authorization token
     Given System is running
     When I wait 10 seconds
     When I send Maven package manifest pom-effective.xml to stack analysis without authorization token
     Then I should get 401 status code
-
+ 
+  @skip
   Scenario: Check that the stack-analyses returns a valid response for maven ecosystem
     Given System is running
     When I acquire the authorization token
@@ -97,6 +98,7 @@ Feature: Analyse API functionality check
      And I should find input_stack_topics field in recommendation
      And I should find matching topic lists for all user_stack_info/analyzed_dependencies components
 
+  @skip
   Scenario: Check that the stack-analyses returns a valid response for NPM ecosystem
     Given System is running
     When I acquire the authorization token
@@ -118,15 +120,17 @@ Feature: Analyse API functionality check
      And I should find input_stack_topics field in recommendation
      And I should find matching topic lists for all user_stack_info/analyzed_dependencies components
 
+  
   Scenario: Check that the stack-analyses returns a valid response for pypi ecosystem
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
     When I wait 10 seconds
-    When I test pypi dependencies file pylist.json for stack analysis from vscode
+    When I test pypi dependencies file pylist.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive JSON response with the correct id
-    When I wait for stack analysis to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should get a valid request ID
      And I should find the attribute request_id equals to id returned by stack analysis request
@@ -135,19 +139,21 @@ Feature: Analyse API functionality check
      And I should get license_analysis field in stack report
      And I should find the security node for all dependencies
 
+
   Scenario: Check that the stack-analyses returns a valid response for dynamic manifest files
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
     When I wait 10 seconds
     When I tried to fetch dynamic manifests from s3
     Then I should be able to validate them
     When I wait 5 seconds
-    When I send Python package manifest valid_manifests/pylist.json to stack analysis version 3 with authorization token
+    When I send Python package manifest valid_manifests/pylist.json to stack analysis through 3scale gateway with user_key
     When I wait 5 seconds
     Then I should get 200 status code
-      And I should receive JSON response with the correct id
-    When I wait for dynamic stack analysis version 3 to finish with authorization token
+     And I should receive JSON response with the correct id
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should get a valid request ID
      And I should find the attribute request_id equals to id returned by stack analysis request
@@ -155,11 +161,11 @@ Feature: Analyse API functionality check
      And I should find that valid outliers are reported
      And I should get license_analysis field in stack report
      And I should find the security node for all dependencies
-    When I send new Maven package manifest valid_manifests/dependencies.txt to stack analysis version 3 with authorization token
+    When I send Maven package manifest valid_manifests/dependencies.txt to stack analysis through 3scale gateway with user_key
     When I wait 5 seconds
     Then I should get 200 status code
-      And I should receive JSON response with the correct id
-    When I wait for dynamic stack analysis version 3 to finish with authorization token
+     And I should receive JSON response with the correct id
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should get a valid request ID
      And I should find the attribute request_id equals to id returned by stack analysis request
@@ -167,12 +173,10 @@ Feature: Analyse API functionality check
      And I should find that valid outliers are reported
      And I should get license_analysis field in stack report
      And I should find the security node for all dependencies
-    When I send NPM package manifest valid_manifests/npmlist.json to new stack analysis version 3 with authorization token
-    When I wait 15 seconds
+    When I send NPM package manifest valid_manifests/npmlist.json to stack analysis through 3scale gateway with user_key
     Then I should get 200 status code
-      And I should receive JSON response with the correct id
-    When I wait for dynamic stack analysis version 3 to finish with authorization token
-    When I wait 10 seconds
+     And I should receive JSON response with the correct id
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should get a valid request ID
      And I should find the attribute request_id equals to id returned by stack analysis request

@@ -3,11 +3,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for newer version of click package (6.7)
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file requirements_click_6_7.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file requirements_click_6_7.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -18,7 +20,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -44,11 +46,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for newer version of click package (7.0)
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file requirements_click_7_0.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file requirements_click_7_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -59,7 +63,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -85,11 +89,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for array split package (7.0)
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file array_split.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file array_split.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -100,7 +106,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -126,11 +132,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file fastlog_urllib_requests.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file fastlog_urllib_requests.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -141,7 +149,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -171,11 +179,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file numpy_1_11_0.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file numpy_1_11_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -186,7 +196,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -211,11 +221,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file numpy_1_12_0.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file numpy_1_12_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -226,7 +238,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -251,11 +263,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file numpy_1_16_2.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file numpy_1_16_2.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -266,7 +280,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -291,11 +305,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file numpy_1_16_3.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file numpy_1_16_3.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -306,7 +322,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -331,11 +347,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file numpy_scipy.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file numpy_scipy.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -346,7 +364,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -373,11 +391,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file pytest_2_0_0.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file pytest_2_0_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -388,7 +408,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -413,11 +433,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file pytest_2_0_1.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file pytest_2_0_1.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -428,7 +450,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -453,11 +475,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file pytest_3_2_2.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file pytest_3_2_2.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -468,7 +492,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -493,11 +517,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file requests_2_20_0.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file requests_2_20_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -508,7 +534,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -533,11 +559,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file requests_2_20_1.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file requests_2_20_1.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -548,7 +576,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -567,11 +595,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file requests_2_21_0.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file requests_2_21_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -582,7 +612,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -607,11 +637,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file scipy_1_1_0.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file scipy_1_1_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -622,7 +654,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -647,11 +679,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file scipy_1_2_0.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file scipy_1_2_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -662,7 +696,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
@@ -687,11 +721,13 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
   @requires_authorization_token @data-sanity
   Scenario: Check the analyzed dependencies for common and popular Python packages
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test pypi dependencies file scipy_1_2_1.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test pypi dependencies file scipy_1_2_1.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -702,7 +738,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response with the correct request_id
