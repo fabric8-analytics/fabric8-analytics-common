@@ -1,6 +1,6 @@
 Feature: Thorough stack analysis v3 API tests
 
-  @requires_authorization_token
+  @requires_authorization_token @skip
   Scenario: Check the stack analysis output
     Given System is running
     When I acquire the authorization token

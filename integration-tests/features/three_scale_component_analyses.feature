@@ -32,6 +32,7 @@ Feature: Component Search API Through 3Scale Gateway
     When I start component analyses XYZZY/sequence/2.2.0 with user_key
     Then I should not get 200 status code
 
+  @skip
   Scenario: Check that the component-analyses returns limits exceeded for npm ecosystem
     Given System is running
     Given Three scale preview service is running

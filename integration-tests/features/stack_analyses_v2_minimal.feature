@@ -6,14 +6,14 @@ Feature: Stack analysis v2 API Minimal
     When I access /api/v1/stack-analyses
     Then I should get 401 status code
 
-  @production
+  @production @skip
   Scenario: Check that the API entry point requires authorization token
     Given System is running
     When I wait 10 seconds
     When I send Python package manifest requirements.txt to stack analysis without authorization token
     Then I should get 401 status code
 
-  @production
+  @production @skip
   Scenario: Check that the stack-analyses returns a valid response for maven ecosystem
     Given System is running
     When I acquire the authorization token
@@ -35,7 +35,7 @@ Feature: Stack analysis v2 API Minimal
      And I should find input_stack_topics field in recommendation
      And I should find matching topic lists for all user_stack_info/analyzed_dependencies components
 
-  @production
+  @production @skip
   Scenario: Check that the stack-analyses returns a valid response for python ecosystem
     Given System is running
     When I acquire the authorization token

@@ -37,7 +37,8 @@ def perform_component_analysis(context, ecosystem, package, version, use_user_ke
         context.response = requests.get(url)
 
 
-def send_manifest_to_stack_analyses(context, manifest, name, endpoint, user_key, rate):
+def send_manifest_to_stack_analyses(context, manifest, name, endpoint, user_key, rate, origin,
+                                    ecosystem):
     """Send the selected manifest file to stack analyses."""
     filename = 'data/{manifest}'.format(manifest=manifest)
     manifest_file_dir = os.path.dirname(filename)
@@ -51,10 +52,49 @@ def send_manifest_to_stack_analyses(context, manifest, name, endpoint, user_key,
     if user_key:
         for _ in range(rate):
             response = requests.post(endpoint, files=files, params={
-                                    'user_key': context.three_scale_preview_user_key})
+                                    'user_key': context.three_scale_preview_user_key},
+                                    headers={'origin': origin, 'ecosystem': ecosystem})
             # break the loop if rate limit exceeded
             if response.status_code == 429:
                 break
+    else:
+        response = requests.post(endpoint, files=files)
+    context.response = response
+
+
+def test_stack_analyses_with_deps_file(context, manifest, endpoint, user_key, rate,
+                                       ecosystem, origin):
+    """Send the selected dependencies file for stack analysis."""
+    filename = 'data/{manifest}'.format(manifest=manifest)
+    manifest_file_dir = os.path.abspath(os.path.dirname(filename))
+
+    context.manifest = manifest
+
+    # in the new API version the manifest names are hard coded
+    if ecosystem == "pypi":
+        # only two manifest names are supported ATM:
+        # 1) pylist.json
+        # 2) requirements.txt
+        if manifest.endswith(".json"):
+            manifest = "pylist.json"
+        else:
+            manifest = "requirements.txt"
+    elif ecosystem == "node":
+        # only two manifest names are supported ATM:
+        # 1) packages.json
+        # 2) npm.json
+        manifest = "npmlist.json"
+    elif ecosystem == "maven":
+        # only two manifest names are supported ATM:
+        # 1) pox.xml
+        # 2) dependencies.txt
+        manifest = "dependencies.txt"
+    files = {'manifest[]': (manifest, open(filename, 'rb')),
+             'filePath[]': (None, manifest_file_dir)}
+    if user_key:
+        response = requests.post(endpoint, files=files, params={
+                                 'user_key': context.three_scale_preview_user_key},
+                                 headers={'origin': origin, 'ecosystem': ecosystem})
     else:
         response = requests.post(endpoint, files=files)
     context.response = response
@@ -74,8 +114,44 @@ def npm_manifest_stack_analysis(context, manifest, version=3, user_key="without"
     """Send the NPM package manifest file to the stack analyses."""
     endpoint = threescale_preview_endpoint_url(context, 'stack-analyses')
     use_user_key = parse_token_clause(user_key)
-    send_manifest_to_stack_analyses(context, manifest, 'package.json',
-                                    endpoint, use_user_key, rate)
+    send_manifest_to_stack_analyses(context, manifest, 'npmlist.json',
+                                    endpoint, use_user_key, rate, ecosystem='npm', origin='vscode')
+
+
+@when("I send Python package manifest {manifest} to stack analysis through "
+      "3scale gateway {user_key} user_key")
+@when("I send Python package manifest {manifest} to stack analysis {rate:d} times"
+      " in a minute through 3scale gateway {user_key} user_key")
+def python_manifest_stack_analysis(context, manifest, version=3, user_key="without", rate=1):
+    """Send the NPM package manifest file to the stack analyses."""
+    endpoint = threescale_preview_endpoint_url(context, 'stack-analyses')
+    use_user_key = parse_token_clause(user_key)
+    send_manifest_to_stack_analyses(context, manifest, 'pylist.json',
+                                    endpoint, use_user_key, rate, ecosystem='pypi', origin='vscode')
+
+
+@when("I test {ecosystem} dependencies file {manifest} for stack analysis from {origin} "
+      "through 3scale gateway {user_key} user_key")
+def scale_process_deps_file(context, ecosystem, manifest, origin, rate=1,
+                            user_key="without"):
+    """Test stack analyses of an ecosystem specific dependencies file from an integration point."""
+    endpoint = threescale_preview_endpoint_url(context, 'stack-analyses')
+    use_user_key = parse_token_clause(user_key)
+    test_stack_analyses_with_deps_file(context, manifest, endpoint, use_user_key,
+                                       rate, ecosystem.lower(), origin)
+
+
+@when("I send Maven package manifest {manifest} to stack analysis through "
+      "3scale gateway {user_key} user_key")
+@when("I send Maven package manifest {manifest} to stack analysis {rate:d} times"
+      " in a minute through 3scale gateway {user_key} user_key")
+def maven_manifest_stack_analysis(context, manifest, version=3, user_key="without", rate=1):
+    """Send the NPM package manifest file to the stack analyses."""
+    endpoint = threescale_preview_endpoint_url(context, 'stack-analyses')
+    use_user_key = parse_token_clause(user_key)
+    send_manifest_to_stack_analyses(context, manifest, 'dependencies.txt',
+                                    endpoint, use_user_key, rate, ecosystem='maven',
+                                    origin='vscode')
 
 
 def pause_between_stack_analysis_requests(sleep_amount, rate):
@@ -98,6 +174,8 @@ def wait_for_stack_analysis_completion(context, user_key="without", rate=1):
     202 Accepted: analysis is started or is in progress (or other state!)
     403 UNAUTHORIZED : missing or improper user_key
     """
+    context.duration = None
+    start_time = time.time()
     timeout = context.stack_analysis_timeout  # in seconds
     sleep_amount = 15  # we don't have to overload the API with too many calls
     use_user_key = parse_token_clause(user_key)
@@ -128,6 +206,8 @@ def wait_for_stack_analysis_completion(context, user_key="without", rate=1):
         pause_between_stack_analysis_requests(sleep_amount, rate)
     else:
         raise Exception('Timeout waiting for the stack analysis results')
+    end_time = time.time()
+    context.duration = end_time - start_time
 
 
 @then("I should get {response_txt} text response")

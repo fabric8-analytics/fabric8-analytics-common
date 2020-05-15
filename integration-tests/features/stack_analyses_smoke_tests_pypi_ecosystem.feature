@@ -4,11 +4,13 @@ Feature: Smoketests for stack analysis API tests for PyPi ecosystem
   @requires_authorization_token
   Scenario Outline: Check the stack analysis response for selected simple PyPi projects
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test PyPi dependencies file <file> for stack analysis from vscode
+    When I wait 10 seconds
+    When I test PyPi dependencies file <file> for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -19,7 +21,7 @@ Feature: Smoketests for stack analysis API tests for PyPi ecosystem
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # Wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
 
@@ -47,10 +49,12 @@ Feature: Smoketests for stack analysis API tests for PyPi ecosystem
     Then I should find at least 1 analyzed dependencies
 
     # Analyzed CVE(s) part
+    When I wait 5 seconds
     When I look at recent stack analysis
     Then I should find the security node for all dependencies
      And I should find the security node for all alternate components
      And I should find a recommended version when a CVE is found
+    
 
      Examples: files containing packages to test
      | file |

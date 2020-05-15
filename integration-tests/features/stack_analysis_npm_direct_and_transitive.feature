@@ -4,11 +4,13 @@ Feature: Thorough stack analysis v3 API tests for Node ecosystem
   @requires_authorization_token
   Scenario: Check the stack analysis response for the Node project with 50 direct and 799 transitive dependencies
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test Node dependencies file npm_50_direct_799_tr.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test Node dependencies file npm_50_direct_799_tr.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -19,7 +21,7 @@ Feature: Thorough stack analysis v3 API tests for Node ecosystem
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # Wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
 
@@ -54,13 +56,15 @@ Feature: Thorough stack analysis v3 API tests for Node ecosystem
 
 
   @requires_authorization_token
-  Scenario: Check the stack analysis response for the Node project with 100 direct and 1039 transitive dependencies
+  Scenario: Check the stack analysis response for the Node project with 100 direct and 1039 transitive dependencies 
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test Node dependencies file npm_100_direct_1039_tr.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test Node dependencies file npm_100_direct_1039_tr.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -71,7 +75,7 @@ Feature: Thorough stack analysis v3 API tests for Node ecosystem
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # Wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
 
@@ -108,11 +112,13 @@ Feature: Thorough stack analysis v3 API tests for Node ecosystem
   @requires_authorization_token
   Scenario: Check the stack analysis response for the Node project with 150 direct and 1170 transitive dependencies
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
     # request the stack analysis
-    When I test Node dependencies file npm_150_direct_1170_tr.json for stack analysis from vscode
+    When I wait 10 seconds
+    When I test Node dependencies file npm_150_direct_1170_tr.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
      And I should receive JSON response containing the status key
@@ -123,7 +129,7 @@ Feature: Thorough stack analysis v3 API tests for Node ecosystem
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     # Wait for response from stack analysis
-    When I wait for stack analysis version 3 to finish with authorization token
+    When I wait for stack analysis to finish with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
 
