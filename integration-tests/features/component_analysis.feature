@@ -20,7 +20,7 @@ Feature: Unknown licenses
      | npm | sequence | 3.0.0 |
      | npm | aargh | 1.1.0 |
      | npm | arrays | 0.1.1 |
-     | npm | jquery | 3.5.0 |
+     | npm | jquery | 3.5.1 |
      | npm | mocha | 6.1.4 |
      | npm | underscore | 1.9.1 |
      | npm | lodash | 4.17.15 |
@@ -155,21 +155,21 @@ Feature: Unknown licenses
 
      Examples: EPV
      | ecosystem  | package             | version   | recommended-version | cve              | score |
-     | npm        | lodash              | 4.17.2    | 4.17.15             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.3    | 4.17.15             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.4    | 4.17.15             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.5    | 4.17.15             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.9    | 4.17.15             | CVE-2018-16487   | 7.5   |
-     | npm        | lodash              | 4.17.10   | 4.17.15             | CVE-2018-16487   | 7.5   |
-     | maven      | io.vertx:vertx-core | 3.5.3     | 3.7.1               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.3.CR1 | 3.7.1               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.2     | 3.7.1               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.2.CR3 | 3.7.1               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.2.CR2 | 3.7.1               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.2.CR1 | 3.7.1               | CVE-2018-12541   | 5.0   |
-     | pypi       | flask               | 0.12      | 1.1.1               | CVE-2018-1000656 | 5.0   |
-     | pypi       | flask               | 0.12.1    | 1.1.1               | CVE-2018-1000656 | 5.0   |
-     | pypi       | flask               | 0.12.2    | 1.1.1               | CVE-2018-1000656 | 5.0   |
+     | npm        | nuxt                | 2.0.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.1.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.3.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.4.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.5.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.6.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
+     | maven      | io.vertx:vertx-core | 3.5.3     | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.3.CR1 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2     | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR3 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR2 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR1 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
+     | pypi       | flask               | 0.12      | 1.1.2               | CVE-2018-1000656 | 5.0   |
+     | pypi       | flask               | 0.12.1    | 1.1.2               | CVE-2018-1000656 | 5.0   |
+     | pypi       | flask               | 0.12.2    | 1.1.2               | CVE-2018-1000656 | 5.0   |
      | pypi       | numpy               | 1.16.0    | 1.18.4              | CVE-2019-6446    | 7.5   |
      | pypi       | numpy               | 1.15.4    | 1.18.4              | CVE-2019-6446    | 7.5   |
      | pypi       | numpy               | 1.15.3    | 1.18.4              | CVE-2019-6446    | 7.5   |
