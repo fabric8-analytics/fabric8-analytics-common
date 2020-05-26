@@ -39,6 +39,7 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
     200 OK : analysis is already finished
     202 Accepted: analysis is started or is in progress (or other state!)
     401 UNAUTHORIZED : missing or improper authorization token
+    408 Timeout: Request timeout.
     """
     context.duration = None
     start_time = time.time()
@@ -49,6 +50,7 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
 
     id = context.response.json().get("id")
     context.stack_analysis_id = id
+    context.version = version
     # log.info("REQUEST ID: {}\n\n".format(context.stack_analysis_id))
     url = urljoin(stack_analysis_endpoint(context, version), id)
     # log.info("RECOMMENDER API URL: {}\n\n".format(url))
@@ -59,9 +61,13 @@ def wait_for_stack_analysis_completion(context, version=3, token="without"):
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
+        #print('status_code: {} response: {}'.format(status_code, context.response.text))
         # log.info("%r" % context.response.json())
         if status_code == 200:
             json_resp = context.response.json()
+            if version == 4:
+                break;
+
             if contains_alternate_node(json_resp):
                 # log.info('Recommendation found')
                 break
@@ -104,26 +110,43 @@ def perform_valid_manifest_post(context, manifest, url):
     print(response.json())
 
 
-def send_manifest_to_stack_analysis(context, manifest, name, endpoint, use_token, **kwargs):
+def send_manifest_to_stack_analysis(version, context, manifest, name, endpoint, use_token, **kwargs):
     """Send the selected manifest file to stack analysis."""
     filename = 'data/{manifest}'.format(manifest=manifest)
     manifest_file_dir = os.path.dirname(filename)
     path_to_manifest_file = os.path.abspath(manifest_file_dir)
     context.manifest = manifest
 
-    # please note that the trick with (None, path_to_manifest_file) has to be
-    # used here so the REST API call would work properly. It is similar to use
-    # curl -F 'manifest[]=@filename' -F 'filePath[]=PATH_TO_FILE'
-    files = {'manifest[]': (name, open(filename, 'rb')),
-             'filePath[]': (None, path_to_manifest_file)}
+    # Build request files, data and headers.
+    files = {}
+    data = {}
+    headers = {}
+    if version == 4:
+        # For stack analyses V2 we need only single manifest file and path is a string params.
+        files = {'manifest': (name, open(filename, 'rb'))}
+        data = {
+            'file_path': path_to_manifest_file,
+            'ecosystem': kwargs.get('ecosystem', None)
+        }
+        if use_token:
+            headers = authorization(context)
+    else:
+        # please note that the trick with (None, path_to_manifest_file) has to be
+        # used here so the REST API call would work properly. It is similar to use
+        # curl -F 'manifest[]=@filename' -F 'filePath[]=PATH_TO_FILE'
+        files = {'manifest[]': (name, open(filename, 'rb')),
+                 'filePath[]': (None, path_to_manifest_file)}
+        if use_token:
+            headers = authorization_with_eco_origin(context,
+                                                    ecosystem=kwargs.get('ecosystem', None),
+                                                    origin=kwargs.get('origin', None))
+
     if use_token:
-        response = requests.post(endpoint, files=files,
-                                 headers=authorization_with_eco_origin(
-                                     context,
-                                     ecosystem=kwargs.get('ecosystem', None),
-                                     origin=kwargs.get('origin', None)))
+        response = requests.post(endpoint, files=files, data=data, headers=headers)
     else:
         response = requests.post(endpoint, files=files)
+
+    #print('status_code: {} response: {}'.format(response.status_code, response.text))
     context.response = response
 
 
@@ -137,7 +160,7 @@ def npm_manifest_stack_analysis(context, manifest, version=3, token="without"):
     name = "package.json"
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, name,
+    send_manifest_to_stack_analysis(version, context, manifest, name,
                                     endpoint, use_token, ecosystem='npm', origin='vscode')
 
 
@@ -151,7 +174,7 @@ def npm_manifest_new_stack_analysis(context, manifest, version=3, token="without
     name = "npmlist.json"
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, name,
+    send_manifest_to_stack_analysis(version, context, manifest, name,
                                     endpoint, use_token, ecosystem='npm', origin='vscode')
 
 
@@ -164,7 +187,7 @@ def python_manifest_stack_analysis(context, manifest, version=3, token="without"
     """Send the Python package manifest file to the stack analysis."""
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, 'pylist.json',
+    send_manifest_to_stack_analysis(version, context, manifest, 'pylist.json',
                                     endpoint, use_token, ecosystem='pypi', origin='vscode')
 
 
@@ -184,9 +207,12 @@ def python_manifest_stack_analysis(context, manifest, version=3, token="without"
       "authorization token")
 def maven_manifest_stack_analysis(context, manifest, version=3, token="without"):
     """Send the Maven package manifest file to the stack analysis."""
+    manifest_name = 'pom.xml'
+    if version == 4: # This will call stack analyses V2 API.
+        manifest_name = 'dependencies.txt'
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, 'pom.xml',
+    send_manifest_to_stack_analysis(version, context, manifest, manifest_name,
                                     endpoint, use_token, ecosystem='maven', origin='vscode')
 
 
@@ -196,7 +222,7 @@ def maven_new_manifest_stack_analysis(context, manifest, version=3, token="witho
     """Send the Maven package manifest file to the stack analysis."""
     endpoint = stack_analysis_endpoint(context, version)
     use_token = parse_token_clause(token)
-    send_manifest_to_stack_analysis(context, manifest, 'dependencies.txt',
+    send_manifest_to_stack_analysis(version, context, manifest, 'dependencies.txt',
                                     endpoint, use_token, ecosystem='maven', origin='vscode')
 
 
@@ -271,7 +297,10 @@ def check_outlier_count(context, count=2):
 def check_outlier_validity(context):
     """Check the outlier validity in the stack analysis."""
     json_data = get_json_data(context)
-    path = "result/0/recommendation/usage_outliers"
+    path = 'result/0/recommendation/usage_outliers'
+    if context.version == 4:
+        path = 'recommendation/usage_outliers'
+
     usage_outliers = get_value_using_path(json_data, path)
     for usage_outlier in usage_outliers:
         # log.info("PACKAGE: {}".format(usage_outlier["package_name"]))
@@ -330,7 +359,7 @@ def get_attribute_values(list, attribute_name):
 
 def get_analyzed_packages(json_data):
     """Get names of all analyzed packages."""
-    path = "result/0/user_stack_info/dependencies"
+    path = 'result/0/user_stack_info/dependencies'
     analyzed_packages = get_value_using_path(json_data, path)
     return get_attribute_values(analyzed_packages, "package")
 
@@ -361,9 +390,12 @@ def stack_analysis_check_companion_packages(context):
 def verify_stack_level_field_presence_in_stack_report(context, field_name):
     """Check that the given field can be found in the stack report."""
     json_data = get_json_data(context)
-    path = 'result/0/user_stack_info'
-    user_stack_info = get_value_using_path(json_data, path)
-    assert user_stack_info.get(field_name, None) is not None
+    if context.version == 4:
+        assert json_data.get(field_name, None) is not None
+    else:
+        path = 'result/0/user_stack_info'
+        user_stack_info = get_value_using_path(json_data, path)
+        assert user_stack_info.get(field_name, None) is not None
 
 
 @then('I should find {field_name} field in recommendation')
@@ -508,7 +540,10 @@ def check_security_node(context, path):
 @then('I should find the security node for all dependencies')
 def stack_analysis_check_security_node_for_dependencies(context):
     """Check security node presense for all user dependencies."""
-    check_security_node(context, "result/0/user_stack_info/analyzed_dependencies")
+    path = 'result/0/user_stack_info/analyzed_dependencies'
+    if context.version == 4:
+        path = 'analyzed_dependencies'
+    check_security_node(context, path)
 
 
 @then('I should find the security node for all alternate components')
@@ -706,7 +741,14 @@ def check_stack_analyses_request_id(context):
     Check if ID is in a format like: '477e85660c504b698beae2b5f2a28b4e'
     ie. it is a string with 32 characters containing 32 hexadecimal digits
     """
-    check_id_value_in_json_response(context, "request_id")
+    version = context.version
+    assert version is not None
+
+    id_name = 'request_id'
+    if version == 4:
+        id_name = 'external_request_id'
+
+    check_id_value_in_json_response(context, id_name)
 
 
 @then("I should find the status attribute set to success")
@@ -723,15 +765,21 @@ def check_stack_analyses_request_status_attribute(context):
 @then('I should find the attribute request_id equals to id returned by stack analysis request')
 def check_stack_analysis_id(context):
     """Check the ID of stack analysis."""
+    version = context.version
+    assert version is not None
+
     previous_id = context.stack_analysis_id
+    assert previous_id is not None
 
     json_data = context.response.json()
     assert json_data is not None
 
-    check_attribute_presence(json_data, "request_id")
-    request_id = json_data["request_id"]
+    id_name = 'request_id'
+    if version == 4:
+        id_name = 'external_request_id'
 
-    assert previous_id is not None
+    check_attribute_presence(json_data, id_name)
+    request_id = json_data[id_name]
     assert request_id is not None
     assert previous_id == request_id
 
