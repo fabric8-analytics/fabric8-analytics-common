@@ -8,6 +8,7 @@ docker build -t f8a-e2e-tests .
 
 docker run -t \
     -e F8A_API_URL=${F8A_API_URL} \
+    -e F8A_API_V2_URL=${F8A_API_V2_URL} \
     -e F8A_JOB_API_URL=${F8A_JOB_API_URL} \
     -e F8A_GREMLIN_URL=${F8A_GREMLIN_URL} \
     -e F8A_3SCALE_URL=${F8A_3SCALE_URL} \

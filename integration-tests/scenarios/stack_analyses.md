@@ -9,3 +9,4 @@
 - Scenario: Check that the stack-analyses returns a valid response for maven ecosystem
 - Scenario: Check that the stack-analyses returns a valid response for NPM ecosystem
 - Scenario: Check that the stack-analyses returns a valid response for pypi ecosystem
+- Scenario: Check that the stack-analyses returns a valid response for dynamic manifest files
