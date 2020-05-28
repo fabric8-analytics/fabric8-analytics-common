@@ -556,6 +556,7 @@ def before_all(context):
         'registry.devshift.net/bayesian/cucos-worker')
 
     coreapi_url = _read_url_from_env_var('F8A_API_URL')
+    core_v2_api_url = _read_url_from_env_var('F8A_API_V2_URL')
     jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
     gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
     threescale_url = _read_url_from_env_var('F8A_3SCALE_URL')
@@ -569,6 +570,7 @@ def before_all(context):
     check_test_environment(context, coreapi_url)
 
     context.coreapi_url = _get_url(context, coreapi_url, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
+    context.core_v2_api_url = core_v2_api_url
     context.jobs_api_url = _get_url(context, jobs_api_url, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
     context.gremlin_url = _get_url(context, gremlin_url, "gremlin_url", _FABRIC8_GREMLIN_SERVICE)
     context.license_service_url = _get_url(context, license_service_url, 'license_service_url',

@@ -33,8 +33,7 @@ def stack_analysis_endpoint(context, version):
     # /analyse endpoint was developed to meet the performance norms at production
     endpoints = ["/api/v1/stack-analyses-v1",
                  "/api/v1/analyse",
-                 "/api/v1/stack-analyses/",
-                 "/api/v2/stack-analyses/"]
+                 "/api/v1/stack-analyses/"]
 
     if version < 1 or version > len(endpoints):
         raise Exception("Wrong version specified: {v}".format(v=version))
