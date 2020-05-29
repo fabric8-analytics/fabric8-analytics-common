@@ -19,11 +19,11 @@
 import requests
 import time
 import os
-from behave import then, when
+from behave import when, then
 from urllib.parse import urljoin
 from src.attribute_checks import check_attribute_presence
-from src.parsing import parse_token_clause
-from src.authorization_tokens import authorization
+from src.parsing import parse_token_clause, parse_valid_clause
+from src.attribute_checks import check_timestamp
 
 ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
     'pypi': 'pylist.json',
@@ -35,18 +35,18 @@ ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
 def get_sav2_endpoint(context):
     """Return endpoint for the stack analysis v2."""
     # Two available endpoints for stack analysis are /stack-analyses and /analyse
-    return urljoin(context.core_v2_api_url, '/api/v2/stack-analyses/')
+    return urljoin(context.threescale_preview_url, '/api/v2/stack-analyses/')
 
 
-def post_sav2(context, ecosystem, manifest, use_token):
+def post_sav2(context, ecosystem, manifest, with_user_key, is_valid):
     """Send stack analyses v2 post request based on params."""
-    print('ecosystem: {} manifest: {} use_token: {}'.format(ecosystem, manifest, use_token))
+    print('ecosystem: {} manifest: {} with_user_key: {} '
+          'is_valid: {}'.format(ecosystem, manifest, with_user_key, is_valid))
     context.manifest = manifest
 
     # set default values
     files = {}
     data = {}
-    headers = {}
 
     # Add ecosystem if not None
     if ecosystem != 'None':
@@ -59,10 +59,13 @@ def post_sav2(context, ecosystem, manifest, use_token):
                              open(filename, 'rb'))
         data['file_path'] = os.path.abspath(os.path.dirname(filename))
 
-    if use_token:
-        headers = authorization(context)
-        response = requests.post(get_sav2_endpoint(context),
-                                 files=files, data=data, headers=headers)
+    if with_user_key:
+        if is_valid:
+            params = {'user_key': context.three_scale_preview_user_key}
+        else:
+            params = {'user_key': 'INVALID_USER_KEY_FOR_TESTING'}
+        print(f'POST {get_sav2_endpoint(context)} files: {files} data: {data} params: {params}')
+        response = requests.post(get_sav2_endpoint(context), files=files, data=data, params=params)
     else:
         response = requests.post(get_sav2_endpoint(context), files=files, data=data)
 
@@ -70,21 +73,43 @@ def post_sav2(context, ecosystem, manifest, use_token):
     context.response = response
 
 
+@when('I access the {url} endpoint using the HTTP {action} method {token} user key')
+def access_url_put_method_with_authorization(context, url, action, token='without'):
+    """Access the service API using the HTTP method and with/without user key."""
+    # Convert token text into a valid bool
+    with_user_key = parse_token_clause(token)
+    params = {}
+    if with_user_key:
+        params = {'user_key': context.three_scale_preview_user_key}
+
+    if action == 'GET':
+        context.response = requests.get(get_sav2_endpoint(context) + url, params=params)
+    elif action == 'PUT':
+        context.response = requests.put(get_sav2_endpoint(context) + url, params=params)
+    elif action == 'HEAD':
+        context.response = requests.head(get_sav2_endpoint(context) + url, params=params)
+    elif action == 'DELETE':
+        context.response = requests.delete(get_sav2_endpoint(context) + url, params=params)
+
+
 @when('I send {ecosystem} package request with manifest {manifest} '
-      'to stack analysis v2 {token} authorization token')
-def send_sav2_request(context, ecosystem=None, manifest=None, token='without'):
+      'to stack analysis v2 {token} {valid} user key')
+def send_sav2_request(context, ecosystem=None, manifest=None, token='without', valid='valid'):
     """Send the ecosystem package manifest file to the stack analysis."""
     # Ecosystem is mandatory
     assert ecosystem is not None
 
     # Convert token text into a valid bool
-    use_token = parse_token_clause(token)
+    with_user_key = parse_token_clause(token)
+
+    # Convert valid clause to bool
+    is_valid = parse_valid_clause(valid)
 
     # Send SA request
-    post_sav2(context, ecosystem, manifest, use_token)
+    post_sav2(context, ecosystem, manifest, with_user_key, is_valid)
 
 
-@when('I wait for stack analysis v2 to finish {token} authorization token')
+@when('I wait for stack analysis v2 to finish {token} user key')
 def wait_for_sav2_completion(context, token='without'):
     """Try to wait for the stack analysis to be finished.
 
@@ -94,7 +119,7 @@ def wait_for_sav2_completion(context, token='without'):
     Current API implementation returns just three HTTP codes:
     200 OK : analysis is already finished
     202 Accepted: analysis is started or is in progress (or other state!)
-    401 UNAUTHORIZED : missing or improper authorization token
+    401 UNAUTHORIZED : missing or improper user key
     408 Timeout: Request timeout.
     """
     context.duration = None
@@ -102,7 +127,7 @@ def wait_for_sav2_completion(context, token='without'):
 
     timeout = context.stack_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
-    use_token = parse_token_clause(token)
+    with_user_key = parse_token_clause(token)
 
     id = context.response.json().get('id')
     context.stack_analysis_id = id
@@ -112,8 +137,9 @@ def wait_for_sav2_completion(context, token='without'):
     print('Get API url: {}'.format(url))
 
     for _ in range(timeout // sleep_amount):
-        if use_token:
-            context.response = requests.get(url, headers=authorization(context))
+        if with_user_key:
+            params = {'user_key': context.three_scale_preview_user_key}
+            context.response = requests.get(url, params=params)
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
@@ -163,7 +189,9 @@ def check_sav2_response_attributes(context):
     # Validate root level attributes.
     check_attribute_presence(json_data, 'version')
     check_attribute_presence(json_data, 'started_at')
+    check_timestamp(json_data.get('started_at'))
     check_attribute_presence(json_data, 'ended_at')
+    check_timestamp(json_data.get('ended_at'))
     check_attribute_presence(json_data, 'external_request_id')
     check_attribute_presence(json_data, 'registration_status')
     check_attribute_presence(json_data, 'manifest_file_path')
