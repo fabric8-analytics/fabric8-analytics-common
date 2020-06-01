@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "svg.filter.js": {
+      "version": "2.0.2",
+      "from": "svg.filter.js@2.0.2",
+      "resolved": "https://registry.npmjs.org/svg.filter.js/-/svg.filter.js-2.0.2.tgz",
+      "dependencies": {
+        "svg.js": {
+          "version": "2.6.6",
+          "from": "svg.js@2.6.6",
+          "resolved": "https://registry.npmjs.org/svg.js/-/svg.js-2.6.6.tgz"
+        }
+      }
+    }
+  }
+}

@@ -161,3 +161,21 @@ Feature: Stack analysis v2 API
      | pypi      | valid_manifests/pylist.json      |
      | npm       | valid_manifests/npmlist.json     |
      | maven     | valid_manifests/dependencies.txt |
+
+  @sav2
+  Scenario Outline: Check the stack analysis v2 with known package data
+    Given System is running
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send <ecosystem> package request with manifest <manifest> to stack analysis v2 with valid user key
+    Then I should get 200 status code
+    When I wait for stack analysis v2 to finish with user key
+    Then I should find the value <field> under the path <field_path> in the JSON response
+     And I should find the value <version> under the path <version_path> in the JSON response
+
+    Examples: Stack analyses POST params
+     | ecosystem | manifest             | field         | field_path                    | version | version_path                    |
+     | pypi      | pytest_2_0_0.json    | pytest        | analyzed_dependencies/0/name  | 2.0.0   | analyzed_dependencies/0/version |
+     | pypi      | requests_2_20_0.json | requests      | analyzed_dependencies/0/name  | 2.20.0  | analyzed_dependencies/0/version |
+     | npm       | npm_sfj_2_0_2.json   | svg.filter.js | analyzed_dependencies/0/name  | 2.0.2   | analyzed_dependencies/0/version |

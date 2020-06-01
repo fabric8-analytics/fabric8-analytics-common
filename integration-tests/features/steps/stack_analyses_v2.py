@@ -143,8 +143,7 @@ def wait_for_sav2_completion(context, token='without'):
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
-        # print('status_code: {} response: {}'.format(status_code, context.response.text))
-        print('status_code: {}'.format(status_code))
+        print('status_code: {} response: {}'.format(status_code, context.response.text))
         if status_code == 200:
             break
         # 401 code should be checked later
