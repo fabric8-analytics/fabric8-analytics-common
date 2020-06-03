@@ -76,9 +76,9 @@ def exec_file(filename, globals=None, locals=None):
     from _pytest import config
     from _pytest.assertion import rewrite
     f = path.local(filename)
-    filename2 = os.path.relpath(filename, os.getcwd())
     config = config._prepareconfig([], [])
-    _, code = rewrite._rewrite_test(config, f)
+    source_stat, code = rewrite._rewrite_test(config, f)
+    print('filename: {} source_stat: {} code: {}'.format(filename, source_stat, code))
     exec(code, globals, locals)
 
 
@@ -570,7 +570,8 @@ def before_all(context):
     check_test_environment(context, coreapi_url)
 
     context.coreapi_url = _get_url(context, coreapi_url, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
-    context.core_v2_api_url = core_v2_api_url
+    context.core_v2_api_url = _get_url(context, core_v2_api_url, 'core_v2_api_url',
+                                       _FABRIC8_ANALYTICS_SERVER)
     context.jobs_api_url = _get_url(context, jobs_api_url, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
     context.gremlin_url = _get_url(context, gremlin_url, "gremlin_url", _FABRIC8_GREMLIN_SERVICE)
     context.license_service_url = _get_url(context, license_service_url, 'license_service_url',

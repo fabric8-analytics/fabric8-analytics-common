@@ -57,7 +57,7 @@ Feature: Smoketests for stack analysis API tests for Maven ecosystem
      Examples: files containing packages to test
      | file                         |
      | basic.txt                    |
-     | sprintboot_dependencies.txt  |
+     | springboot_dependencies.txt  |
      | vertx_3_4_1_dependencies.txt |
      | vertx_3_4_2_dependencies.txt |
      | vertx_dependencies.txt       |

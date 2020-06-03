@@ -102,12 +102,12 @@ Feature: Stack analysis v2 API
     Then I should get the proper user_key
     When I send <ecosystem> package request with manifest <manifest> to stack analysis v2 with valid user key
     Then I should get 200 status code
-    Then I should receive JSON response containing the status key
-    Then I should receive JSON response containing the id key
-    Then I should receive JSON response containing the submitted_at key
-    Then I should receive JSON response with the status key set to success
-    Then I should receive JSON response with the correct id
-    Then I should receive JSON response with the correct timestamp in attribute submitted_at
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     Examples: Stack analyses POST params
      | ecosystem | manifest                         |
@@ -179,3 +179,15 @@ Feature: Stack analysis v2 API
      | pypi      | pytest_2_0_0.json    | pytest        | analyzed_dependencies/0/name  | 2.0.0   | analyzed_dependencies/0/version |
      | pypi      | requests_2_20_0.json | requests      | analyzed_dependencies/0/name  | 2.20.0  | analyzed_dependencies/0/version |
      | npm       | npm_sfj_2_0_2.json   | svg.filter.js | analyzed_dependencies/0/name  | 2.0.2   | analyzed_dependencies/0/version |
+
+  @sav2
+  Scenario: Check the outlier record
+    Given System is running
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send maven package request with manifest springboot_dependencies.txt to stack analysis v2 with valid user key
+    Then I should get 200 status code
+    When I wait for stack analysis v2 to finish with user key
+    Then I should get stack analyses v2 response with all attributes
+     And I should find the proper outlier record for the org.springframework:spring-websocket component for stack analyses v2
