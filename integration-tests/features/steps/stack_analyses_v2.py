@@ -66,7 +66,8 @@ def sav2_post_request(context, ecosystem, manifest, with_user_key, is_valid):
             params = {'user_key': context.three_scale_preview_user_key}
         else:
             params = {'user_key': 'INVALID_USER_KEY_FOR_TESTING'}
-        print(f'POST {sav2_get_endpoint(context)} files: {files} data: {data} params: {params}')
+        print('POST {} files: {} data: {} params: {}'.format(sav2_get_endpoint(context),
+                                                             files, data, params))
         response = requests.post(sav2_get_endpoint(context), files=files, data=data, params=params)
     else:
         response = requests.post(sav2_get_endpoint(context), files=files, data=data)
