@@ -15,7 +15,6 @@
 # Author: Dharmendra G Patel <dhpatel@redhat.com>
 #
 """Tests for API endpoints that performs stack analysis V2 API."""
-
 import requests
 import time
 import os
