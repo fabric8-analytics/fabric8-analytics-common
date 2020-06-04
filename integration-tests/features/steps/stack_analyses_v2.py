@@ -15,9 +15,9 @@
 # Author: Dharmendra G Patel <dhpatel@redhat.com>
 #
 """Tests for API endpoints that performs stack analysis V2 API."""
-import requests
-import time
 import os
+import time
+import requests
 from behave import when, then
 from urllib.parse import urljoin
 from src.attribute_checks import check_attribute_presence
@@ -36,7 +36,6 @@ ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
 
 def sav2_get_endpoint(context):
     """Return endpoint for the stack analysis v2."""
-    # Two available endpoints for stack analysis are /stack-analyses and /analyse
     return urljoin(context.threescale_preview_url, '/api/v2/stack-analyses/')
 
 

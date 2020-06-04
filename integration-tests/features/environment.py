@@ -570,8 +570,7 @@ def before_all(context):
     check_test_environment(context, coreapi_url)
 
     context.coreapi_url = _get_url(context, coreapi_url, 'coreapi_url', _FABRIC8_ANALYTICS_SERVER)
-    context.core_v2_api_url = _get_url(context, core_v2_api_url, 'core_v2_api_url',
-                                       _FABRIC8_ANALYTICS_SERVER)
+    context.core_v2_api_url = core_v2_api_url
     context.jobs_api_url = _get_url(context, jobs_api_url, 'jobs_api_url', _FABRIC8_ANALYTICS_JOBS)
     context.gremlin_url = _get_url(context, gremlin_url, "gremlin_url", _FABRIC8_GREMLIN_SERVICE)
     context.license_service_url = _get_url(context, license_service_url, 'license_service_url',
