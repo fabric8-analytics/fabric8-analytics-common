@@ -316,12 +316,6 @@ def sav2_check_recommended_version_for_cve(context):
         assert len(recommended) >= 1
 
 
-@then('I should find {expected:n} dependencies for stack analyses v2')
-def sav2_check_dependencies_count(context, expected=1):
-    """Check number of dependencies."""
-    sav2_check_equal_expectation_for_array(context, 'recommendation/input_stack_topics', expected)
-
-
 @then('I should find {expected:n} analyzed dependencies for stack analyses v2')
 def sav2_check_analyzed_dependencies_count(context, expected=1):
     """Check number of analyzed dependencies."""
@@ -363,12 +357,6 @@ def sav2_check_usage_outliers_count(context, expected):
 def sav2_check_companions_count(context, expected):
     """Check number of companions."""
     sav2_check_equal_expectation_for_array(context, 'recommendation/companion', expected)
-
-
-@then('I should find {expected:n} stack topics for stack analyses v2')
-def sav2_check_stack_topics_count(context, expected):
-    """Check number of stack topics."""
-    sav2_check_equal_expectation_for_array(context, 'recommendation/input_stack_topics', expected)
 
 
 @then('I should find registration link for stack analyses v2')
