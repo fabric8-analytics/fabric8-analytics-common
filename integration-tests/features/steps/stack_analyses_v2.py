@@ -14,7 +14,7 @@
 #
 # Author: Dharmendra G Patel <dhpatel@redhat.com>
 #
-"""Tests for API endpoints that performs stack analysis V2 API."""
+"""End to end tests for Stack Analyses V2 API endpoints."""
 import os
 import time
 import logging
@@ -38,7 +38,7 @@ ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
 
 
 def sav2_get_endpoint(context):
-    """Return endpoint for the stack analysis v2."""
+    """Get endpoint for the stack analysis v2."""
     return urljoin(context.threescale_preview_url, '/api/v2/stack-analyses/')
 
 
@@ -88,24 +88,19 @@ def sav2_get_analyzed_components(context):
     return components
 
 
-def sav2_get_components_with_cve(components):
-    """Get all components with CVE record(s)."""
-    result = []
-
-    for component in components:
-        assert "security" in component
-        cve_items = component["security"]
-        for cve_item in cve_items:
-            if "CVE" in cve_item:
-                result.append(component)
-
-    return result
-
-
 def sav2_check_equal_expectation_for_array(context, path, expected):
     """Check equality check for array object count."""
     json_data = get_json_data(context)
     actual_count = len(get_value_using_path(json_data, path))
+    assert actual_count == expected, \
+        "Found {} object(s) at {}, but {} is expected".format(
+            actual_count, path, expected)
+
+
+def sav2_check_equal_expectation_for_int(context, path, expected):
+    """Check equality check for array object count."""
+    json_data = get_json_data(context)
+    actual_count = get_value_using_path(json_data, path)
     assert actual_count == expected, \
         "Found {} object(s) at {}, but {} is expected".format(
             actual_count, path, expected)
@@ -147,15 +142,6 @@ def sav2_check_dependency_attributes(ad):
     if ad['vulnerable_dependencies']:
         for d in ad['vulnerable_dependencies']:
             sav2_check_dependency_attributes(d)
-
-
-def sav2_check_equal_expectation_for_int(context, path, expected):
-    """Check equality check for array object count."""
-    json_data = get_json_data(context)
-    actual_count = get_value_using_path(json_data, path)
-    assert actual_count == expected, \
-        "Found {} object(s) at {}, but {} is expected".format(
-            actual_count, path, expected)
 
 
 @when('I access the {url} endpoint using the HTTP {action} method {token} user key')
@@ -300,22 +286,6 @@ def sav2_check_outliers(context, component):
     path = 'recommendation/usage_outliers'
     usage_outliers = get_value_using_path(json_data, path)
     check_frequency_count(usage_outliers, component)
-
-
-@then('I should find a recommended version when a CVE is found for stack analyses v2')
-def sav2_check_recommended_version_for_cve(context):
-    """Check that all E/P/V with CVE detected also have recommended versions."""
-    # retrieve all components
-    components = sav2_get_analyzed_components(context)
-
-    # retrieve components with CVE record(s)
-    components_with_cve = sav2_get_components_with_cve(components)
-
-    # check if at least one recommendation is found for a component with CVE
-    for component_with_cve in components_with_cve:
-        check_attribute_presence(component_with_cve, "recommended_latest_version")
-        recommended = component_with_cve["recommended_latest_version"]
-        assert len(recommended) >= 1
 
 
 @then('I should find {expected:n} analyzed dependencies for stack analyses v2')
