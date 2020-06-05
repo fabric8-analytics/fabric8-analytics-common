@@ -554,7 +554,7 @@ def before_all(context):
     context.images['bayesian/cucos-worker'] = context.config.userdata.get(
         'coreapi_worker_image',
         'registry.devshift.net/bayesian/cucos-worker')
-
+    core_v2_api_url = _read_url_from_env_var('F8A_API_V2_URL')
     coreapi_url = _read_url_from_env_var('F8A_API_URL')
     jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
     gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
@@ -573,7 +573,7 @@ def before_all(context):
     context.gremlin_url = _get_url(context, gremlin_url, "gremlin_url", _FABRIC8_GREMLIN_SERVICE)
     context.license_service_url = _get_url(context, license_service_url, 'license_service_url',
                                            _FABRIC8_LICENSE_SERVICE)
-
+    context.core_v2_api_url = core_v2_api_url
     context.threescale_url = threescale_url
 
     context.threescale_preview_url = threescale_preview_url
