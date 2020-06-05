@@ -17,6 +17,7 @@ import logging
 
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
+logger = logging.getLogger(__file__)
 
 _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 _REPO_DIR = os.path.dirname(os.path.dirname(_THIS_DIR))
@@ -78,7 +79,7 @@ def exec_file(filename, globals=None, locals=None):
     f = path.local(filename)
     config = config._prepareconfig([], [])
     source_stat, code = rewrite._rewrite_test(config, f)
-    print('filename: {} source_stat: {} code: {}'.format(filename, source_stat, code))
+    logger.debug('filename: {} source_stat: {} code: {}'.format(filename, source_stat, code))
     exec(code, globals, locals)
 
 
@@ -92,7 +93,7 @@ def _make_compose_command(context, *args):
         cmd.append('-f')
         cmd.append(compose_file)
     cmd.extend(args)
-    print(cmd)
+    logger.info(cmd)
     return cmd
 
 
@@ -131,10 +132,10 @@ def _run_command_in_service(context, service, command):
     try:
         # universal_newlines decodes output on Python 3.x
         output = subprocess.check_output(cmd, universal_newlines=True).strip()
-        print(output)
+        logger.info(output)
         return output
     except subprocess.CalledProcessError as ex:
-        print(ex.output)
+        logger.exception(ex.output)
         raise
 
 
@@ -145,7 +146,7 @@ def _exec_command_in_container(client, container, command):
     """
     exec_id = client.exec_create(container, command)
     output = client.exec_start(exec_id).decode('utf-8')
-    print(output)
+    logger.info(output)
     return output
 
 
@@ -396,21 +397,21 @@ def _send_json_file(endpoint, filename, custom_headers=None):
 
 def _check_env_for_remote_tests(env_var_name):
     if os.environ.get(env_var_name):
-        print("Note: {e} environment variable is specified, but tests are "
-              "still run locally\n"
-              "Check other values required to run tests against existing "
-              "deployent".format(e=env_var_name))
+        logger.info("Note: {e} environment variable is specified, but tests are "
+                    "still run locally\n"
+                    "Check other values required to run tests against existing "
+                    "deployent".format(e=env_var_name))
 
 
 def _missing_api_token_warning(env_var_name):
     if os.environ.get(env_var_name):
-        print("OK: {name} environment is set and will be used as "
-              "authorization token".format(name=env_var_name))
+        logger.info("OK: {name} environment is set and will be used as "
+                    "authorization token".format(name=env_var_name))
     else:
-        print("Warning: the {name} environment variable is not"
-              " set.\n"
-              "Most tests that require authorization will probably fail".format(
-                  name=env_var_name))
+        logger.info("Warning: the {name} environment variable is not"
+                    " set.\n"
+                    "Most tests that require authorization will probably fail".format(
+                        name=env_var_name))
 
 
 def _check_api_tokens_presence():
@@ -429,9 +430,9 @@ def _check_env_var_presence_s3_db(env_var_name):
     AWS S3 database.
     """
     if os.environ.get(env_var_name) is None:
-        print("Warning: the {name} environment variable is not set.\n"
-              "All tests that access AWS S3 database will fail\n".format(
-                  name=env_var_name))
+        logger.info("Warning: the {name} environment variable is not set.\n"
+                    "All tests that access AWS S3 database will fail\n".format(
+                        name=env_var_name))
 
 
 def _parse_int_env_var(env_var_name):
@@ -449,13 +450,13 @@ def _read_url_from_env_var(env_var_name):
 def check_test_environment(context, coreapi_url):
     """Check the test environent - whether tests are run locally or in Docker."""
     if context.running_locally:
-        print("Note: integration tests are running localy via docker-compose")
+        logger.info("Note: integration tests are running localy via docker-compose")
         if coreapi_url:
             _check_env_for_remote_tests("F8A_API_URL")
             _check_env_for_remote_tests("F8A_JOB_API_URL")
             _check_env_for_remote_tests("F8A_GEMINI_API_URL")
     else:
-        print("Note: integration tests are running against existing deployment")
+        logger.info("Note: integration tests are running against existing deployment")
         _check_api_tokens_presence()
 
 
@@ -481,12 +482,12 @@ def check_token_structure(data):
 
 def retrieve_access_token(refresh_token, auth_service_url):
     """Retrieve temporary access token by using refresh/offline token."""
-    print("Trying to retrieve access token")
+    logger.info("Trying to retrieve access token")
     if refresh_token is None:
-        print("    aborting: RECOMMENDER_REFRESH_TOKEN environment variable is not set")
+        logger.info("    aborting: RECOMMENDER_REFRESH_TOKEN environment variable is not set")
         return None
     if auth_service_url is None:
-        print("    aborting: OSIO_AUTH_SERVICE environment variable is not set")
+        logger.info("    aborting: OSIO_AUTH_SERVICE environment variable is not set")
         return None
 
     payload = {'refresh_token': refresh_token}

@@ -17,6 +17,7 @@
 """Tests for API endpoints that performs stack analysis V2 API."""
 import os
 import time
+import logging
 import requests
 from behave import when, then
 from urllib.parse import urljoin
@@ -26,6 +27,8 @@ from src.attribute_checks import check_timestamp
 from src.json_utils import get_value_using_path
 from src.stack_analysis_common import get_json_data, check_frequency_count
 
+
+logger = logging.getLogger(__file__)
 
 ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
     'pypi': 'pylist.json',
@@ -41,8 +44,8 @@ def sav2_get_endpoint(context):
 
 def sav2_post_request(context, ecosystem, manifest, with_user_key, is_valid):
     """Send stack analyses v2 post request based on params."""
-    print('ecosystem: {} manifest: {} with_user_key: {} '
-          'is_valid: {}'.format(ecosystem, manifest, with_user_key, is_valid))
+    logger.debug('ecosystem: {} manifest: {} with_user_key: {} '
+                 'is_valid: {}'.format(ecosystem, manifest, with_user_key, is_valid))
     context.manifest = manifest
 
     # set default values
@@ -65,13 +68,13 @@ def sav2_post_request(context, ecosystem, manifest, with_user_key, is_valid):
             params = {'user_key': context.three_scale_preview_user_key}
         else:
             params = {'user_key': 'INVALID_USER_KEY_FOR_TESTING'}
-        print('POST {} files: {} data: {} params: {}'.format(sav2_get_endpoint(context),
-                                                             files, data, params))
+        logger.debug('POST {} files: {} data: {} params: {}'.format(sav2_get_endpoint(context),
+                                                                    files, data, params))
         response = requests.post(sav2_get_endpoint(context), files=files, data=data, params=params)
     else:
         response = requests.post(sav2_get_endpoint(context), files=files, data=data)
 
-    print('status_code: {} response: {}'.format(response.status_code, response.text))
+    logger.debug('status_code: {} response: {}'.format(response.status_code, response.text))
     context.response = response
 
 
@@ -213,10 +216,10 @@ def sav2_wait_for_completion(context, token='without'):
 
     id = context.response.json().get('id')
     context.stack_analysis_id = id
-    print('SA V2 Request id: {}'.format(id))
+    logger.debug('SA V2 Request id: {}'.format(id))
 
     url = urljoin(sav2_get_endpoint(context), id)
-    print('Get API url: {}'.format(url))
+    logger.debug('Get API url: {}'.format(url))
 
     for _ in range(timeout // sleep_amount):
         if with_user_key:
@@ -225,8 +228,7 @@ def sav2_wait_for_completion(context, token='without'):
         else:
             context.response = requests.get(url)
         status_code = context.response.status_code
-        # print('status_code: {} response: {}'.format(status_code, context.response.text))
-        print('status_code: {}'.format(status_code))
+        logger.debug('status_code: {}'.format(status_code))
         if status_code == 200:
             break
         # 401 code should be checked later
@@ -256,7 +258,7 @@ def sav2_check_get_request_id(context):
     id_name = 'external_request_id'
     check_attribute_presence(json_data, id_name)
     request_id = json_data[id_name]
-    print('Post id: {} Get id: {}'.format(previous_id, request_id))
+    logger.debug('Post id: {} Get id: {}'.format(previous_id, request_id))
     assert request_id is not None
     assert previous_id == request_id
 
