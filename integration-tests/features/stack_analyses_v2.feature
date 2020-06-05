@@ -178,7 +178,7 @@ Feature: Stack analysis v2 API
      | ecosystem | manifest             | field         | field_path                    | version | version_path                    |
      | pypi      | pytest_2_0_0.json    | pytest        | analyzed_dependencies/0/name  | 2.0.0   | analyzed_dependencies/0/version |
      | pypi      | requests_2_20_0.json | requests      | analyzed_dependencies/0/name  | 2.20.0  | analyzed_dependencies/0/version |
-     | npm       | npm_sfj_2_0_2.json   | svg.filter.js | analyzed_dependencies/0/name  | 2.0.2   | analyzed_dependencies/0/version |
+     | npm       | npm_svg_2_0_2.json   | svg.filter.js | analyzed_dependencies/0/name  | 2.0.2   | analyzed_dependencies/0/version |
 
   @sav2
   Scenario: Check the outlier record
