@@ -73,7 +73,7 @@ Feature: Stack analysis v2 API
   @sav2
   Scenario: Check that the API entry point without user key
     Given System is running
-    When I send pypi package request with manifest valid_manifests/pylist.json to stack analysis v2 without valid user key
+    When I send pypi package request with manifest valid_pylist.json to stack analysis v2 without valid user key
     Then I should get 403 status code
 
   @sav2
@@ -82,7 +82,7 @@ Feature: Stack analysis v2 API
     Given Three scale preview service is running
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I send pypi package request with manifest valid_manifests/pylist.json to stack analysis v2 with invalid user key
+    When I send pypi package request with manifest valid_pylist.json to stack analysis v2 with invalid user key
     Then I should get 403 status code
 
   @sav2
@@ -91,7 +91,7 @@ Feature: Stack analysis v2 API
     Given Three scale preview service is running
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I send pypi package request with manifest valid_manifests/pylist.json to stack analysis v2 with valid user key
+    When I send pypi package request with manifest valid_pylist.json to stack analysis v2 with valid user key
     Then I should get 200 status code
 
   @sav2
@@ -110,10 +110,10 @@ Feature: Stack analysis v2 API
      And I should receive JSON response with the correct timestamp in attribute submitted_at
 
     Examples: Stack analyses POST params
-     | ecosystem | manifest                         |
-     | pypi      | valid_manifests/pylist.json      |
-     | npm       | valid_manifests/npmlist.json     |
-     | maven     | valid_manifests/dependencies.txt |
+     | ecosystem | manifest               |
+     | pypi      | valid_pylist.json      |
+     | npm       | valid_npmlist.json     |
+     | maven     | valid_dependencies.txt |
 
   @sav2
   Scenario Outline: Check the stack analysis v2 response for missing data when called with proper user key
@@ -125,10 +125,10 @@ Feature: Stack analysis v2 API
     Then I should get 400 status code
 
     Examples: Stack analyses POST params
-     | ecosystem | manifest                     |
-     | None      | valid_manifests/pylist.json  |
-     | npm       | None                         |
-     | None      | None                         |
+     | ecosystem | manifest           |
+     | None      | valid_pylist.json  |
+     | npm       | None               |
+     | None      | None               |
 
   @sav2
   Scenario Outline: Check the stack analysis v2 response for invalid manifest data when called with proper user key
@@ -140,9 +140,9 @@ Feature: Stack analysis v2 API
     Then I should get 400 status code
 
     Examples: Stack analyses POST params
-     | ecosystem | manifest                         |
-     | pypi      | valid_manifests/npmlist.json     |
-     | npm       | valid_manifests/dependencies.txt |
+     | ecosystem | manifest               |
+     | pypi      | valid_npmlist.json     |
+     | npm       | valid_dependencies.txt |
 
   @sav2
   Scenario Outline: Check the stack analysis v2 request and response when called with proper user key
@@ -157,10 +157,10 @@ Feature: Stack analysis v2 API
      And I should get stack analyses v2 response with all attributes
 
     Examples: Stack analyses POST params
-     | ecosystem | manifest                         |
-     | pypi      | valid_manifests/pylist.json      |
-     | npm       | valid_manifests/npmlist.json     |
-     | maven     | valid_manifests/dependencies.txt |
+     | ecosystem | manifest               |
+     | pypi      | valid_pylist.json      |
+     | npm       | valid_npmlist.json     |
+     | maven     | valid_dependencies.txt |
 
   @sav2
   Scenario Outline: Check the stack analysis v2 with known package data

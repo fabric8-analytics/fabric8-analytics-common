@@ -7,3 +7,5 @@
 - Scenario: Check one npm package for private vulnerabilities
 - Scenario: Check one pypi package for private vulnerabilities
 - Scenario: Check one maven package for private vulnerabilities
+- Scenario: Check that component analysis v2 returns limits exceeded 
+- Scenario Outline: Check if no recommended version comes when package has private vulnerabilities
