@@ -183,7 +183,7 @@ Feature: Component analysis v2 API
       When I start v2 component analyses npm/sequence/2.2.0 120 times in a minute with user_key
       Then I should get 429 status code
         And I should get Usage limit exceeded text response
-       When I wait 30 seconds
+       When I wait 60 seconds
       
    
    Scenario Outline: Check if no recommended version comes when package has private vulnerabilities
