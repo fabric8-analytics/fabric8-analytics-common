@@ -166,7 +166,7 @@ def sav2_access_url_method(context, url, action, token='without'):
 @when('I send {ecosystem} package request with manifest {manifest} '
       'to stack analysis v2 {token} {valid} user key')
 def sav2_send_request(context, ecosystem=None, manifest=None, token='without', valid='valid'):
-    """Send the ecosystem package manifest file to the stack analysis."""
+    """Send the ecosystem package manifest file to the stack analysis v2."""
     # Ecosystem is mandatory
     assert ecosystem is not None
 
