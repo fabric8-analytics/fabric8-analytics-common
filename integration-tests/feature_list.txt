@@ -6,7 +6,7 @@ features/server_api.feature
 #features/ecosystems.feature
 # Not used in real production: features/component_search.feature
 features/stack_analyses_v2.feature
-features/stack_analyses_v2_response_check.feature
+features/stack_analyses_v2_smoke.feature
 features/component_analysis_v2.feature
 features/component_analysis_v2_smoke_tests.feature
 features/components.feature

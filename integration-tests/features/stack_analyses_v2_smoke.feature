@@ -1,7 +1,7 @@
 Feature: Smoketests for stack analysis V2 API tests
 
-
-  Scenario Outline: Check the stack analysis response for selected input
+  @sav2
+  Scenario Outline: Check the stack analysis smoke test for <ecosystem> package with <file>
     Given System is running
     Given Three scale preview service is running
     When I acquire the use_key for 3scale

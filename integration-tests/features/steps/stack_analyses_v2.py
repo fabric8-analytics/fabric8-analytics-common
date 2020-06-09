@@ -37,15 +37,16 @@ ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
 }
 
 
-def sav2_get_endpoint(context):
+def get_endpoint(context):
     """Get endpoint for the stack analysis v2."""
     return urljoin(context.threescale_preview_url, '/api/v2/stack-analyses/')
 
 
-def sav2_post_request(context, ecosystem, manifest, with_user_key, is_valid):
+def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key):
     """Send stack analyses v2 post request based on params."""
     logger.debug('ecosystem: {} manifest: {} with_user_key: {} '
-                 'is_valid: {}'.format(ecosystem, manifest, with_user_key, is_valid))
+                 'with_valid_user_key: {}'.format(ecosystem, manifest, with_user_key,
+                                                  with_valid_user_key))
     context.manifest = manifest
 
     # set default values
@@ -64,124 +65,22 @@ def sav2_post_request(context, ecosystem, manifest, with_user_key, is_valid):
         data['file_path'] = os.path.abspath(os.path.dirname(filename))
 
     if with_user_key:
-        if is_valid:
+        if with_valid_user_key:
             params = {'user_key': context.three_scale_preview_user_key}
         else:
             params = {'user_key': 'INVALID_USER_KEY_FOR_TESTING'}
-        logger.debug('POST {} files: {} data: {} params: {}'.format(sav2_get_endpoint(context),
+        logger.debug('POST {} files: {} data: {} params: {}'.format(get_endpoint(context),
                                                                     files, data, params))
-        response = requests.post(sav2_get_endpoint(context), files=files, data=data, params=params)
+        response = requests.post(get_endpoint(context), files=files, data=data, params=params)
     else:
-        response = requests.post(sav2_get_endpoint(context), files=files, data=data)
+        response = requests.post(get_endpoint(context), files=files, data=data)
 
     logger.debug('status_code: {} response: {}'.format(response.status_code, response.text))
     context.response = response
 
 
-def sav2_get_analyzed_components(context):
-    """Return all analyzed components from the deserialized JSON file."""
-    json_data = get_json_data(context)
-
-    components = get_value_using_path(json_data, 'analyzed_dependencies')
-    assert components is not None
-
-    return components
-
-
-def sav2_check_equal_expectation_for_array(context, path, expected):
-    """Check equality check for array object count."""
-    json_data = get_json_data(context)
-    actual_count = len(get_value_using_path(json_data, path))
-    assert actual_count == expected, \
-        "Found {} object(s) at {}, but {} is expected".format(
-            actual_count, path, expected)
-
-
-def sav2_check_equal_expectation_for_int(context, path, expected):
-    """Check equality check for array object count."""
-    json_data = get_json_data(context)
-    actual_count = get_value_using_path(json_data, path)
-    assert actual_count == expected, \
-        "Found {} object(s) at {}, but {} is expected".format(
-            actual_count, path, expected)
-
-
-def sav2_check_vulenrability_attributes(vul):
-    """Verify all attributes are present for given vulenerability."""
-    check_attribute_presence(vul, 'id')
-    check_attribute_presence(vul, 'url')
-    check_attribute_presence(vul, 'cvss')
-    check_attribute_presence(vul, 'cwes')
-    check_attribute_presence(vul, 'title')
-    check_attribute_presence(vul, 'cve_ids')
-    check_attribute_presence(vul, 'cvss_v3')
-    check_attribute_presence(vul, 'severity')
-
-
-def sav2_check_dependency_attributes(ad):
-    """Verify all attributes are present for given dependencies."""
-    check_attribute_presence(ad, 'url')
-    check_attribute_presence(ad, 'name')
-    check_attribute_presence(ad, 'github')
-    check_attribute_presence(ad, 'version')
-    check_attribute_presence(ad, 'licenses')
-    check_attribute_presence(ad, 'ecosystem')
-    check_attribute_presence(ad, 'dependencies')
-    check_attribute_presence(ad, 'latest_version')
-    check_attribute_presence(ad, 'recommended_version')
-    check_attribute_presence(ad, 'public_vulnerabilities')
-    for v in ad['public_vulnerabilities']:
-        sav2_check_vulenrability_attributes(v)
-
-    check_attribute_presence(ad, 'private_vulnerabilities')
-    for v in ad['private_vulnerabilities']:
-        sav2_check_vulenrability_attributes(v)
-
-    check_attribute_presence(ad, 'vulnerable_dependencies')
-    # Loop through transitive dependencies only if they are present.
-    if ad['vulnerable_dependencies']:
-        for d in ad['vulnerable_dependencies']:
-            sav2_check_dependency_attributes(d)
-
-
-@when('I access the {url} endpoint using the HTTP {action} method {token} user key')
-def sav2_access_url_method(context, url, action, token='without'):
-    """Access the service API using the HTTP method and with/without user key."""
-    # Convert token text into a valid bool
-    with_user_key = parse_token_clause(token)
-    params = {}
-    if with_user_key:
-        params = {'user_key': context.three_scale_preview_user_key}
-
-    if action == 'GET':
-        context.response = requests.get(sav2_get_endpoint(context) + url, params=params)
-    elif action == 'PUT':
-        context.response = requests.put(sav2_get_endpoint(context) + url, params=params)
-    elif action == 'HEAD':
-        context.response = requests.head(sav2_get_endpoint(context) + url, params=params)
-    elif action == 'DELETE':
-        context.response = requests.delete(sav2_get_endpoint(context) + url, params=params)
-
-
-@when('I send {ecosystem} package request with manifest {manifest} '
-      'to stack analysis v2 {token} {valid} user key')
-def sav2_send_request(context, ecosystem=None, manifest=None, token='without', valid='valid'):
-    """Send the ecosystem package manifest file to the stack analysis v2."""
-    # Ecosystem is mandatory
-    assert ecosystem is not None
-
-    # Convert token text into a valid bool
-    with_user_key = parse_token_clause(token)
-
-    # Convert valid clause to bool
-    is_valid = parse_valid_clause(valid)
-
-    # Send SA request
-    sav2_post_request(context, ecosystem, manifest, with_user_key, is_valid)
-
-
 @when('I wait for stack analysis v2 to finish {token} user key')
-def sav2_wait_for_completion(context, token='without'):
+def wait_for_completion(context, token='without'):
     """Try to wait for the stack analysis to be finished.
 
     This step assumes that stack analysis has been started previously and
@@ -204,7 +103,7 @@ def sav2_wait_for_completion(context, token='without'):
     context.stack_analysis_id = id
     logger.debug('SA V2 Request id: {}'.format(id))
 
-    url = urljoin(sav2_get_endpoint(context), id)
+    url = urljoin(get_endpoint(context), id)
     logger.debug('Get API url: {}'.format(url))
 
     for _ in range(timeout // sleep_amount):
@@ -216,6 +115,12 @@ def sav2_wait_for_completion(context, token='without'):
         status_code = context.response.status_code
         logger.debug('status_code: {}'.format(status_code))
         if status_code == 200:
+            break
+        # 429 (Rate Limit) code should be checked later
+        elif status_code == 429:
+            break
+        # 403 code should be checked later
+        elif status_code == 403:
             break
         # 401 code should be checked later
         elif status_code == 401:
@@ -232,9 +137,142 @@ def sav2_wait_for_completion(context, token='without'):
     context.duration = end_time - start_time
 
 
+def check_rate_limit(context, ecosystem, manifest, rate, with_user_key, with_valid_user_key):
+    """Call API endpoint to v2 analysis for component."""
+    context.duration = None
+    start_time = time.time()
+    for _ in range(rate):
+        post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key)
+        # break the loop if rate limit exceeded
+        if context.response.status_code == 429:
+            break
+    end_time = time.time()
+    # compute the duration
+    # Note that duration==None in case of any errors (which is to be expected)
+    context.duration = end_time - start_time
+
+
+def get_analyzed_components(context):
+    """Return all analyzed components from the deserialized JSON file."""
+    json_data = get_json_data(context)
+
+    components = get_value_using_path(json_data, 'analyzed_dependencies')
+    assert components is not None
+
+    return components
+
+
+def check_equal_expectation_for_array(context, path, expected):
+    """Check equality check for array object count."""
+    json_data = get_json_data(context)
+    actual_count = len(get_value_using_path(json_data, path))
+    assert actual_count == expected, \
+        "Found {} object(s) at {}, but {} is expected".format(
+            actual_count, path, expected)
+
+
+def check_equal_expectation_for_int(context, path, expected):
+    """Check equality check for array object count."""
+    json_data = get_json_data(context)
+    actual_count = get_value_using_path(json_data, path)
+    assert actual_count == expected, \
+        "Found {} object(s) at {}, but {} is expected".format(
+            actual_count, path, expected)
+
+
+def check_vulenrability_attributes(vul):
+    """Verify all attributes are present for given vulenerability."""
+    check_attribute_presence(vul, 'id')
+    check_attribute_presence(vul, 'url')
+    check_attribute_presence(vul, 'cvss')
+    check_attribute_presence(vul, 'cwes')
+    check_attribute_presence(vul, 'title')
+    check_attribute_presence(vul, 'cve_ids')
+    check_attribute_presence(vul, 'cvss_v3')
+    check_attribute_presence(vul, 'severity')
+
+
+def check_dependency_attributes(ad):
+    """Verify all attributes are present for given dependencies."""
+    check_attribute_presence(ad, 'url')
+    check_attribute_presence(ad, 'name')
+    check_attribute_presence(ad, 'github')
+    check_attribute_presence(ad, 'version')
+    check_attribute_presence(ad, 'licenses')
+    check_attribute_presence(ad, 'ecosystem')
+    check_attribute_presence(ad, 'dependencies')
+    check_attribute_presence(ad, 'latest_version')
+    check_attribute_presence(ad, 'recommended_version')
+    check_attribute_presence(ad, 'public_vulnerabilities')
+    for v in ad['public_vulnerabilities']:
+        check_vulenrability_attributes(v)
+
+    check_attribute_presence(ad, 'private_vulnerabilities')
+    for v in ad['private_vulnerabilities']:
+        check_vulenrability_attributes(v)
+
+    check_attribute_presence(ad, 'vulnerable_dependencies')
+    # Loop through transitive dependencies only if they are present.
+    if ad['vulnerable_dependencies']:
+        for d in ad['vulnerable_dependencies']:
+            check_dependency_attributes(d)
+
+
+def verify_vulnerability_count(context, component, vulnerability, expected):
+    """Check vulnerabiltiy count for given type of vulnerability."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'analyzed_dependencies')
+
+    is_component_present = False
+    for dep in json_data['analyzed_dependencies']:
+        if dep['name'] == component:
+            is_component_present = True
+            actual = len(dep[vulnerability])
+            assert actual == expected, \
+                'Component {} have {} {} but expected {}'.format(component, actual,
+                                                                 vulnerability, expected)
+    assert is_component_present, 'Component not present'
+
+
+@when('I access the {url} endpoint using the HTTP {action} method {token} user key')
+def access_url_method(context, url, action, token='without'):
+    """Access the service API using the HTTP method and with/without user key."""
+    # Convert token text into a valid bool
+    with_user_key = parse_token_clause(token)
+    params = {}
+    if with_user_key:
+        params = {'user_key': context.three_scale_preview_user_key}
+
+    if action == 'GET':
+        context.response = requests.get(get_endpoint(context) + url, params=params)
+    elif action == 'PUT':
+        context.response = requests.put(get_endpoint(context) + url, params=params)
+    elif action == 'HEAD':
+        context.response = requests.head(get_endpoint(context) + url, params=params)
+    elif action == 'DELETE':
+        context.response = requests.delete(get_endpoint(context) + url, params=params)
+
+
+@when('I send {ecosystem} package request with manifest {manifest} '
+      'to stack analysis v2 {token} {valid} user key')
+def send_request(context, ecosystem=None, manifest=None, token='without', valid='valid'):
+    """Send the ecosystem package manifest file to the stack analysis v2."""
+    # Ecosystem is mandatory
+    assert ecosystem is not None
+
+    # Convert token text into a valid bool
+    with_user_key = parse_token_clause(token)
+
+    # Convert valid clause to bool
+    with_valid_user_key = parse_valid_clause(valid)
+
+    # Send SA request
+    post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key)
+
+
 @then('I should find the external request id equals to id returned by '
       'stack analysis v2 post request')
-def sav2_check_get_request_id(context):
+def check_get_request_id(context):
     """Check the ID of stack analysis."""
     previous_id = context.stack_analysis_id
     assert previous_id is not None
@@ -250,7 +288,7 @@ def sav2_check_get_request_id(context):
 
 
 @then('I should get stack analyses v2 response with all attributes')
-def sav2_check_response_attributes(context):
+def check_response_attributes(context):
     """Check mandatory attributes presence for stack analyses v2 response."""
     json_data = get_json_data(context)
 
@@ -279,7 +317,7 @@ def sav2_check_response_attributes(context):
 
 
 @then('I should find the proper outlier record for the {component} component for stack analyses v2')
-def sav2_check_outliers(context, component):
+def check_outliers(context, component):
     """Check the outlier record in the stack analysis."""
     json_data = get_json_data(context)
 
@@ -289,50 +327,50 @@ def sav2_check_outliers(context, component):
 
 
 @then('I should find {expected:n} analyzed dependencies for stack analyses v2')
-def sav2_check_analyzed_dependencies_count(context, expected=1):
+def check_analyzed_dependencies_count(context, expected=1):
     """Check number of analyzed dependencies."""
-    sav2_check_equal_expectation_for_array(context, 'analyzed_dependencies', expected)
+    check_equal_expectation_for_array(context, 'analyzed_dependencies', expected)
 
 
 @then('I should find {expected:n} unknown dependencies for stack analyses v2')
-def sav2_check_unknown_dependencies_count(context, expected):
+def check_unknown_dependencies_count(context, expected):
     """Check number of unknown dependencies."""
-    sav2_check_equal_expectation_for_array(context, 'unknown_dependencies', expected)
+    check_equal_expectation_for_array(context, 'unknown_dependencies', expected)
 
 
 @then('I should find {expected:n} total licenses for stack analyses v2')
-def sav2_check_licenses_count(context, expected):
+def check_licenses_count(context, expected):
     """Check number of total licenses."""
-    sav2_check_equal_expectation_for_int(context, 'license_analysis/total_licenses', expected)
+    check_equal_expectation_for_int(context, 'license_analysis/total_licenses', expected)
 
 
 @then('I should find {expected:n} unknown licenses for stack analyses v2')
-def sav2_check_unknown_licenses_count(context, expected):
+def check_unknown_licenses_count(context, expected):
     """Check number of unknown licenses."""
-    sav2_check_equal_expectation_for_array(context, 'license_analysis/unknown_licenses/unknown',
-                                           expected)
+    check_equal_expectation_for_array(context, 'license_analysis/unknown_licenses/unknown',
+                                      expected)
 
 
 @then('I should find {expected:n} distinct licenses for stack analyses v2')
-def sav2_check_distinct_license_count(context, expected):
+def check_distinct_license_count(context, expected):
     """Check number of distinct licenses."""
-    sav2_check_equal_expectation_for_array(context, 'license_analysis/distinct_licenses', expected)
+    check_equal_expectation_for_array(context, 'license_analysis/distinct_licenses', expected)
 
 
 @then('I should find {expected:n} usage outliers for stack analyses v2')
-def sav2_check_usage_outliers_count(context, expected):
+def check_usage_outliers_count(context, expected):
     """Check number of usage outliers."""
-    sav2_check_equal_expectation_for_array(context, 'recommendation/usage_outliers', expected)
+    check_equal_expectation_for_array(context, 'recommendation/usage_outliers', expected)
 
 
 @then('I should find {expected:n} companions for stack analyses v2')
-def sav2_check_companions_count(context, expected):
+def check_companions_count(context, expected):
     """Check number of companions."""
-    sav2_check_equal_expectation_for_array(context, 'recommendation/companion', expected)
+    check_equal_expectation_for_array(context, 'recommendation/companion', expected)
 
 
 @then('I should find registration link for stack analyses v2')
-def sav2_check_for_registration_link(context):
+def check_for_registration_link(context):
     """Check for presence of registration link."""
     json_data = get_json_data(context)
 
@@ -341,8 +379,40 @@ def sav2_check_for_registration_link(context):
 
 
 @then('I should find all attribute about analyzed dependencies for stack analyses v2')
-def sav2_check_analysed_dependencies_attributes(context):
+def check_analysed_dependencies_attributes(context):
     """Check all attributes presence for analysed dependencies."""
     json_data = get_json_data(context)
     for ad in json_data['analyzed_dependencies']:
-        sav2_check_dependency_attributes(ad)
+        check_dependency_attributes(ad)
+
+
+@when('I start stack analyses v2 for {ecosystem} package with {manifest} manifest for {rate:d} '
+      'times in a minute {user_key} {valid} user key')
+def start_rate_limit_requests(context, ecosystem, manifest, rate, user_key='with', valid='valid'):
+    """Multiple SA request within given time window to generate 429 (rate limit)."""
+    # Convert token text into a valid bool
+    with_user_key = parse_token_clause(user_key)
+
+    # Convert valid clause to bool
+    with_valid_user_key = parse_valid_clause(valid)
+
+    # Perform loop to send requested number of request and compute duration.
+    check_rate_limit(context, ecosystem, manifest, rate, with_user_key, with_valid_user_key)
+
+
+@then('I should get {expected:d} public vulnerabilities for {component}')
+def verify_public_vulnerabilty_count(context, expected, component):
+    """Verify number of public vulnerabilites."""
+    verify_vulnerability_count(context, component, 'public_vulnerabilities', expected)
+
+
+@then('I should get {expected:d} private vulnerabilities for {component}')
+def verify_private_vulnerabilty_count(context, expected, component):
+    """Verify number of private vulnerabilites."""
+    verify_vulnerability_count(context, component, 'private_vulnerabilities', expected)
+
+
+@then('I should get {expected:d} transitive vulnerabilities for {component}')
+def verify_transitive_vulnerabilty_count(context, expected, component):
+    """Verify number of transitive vulnerabilites."""
+    verify_vulnerability_count(context, component, 'vulnerable_dependencies', expected)
