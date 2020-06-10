@@ -338,12 +338,6 @@ def check_unknown_dependencies_count(context, expected):
     check_equal_expectation_for_array(context, 'unknown_dependencies', expected)
 
 
-@then('I should find {expected:n} total licenses for stack analyses v2')
-def check_licenses_count(context, expected):
-    """Check number of total licenses."""
-    check_equal_expectation_for_int(context, 'license_analysis/total_licenses', expected)
-
-
 @then('I should find {expected:n} unknown licenses for stack analyses v2')
 def check_unknown_licenses_count(context, expected):
     """Check number of unknown licenses."""
@@ -361,12 +355,6 @@ def check_distinct_license_count(context, expected):
 def check_usage_outliers_count(context, expected):
     """Check number of usage outliers."""
     check_equal_expectation_for_array(context, 'recommendation/usage_outliers', expected)
-
-
-@then('I should find {expected:n} companions for stack analyses v2')
-def check_companions_count(context, expected):
-    """Check number of companions."""
-    check_equal_expectation_for_array(context, 'recommendation/companion', expected)
 
 
 @then('I should find registration link for stack analyses v2')

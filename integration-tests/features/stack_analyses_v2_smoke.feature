@@ -29,26 +29,25 @@ Feature: Smoketests for stack analysis V2 API tests
 
     # SLA/SLO-related checks
     When I look at the stack analysis duration
-    Then I should see that the duration is less than 180 seconds
+    Then I should see that the duration is less than 120 seconds
 
-    # Analyzed dependencies checks
+    # Analyzed direct dependencies checks
     When I look at recent stack analysis
     Then I should find <analyzed_deps_count> analyzed dependencies for stack analyses v2
 
-    # Unknown dependencies checks
-    When I look at recent stack analysis
-    Then I should find <unknown_deps_count> unknown dependencies for stack analyses v2
+    # Unknown dependencies checks -- This are disabled till support for a flag in platform to ignore dummy
+    # unknown dependency ingestion.
+    #When I look at recent stack analysis
+    #Then I should find <unknown_deps_count> unknown dependencies for stack analyses v2
 
     # Check license count
     When I look at recent stack analysis
-    Then I should find <license_count> total licenses for stack analyses v2
-     And I should find <unknown_license_count> unknown licenses for stack analyses v2
+    Then I should find <unknown_license_count> unknown licenses for stack analyses v2
      And I should find <distinct_license_count> distinct licenses for stack analyses v2
 
     # Verify recommendation data
     When I look at recent stack analysis
     Then I should find <usage_outlier_count> usage outliers for stack analyses v2
-     And I should find <companion_count> companions for stack analyses v2
 
     # Verify Free user having registration link.
     When I look at recent stack analysis

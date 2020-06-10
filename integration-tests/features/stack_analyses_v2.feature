@@ -1,6 +1,6 @@
 Feature: Stack analysis v2 API
 
- @sav2
+  @sav2
   Scenario Outline: Check that the stack analysis REST API endpoint for <method> HTTP method without user key
     Given System is running
     When I access the /api/v2/stack-analyses endpoint using the HTTP <method> method without user key
@@ -13,7 +13,7 @@ Feature: Stack analysis v2 API
      | PUT    |
      | DELETE |
 
- @sav2
+  @sav2
   Scenario Outline: Check that the stack analysis REST API endpoint for <method> HTTP method with user key
     Given System is running
     Given System is running
@@ -163,7 +163,7 @@ Feature: Stack analysis v2 API
     Then I should get stack analyses v2 response with all attributes
      And I should find the proper outlier record for the org.springframework:spring-websocket component for stack analyses v2
 
-@sav2
+  @sav2
   Scenario Outline: Check stack ananlyses v2 for vulnerabilities count for <ecosystem> with <manifest> manifest
     Given System is running
     Given Three scale preview service is running
