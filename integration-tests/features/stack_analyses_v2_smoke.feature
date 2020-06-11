@@ -28,14 +28,16 @@ Feature: Smoketests for stack analysis V2 API tests
      And I should get stack analyses v2 response with all attributes
 
     # SLA/SLO-related checks
-    When I look at the stack analysis duration
-    Then I should see that the duration is less than 120 seconds
+    # TODO :: Need to move this check to a seperate load test.
+    #When I look at the stack analysis duration
+    #Then I should see that the duration is less than 120 seconds
 
     # Analyzed direct dependencies checks
     When I look at recent stack analysis
     Then I should find <analyzed_deps_count> analyzed dependencies for stack analyses v2
 
-    # Unknown dependencies checks -- This are disabled till support for a flag in platform to ignore dummy
+    # Unknown dependencies checks
+    # TODO :: This are disabled till support for a flag in platform to ignore dummy
     # unknown dependency ingestion.
     #When I look at recent stack analysis
     #Then I should find <unknown_deps_count> unknown dependencies for stack analyses v2
@@ -81,5 +83,6 @@ Feature: Smoketests for stack analysis V2 API tests
      | npm       | npm_1_direct.json            | 1                   | 0                  | 1             | 0                     | 1                      | 0                   | 0               |
      | npm       | npm_10_direct.json           | 10                  | 0                  | 2             | 0                     | 2                      | 0                   | 0               |
      | npm       | npm_50_direct_799_tr.json    | 50                  | 0                  | 16            | 11                    | 16                     | 0                   | 2               |
-     | npm       | npm_100_direct_1039_tr.json  | 100                 | 0                  | 19            | 14                    | 19                     | 0                   | 3               |
-     | npm       | npm_150_direct_1170_tr.json  | 150                 | 0                  | 20            | 15                    | 20                     | 0                   | 1               |
+     # TODO :: Need to enable this as part of load test.
+     #| npm       | npm_100_direct_1039_tr.json  | 100                 | 0                  | 19            | 14                    | 19                     | 0                   | 3               |
+     #| npm       | npm_150_direct_1170_tr.json  | 150                 | 0                  | 20            | 15                    | 20                     | 0                   | 1               |
