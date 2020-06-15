@@ -26,3 +26,4 @@ semantic_version==2.6.0
 six==1.10.0               # via behave, docker-py, docker-pycreds, parse-type, python-dateutil, websocket-client
 voluptuous==0.11.1
 websocket-client==0.37.0  # via docker-py
+requests-futures==1.0.0
