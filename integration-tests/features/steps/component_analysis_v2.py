@@ -7,6 +7,10 @@ from behave import then, when
 from urllib.parse import urljoin
 
 from src.parsing import parse_token_clause
+from concurrent.futures import as_completed
+from requests_futures.sessions import FuturesSession
+from concurrent.futures import ProcessPoolExecutor
+from requests import Session
 
 
 def component_analysis_v2_url(context, ecosystem, component, version):
@@ -21,14 +25,28 @@ def perform_v2_component_analysis(context, ecosystem, package, version, use_user
     """Call API endpoint to v2 analysis for component."""
     context.duration = None
     start_time = time.time()
+
     url = component_analysis_v2_url(context, ecosystem, package, version)
+    parms = {'user_key': context.three_scale_preview_user_key}
+
     if use_user_key:
-        for _ in range(rate):
+        if rate > 1:
+            with FuturesSession(executor=ProcessPoolExecutor(max_workers=10),
+                                session=Session()) as session:
+                count = 0
+                futures = [session.get(
+                    url, params=parms) for _ in range(rate)]
+                for future in as_completed(futures):
+                    resp = future.result()
+                    count = count + 1
+                    context.response = resp
+                    if context.response.status_code == 429:
+                        break
+        else:
             context.response = requests.get(
-                url, params={'user_key': context.three_scale_preview_user_key})
-            # break the loop if rate limit exceeded
+                url, params=parms)
             if context.response.status_code == 429:
-                break
+                raise Exception("429 Limit excceded")
     else:
         context.response = requests.get(url)
     end_time = time.time()
