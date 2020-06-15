@@ -1,12 +1,14 @@
 Feature: Unknown licenses
 
-
+  
   Scenario Outline: Check the component analysis REST API endpoint for components without recommendations
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
+    Given Three scale preview service is running
+    
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
-     When I read <ecosystem>/<package>/<version> component analysis with authorization token
+     When I start component analyses <ecosystem>/<package>/<version> with user_key
      Then I should get 200 status code
       And I should receive a valid JSON response
       And I should receive JSON response containing the result key
@@ -20,7 +22,7 @@ Feature: Unknown licenses
      | npm | sequence | 3.0.0 |
      | npm | aargh | 1.1.0 |
      | npm | arrays | 0.1.1 |
-     | npm | jquery | 3.5.1 |
+     | npm | jquery | 3.5.0 |
      | npm | mocha | 6.1.4 |
      | npm | underscore | 1.9.1 |
      | npm | lodash | 4.17.15 |
@@ -96,33 +98,37 @@ Feature: Unknown licenses
      | pypi | pytest | 3.2.1 |
      | pypi | pytest | 3.2.2 |
 
-
+  
   Scenario: Check the component analysis REST API endpoint for unknown ecosystem
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
+    Given Three scale preview service is running
+    
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
-     When I start analysis for component really_unknown_ecosystem/foobar/1.0.0 with authorization token
+     When I start component analyses really_unknown_ecosystem/foobar/1.0.0 with user_key
      Then I should get 400 status code
       And I should receive a valid JSON response
 
-
+  
   Scenario: Check the component analysis REST API endpoint for unknown component in NPM ecosystem
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
+    Given Three scale preview service is running
+   
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
-     When I start analysis for component npm/really_unknown_component/1.0.0 with authorization token
+     When I start component analyses npm/really_unknown_component/1.0.0 with user_key
      Then I should get 202 status code
       And I should receive a valid JSON response
-
-
+  
   Scenario: Check the component analysis REST API endpoint for unknown component in PyPi ecosystem
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
-
-     When I start analysis for component pypi/really_unknown_component/1.0.0 with authorization token
+    Given Three scale preview service is running
+  
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+     When I start component analyses pypi/really_unknown_component/1.0.0 with user_key
      Then I should get 202 status code
       And I should receive a valid JSON response
 
@@ -141,10 +147,12 @@ Feature: Unknown licenses
   @data-sanity
   Scenario Outline: Check the component analysis REST API endpoint for components with recommendation and one CVE
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
+    Given Three scale preview service is running
+  
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
-     When I read <ecosystem>/<package>/<version> component analysis with authorization token
+     When I start component analyses <ecosystem>/<package>/<version> with user_key
      Then I should get 200 status code
       And I should receive a valid JSON response
       And I should receive JSON response containing the result key
@@ -155,12 +163,12 @@ Feature: Unknown licenses
 
      Examples: EPV
      | ecosystem  | package             | version   | recommended-version | cve              | score |
-     | npm        | nuxt                | 2.0.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
-     | npm        | nuxt                | 2.1.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
-     | npm        | nuxt                | 2.3.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
-     | npm        | nuxt                | 2.4.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
-     | npm        | nuxt                | 2.5.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
-     | npm        | nuxt                | 2.6.0     | 2.8.1              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.0.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.1.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.3.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.4.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.5.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
+     | npm        | nuxt                | 2.6.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
      | maven      | io.vertx:vertx-core | 3.5.3     | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
      | maven      | io.vertx:vertx-core | 3.5.3.CR1 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
      | maven      | io.vertx:vertx-core | 3.5.2     | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
@@ -170,14 +178,22 @@ Feature: Unknown licenses
      | pypi       | flask               | 0.12      | 1.1.2               | CVE-2018-1000656 | 5.0   |
      | pypi       | flask               | 0.12.1    | 1.1.2               | CVE-2018-1000656 | 5.0   |
      | pypi       | flask               | 0.12.2    | 1.1.2               | CVE-2018-1000656 | 5.0   |
-     | pypi       | numpy               | 1.16.0    | 1.18.4              | CVE-2019-6446    | 7.5   |
-     | pypi       | numpy               | 1.15.4    | 1.18.4              | CVE-2019-6446    | 7.5   |
-     | pypi       | numpy               | 1.15.3    | 1.18.4              | CVE-2019-6446    | 7.5   |
-     | pypi       | numpy               | 1.15.2    | 1.18.4              | CVE-2019-6446    | 7.5   |
-     | pypi       | numpy               | 1.15.1    | 1.18.4              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.16.0    | 1.18.5              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.15.4    | 1.18.5              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.15.3    | 1.18.5              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.15.2    | 1.18.5              | CVE-2019-6446    | 7.5   |
+     | pypi       | numpy               | 1.15.1    | 1.18.5              | CVE-2019-6446    | 7.5   |
      | pypi       | requests            | 2.19.1    | 2.23.0              | CVE-2018-18074   | 5.0   |
      | pypi       | requests            | 2.19.0    | 2.23.0              | CVE-2018-18074   | 5.0   |
      | pypi       | requests            | 2.18.4    | 2.23.0              | CVE-2018-18074   | 5.0   |
      | pypi       | requests            | 2.18.3    | 2.23.0              | CVE-2018-18074   | 5.0   |
      | pypi       | requests            | 2.18.2    | 2.23.0              | CVE-2018-18074   | 5.0   |
      | pypi       | requests            | 2.17.3    | 2.23.0              | CVE-2018-18074   | 5.0   |
+
+
+
+
+
+
+
+

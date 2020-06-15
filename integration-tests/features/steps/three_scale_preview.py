@@ -24,6 +24,8 @@ def threescale_preview_endpoint_url(context, endpoint, epv=[]):
 
 def perform_component_analysis(context, ecosystem, package, version, use_user_key, rate):
     """Call API endpoint to analysis for component."""
+    context.duration = None
+    start_time = time.time()
     url = threescale_preview_endpoint_url(
         context, 'component-analyses', [ecosystem, package, version])
     if use_user_key:
@@ -35,6 +37,8 @@ def perform_component_analysis(context, ecosystem, package, version, use_user_ke
                 break
     else:
         context.response = requests.get(url)
+    end_time = time.time()
+    context.duration = end_time - start_time
 
 
 def send_manifest_to_stack_analyses(context, manifest, name, endpoint, user_key, rate, origin,

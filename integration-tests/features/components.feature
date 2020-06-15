@@ -30,23 +30,29 @@ Feature: Components API V1
 
   Scenario: Check if component analysis is accessible via API
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
-     When I read npm/sequence/2.2.0 component analysis using authorization token
+    Given Three scale preview service is running
+    When I wait 1 seconds
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+     When I start component analyses npm/sequence/2.2.0 with user_key
      Then I should get 200 status code
 
   Scenario: Check if component analysis returns error code for unknown ecosystem
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
-     When I read foobar/sequence/2.2.0 component analysis using authorization token
+    Given Three scale preview service is running
+    When I wait 1 seconds
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+     When I start component analyses foobar/sequence/2.2.0 with user_key
      Then I should not get 200 status code
 
   Scenario: Check if component analysis returns error code for unknown ecosystem
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
-     When I read XYZZY/sequence/2.2.0 component analysis using authorization token
+    Given Three scale preview service is running
+    When I wait 1 seconds
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+     When I start component analyses XYZZY/sequence/2.2.0 with user_key
      Then I should not get 200 status code
 
   @production

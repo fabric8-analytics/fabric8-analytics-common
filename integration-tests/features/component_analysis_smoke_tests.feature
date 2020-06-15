@@ -3,10 +3,12 @@ Feature: Smoke tests for the component analysis REST API
 
   Scenario Outline: Check the component analysis REST API endpoint for selected components with and without recommendations
     Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I wait 1 seconds
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
 
-     When I read <ecosystem>/<package>/<version> component analysis with authorization token
+     When I start component analyses <ecosystem>/<package>/<version> with user_key
      Then I should get 200 status code
       And I should receive a valid JSON response
 
