@@ -1,330 +1,183 @@
 Feature: Stack analysis v2 API
 
-  Scenario: Check that the API entry point
+  @sav2
+  Scenario Outline: Check that the stack analysis REST API endpoint for <method> HTTP method without user key
     Given System is running
-    When I access /api/v1/stack-analyses-v2
+    When I access the /api/v2/stack-analyses endpoint using the HTTP <method> method without user key
+    Then I should not get 200 status code
+
+    Examples: HTTP methods
+     | method |
+     | GET    |
+     | HEAD   |
+     | PUT    |
+     | DELETE |
+
+  @sav2
+  Scenario Outline: Check that the stack analysis REST API endpoint for <method> HTTP method with user key
+    Given System is running
+    Given System is running
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I access the /api/v2/stack-analyses endpoint using the HTTP <method> method with user key
+    Then I should not get 200 status code
+
+    Examples: HTTP methods
+     | method |
+     | GET    |
+     | HEAD   |
+     | PUT    |
+     | DELETE |
+
+  @sav2
+  Scenario Outline: Check that the REST API enpoint <endpoint> for the stack analyses
+    Given System is running
+    When I access <endpoint>
     Then I should get 401 status code
 
-  @skip
-  Scenario: Check that the API entry point requires authorization token
-    Given System is running
-    When I wait 60 seconds
-    When I send Python package manifest requirements.txt to stack analysis version 2 without authorization token
-    Then I should get 401 status code
+    Examples: Endpoints and token
+    | endpoint                            |
+    | /api/v2/stack-analyses              |
+    | /api/v2/stack-analyses/external_id  |
 
-  @requires_authorization_token @skip
-  Scenario: Check that the API entry point requires authorization token
+  @sav2
+  Scenario: Check that the API entry point without user key
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I wait 20 seconds
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
+    When I send pypi package request with manifest valid_pylist.json to stack analysis v2 without valid user key
+    Then I should get 403 status code
 
-  @requires_authorization_token @skip
-  Scenario: Check the stack analysis v2 response when called with proper authorization token
+  @sav2
+  Scenario: Check that the API entry point with invalid user key
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    Then I should receive JSON response containing the status key
-    Then I should receive JSON response containing the id key
-    Then I should receive JSON response containing the submitted_at key
-    Then I should receive JSON response with the status key set to success
-    Then I should receive JSON response with the correct id
-    Then I should receive JSON response with the correct timestamp in attribute submitted_at
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send pypi package request with manifest valid_pylist.json to stack analysis v2 with invalid user key
+    Then I should get 403 status code
 
-  @requires_authorization_token @skip
-  Scenario: Check if the stack analysis requires authorization
+  @sav2
+  Scenario: Check that the API entry point with user key
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish without authorization token
-    Then I should get 401 status code
-
-  @requires_authorization_token
-  Scenario: Check if the stack analysis is finished
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send pypi package request with manifest valid_pylist.json to stack analysis v2 with valid user key
     Then I should get 200 status code
 
-  @requires_authorization_token @skip
-  Scenario: Check the stack analysis job IDs for the request and the analysis as well
+  @sav2
+  Scenario Outline: Check the stack analysis v2 for <ecosystem> package and <manifest> manifest with valid user key
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should receive JSON response with the correct id
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send <ecosystem> package request with manifest <manifest> to stack analysis v2 with valid user key
     Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should get a valid request ID
-    Then I should find the attribute request_id equals to id returned by stack analysis request
+     And I should receive JSON response containing the status key
+     And I should receive JSON response containing the id key
+     And I should receive JSON response containing the submitted_at key
+     And I should receive JSON response with the status key set to success
+     And I should receive JSON response with the correct id
+     And I should receive JSON response with the correct timestamp in attribute submitted_at
 
-  @requires_authorization_token @skip
-  Scenario: Check the stack analysis output
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should receive JSON response containing the started_at key
-    Then I should receive JSON response containing the finished_at key
-    Then I should receive JSON response containing the request_id key
-    Then I should find the value requirements.txt under the path result/0/manifest_name in the JSON response
-    Then I should find the value 0 under the path result/0/user_stack_info/total_licenses in the JSON response
-    Then I should find the value 0 under the path result/0/user_stack_info/unknown_dependencies_count in the JSON response
-    Then I should find the value pypi under the path result/0/user_stack_info/ecosystem in the JSON response
+    Examples: Stack analyses POST params
+     | ecosystem | manifest               |
+     | pypi      | valid_pylist.json      |
+     | npm       | valid_npmlist.json     |
+     | maven     | valid_dependencies.txt |
 
-  @requires_authorization_token @skip
-  Scenario: Check the stack analysis timestamp attributes
+  @sav2
+  Scenario Outline: Check the stack analysis v2 with invalid request parameters
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find analyzed dependency named click with version 6.7 in the stack analysis
-    Then I should receive JSON response with the correct timestamp in attribute started_at
-    Then I should receive JSON response with the correct timestamp in attribute finished_at
-    Then I should find proper timestamp under the path result/0/_audit/started_at
-    Then I should find proper timestamp under the path result/0/_audit/ended_at
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send <ecosystem> package request with manifest <manifest> to stack analysis v2 with valid user key
+    Then I should get 400 status code
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for newer version of click package
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_newest_6_7.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    Examples: Stack analyses POST params
+     | ecosystem | manifest           |
+     | None      | valid_pylist.json  |
+     | npm       | None               |
+     | None      | None               |
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for the exact version (arbitrary equality)
+  @sav2
+  Scenario Outline: Check the stack analysis v2 for invalid manifest data
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_arbitrary_equality.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send <ecosystem> package request with manifest <manifest> to stack analysis v2 with valid user key
+    Then I should get 400 status code
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for older version of click package
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_version_eq_5_0.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 5.0 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    Examples: Stack analyses POST params
+     | ecosystem | manifest               |
+     | pypi      | valid_npmlist.json     |
+     | npm       | valid_dependencies.txt |
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for older version of click package with click>=5.0 in requirements
+  @sav2
+  Scenario Outline: Check the stack analysis v2 request and response for proper data
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_version_ge_5_0.txt to stack analysis version 2 with authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send <ecosystem> package request with manifest <manifest> to stack analysis v2 with valid user key
     Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    When I wait for stack analysis v2 to finish with user key
+    Then I should find the external request id equals to id returned by stack analysis v2 post request
+     And I should get stack analyses v2 response with all attributes
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for older version of click package with click>5.0 in requirements
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_version_gt_5_0.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    Examples: Stack analyses POST params
+     | ecosystem | manifest               |
+     | pypi      | valid_pylist.json      |
+     | npm       | valid_npmlist.json     |
+     | maven     | valid_dependencies.txt |
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for older version of click package with click>=5.0, <=6.0 in requirements
+  @sav2
+  Scenario Outline: Check the stack analysis v2 with known package data
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_version_ge_5_0_le_6_0.txt to stack analysis version 2 with authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send <ecosystem> package request with manifest <manifest> to stack analysis v2 with valid user key
     Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.0 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    When I wait for stack analysis v2 to finish with user key
+    Then I should find the value <field> under the path <field_path> in the JSON response
+     And I should find the value <version> under the path <version_path> in the JSON response
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for older version of click package with click>=5.0, <6.0 in requirements
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_version_ge_5_0_lt_6_0.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 5.1 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    Examples: Stack analyses POST params
+     | ecosystem | manifest               | field               | field_path                    | version | version_path                    |
+     | pypi      | requests_2_20_0.json   | requests            | analyzed_dependencies/0/name  | 2.20.0  | analyzed_dependencies/0/version |
+     | npm       | npm_svg_2_0_2.json     | svg.filter.js       | analyzed_dependencies/0/name  | 2.0.2   | analyzed_dependencies/0/version |
+     | maven     | vertx_dependencies.txt | io.vertx:vertx-core | analyzed_dependencies/0/name  | 3.4.1   | analyzed_dependencies/0/version |
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for older version of click package with click>5.0, <6.0 in requirements
+  @sav2
+  Scenario: Check the outlier record for a known package
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_version_gt_5_0_lt_6_0.txt to stack analysis version 2 with authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send maven package request with manifest springboot_dependencies.txt to stack analysis v2 with valid user key
     Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 5.1 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    When I wait for stack analysis v2 to finish with user key
+    Then I should get stack analyses v2 response with all attributes
+     And I should find the proper outlier record for the org.springframework:spring-websocket component for stack analyses v2
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for older version of click package with click>5.0, <=6.0 in requirements
+  @sav2
+  Scenario Outline: Check stack ananlyses v2 for vulnerabilities count for <ecosystem> with <manifest> manifest
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_version_gt_5_0_le_6_0.txt to stack analysis version 2 with authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
+    When I send <ecosystem> package request with manifest <manifest> to stack analysis v2 with valid user key
     Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.0 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
+    When I wait for stack analysis v2 to finish with user key
+    Then I should get <public_count> public vulnerabilities for <component>
+     And I should get <private_count> private vulnerabilities for <component>
+     And I should get <transitive_count> transitive vulnerabilities for <component>
 
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies for click 6.7.*
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_6_7_star.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7.dev0 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
-
-  @requires_authorization_token @skip
-  Scenario: Check the integer normalization in requirements.txt for major and minor version numbers
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_normalize_integer_minor.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
-    When I send Python package manifest requirements_click_normalize_integer_major.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
-    When I send Python package manifest requirements_click_normalize_integer_major_minor.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find the value click under the path result/0/user_stack_info/analyzed_dependencies/0/package in the JSON response
-    Then I should find the value 6.7 under the path result/0/user_stack_info/analyzed_dependencies/0/version in the JSON response
-
-  @requires_authorization_token @skip
-  Scenario: Check the analyzed dependencies part
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Python package manifest requirements_click_newest_6_7.txt to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should find the following analyzed dependencies (click) in the stack analysis
-
-  @requires_authorization_token @skip
-  Scenario: Check the outlier records
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Maven package manifest springboot.xml to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should receive JSON response with the correct timestamp in attribute started_at
-    Then I should receive JSON response with the correct timestamp in attribute finished_at
-    Then I should find the proper outlier record for the org.springframework:spring-messaging component
-    Then I should find the proper outlier record for the org.springframework.boot:spring-boot-starter component
-    Then I should find the proper outlier record for the org.springframework.boot:spring-boot-starter-web component
-  
-  @skip
-  Scenario: Check that the API entry point requires authorization token
-    Given System is running
-    When I send Maven package manifest pom.xml to stack analysis version 2 without authorization token
-    Then I should get 401 status code
-
-  @requires_authorization_token @skip
-  Scenario: Check that the API entry point requires authorization token
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Maven package manifest pom.xml to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-
-  @requires_authorization_token @skip
-  Scenario: Check that the stack analysis response for the pom.xml that contains only one component
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Maven package manifest pom.xml to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find analyzed dependency named junit:junit with version 3.8.1 in the stack analysis
-    Then I should receive JSON response with the correct timestamp in attribute started_at
-    Then I should receive JSON response with the correct timestamp in attribute finished_at
-    Then I should find proper timestamp under the path result/0/_audit/started_at
-    Then I should find proper timestamp under the path result/0/_audit/ended_at
-
-  @requires_authorization_token @skip
-  Scenario: Check that the stack analysis response for the vertx.xml
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Maven package manifest vertx.xml to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find analyzed dependency named io.vertx:vertx-core with version 3.4.1 in the stack analysis
-    Then I should find analyzed dependency named io.vertx:vertx-web-templ-freemarker with version 3.4.1 in the stack analysis
-    Then I should find analyzed dependency named io.vertx:vertx-jdbc-client with version 3.4.1 in the stack analysis
-    Then I should find analyzed dependency named io.vertx:vertx-web with version 3.4.1 in the stack analysis
-    Then I should find analyzed dependency named io.vertx:vertx-web-templ-handlebars with version 3.4.1 in the stack analysis
-    Then I should find analyzed dependency named io.vertx:vertx-rx-java with version 3.4.1 in the stack analysis
-    Then I should find analyzed dependency named io.vertx:vertx-web-client with version 3.4.1 in the stack analysis
-
-  @requires_authorization_token @skip
-  Scenario: Check that the stack analysis response for the springboot.xml
-    Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
-    When I send Maven package manifest springboot.xml to stack analysis version 2 with authorization token
-    Then I should get 200 status code
-    When I wait for stack analysis version 2 to finish with authorization token
-    Then I should get 200 status code
-    Then I should find analyzed dependency named org.springframework:spring-messaging with version 4.3.7.RELEASE in the stack analysis
-    Then I should find analyzed dependency named org.springframework.boot:spring-boot-starter-web with version 1.5.2.RELEASE in the stack analysis
-    Then I should find analyzed dependency named org.springframework:spring-websocket with version 4.3.7.RELEASE in the stack analysis
-    Then I should find analyzed dependency named org.springframework.boot:spring-boot-starter with version 1.5.2.RELEASE in the stack analysis
+    Examples: Stack analyses params
+     | ecosystem | manifest                      | component             | public_count | private_count  | transitive_count |
+     | pypi      | fastlog_urllib_requests.json  | requests              | 1            | 0              | 0                |
+     | npm       | npm_50_direct_799_tr.json     | npm                   | 3            | 0              | 14               |
+     | maven     | vertx_dependencies.txt        | io.vertx:vertx-core   | 2            | 0              | 6                |

@@ -35,6 +35,15 @@ def parse_token_clause(token_clause):
     return use_token
 
 
+def parse_valid_clause(token_clause):
+    """Parse the clause that could be either 'valid' or 'invalid'."""
+    is_valid = {"valid": True,
+                "invalid": False}.get(token_clause)
+    if is_valid is None:
+        raise Exception("Wrong clause specified: {t}".format(t=token_clause))
+    return is_valid
+
+
 def parse_number(number):
     """Parse the number."""
     try:

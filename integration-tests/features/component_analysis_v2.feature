@@ -1,9 +1,9 @@
 Feature: Component analysis v2 API
-  
+
   Scenario Outline: Check the component analysis V2 REST API endpoint for components with recommendation
     Given System is running
     Given Three scale preview service is running
-      
+
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
       When I wait 1 seconds
@@ -15,9 +15,9 @@ Feature: Component analysis v2 API
       Then I should find one or more vulnerabilities in result with valid attributes
       And I should find CVE report <cve> with score <score> in the component v2 analysis
       Then I should see no registered user fields are exposed in result
-      
-     
-      
+
+
+
 
 
      Examples: EPV
@@ -31,24 +31,24 @@ Feature: Component analysis v2 API
      | maven      | io.vertx:vertx-core               | 3.5.3     | 4.0.0-milestone4    | SNYK-JAVA-IOVERTX-72443              | 6.5    |
      | maven      | org.webjars.bower:jquery          | 3.4.1     | 3.5.1               | SNYK-JAVA-ORGWEBJARSBOWER-567881     | 6.5    |
      | maven      | org.webjars:bootstrap-select      | 1.7.3     | 1.13.15             | SNYK-JAVA-ORGWEBJARS-479517          | 7.0    |
-     | maven      | org.apache.camel:camel-rabbitmq   | 2.22.0    | 3.3.0               | SNYK-JAVA-ORGAPACHECAMEL-569123      | 6.5    | 
-     | maven      | org.apache.tomcat:tomcat-catalina | 7.0.0     | 10.0.0-M6           | SNYK-JAVA-ORGAPACHETOMCAT-32110      | 6.5    | 
+     | maven      | org.apache.camel:camel-rabbitmq   | 2.22.0    | 3.3.0               | SNYK-JAVA-ORGAPACHECAMEL-569123      | 6.5    |
+     | maven      | org.apache.tomcat:tomcat-catalina | 7.0.0     | 10.0.0-M6           | SNYK-JAVA-ORGAPACHETOMCAT-32110      | 6.5    |
      | maven      | org.webjars.npm:openpgp           | 1.4.1     | 4.7.1               | SNYK-JAVA-ORGWEBJARSNPM-480073       | 7.0    |
      | pypi       | flask                             | 0.12      | 1.1.2               | SNYK-PYTHON-FLASK-42185              | 7.5    |
      | pypi       | fastapi                           | 0.36.0    | 0.55.1              | SNYK-PYTHON-FASTAPI-569038           | 5.3    |
      | pypi       | sceptre                           | 2.2.1     | 2.3.0               | SNYK-PYTHON-SCEPTRE-569070           | 6.5    |
      | pypi       | syft                              | 0.2.0a1   | 0.2.5               | SNYK-PYTHON-SYFT-568873              | 5.9    |
      | pypi       | numpy                             | 1.15.4    | 1.18.5              | SNYK-PYTHON-NUMPY-73513              | 9.8    |
-    
- 
-  
+
+
+
   Scenario Outline: Check the component analysis V2 REST API endpoint for components without recommendations
       Given System is running
       Given Three scale preview service is running
-     
+
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-      
+
       When I start v2 component analyses <ecosystem>/<package>/<version> with user_key
       Then I should get 200 status code
         And I should receive a valid JSON response
@@ -86,21 +86,21 @@ Feature: Component analysis v2 API
      | pypi | dash | 1.0.0a1 |
      | pypi | pudb | 2017.1.4 |
      | pypi | pytest | 3.2.2 |
- 
-     
+
+
      Scenario: Check the component analysis V2 REST API endpoint for unknown ecosystem
         Given System is running
           Given Three scale preview service is running
-         
+
           When I acquire the use_key for 3scale
           Then I should get the proper user_key
-         
+
 
           When I start v2 component analyses really_unknown_ecosystem/foobar/1.0.0 with user_key
           Then I should get 400 status code
           And I should receive a valid JSON response
 
-   
+
   Scenario: Check the component analysis REST V2 API endpoint for unknown component in NPM ecosystem
     Given System is running
       Given Three scale preview service is running
@@ -108,62 +108,62 @@ Feature: Component analysis v2 API
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
       When I wait 1 seconds
-    
+
      When I start v2 component analyses npm/really_unknown_component/1.0.0 with user_key
       Then I should get 202 status code
       And I should receive a valid JSON response
 
-  
+
   Scenario: Check the component analysis V2 REST API endpoint for unknown component in PyPi ecosystem
     Given System is running
      Given Three scale preview service is running
-     
+
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-      
+
 
      When I start v2 component analyses pypi/really_unknown_component/1.0.0 with user_key
      Then I should get 202 status code
       And I should receive a valid JSON response
-      
-  
+
+
   Scenario: Check one npm package for private vulnerabilities
     Given System is running
     Given Three scale preview service is running
-      
+
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-      
+
 
       When I start v2 component analyses npm/lodash/4.17.4 with user_key
       Then I should get 200 status code
         And I should receive a valid JSON response
       Then I should find one or more vulnerabilities in result with valid attributes
       Then I should find a private vulnerability in v2 component analysis
-  
+
   Scenario: Check one pypi package for private vulnerabilities
     Given System is running
     Given Three scale preview service is running
-      
+
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-     
+
 
       When I start v2 component analyses pypi/markdown2/2.2.0 with user_key
       Then I should get 200 status code
         And I should receive a valid JSON response
       Then I should find one or more vulnerabilities in result with valid attributes
       Then I should find a private vulnerability in v2 component analysis
-      
-  
+
+
   Scenario: Check one maven package for private vulnerabilities
     Given System is running
     Given Three scale preview service is running
-      
+
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-     
-      
+
+
       When I start v2 component analyses maven/org.webjars.npm:electron/0.4.1 with user_key
       Then I should get 200 status code
         And I should receive a valid JSON response
@@ -172,33 +172,33 @@ Feature: Component analysis v2 API
 
 
 
-   Scenario: Check that component analysis v2 returns limits exceeded 
+   Scenario: Check that component analysis v2 returns limits exceeded
     Given System is running
     Given Three scale preview service is running
-      
+
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-     
+
 
       When I start v2 component analyses npm/sequence/2.2.0 120 times in a minute with user_key
       Then I should get 429 status code
         And I should get Usage limit exceeded text response
        When I wait 60 seconds
-      
-   
+
+
    Scenario Outline: Check if no recommended version comes when package has private vulnerabilities
     Given System is running
     Given Three scale preview service is running
-      
+
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-     
+
       When I wait 1 seconds
       When I start v2 component analyses <ecosystem>/<package>/<version> with user_key
       Then I should get 200 status code
         And I should receive a valid JSON response
-      
-     
+
+
       Then I should find a private vulnerability in v2 component analysis
       Then I should not have any recommended version
 

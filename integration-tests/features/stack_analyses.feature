@@ -19,7 +19,7 @@ Feature: Analyse API functionality check
      | PUT    |
      | DELETE |
 
-  
+
   Scenario Outline: Check that the stack analysis REST API endpoint does not accept any HTTP method other than POST
     Given System is running
      When I acquire the authorization token
@@ -75,7 +75,7 @@ Feature: Analyse API functionality check
     When I wait 10 seconds
     When I send Maven package manifest pom-effective.xml to stack analysis without authorization token
     Then I should get 401 status code
- 
+
   @skip
   Scenario: Check that the stack-analyses returns a valid response for maven ecosystem
     Given System is running
@@ -120,7 +120,7 @@ Feature: Analyse API functionality check
      And I should find input_stack_topics field in recommendation
      And I should find matching topic lists for all user_stack_info/analyzed_dependencies components
 
-  
+
   Scenario: Check that the stack-analyses returns a valid response for pypi ecosystem
     Given System is running
     Given Three scale preview service is running
