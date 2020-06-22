@@ -26,8 +26,8 @@ Feature: Component analysis v2 API
      | npm        | marked                            | 0.3.5     | 1.1.0               | SNYK-JS-MARKED-10377                 | 7.5    |
      | npm        | st                                | 0.2.4     | 2.0.0               | SNYK-JS-ST-10820                     | 4.3    |
      | npm        | npmconf                           | 0.0.24    | 2.1.3               | SNYK-JS-NPMCONF-12143                | 7.4    |
-     | npm        | moment                            | 2.15.1    | 2.26.0              | SNYK-JS-MOMENT-10841                 | 3.7    |
-     | npm        | mongoose                          | 4.2.4     | 5.9.18              | SNYK-JS-MONGOOSE-10081               | 5.1    |
+     | npm        | moment                            | 2.15.1    | 2.27.0              | SNYK-JS-MOMENT-10841                 | 3.7    |
+     | npm        | mongoose                          | 4.2.4     | 5.9.19              | SNYK-JS-MONGOOSE-10081               | 5.1    |
      | maven      | io.vertx:vertx-core               | 3.5.3     | 4.0.0-milestone5    | SNYK-JAVA-IOVERTX-72443              | 6.5    |
      | maven      | org.webjars.bower:jquery          | 3.4.1     | 3.5.1               | SNYK-JAVA-ORGWEBJARSBOWER-567881     | 6.5    |
      | maven      | org.webjars:bootstrap-select      | 1.7.3     | 1.13.15             | SNYK-JAVA-ORGWEBJARS-479517          | 7.0    |
