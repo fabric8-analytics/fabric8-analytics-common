@@ -171,7 +171,7 @@ Feature: Component analysis v2 API
       Then I should find a private vulnerability in v2 component analysis
 
 
-
+   @skip
    Scenario: Check that component analysis v2 returns limits exceeded
     Given System is running
     Given Three scale preview service is running
