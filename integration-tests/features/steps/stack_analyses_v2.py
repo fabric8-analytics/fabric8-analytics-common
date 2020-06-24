@@ -39,7 +39,7 @@ ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
 
 def get_endpoint(context):
     """Get endpoint for the stack analysis v2."""
-    return urljoin(context.threescale_preview_url, '/api/v2/stack-analyses/')
+    return urljoin(context.threescale_preview_url, '/api/v2/stack-analyses')
 
 
 def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key):
@@ -51,7 +51,7 @@ def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_ke
 
     # set default values
     files = {}
-    data = {}
+    data = {'show_transitive': 'false'}
 
     # Add ecosystem if not None
     if ecosystem != 'None':
@@ -103,7 +103,7 @@ def wait_for_completion(context, token='without'):
     context.stack_analysis_id = id
     logger.debug('SA V2 Request id: {}'.format(id))
 
-    url = urljoin(get_endpoint(context), id)
+    url = urljoin(get_endpoint(context) + '/', id)
     logger.debug('Get API url: {}'.format(url))
 
     for _ in range(timeout // sleep_amount):
@@ -231,6 +231,139 @@ def verify_vulnerability_count(context, component, vulnerability, expected):
             assert actual == expected, \
                 'Component {} have {} {} but expected {}'.format(component, actual,
                                                                  vulnerability, expected)
+    assert is_component_present, 'Component not present'
+
+
+def verify_valid_data_companion(context, component, latest_version):
+    """Check valid data in companion packages."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'recommendation')
+
+    is_component_present = False
+    for dep in json_data['recommendation']['companion']:
+        if dep['name'] == component:
+            is_component_present = True
+            actual_version = dep['latest_version']
+            assert actual_version == latest_version, \
+                'Component {} have {} but expected {}'.format(component, actual_version,
+                                                              latest_version)
+    assert is_component_present, 'Component not present'
+
+
+def check_essentials(vuln):
+    """Check different feilds that are essential."""
+    assert "id" in vuln
+    assert "cvss" in vuln
+    assert "url" in vuln
+    assert "cwes" in vuln
+    assert "title" in vuln
+    assert "cve_ids" in vuln
+    assert "cvss_v3" in vuln
+    assert "severity" in vuln
+
+
+def verify_license_data(context, component, license_c):
+    """Licenses check."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'analyzed_dependencies')
+    is_component_present = False
+    for dep in json_data['analyzed_dependencies']:
+        if dep['name'] == component:
+            is_component_present = True
+            assert "licenses" in dep, 'Licenses not found'
+            licenses = dep["licenses"]
+            for lic in licenses:
+                if lic == license_c:
+                    assert lic == license_c
+    assert is_component_present, 'Component not present'
+
+
+def verify_severity_analyzed_deps(context, component, title, severity, vulenerability):
+    """Check valid vulenerability title and severity."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'analyzed_dependencies')
+    is_component_present = False
+    for dep in json_data['analyzed_dependencies']:
+        if dep['name'] == component:
+            is_component_present = True
+            if vulenerability == 'public_vulnerabilities':
+                for vuln in dep['public_vulnerabilities']:
+                    if vuln['title'] == title:
+                        assert vuln['severity'] == severity, "severity not matched"
+            elif vulenerability == 'private_vulnerabilities':
+                for vuln in dep['private_vulnerabilities']:
+                    if vuln['title'] == title:
+                        assert vuln['severity'] == severity, "severity not matched"
+    assert is_component_present, 'Component not present'
+
+
+def github_checks(context):
+    """Check all the analyzed deps for github object."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'analyzed_dependencies')
+    for dep in json_data['analyzed_dependencies']:
+        assert "github" in dep, "github data not found for dependency"
+        assert "size" in dep['github']
+        assert "issues" in dep['github']
+        assert "used_by" in dep['github']
+        assert "watchers" in dep['github']
+        assert "forks_count" in dep['github']
+        assert "pull_requests" in dep['github']
+        assert "total_releases" in dep['github']
+        assert "stargazers_count" in dep['github']
+        assert "contributors" in dep['github']
+        assert "open_issues_count" in dep['github']
+        assert "dependent_projects" in dep['github']
+        assert "first_release_date" in dep['github']
+        assert "latest_release_duration" in dep['github']
+
+
+def check_for_distinct_license(context, licenses):
+    """Verify lisense analysis data."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'license_analysis')
+    license_analysis = json_data['license_analysis']
+    license_found = False
+    for lic in license_analysis['distinct_licenses']:
+        if lic == licenses:
+            license_found = True
+    assert license_found, "The Given License was not found."
+
+
+def verify_valid_data_analyzed_deps(context, component, latest_version, version,
+                                    recommended_version, vulenerability, vid, cvss):
+    """Check valid data in companion packages."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'analyzed_dependencies')
+
+    is_component_present = False
+    for dep in json_data['analyzed_dependencies']:
+        if dep['name'] == component:
+            is_component_present = True
+            is_vuln_id_present = False
+            actual_version = dep['latest_version']
+            if vulenerability == 'public_vulnerabilities':
+                for vuln in dep['public_vulnerabilities']:
+                    if vuln['id'] == vid:
+                        check_essentials(vuln)
+                        assert str(vuln['cvss']) == cvss, 'CVSS score not matched'
+                        is_vuln_id_present = True
+            elif vulenerability == 'private_vulnerabilities':
+                for vuln in dep['private_vulnerabilities']:
+                    if vuln['id'] == vid:
+                        check_essentials(vuln)
+                        assert str(vuln['cvss']) == cvss, 'CVSS score not matched'
+                        is_vuln_id_present = True
+            assert is_vuln_id_present, 'Invalid vulnerability not found'
+            assert actual_version == latest_version, \
+                'Component {} have {} but expected latest {}'.format(component, actual_version,
+                                                                     latest_version)
+            assert dep['version'] == version, \
+                'Component {} have {} but expected version{}'.format(component, dep['version'],
+                                                                     version)
+            assert dep['recommended_version'] == recommended_version, \
+                'Component {} have {} but expected {}'.format(component, dep['recommended_version'],
+                                                              recommended_version)
     assert is_component_present, 'Component not present'
 
 
@@ -404,3 +537,56 @@ def verify_private_vulnerabilty_count(context, expected, component):
 def verify_transitive_vulnerabilty_count(context, expected, component):
     """Verify number of transitive vulnerabilites."""
     verify_vulnerability_count(context, component, 'vulnerable_dependencies', expected)
+
+
+@then('I should get latest version {version} for {component} in campanion packages')
+def verify_companion(context, version, component):
+    """Verify campanion packages."""
+    verify_valid_data_companion(context, component, version)
+
+
+@then('I should find {component} with {version} {latest_version} {expected} with '
+      '{vid} and {cvss} for {mode} vulnerbilities')
+def verify_valid_data(context, component, latest_version, version, expected, vid, cvss, mode):
+    """Verify data validation."""
+    if mode == "public":
+        verify_valid_data_analyzed_deps(context, component, latest_version, version, expected,
+                                        "public_vulnerabilities", vid, cvss)
+    else:
+        verify_valid_data_analyzed_deps(context, component, latest_version, version, expected,
+                                        "private_vulnerabilities", vid, cvss)
+
+
+@then('I should find License {licensee} for {component} in analyzed dependencies')
+def verify_comp_license(context, component, licensee):
+    """Verify License for components."""
+    verify_license_data(context, component, licensee)
+
+
+@then('I should find {title} and {severity} for {component} in {mode} vulnerbilities')
+def verify_title_severity(context, title, severity, component, mode):
+    """Verify severity and title."""
+    if mode == "public":
+        verify_severity_analyzed_deps(context, component, title, severity,
+                                      "public_vulnerabilities")
+    else:
+        verify_severity_analyzed_deps(context, component, title, severity,
+                                      "private_vulnerabilities")
+
+
+@then('I should be able to validate github data for all dependencies')
+def verify_github_data(context):
+    """Verify the github data."""
+    github_checks(context)
+
+
+@then('I should get {expected:d} transitive dependencies for {component}')
+def verify_transitive_dependencies_count(context, expected, component):
+    """Verify number of transitive vulnerabilites."""
+    verify_vulnerability_count(context, component, 'dependencies', expected)
+
+
+@then('I should find distinct license {licenses} for license analysis')
+def verify_distinct_license(context, licenses):
+    """Verify the checks for distinct licenses."""
+    check_for_distinct_license(context, licenses)

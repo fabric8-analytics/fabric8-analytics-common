@@ -34,4 +34,7 @@ digraph "com.redhat.bayessian.test:test-app-vertx:jar:1.0" {
 	"com.github.jknack:handlebars:jar:4.0.3:compile" -> "org.antlr:antlr4-runtime:jar:4.5.1-1:compile" ;
 	"com.github.jknack:handlebars:jar:4.0.3:compile" -> "org.mozilla:rhino:jar:1.7R4:compile" ;
 	"io.vertx:vertx-web:jar:3.4.1:compile" -> "io.vertx:vertx-auth-common:jar:3.4.1:compile" ;
- }
+ } digraph "com.redhat.bayessian.test:test-app-junit-dependency:jar:1.0" { 
+	"com.redhat.bayessian.test:test-app-junit-dependency:jar:1.0" -> "junit:junit:jar:3.8.1:compile" ; 
+    "com.redhat.bayessian.test:test-app-junit-dependency:jar:1.0" -> "org.apache.ignite:ignite-core:jar:2.7.6:compile" ;
+ } 

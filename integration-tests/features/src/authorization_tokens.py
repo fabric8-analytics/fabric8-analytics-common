@@ -23,4 +23,5 @@ def authorization_with_eco_origin(context, ecosystem, origin):
     Returned dict can be added to the 'request' object.
     """
     return {'Authorization': 'Bearer {token}'.format(token=context.token),
-            'origin': origin, 'ecosystem': ecosystem}
+            'origin': origin, 'ecosystem': ecosystem,
+            'showTransitiveReport': 'false'}
