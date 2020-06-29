@@ -51,7 +51,7 @@ def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_ke
 
     # set default values
     files = {}
-    data = {}
+    data = {'show_transitive': 'false'}
 
     # Add ecosystem if not None
     if ecosystem != 'None':

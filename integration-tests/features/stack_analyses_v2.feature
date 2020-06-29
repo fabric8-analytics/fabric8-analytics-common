@@ -179,5 +179,5 @@ Feature: Stack analysis v2 API
     Examples: Stack analyses params
      | ecosystem | manifest                      | component             | public_count | private_count  | transitive_count |
      | pypi      | fastlog_urllib_requests.json  | requests              | 1            | 0              | 0                |
-     | npm       | npm_50_direct_799_tr.json     | npm                   | 3            | 0              | 14               |
-     | maven     | vertx_dependencies.txt        | io.vertx:vertx-core   | 2            | 0              | 6                |
+     | npm       | npm_50_direct_799_tr.json     | npm                   | 3            | 0              | 0                |
+     | maven     | vertx_dependencies.txt        | io.vertx:vertx-core   | 2            | 0              | 0                |
