@@ -39,7 +39,7 @@ ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
 
 def get_endpoint(context):
     """Get endpoint for the stack analysis v2."""
-    return urljoin(context.threescale_preview_url, '/api/v2/stack-analyses/')
+    return urljoin(context.threescale_preview_url, '/api/v2/stack-analyses')
 
 
 def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key):
@@ -103,7 +103,7 @@ def wait_for_completion(context, token='without'):
     context.stack_analysis_id = id
     logger.debug('SA V2 Request id: {}'.format(id))
 
-    url = urljoin(get_endpoint(context), id)
+    url = urljoin(get_endpoint(context) + '/', id)
     logger.debug('Get API url: {}'.format(url))
 
     for _ in range(timeout // sleep_amount):
