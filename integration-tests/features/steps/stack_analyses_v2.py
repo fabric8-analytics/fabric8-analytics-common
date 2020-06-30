@@ -79,6 +79,43 @@ def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_ke
     context.response = response
 
 
+def post_request_with_transitives(context, ecosystem, manifest, with_user_key, with_valid_user_key):
+    """Send stack analyses v2 post request based on params with transitives."""
+    logger.debug('ecosystem: {} manifest: {} with_user_key: {} '
+                 'with_valid_user_key: {}'.format(ecosystem, manifest, with_user_key,
+                                                  with_valid_user_key))
+    context.manifest = manifest
+
+    # set default values
+    files = {}
+    data = {'show_transitive': 'true'}
+
+    # Add ecosystem if not None
+    if ecosystem != 'None':
+        data['ecosystem'] = ecosystem
+
+    # Read manifest if not None
+    if manifest != 'None':
+        filename = 'data/{}'.format(manifest)
+        files['manifest'] = (ECOSYSTEM_TO_MANIFEST_NAME_MAP.get(ecosystem, 'invalid_name.json'),
+                             open(filename, 'rb'))
+        data['file_path'] = os.path.abspath(os.path.dirname(filename))
+
+    if with_user_key:
+        if with_valid_user_key:
+            params = {'user_key': context.three_scale_preview_user_key}
+        else:
+            params = {'user_key': 'INVALID_USER_KEY_FOR_TESTING'}
+        logger.debug('POST {} files: {} data: {} params: {}'.format(get_endpoint(context),
+                                                                    files, data, params))
+        response = requests.post(get_endpoint(context), files=files, data=data, params=params)
+    else:
+        response = requests.post(get_endpoint(context), files=files, data=data)
+
+    logger.debug('status_code: {} response: {}'.format(response.status_code, response.text))
+    context.response = response
+
+
 @when('I wait for stack analysis v2 to finish {token} user key')
 def wait_for_completion(context, token='without'):
     """Try to wait for the stack analysis to be finished.
@@ -231,6 +268,24 @@ def verify_vulnerability_count(context, component, vulnerability, expected):
             assert actual == expected, \
                 'Component {} have {} {} but expected {}'.format(component, actual,
                                                                  vulnerability, expected)
+    assert is_component_present, 'Component not present'
+
+
+def verify_dependency_count(context, component, expected):
+    """Check dependency count for given component."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'analyzed_dependencies')
+
+    is_component_present = False
+    for dep in json_data['analyzed_dependencies']:
+        if dep['name'] == component:
+            is_component_present = True
+            dependencies = dep['dependencies']
+            print(dep)
+            actual = len(dependencies)
+            assert actual == expected, \
+                'Component {} have {} deps but expected {}'.format(component, actual,
+                                                                   expected)
     assert is_component_present, 'Component not present'
 
 
@@ -401,6 +456,23 @@ def send_request(context, ecosystem=None, manifest=None, token='without', valid=
 
     # Send SA request
     post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key)
+
+
+@when('I start {ecosystem} package request with manifest {manifest} '
+      'to stack analysis v2 transitives enabled {token} {valid} user key')
+def send_request_trans(context, ecosystem=None, manifest=None, token='without', valid='valid'):
+    """Send the ecosystem package manifest file to the stack analysis v2. with trans."""
+    # Ecosystem is mandatory
+    assert ecosystem is not None
+
+    # Convert token text into a valid bool
+    with_user_key = parse_token_clause(token)
+
+    # Convert valid clause to bool
+    with_valid_user_key = parse_valid_clause(valid)
+
+    # Send SA request
+    post_request_with_transitives(context, ecosystem, manifest, with_user_key, with_valid_user_key)
 
 
 @then('I should find the external request id equals to id returned by '
@@ -583,7 +655,7 @@ def verify_github_data(context):
 @then('I should get {expected:d} transitive dependencies for {component}')
 def verify_transitive_dependencies_count(context, expected, component):
     """Verify number of transitive vulnerabilites."""
-    verify_vulnerability_count(context, component, 'dependencies', expected)
+    verify_dependency_count(context, component, expected)
 
 
 @then('I should find distinct license {licenses} for license analysis')

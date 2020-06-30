@@ -1,13 +1,13 @@
  Feature: Dynamic Manifests and Data Validation checks
 
 
- @sav2 
+ @sav2
  Scenario: Data validation checks for pypi ecosystem
     Given System is running
     Given Three scale preview service is running
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I send pypi package request with manifest pylist.json to stack analysis v2 with valid user key
+    When I start pypi package request with manifest pylist.json to stack analysis v2 transitives enabled with valid user key
     Then I should get 200 status code
      And I should receive JSON response containing the status key
      And I should receive JSON response containing the id key
@@ -37,7 +37,7 @@
     Given Three scale preview service is running
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I send npm package request with manifest valid_npmlist.json to stack analysis v2 with valid user key
+    When I start npm package request with manifest valid_npmlist.json to stack analysis v2 transitives enabled with valid user key
     Then I should get 200 status code
      And I should receive JSON response containing the status key
      And I should receive JSON response containing the id key
@@ -68,7 +68,7 @@
     Given Three scale preview service is running
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
-    When I send maven package request with manifest vertx_dependencies.txt to stack analysis v2 with valid user key
+    When I start maven package request with manifest vertx_dependencies.txt to stack analysis v2 transitives enabled with valid user key
     Then I should get 200 status code
      And I should receive JSON response containing the status key
      And I should receive JSON response containing the id key
@@ -132,8 +132,13 @@
     When I wait for stack analysis v2 to finish with user key
     Then I should get stack analyses v2 response with all attributes
 
+
+
+
+
  
-  @sav2 
+  
+  @sav2 @skip
   Scenario Outline: Check the stack analysis v2 for single companion packages
     Given System is running
     Given Three scale preview service is running
