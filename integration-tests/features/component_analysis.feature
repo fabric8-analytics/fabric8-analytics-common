@@ -169,12 +169,12 @@ Feature: Unknown licenses
      | npm        | nuxt                | 2.4.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
      | npm        | nuxt                | 2.5.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
      | npm        | nuxt                | 2.6.0     | 2.12.2              | CVE-2019-13506   | 4.3   |
-     | maven      | io.vertx:vertx-core | 3.5.3     | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.3.CR1 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.2     | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.2.CR3 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.2.CR2 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
-     | maven      | io.vertx:vertx-core | 3.5.2.CR1 | 4.0.0-milestone4               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.3     | 4.0.0-milestone5               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.3.CR1 | 4.0.0-milestone5               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2     | 4.0.0-milestone5               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR3 | 4.0.0-milestone5               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR2 | 4.0.0-milestone5               | CVE-2018-12541   | 5.0   |
+     | maven      | io.vertx:vertx-core | 3.5.2.CR1 | 4.0.0-milestone5               | CVE-2018-12541   | 5.0   |
      | pypi       | flask               | 0.12      | 1.1.2               | CVE-2018-1000656 | 5.0   |
      | pypi       | flask               | 0.12.1    | 1.1.2               | CVE-2018-1000656 | 5.0   |
      | pypi       | flask               | 0.12.2    | 1.1.2               | CVE-2018-1000656 | 5.0   |
@@ -183,12 +183,12 @@ Feature: Unknown licenses
      | pypi       | numpy               | 1.15.3    | 1.18.5              | CVE-2019-6446    | 7.5   |
      | pypi       | numpy               | 1.15.2    | 1.18.5              | CVE-2019-6446    | 7.5   |
      | pypi       | numpy               | 1.15.1    | 1.18.5              | CVE-2019-6446    | 7.5   |
-     | pypi       | requests            | 2.19.1    | 2.23.0              | CVE-2018-18074   | 5.0   |
-     | pypi       | requests            | 2.19.0    | 2.23.0              | CVE-2018-18074   | 5.0   |
-     | pypi       | requests            | 2.18.4    | 2.23.0              | CVE-2018-18074   | 5.0   |
-     | pypi       | requests            | 2.18.3    | 2.23.0              | CVE-2018-18074   | 5.0   |
-     | pypi       | requests            | 2.18.2    | 2.23.0              | CVE-2018-18074   | 5.0   |
-     | pypi       | requests            | 2.17.3    | 2.23.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.19.1    | 2.24.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.19.0    | 2.24.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.18.4    | 2.24.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.18.3    | 2.24.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.18.2    | 2.24.0              | CVE-2018-18074   | 5.0   |
+     | pypi       | requests            | 2.17.3    | 2.24.0              | CVE-2018-18074   | 5.0   |
 
 
 
