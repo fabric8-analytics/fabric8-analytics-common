@@ -107,7 +107,7 @@ Feature: Component analysis v2 API
       
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-      When I wait 1 seconds
+      
 
      When I start v2 component analyses npm/really_unknown_component/1.0.0 with user_key
       Then I should get 202 status code
