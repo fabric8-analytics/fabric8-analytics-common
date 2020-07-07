@@ -49,7 +49,7 @@ Feature: Smoketests for stack analysis API tests for PyPi ecosystem
     Then I should find at least 1 analyzed dependencies
 
     # Analyzed CVE(s) part
-    When I wait 5 seconds
+    
     When I look at recent stack analysis
     Then I should find the security node for all dependencies
      And I should find the security node for all alternate components
