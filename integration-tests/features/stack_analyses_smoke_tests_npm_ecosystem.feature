@@ -9,7 +9,7 @@ Feature: Smoketests for stack analysis API tests for NPM ecosystem
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test Node dependencies file <file> for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response

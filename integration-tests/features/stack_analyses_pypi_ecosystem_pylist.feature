@@ -8,7 +8,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file requirements_click_6_7.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -51,7 +51,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file requirements_click_7_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -94,7 +94,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file array_split.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -137,7 +137,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file fastlog_urllib_requests.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -184,7 +184,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file numpy_1_11_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -226,7 +226,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file numpy_1_12_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -268,7 +268,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file numpy_1_16_2.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -310,7 +310,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file numpy_1_16_3.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -352,7 +352,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file numpy_scipy.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -396,7 +396,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file pytest_2_0_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -438,7 +438,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file pytest_2_0_1.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -480,7 +480,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file pytest_3_2_2.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -522,7 +522,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file requests_2_20_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -564,7 +564,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file requests_2_20_1.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -600,7 +600,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file requests_2_21_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -642,7 +642,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file scipy_1_1_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -684,7 +684,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file scipy_1_2_0.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -726,7 +726,7 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test pypi dependencies file scipy_1_2_1.json for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response

@@ -4,7 +4,7 @@ Feature: Smoke tests for the component analysis REST API
   Scenario Outline: Check the component analysis REST API endpoint for selected components with and without recommendations
     Given System is running
     Given Three scale preview service is running
-    When I wait 1 seconds
+    
     When I acquire the use_key for 3scale
     Then I should get the proper user_key
 

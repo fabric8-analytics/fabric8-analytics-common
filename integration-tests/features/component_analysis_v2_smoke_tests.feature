@@ -6,7 +6,7 @@ Feature: Smoke Tests Component Analysis v2
       
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-       When I wait 2 seconds
+       
       When I start v2 component analyses <ecosystem>/<package>/<version> with user_key
       Then I should get 200 status code
         And I should receive a valid JSON response

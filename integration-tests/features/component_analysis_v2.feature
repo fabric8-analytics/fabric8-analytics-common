@@ -6,7 +6,7 @@ Feature: Component analysis v2 API
 
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
-      When I wait 1 seconds
+    
       When I start v2 component analyses <ecosystem>/<package>/<version> with user_key
       Then I should get 200 status code
         And I should receive a valid JSON response
@@ -104,7 +104,7 @@ Feature: Component analysis v2 API
   Scenario: Check the component analysis REST V2 API endpoint for unknown component in NPM ecosystem
     Given System is running
       Given Three scale preview service is running
-      When I wait 2 seconds
+      
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
       When I wait 1 seconds
@@ -193,7 +193,7 @@ Feature: Component analysis v2 API
       When I acquire the use_key for 3scale
       Then I should get the proper user_key
 
-      When I wait 1 seconds
+      
       When I start v2 component analyses <ecosystem>/<package>/<version> with user_key
       Then I should get 200 status code
         And I should receive a valid JSON response

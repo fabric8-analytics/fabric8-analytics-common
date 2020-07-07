@@ -8,7 +8,7 @@ Feature: Smoketests for stack analysis V2 API tests
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I send <ecosystem> package request with manifest <file> to stack analysis v2 with valid user key
     Then I should get 200 status code
      And I should receive JSON response containing the status key
