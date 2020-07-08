@@ -32,6 +32,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find the following dependencies (click) in the stack analysis
      And I should find dependency named click with version 6.7 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Analyzed dependencies checks
     When I look at recent stack analysis
     Then I should find at least 1 analyzed dependencies
@@ -75,6 +79,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find the following dependencies (click) in the stack analysis
      And I should find dependency named click with version 7.0 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Analyzed dependencies checks
     When I look at recent stack analysis
     Then I should find at least 1 analyzed dependencies
@@ -117,6 +125,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 1 dependencies
      And I should find the following dependencies (array-split) in the stack analysis
      And I should find dependency named array-split with version 0.3.0 in the stack analysis
+
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
 
     # Analyzed dependencies checks
     When I look at recent stack analysis
@@ -170,6 +182,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find analyzed dependency named requests with version 2.18.4 in the stack analysis
      And I should find analyzed dependency named urllib3 with version 1.22 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Unknown dependencies checks
     When I look at recent stack analysis
     Then I should find no more than 0 unknown dependencies
@@ -213,6 +229,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find the following analyzed dependencies (numpy) in the stack analysis
      And I should find analyzed dependency named numpy with version 1.11.0 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Unknown dependencies checks
     When I look at recent stack analysis
     Then I should find no more than 0 unknown dependencies
@@ -255,6 +275,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find the following analyzed dependencies (numpy) in the stack analysis
      And I should find analyzed dependency named numpy with version 1.12.0 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Unknown dependencies checks
     When I look at recent stack analysis
     Then I should find no more than 0 unknown dependencies
@@ -296,6 +320,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 1 analyzed dependencies
      And I should find the following analyzed dependencies (numpy) in the stack analysis
      And I should find analyzed dependency named numpy with version 1.16.2 in the stack analysis
+    
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
 
     # Unknown dependencies checks
     When I look at recent stack analysis
@@ -338,6 +366,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 1 analyzed dependencies
      And I should find the following analyzed dependencies (numpy) in the stack analysis
      And I should find analyzed dependency named numpy with version 1.16.3 in the stack analysis
+
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
 
     # Unknown dependencies checks
     When I look at recent stack analysis
@@ -383,6 +415,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find analyzed dependency named numpy with version 1.11.0 in the stack analysis
      And I should find analyzed dependency named scipy with version 1.1.0 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Unknown dependencies checks
     When I look at recent stack analysis
     Then I should find no more than 0 unknown dependencies
@@ -424,6 +460,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 1 analyzed dependencies
      And I should find the following analyzed dependencies (pytest) in the stack analysis
      And I should find analyzed dependency named pytest with version 2.0.0 in the stack analysis
+
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
 
     # Unknown dependencies checks
     When I look at recent stack analysis
@@ -467,6 +507,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find the following analyzed dependencies (pytest) in the stack analysis
      And I should find analyzed dependency named pytest with version 2.0.1 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Unknown dependencies checks
     When I look at recent stack analysis
     Then I should find no more than 0 unknown dependencies
@@ -508,6 +552,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 1 analyzed dependencies
      And I should find the following analyzed dependencies (pytest) in the stack analysis
      And I should find analyzed dependency named pytest with version 3.2.2 in the stack analysis
+
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
 
     # Unknown dependencies checks
     When I look at recent stack analysis
@@ -551,6 +599,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find the following analyzed dependencies (requests) in the stack analysis
      And I should find analyzed dependency named requests with version 2.21.0 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Unknown dependencies checks
     When I look at recent stack analysis
     Then I should find no more than 0 unknown dependencies
@@ -586,6 +638,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 1 dependencies
      And I should find the following dependencies (requests) in the stack analysis
      And I should find dependency named requests with version 2.21.1 in the stack analysis
+
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
 
     # Analyzed dependencies checks
     When I look at recent stack analysis
@@ -629,6 +685,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find the following analyzed dependencies (requests) in the stack analysis
      And I should find analyzed dependency named requests with version 2.21.0 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Unknown dependencies checks
     When I look at recent stack analysis
     Then I should find no more than 0 unknown dependencies
@@ -670,6 +730,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 1 analyzed dependencies
      And I should find the following analyzed dependencies (scipy) in the stack analysis
      And I should find analyzed dependency named scipy with version 1.1.0 in the stack analysis
+
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
 
     # Unknown dependencies checks
     When I look at recent stack analysis
@@ -713,6 +777,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
      And I should find the following analyzed dependencies (scipy) in the stack analysis
      And I should find analyzed dependency named scipy with version 1.2.0 in the stack analysis
 
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
+
     # Unknown dependencies checks
     When I look at recent stack analysis
     Then I should find no more than 0 unknown dependencies
@@ -754,6 +822,10 @@ Feature: Thorough stack analysis v3 API tests for PyPi ecosystem, with pylist.js
     Then I should find at least 1 analyzed dependencies
      And I should find the following analyzed dependencies (scipy) in the stack analysis
      And I should find analyzed dependency named scipy with version 1.2.1 in the stack analysis
+
+    # SLA/SLO-related checks
+    When I look at the stack analysis duration
+    Then I should see that the duration is less than 180 seconds
 
     # Unknown dependencies checks
     When I look at recent stack analysis
