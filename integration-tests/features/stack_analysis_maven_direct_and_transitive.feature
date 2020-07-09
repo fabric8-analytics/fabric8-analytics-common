@@ -9,7 +9,7 @@ Feature: Smoketests for stack analysis API tests for Maven ecosystem
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I test Maven dependencies file <file> for stack analysis from vscode through 3scale gateway with user_key
     Then I should get 200 status code
      And I should receive a valid JSON response
@@ -56,7 +56,7 @@ Feature: Smoketests for stack analysis API tests for Maven ecosystem
 
      Examples: files containing packages to test
      | file                         |
-     | basic.txt                    |
+     #| basic.txt                    |
      | springboot_dependencies.txt  |
      | vertx_3_4_1_dependencies.txt |
      | vertx_3_4_2_dependencies.txt |

@@ -20,7 +20,7 @@ features/stack_analysis_pypi_direct_and_transitive.feature
 features/stack_analyses_maven_ecosystem.feature
 features/stack_analysis_maven_direct_and_transitive.feature
 features/stack_analyses_npm_ecosystem.feature
-features/stack_analysis_npm_direct_and_transitive.feature
+#features/stack_analysis_npm_direct_and_transitive.feature
 features/stack_analyses_smoke_tests_pypi_ecosystem.feature
 features/stack_analyses_smoke_tests_npm_ecosystem.feature
 # Stack analyses V2 features.
@@ -37,8 +37,8 @@ features/three_scale.feature
 #features/api_backbone.feature
 features/gemini.feature
 features/resilient_infrastructure.feature
-features/three_scale_stack_analyses.feature
-features/three_scale_component_analyses.feature
+#features/three_scale_stack_analyses.feature
+#features/three_scale_component_analyses.feature
 # Not used in real production: features/user_intent.feature
 
 ## Redundant with other auth tests.

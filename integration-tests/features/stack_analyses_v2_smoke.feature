@@ -8,7 +8,7 @@ Feature: Smoketests for stack analysis V2 API tests
     Then I should get the proper user_key
 
     # request the stack analysis
-    When I wait 10 seconds
+    When I wait 3 seconds
     When I send <ecosystem> package request with manifest <file> to stack analysis v2 with valid user key
     Then I should get 200 status code
      And I should receive JSON response containing the status key
@@ -75,7 +75,7 @@ Feature: Smoketests for stack analysis V2 API tests
      | pypi      | scipy_1_1_0.json             | 1                   | 0                  | 1             | 0                     | 1                      | 0                   | 5               |
      | pypi      | scipy_1_2_0.json             | 1                   | 0                  | 1             | 0                     | 1                      | 0                   | 5               |
      | pypi      | scipy_1_2_1.json             | 1                   | 0                  | 0             | 0                     | 0                      | 0                   | 5               |
-     | maven     | basic.txt                    | 9                   | 0                  | 5             | 0                     | 5                      | 0                   | 5               |
+     #| maven     | basic.txt                    | 9                   | 0                  | 5             | 0                     | 5                      | 0                   | 5               |
      | maven     | springboot_dependencies.txt  | 4                   | 0                  | 3             | 0                     | 3                      | 1                   | 0               |
      | maven     | vertx_3_4_1_dependencies.txt | 7                   | 0                  | 8             | 0                     | 2                      | 1                   | 0               |
      | maven     | vertx_3_4_2_dependencies.txt | 7                   | 0                  | 8             | 0                     | 2                      | 1                   | 0               |
