@@ -13,7 +13,7 @@
   "dependencies": {
           "underscore" : "1.8.1",
           "moment": "2.24.0",
-          "lodash": "4.17.11",
+          "lodash": "4.17.19",
           "request": "2.88.0"
   },
   "old_dependencies": {
