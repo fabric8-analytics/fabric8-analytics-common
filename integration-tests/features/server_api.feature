@@ -146,23 +146,26 @@ Feature: Server API
   @production
   Scenario: Check the /api/v1/submit-feedback response with invalid payload
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
     When I access /api/v1/submit-feedback without valid values
     Then I should get 400 status code
 
   @production
   Scenario: Check the /api/v1/submit-feedback response with empty payload
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
     When I access /api/v1/submit-feedback with empty payload
     Then I should get 400 status code
 
   @production
   Scenario: Check the /api/v1/submit-feedback response without any payload
     Given System is running
-    When I acquire the authorization token
-    Then I should get the proper authorization token
+    Given Three scale preview service is running
+    When I acquire the use_key for 3scale
+    Then I should get the proper user_key
     When I access /api/v1/submit-feedback without any payload
     Then I should get 400 status code
