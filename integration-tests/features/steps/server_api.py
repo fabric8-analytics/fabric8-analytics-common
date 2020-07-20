@@ -132,8 +132,9 @@ def check_submit_feedback_without_valid_values(context, url):
         "feedback_type": True,
         "ecosystem": None
     }
-    context.response = requests.post(context.coreapi_url + url,
-                                     headers=authorization(context),
+    parms = {'user_key': context.three_scale_preview_user_key}
+    context.response = requests.post(context.core_v2_api_url + url,
+                                     params=parms,
                                      data=payload)
 
 
@@ -141,8 +142,9 @@ def check_submit_feedback_without_valid_values(context, url):
 def check_submit_feedback_without_any_payload(context, url):
     """Access the submit-feedback API using the HTTP POST method with no payload."""
     payload = None
-    context.response = requests.post(context.coreapi_url + url,
-                                     headers=authorization(context),
+    parms = {'user_key': context.three_scale_preview_user_key}
+    context.response = requests.post(context.core_v2_api_url + url,
+                                     params=parms,
                                      data=payload)
 
 
@@ -150,8 +152,9 @@ def check_submit_feedback_without_any_payload(context, url):
 def check_submit_feedback_with_empty_payload(context, url):
     """Access the submit-feedback API using the HTTP POST method with empty payload."""
     payload = {}
-    context.response = requests.post(context.coreapi_url + url,
-                                     headers=authorization(context),
+    parms = {'user_key': context.three_scale_preview_user_key}
+    context.response = requests.post(context.core_v2_api_url + url,
+                                     params=parms,
                                      data=payload)
 
 
