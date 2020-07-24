@@ -23,7 +23,7 @@
       And I should be able to validate github data for all dependencies
       And I should get 5 transitive dependencies for requests-futures
       And I should get 2 transitive vulnerabilities for requests-futures
-      And I should find lxml with 4.2.1 4.5.1 4.5.0 with SNYK-PYTHON-LXML-72651 and 6.5 for public vulnerbilities
+      And I should find lxml with 4.2.1 4.5.2 4.5.0 with SNYK-PYTHON-LXML-72651 and 6.5 for public vulnerbilities
       And I should find Cross-site Scripting (XSS) and medium for lxml in private vulnerbilities
       And I should find License BSD for lxml in analyzed dependencies
       And I should find wtforms with 2.1 2.3.1 2.3.1 with SNYK-PYTHON-WTFORMS-40581 and 6.5 for private vulnerbilities
