@@ -2,7 +2,10 @@
 
 import os
 
-from fastlog import log
+import logging
+log = logging.getLogger(__file__)
+log.setLevel(logging.DEBUG) 
+
 
 
 def parse_line_count(line):
@@ -26,7 +29,7 @@ def get_file_extension(filename):
 
 def get_source_files(repository):
     """Find all source files in the selected repository."""
-    log.info("Getting source files")
+    log.critical("Getting source files")
     command = ("pushd repositories/{repo} > /dev/null; " +
                r"wc -l `find . -path ./venv -prune -o \( -name '*.py' -o -name '*.java' -o " +
                r"-name '*.ts' \) " +
@@ -40,30 +43,30 @@ def get_source_files(repository):
     extensions = set()
     files_per_extension = {}
 
-    with log.indent():
-        with open("{repo}.count".format(repo=repository)) as fin:
-            for line in fin:
-                with log.indent():
-                    log.debug(line)
-                count += 1
-                line_count, filename = parse_line_count(line)
-                extension = get_file_extension(filename)
+    #with log.indent():
+    with open("{repo}.count".format(repo=repository)) as fin:
+        for line in fin:
+                #with log.indent():
+            log.critical(line)
+            count += 1
+            line_count, filename = parse_line_count(line)
+            extension = get_file_extension(filename)
 
                 # register possibly new extension
-                extensions.add(extension)
+            extensions.add(extension)
 
                 # update file count for such extension
-                files_per_extension[extension] = files_per_extension.get(extension, 0) + 1
+            files_per_extension[extension] = files_per_extension.get(extension, 0) + 1
 
                 # register file name + line count
-                filenames.append(filename)
-                line_counts[filename] = line_count
-                total_lines += line_count
+            filenames.append(filename)
+            line_counts[filename] = line_count
+            total_lines += line_count
 
-        log.debug("Files: {files}".format(files=count))
-        log.debug("Lines: {lines}".format(lines=total_lines))
+    log.critical("Files: {files}".format(files=count))
+    log.critical("Lines: {lines}".format(lines=total_lines))
 
-    log.success("Done")
+    log.critical("Done")
 
     return {"count": count,
             "filenames": filenames,

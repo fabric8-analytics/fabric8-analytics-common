@@ -4,7 +4,10 @@ import re
 import requests
 from progress_bar import progress_bar_class, progress_bar_width
 from jacoco_to_codecov import ProjectCoverageReport
-from fastlog import log
+
+import logging
+log = logging.getLogger(__file__)
+log.setLevel(logging.DEBUG) 
 
 
 # default code coverage threshold used when no threshold is specified
@@ -23,10 +26,10 @@ def unit_test_coverage_ok(unit_test_coverage, code_coverage_threshold=CODE_COVER
 
 def log_coverage(statements, missed, coverage):
     """Log info about the coverage read from reports."""
-    with log.indent():
-        log.info("statements {s}".format(s=statements))
-        log.info("missed     {m}".format(m=missed))
-        log.info("coverage   {c}".format(c=coverage))
+    #with log.indent():
+    log.critical("statements {s}".format(s=statements))
+    log.critical("missed     {m}".format(m=missed))
+    log.critical("coverage   {c}".format(c=coverage))
 
 
 def parse_unit_test_statistic(line):
@@ -98,13 +101,13 @@ def line_with_unit_test_summary(line, report_type="pycov"):
 
 def log_report_type(report_type):
     """Display info which unit test report type has been detected."""
-    with log.indent():
-        log.info("{report_type} report detected".format(report_type=report_type))
+    #with log.indent():
+    log.critical("{report_type} report detected".format(report_type=report_type))
 
 
 def read_unit_test_coverage(ci_jobs, repository):
     """Read and process unit test coverage."""
-    log.info("Reading unit test coverage")
+    log.critical("Reading unit test coverage")
     url = ci_jobs.get_console_output_url(repository)
     report_type = None
     if url is not None:
