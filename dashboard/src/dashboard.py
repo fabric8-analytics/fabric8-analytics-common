@@ -5,16 +5,9 @@ import sys
 import requests
 import shutil
 import pyrebase
-
-
-#from fastlog import log
-
 import logging
-
-
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG) 
-
+log.setLevel(logging.DEBUG)
 # from coreapi import CoreApi
 # from jobsapi import JobsApi
 # from configuration import Configuration
@@ -47,7 +40,7 @@ def check_environment_variable(env_var_name):
         e=env_var_name))
     if env_var_name not in os.environ:
         log.error("Fatal: {e} environment variable has to be specified"
-                    .format(e=env_var_name))
+                  .format(e=env_var_name))
         sys.exit(1)
     else:
         log.critical("ok")
@@ -448,54 +441,54 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                                   code_coverage_threshold):
     """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
     log.critical("Preparing data for QA Dashboard")
-    #with log.indent():
+    # with log.indent():
     all_repos = len(repositories)
     i = 0
     for repository in repositories:
-            i += 1
-            log.critical("Repository {}  ({}/{})".format(repository, i, all_repos))
+        i += 1
+        log.critical("Repository {}  ({}/{})".format(repository, i, all_repos))
 
-            # clone or fetch the repository, but only if the cloning/fetching
-            # is not disabled via CLI arguments
-            if clone_repositories_enabled:
-                clone_or_fetch_repository(repository)
+        # clone or fetch the repository, but only if the cloning/fetching
+        # is not disabled via CLI arguments
+        if clone_repositories_enabled:
+            clone_or_fetch_repository(repository)
 
-            if code_quality_table_enabled:
-                run_pylint(repository)
-                run_docstyle_check(repository)
-                run_cyclomatic_complexity_tool(repository)
-                run_maintainability_index(repository)
-                run_dead_code_detector(repository)
-                run_common_errors_detector(repository)
+        if code_quality_table_enabled:
+            run_pylint(repository)
+            run_docstyle_check(repository)
+            run_cyclomatic_complexity_tool(repository)
+            run_maintainability_index(repository)
+            run_dead_code_detector(repository)
+            run_common_errors_detector(repository)
 
-                results.source_files[repository] = get_source_files(repository)
-                results.repo_linter_checks[repository] = parse_pylint_results(repository)
-                results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
-                results.repo_cyclomatic_complexity[repository] = \
-                    parse_cyclomatic_complexity(repository)
-                results.repo_maintainability_index[repository] = \
-                    parse_maintainability_index(repository)
-                results.dead_code[repository] = parse_dead_code(repository)
-                results.common_errors[repository] = parse_common_errors(repository)
+            results.source_files[repository] = get_source_files(repository)
+            results.repo_linter_checks[repository] = parse_pylint_results(repository)
+            results.repo_docstyle_checks[repository] = parse_docstyle_results(repository)
+            results.repo_cyclomatic_complexity[repository] = \
+                parse_cyclomatic_complexity(repository)
+            results.repo_maintainability_index[repository] = \
+                parse_maintainability_index(repository)
+            results.dead_code[repository] = parse_dead_code(repository)
+            results.common_errors[repository] = parse_common_errors(repository)
 
             # delete_work_files(repository)
 
-            if cleanup_repositories_enabled:
-                cleanup_repository(repository)
+        if cleanup_repositories_enabled:
+            cleanup_repository(repository)
 
-            if ci_jobs_table_enabled:
-                for job_type in ci_job_types:
-                    url = ci_jobs.get_job_url(repository, job_type)
-                    name = ci_jobs.get_job_name(repository, job_type)
-                    badge = ci_jobs.get_job_badge(repository, job_type)
-                    job_status = job_statuses.get(name)
-                    results.ci_jobs_links[repository][job_type] = url
-                    results.ci_jobs_badges[repository][job_type] = badge
-                    results.ci_jobs_statuses[repository][job_type] = job_status
-                results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs,
-                                                                                 repository)
-            if code_quality_table_enabled:
-                update_overall_status(results, repository, code_coverage_threshold)
+        if ci_jobs_table_enabled:
+            for job_type in ci_job_types:
+                url = ci_jobs.get_job_url(repository, job_type)
+                name = ci_jobs.get_job_name(repository, job_type)
+                badge = ci_jobs.get_job_badge(repository, job_type)
+                job_status = job_statuses.get(name)
+                results.ci_jobs_links[repository][job_type] = url
+                results.ci_jobs_badges[repository][job_type] = badge
+                results.ci_jobs_statuses[repository][job_type] = job_status
+            results.unit_test_coverage[repository] = read_unit_test_coverage(ci_jobs,
+                                                                             repository)
+        if code_quality_table_enabled:
+            update_overall_status(results, repository, code_coverage_threshold)
 
     log.critical("Data prepared")
 
@@ -574,7 +567,7 @@ def production_smoketests_status(ci_jobs):
     total_builds_cnt = len(total_builds)
     success_builds_cnt = len(success_builds)
 
-    #with log.indent():
+    # with log.indent():
     log.critical("Total builds: {n}".format(n=total_builds_cnt))
     log.critical("Success builds: {n}".format(n=success_builds_cnt))
 
@@ -587,34 +580,32 @@ def get_code_coverage_threshold(cli_arguments, config):
     return cli_arguments.code_coverage_threshold or config.get_overall_code_coverage_threshold()
 
 
+def get_job(job, link):
+    """Get the particular job with formatted link."""
+    Build = None
+    if job is not None:
+        Build = "<a href='{L}'><img src='{B}&style=flat-square'></img></a>".format(B=job, L=link)
+    return Build
+
+
 def all_ci_badges(results):
-    """GET all CI badges"""
+    """Get all CI badges."""
     jobs = []
     for repo in results.repositories:
-        if results.ci_jobs_badges[repo]['build_job'] is None:
-            build_job = None
-        else:
-            build_job = "<a href='"+results.ci_jobs_links[repo]['build_job']+"'><img src='"+ results.ci_jobs_badges[repo]['build_job']+"&style=flat-square'</a>"
-        if results.ci_jobs_badges[repo]['test_job'] is None:
-            test_job = None
-        else:
-            test_job = "<a href='"+results.ci_jobs_links[repo]['test_job']+"'><img src='"+ results.ci_jobs_badges[repo]['test_job']+"&style=flat-square'</a>"
-    
-        if results.ci_jobs_badges[repo]['pylint_job'] is None:
-            pylint_job = None
-        else:
-            pylint_job = "<a href='"+results.ci_jobs_links[repo]['pylint_job']+"'><img src='"+ results.ci_jobs_badges[repo]['pylint_job']+"&style=flat-square'</a>"
-        if results.ci_jobs_badges[repo]['pydoc_job'] is None:
-            pydoc_job = None
-        else:
-            pydoc_job = "<a href='"+results.ci_jobs_links[repo]['pydoc_job']+"'><img src='"+ results.ci_jobs_badges[repo]['pydoc_job']+"&style=flat-square'</a>"
-    
+        build_job = get_job(results.ci_jobs_badges[repo]['build_job'],
+                            results.ci_jobs_links[repo]['build_job'])
+        test_job = get_job(results.ci_jobs_badges[repo]['test_job'],
+                           results.ci_jobs_links[repo]['test_job'])
+        pylint_job = get_job(results.ci_jobs_badges[repo]['pylint_job'],
+                             results.ci_jobs_links[repo]['pylint_job'])
+        pydoc_job = get_job(results.ci_jobs_badges[repo]['pydoc_job'],
+                            results.ci_jobs_links[repo]['pydoc_job'])
         data = {
-        'repo' : repo,
-        'build_job' : build_job,
-        'test_job' : test_job,
-        'pylint_job': pylint_job,
-        'pydoc_job':pydoc_job
+            'repo': repo,
+            'build_job': build_job,
+            'test_job': test_job,
+            'pylint_job': pylint_job,
+            'pydoc_job': pydoc_job
         }
         jobs.append(data)
     return jobs
@@ -622,15 +613,15 @@ def all_ci_badges(results):
 
 def main():
     """Entry point to the QA Dashboard."""
-    #log.setLevel(log.critical)
+    # log.setLevel(log.critical)
     log.critical("Setup")
-    #with log.indent():
+    # with log.indent():
     config = Config()
     cli_arguments = cli_parser.parse_args()
     repositories = Repositories(config)
 
-        # some CLI arguments are used to DISABLE given feature of the dashboard,
-        # but let's not use double negation everywhere :)
+    # some CLI arguments are used to DISABLE given feature of the dashboard,
+    # but let's not use double negation everywhere :)
     ci_jobs_table_enabled = not cli_arguments.disable_ci_jobs
     code_quality_table_enabled = not cli_arguments.disable_code_quality
     liveness_table_enabled = not cli_arguments.disable_liveness
@@ -639,7 +630,7 @@ def main():
     cleanup_repositories_enabled = cli_arguments.cleanup_repositories
 
     log.critical("Environment variables check")
-        #with log.indent():
+    # with log.indent():
     check_environment_variables()
     log.critical("Environment variables check done")
 
@@ -688,60 +679,60 @@ def main():
     if code_quality_table_enabled and liveness_table_enabled:
         export_into_csv(results, repositories.repolist)
 
-    #generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
-    #print(results)
-    #generate_charts(results)
-    #generate_quality_labels(results) 
+    # generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
+    # print(results)
+    # generate_charts(results)
+    # generate_quality_labels(results)
 
     jobs = all_ci_badges(results)
 
-    
     results_sla = {
         'Stage': results.stage,
-        'production' : results.production,
+        'production': results.production,
         'perf_tests_statistic': results.perf_tests_statistic,
         'generated_on': results.generated_on,
-        'ci_jobs' : jobs
+        'ci_jobs': jobs
     }
     results_json = []
     for repo in results.repositories:
-        data = {'repository':repo,
-        'source_count':results.source_files[repo]['count'],
-        'source_lines':results.source_files[repo]['total_lines'],
-        'linter_total':results.repo_linter_checks[repo]['total'],
-        'linter_passed':results.repo_linter_checks[repo]['passed'],
-        'linter_failed':results.repo_linter_checks[repo]['failed'],
-        'linter_passed_percent':results.repo_linter_checks[repo]['passed%'],
-        'linter_failed_percent':results.repo_linter_checks[repo]['failed%'],
-        'docstyle_total':results.repo_docstyle_checks[repo]['total'],
-        'docstyle_passed':results.repo_docstyle_checks[repo]['passed'],
-        'docstyle_failed':results.repo_docstyle_checks[repo]['failed'],
-        'docstyle_passed_percent':results.repo_docstyle_checks[repo]['passed%'],
-        'docstyle_failed_percent':results.repo_docstyle_checks[repo]['failed%'],
-        'code_coverage':results.unit_test_coverage[repo],
-        'cyclomatic_complexity':results.repo_cyclomatic_complexity[repo],
-        'maintainability_index':results.repo_maintainability_index[repo],
-        'status' : results.overall_status[repo],
-        'remarks' : results.remarks[repo],
+        data = {
+            'repository': repo,
+            'source_count': results.source_files[repo]['count'],
+            'source_lines': results.source_files[repo]['total_lines'],
+            'linter_total': results.repo_linter_checks[repo]['total'],
+            'linter_passed': results.repo_linter_checks[repo]['passed'],
+            'linter_failed': results.repo_linter_checks[repo]['failed'],
+            'linter_passed_percent': results.repo_linter_checks[repo]['passed%'],
+            'linter_failed_percent': results.repo_linter_checks[repo]['failed%'],
+            'docstyle_total': results.repo_docstyle_checks[repo]['total'],
+            'docstyle_passed': results.repo_docstyle_checks[repo]['passed'],
+            'docstyle_failed': results.repo_docstyle_checks[repo]['failed'],
+            'docstyle_passed_percent': results.repo_docstyle_checks[repo]['passed%'],
+            'docstyle_failed_percent': results.repo_docstyle_checks[repo]['failed%'],
+            'code_coverage': results.unit_test_coverage[repo],
+            'cyclomatic_complexity': results.repo_cyclomatic_complexity[repo],
+            'maintainability_index': results.repo_maintainability_index[repo],
+            'status': results.overall_status[repo],
+            'remarks': results.remarks[repo],
         }
         results_json.append(data)
-    
+
     results_data = {
-        'quality' : results_json,
-        'others' : results_sla
+        'quality': results_json,
+        'others': results_sla
     }
     with open("results.json", "w") as f:
-        json.dump(results_data ,f)
+        json.dump(results_data, f)
 
     firebase_api_key = os.environ.get("FIREBASE_API_KEY")
     auth_domain = os.environ.get("AUTH_DOMAIN")
     database_url = os.environ.get("DATABASEURL")
     storage_bucket = os.environ.get('STORAGE_BUCKET')
     config = {
-    "apiKey": firebase_api_key,
-    "authDomain": auth_domain,
-    "databaseURL": database_url,
-    "storageBucket": storage_bucket,
+        "apiKey": firebase_api_key,
+        "authDomain": auth_domain,
+        "databaseURL": database_url,
+        "storageBucket": storage_bucket,
     }
 
     firebase = pyrebase.initialize_app(config)
@@ -749,9 +740,6 @@ def main():
     storage.child("dashboard_data/results.json").put("results.json")
 
 
-
-
 if __name__ == "__main__":
     # execute only if run as a script
     main()
-

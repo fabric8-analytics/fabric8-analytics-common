@@ -5,7 +5,7 @@ import logging
 
 
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG) 
+log.setLevel(logging.DEBUG)
 
 
 class Config:
@@ -16,7 +16,7 @@ class Config:
     def __init__(self):
         """Read and parse the configuration file."""
         self.config = configparser.ConfigParser()
-        #with log.indent():
+        # with log.indent():
         log.critical("Reading config file")
         self.config.read(Config.CONFIG_FILE_NAME)
         log.critical("Done")

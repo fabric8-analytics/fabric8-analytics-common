@@ -4,8 +4,7 @@ import os
 
 import logging
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG) 
-
+log.setLevel(logging.DEBUG)
 
 
 def parse_line_count(line):
@@ -43,22 +42,22 @@ def get_source_files(repository):
     extensions = set()
     files_per_extension = {}
 
-    #with log.indent():
+    # with log.indent():
     with open("{repo}.count".format(repo=repository)) as fin:
         for line in fin:
-                #with log.indent():
+            # with log.indent():
             log.critical(line)
             count += 1
             line_count, filename = parse_line_count(line)
             extension = get_file_extension(filename)
 
-                # register possibly new extension
+            # register possibly new extension
             extensions.add(extension)
 
-                # update file count for such extension
+            # update file count for such extension
             files_per_extension[extension] = files_per_extension.get(extension, 0) + 1
 
-                # register file name + line count
+            # register file name + line count
             filenames.append(filename)
             line_counts[filename] = line_count
             total_lines += line_count

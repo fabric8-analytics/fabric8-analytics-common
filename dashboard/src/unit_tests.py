@@ -7,7 +7,7 @@ from jacoco_to_codecov import ProjectCoverageReport
 
 import logging
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG) 
+log.setLevel(logging.DEBUG)
 
 
 # default code coverage threshold used when no threshold is specified
@@ -26,7 +26,7 @@ def unit_test_coverage_ok(unit_test_coverage, code_coverage_threshold=CODE_COVER
 
 def log_coverage(statements, missed, coverage):
     """Log info about the coverage read from reports."""
-    #with log.indent():
+    # with log.indent():
     log.critical("statements {s}".format(s=statements))
     log.critical("missed     {m}".format(m=missed))
     log.critical("coverage   {c}".format(c=coverage))
@@ -101,7 +101,7 @@ def line_with_unit_test_summary(line, report_type="pycov"):
 
 def log_report_type(report_type):
     """Display info which unit test report type has been detected."""
-    #with log.indent():
+    # with log.indent():
     log.critical("{report_type} report detected".format(report_type=report_type))
 
 

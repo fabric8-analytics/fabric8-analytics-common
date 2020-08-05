@@ -4,7 +4,7 @@ import logging
 
 
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG) 
+log.setLevel(logging.DEBUG)
 
 import svgwrite
 
@@ -402,7 +402,7 @@ def generate_quality_label_for_repository(repository, results):
 
 def generate_quality_labels(results):
     """Generate quality labels for all repositories."""
-    #with log.indent():
+    # with log.indent():
     log.critical("Generate quality labels")
     for repository in results.repositories:
         log.critical(repository)

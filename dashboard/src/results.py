@@ -7,8 +7,9 @@ import json
 
 class Results():
     """Class representing results gathered by the Dashboard to be published."""
+
     def get_json(self):
-        """get data in json"""
+        """Get data in json."""
         return json.dumps(self.__dict__)
 
     def __init__(self):
@@ -75,6 +76,3 @@ class Results():
                                unit_test_coverage=self.unit_test_coverage,
                                dead_code=self.dead_code,
                                common_errors=self.common_errors)
-
-    
-

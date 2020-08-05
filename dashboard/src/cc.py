@@ -12,8 +12,7 @@ import logging
 
 
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG) 
-
+log.setLevel(logging.DEBUG)
 
 
 class Results():
@@ -55,10 +54,10 @@ def generate_coverage_pages(results):
 
 def log_improvements(repositories, results):
     """Log improvements in repositories."""
-    #with log.indent():
+    # with log.indent():
     for repository in repositories:
-            log.critical("{repository} : {improvement}".format(
-                repository=repository, improvement=results.improvement[repository]))
+        log.critical("{repository} : {improvement}".format(
+            repository=repository, improvement=results.improvement[repository]))
 
 
 def prepare_data_for_repositories(repositories, results, config):
@@ -66,14 +65,14 @@ def prepare_data_for_repositories(repositories, results, config):
     results.repositories = repositories
     for repository in repositories:
         log.critical(repository)
-        #with log.indent():
+        # with log.indent():
         results.source_files[repository] = get_source_files(repository)
         results.unit_test_coverage[repository] = []
         for week in range(0, 2):
-                log.critical("Week " + str(week))
-                #with log.indent():
-                coverage = read_unit_test_coverage_for_week(repository, week)
-                results.unit_test_coverage[repository].append(coverage)
+            log.critical("Week " + str(week))
+            # with log.indent():
+            coverage = read_unit_test_coverage_for_week(repository, week)
+            results.unit_test_coverage[repository].append(coverage)
 
         update_improvement(results, repository)
         update_coverage_delta(results, repository)
@@ -149,19 +148,19 @@ def main():
     log.setLevel(log.critical)
 
     log.critical("Config")
-    #with log.indent():
+    # with log.indent():
     config = Config()
     results = Results()
     repositories = Repositories(config)
     log.critical("Done")
 
     log.critical("Prepare data for repositories")
-    #with log.indent():
+    # with log.indent():
     prepare_data_for_repositories(repositories.repolist, results, config)
     log.critical("Done")
 
     log.critical("Generate coverage pages")
-    #with log.indent():
+    # with log.indent():
     generate_coverage_pages(results)
     log.critical("Done")
 
