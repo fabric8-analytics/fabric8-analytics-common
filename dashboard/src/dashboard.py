@@ -12,8 +12,8 @@ log.setLevel(logging.DEBUG)
 # from jobsapi import JobsApi
 # from configuration import Configuration
 from results import Results
-from html_generator import generate_dashboard
-from code_quality_label import generate_quality_labels
+# from html_generator import generate_dashboard
+# from code_quality_label import generate_quality_labels
 from perf_tests import PerfTests
 from smoke_tests import SmokeTests
 from sla import SLA
@@ -24,14 +24,14 @@ from repositories import Repositories
 from progress_bar import progress_bar_class, progress_bar_width
 from source_files import get_source_files
 from unit_tests import unit_test_coverage_ok, read_unit_test_coverage
-from charts import generate_charts
+# from charts import generate_charts
 from git_utils import clone_or_fetch_repository
 from external_tools import run_pylint, run_docstyle_check
 from external_tools import run_maintainability_index, run_cyclomatic_complexity_tool
 from external_tools import run_dead_code_detector, run_common_errors_detector
 from csv_exporter import export_into_csv
-from json import dumps, loads, JSONEncoder, JSONDecoder
-import pickle
+# from json import dumps, loads, JSONEncoder, JSONDecoder
+# import pickle
 
 
 def check_environment_variable(env_var_name):
