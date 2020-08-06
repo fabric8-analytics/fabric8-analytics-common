@@ -1,5 +1,6 @@
 #!/bin/bash -x
 
+./clone_or_pull_all_repos.sh
 function prepare_venv() {
 	# we want tests to run on python3.6
 	printf 'checking alias `python3.6` ... ' >&2
@@ -36,6 +37,9 @@ export JOB_API_TOKEN_PROD=""
 export AWS_ACCESS_KEY_ID=""
 export AWS_SECRET_ACCESS_KEY=""
 export S3_REGION_NAME="us-east-1"
+export AUTH_DOMAIN="go-ready-blockchain.firebaseapp.com"
+export DATABASEURL="https://go-ready-blockchain.firebaseio.com"
+export STORAGE_BUCKET="go-ready-blockchain.appspot.com"
 
 function run_smoketests()
 {
