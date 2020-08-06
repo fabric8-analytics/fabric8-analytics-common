@@ -4,7 +4,6 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-pycodestyle
 boto3==1.4.7
 botocore==1.7.5           # via boto3, s3transfer
 certifi==2017.7.27.1      # via requests
@@ -22,13 +21,8 @@ numpy==1.13.1             # via matplotlib
 pyparsing==2.2.0          # via matplotlib
 python-dateutil==2.6.1    # via botocore, matplotlib
 pytz==2017.2              # via matplotlib
-requests==2.24.0
+requests==2.20.0
 s3transfer==0.1.11        # via boto3
 six==1.10.0               # via cycler, matplotlib, python-dateutil
 urllib3==1.24.2           # via requests
 svgwrite
-radon==2.2.0
-ansi2html
-pyrebase
-pydocstyle
-vulture

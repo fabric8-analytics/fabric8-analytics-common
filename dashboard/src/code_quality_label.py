@@ -1,10 +1,6 @@
 """Code quality label generator."""
 
-import logging
-
-
-log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG)
+from fastlog import log
 
 import svgwrite
 
@@ -402,12 +398,12 @@ def generate_quality_label_for_repository(repository, results):
 
 def generate_quality_labels(results):
     """Generate quality labels for all repositories."""
-    # with log.indent():
-    log.critical("Generate quality labels")
-    for repository in results.repositories:
-        log.critical(repository)
-        generate_quality_label_for_repository(repository, results)
-    log.critical("Quality labels generated")
+    with log.indent():
+        log.info("Generate quality labels")
+        for repository in results.repositories:
+            log.info(repository)
+            generate_quality_label_for_repository(repository, results)
+        log.success("Quality labels generated")
 
 
 def main():

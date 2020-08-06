@@ -2,15 +2,10 @@
 
 import time
 from collections import defaultdict
-import json
 
 
 class Results():
     """Class representing results gathered by the Dashboard to be published."""
-
-    def get_json(self):
-        """Get data in json."""
-        return json.dumps(self.__dict__)
 
     def __init__(self):
         """Prepare empty result structure."""

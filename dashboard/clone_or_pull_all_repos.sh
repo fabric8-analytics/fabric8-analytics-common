@@ -39,8 +39,7 @@ f8a-data-ingestion-service
 f8a-emr-deployment
 cvejob
 victimsdb-lib
-fabric8-analytics.github.io
-fabric8-analytics-lsp-server"
+fabric8-analytics.github.io"
 
 pushd repositories
 
@@ -62,3 +61,4 @@ do
 done
 
 popd
+
