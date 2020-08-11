@@ -2,8 +2,8 @@
 from mako.template import Template
 
 import logging
+logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG)
 
 
 def generate_index_page(results):
@@ -71,16 +71,16 @@ def generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydo
     # with log.indent():
     log.warning("Index page")
     generate_index_page(results)
-    log.critical("Index page generated")
+    log.debug("Index page generated")
 
     # with log.indent():
     log.warning("Metrics page")
     generate_metrics_page(results)
-    log.critical("Metrics page generated")
+    log.debug("Metrics page generated")
 
     # with log.indent():
     log.warning("Details about repository")
     if results.code_quality_table_enabled:
         generate_details_pages(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
-    log.critical("Details generated")
-    log.critical("Output generated")
+    log.debug("Details generated")
+    log.debug("Output generated")

@@ -6,8 +6,8 @@ import requests
 import shutil
 import pyrebase
 import logging
+logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG)
 # from coreapi import CoreApi
 # from jobsapi import JobsApi
 # from configuration import Configuration
@@ -36,14 +36,14 @@ from csv_exporter import export_into_csv
 
 def check_environment_variable(env_var_name):
     """Check if the given environment variable exists."""
-    log.critical("Checking: {e} environment variable existence".format(
+    log.debug("Checking: {e} environment variable existence".format(
         e=env_var_name))
     if env_var_name not in os.environ:
         log.error("Fatal: {e} environment variable has to be specified"
                   .format(e=env_var_name))
         sys.exit(1)
     else:
-        log.critical("ok")
+        log.debug("ok")
 
 
 def check_environment_variables():
@@ -53,13 +53,6 @@ def check_environment_variables():
         "F8A_API_URL_PROD",
         "F8A_JOB_API_URL_STAGE",
         "F8A_JOB_API_URL_PROD",
-        "RECOMMENDER_API_TOKEN_STAGE",
-        "RECOMMENDER_API_TOKEN_PROD",
-        "JOB_API_TOKEN_STAGE",
-        "JOB_API_TOKEN_PROD",
-        "AWS_ACCESS_KEY_ID",
-        "AWS_SECRET_ACCESS_KEY",
-        "S3_REGION_NAME",
         "FIREBASE_API_KEY"]
     for environment_variable in environment_variables:
         check_environment_variable(environment_variable)
@@ -440,13 +433,13 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
                                   code_quality_table_enabled, ci_jobs_table_enabled,
                                   code_coverage_threshold):
     """Perform clone/fetch repositories + run pylint + run docstyle script + accumulate results."""
-    log.critical("Preparing data for QA Dashboard")
+    log.debug("Preparing data for QA Dashboard")
     # with log.indent():
     all_repos = len(repositories)
     i = 0
     for repository in repositories:
         i += 1
-        log.critical("Repository {}  ({}/{})".format(repository, i, all_repos))
+        log.debug("Repository {}  ({}/{})".format(repository, i, all_repos))
 
         # clone or fetch the repository, but only if the cloning/fetching
         # is not disabled via CLI arguments
@@ -490,7 +483,7 @@ def prepare_data_for_repositories(repositories, results, ci_jobs, job_statuses,
         if code_quality_table_enabled:
             update_overall_status(results, repository, code_coverage_threshold)
 
-    log.critical("Data prepared")
+    log.debug("Data prepared")
 
 
 def read_jobs_statuses(filename):
@@ -535,9 +528,9 @@ def read_ci_jobs_statuses(jenkins_url):
 
 def read_job_statuses(ci_jobs, ci_jobs_table_enabled, liveness_table_enabled):
     """Read job statuses from the CI, but only if its necessary."""
-    log.critical("Read job statuses")
+    log.debug("Read job statuses")
     if ci_jobs_table_enabled or liveness_table_enabled:
-        log.critical("Done")
+        log.debug("Done")
         return read_ci_jobs_statuses(JENKINS_URL)
     else:
         log.warning("Disabled")
@@ -556,7 +549,7 @@ def get_success_builds(builds):
 
 def production_smoketests_status(ci_jobs):
     """Read total number of remembered builds and succeeded builds as well."""
-    log.critical("Read smoketests status")
+    log.debug("Read smoketests status")
     job_url = ci_jobs.get_job_url("production", "smoketests")
     api_query = jenkins_api_query_build_statuses(job_url)
     response = requests.get(api_query)
@@ -568,10 +561,10 @@ def production_smoketests_status(ci_jobs):
     success_builds_cnt = len(success_builds)
 
     # with log.indent():
-    log.critical("Total builds: {n}".format(n=total_builds_cnt))
-    log.critical("Success builds: {n}".format(n=success_builds_cnt))
+    log.debug("Total builds: {n}".format(n=total_builds_cnt))
+    log.debug("Success builds: {n}".format(n=success_builds_cnt))
 
-    log.critical("Done")
+    log.debug("Done")
     return total_builds_cnt, success_builds_cnt
 
 
@@ -613,8 +606,8 @@ def all_ci_badges(results):
 
 def main():
     """Entry point to the QA Dashboard."""
-    # log.setLevel(log.critical)
-    log.critical("Setup")
+    # log.setLevel(log.debug)
+    log.debug("Setup")
     # with log.indent():
     config = Config()
     cli_arguments = cli_parser.parse_args()
@@ -629,12 +622,12 @@ def main():
     clone_repositories_enabled = cli_arguments.clone_repositories
     cleanup_repositories_enabled = cli_arguments.cleanup_repositories
 
-    log.critical("Environment variables check")
+    log.debug("Environment variables check")
     # with log.indent():
     check_environment_variables()
-    log.critical("Environment variables check done")
+    log.debug("Environment variables check done")
 
-    log.critical("Setup done")
+    log.debug("Setup done")
 
     results = Results()
 
@@ -649,7 +642,7 @@ def main():
 
     results.teams = teams
     results.sprint = config.get_sprint()
-    log.critical("Sprint: " + results.sprint)
+    log.debug("Sprint: " + results.sprint)
 
     ci_jobs = CIJobs()
 
@@ -659,7 +652,7 @@ def main():
         production_smoketests_status(ci_jobs)
 
     results.sprint_plan_url = config.get_sprint_plan_url()
-    log.critical("Sprint plan URL: " + results.sprint_plan_url)
+    log.debug("Sprint plan URL: " + results.sprint_plan_url)
     code_coverage_threshold = get_code_coverage_threshold(cli_arguments, config)
 
     for team in teams:

@@ -2,10 +2,8 @@
 import configparser
 from urllib.parse import urljoin
 import logging
-
-
+logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG)
 
 
 class Config:
@@ -17,9 +15,9 @@ class Config:
         """Read and parse the configuration file."""
         self.config = configparser.ConfigParser()
         # with log.indent():
-        log.critical("Reading config file")
+        log.debug("Reading config file")
         self.config.read(Config.CONFIG_FILE_NAME)
-        log.critical("Done")
+        log.debug("Done")
 
     def get_sprint(self):
         """Return name of current sprint."""

@@ -3,8 +3,8 @@
 import os
 
 import logging
+logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG)
 
 
 def parse_line_count(line):
@@ -28,7 +28,7 @@ def get_file_extension(filename):
 
 def get_source_files(repository):
     """Find all source files in the selected repository."""
-    log.critical("Getting source files")
+    log.debug("Getting source files")
     command = ("pushd repositories/{repo} > /dev/null; " +
                r"wc -l `find . -path ./venv -prune -o \( -name '*.py' -o -name '*.java' -o " +
                r"-name '*.ts' \) " +
@@ -46,7 +46,7 @@ def get_source_files(repository):
     with open("{repo}.count".format(repo=repository)) as fin:
         for line in fin:
             # with log.indent():
-            log.critical(line)
+            log.debug(line)
             count += 1
             line_count, filename = parse_line_count(line)
             extension = get_file_extension(filename)
@@ -62,10 +62,10 @@ def get_source_files(repository):
             line_counts[filename] = line_count
             total_lines += line_count
 
-    log.critical("Files: {files}".format(files=count))
-    log.critical("Lines: {lines}".format(lines=total_lines))
+    log.debug("Files: {files}".format(files=count))
+    log.debug("Lines: {lines}".format(lines=total_lines))
 
-    log.critical("Done")
+    log.debug("Done")
 
     return {"count": count,
             "filenames": filenames,
