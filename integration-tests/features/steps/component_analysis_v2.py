@@ -195,3 +195,28 @@ def check_for_no_version_recommended(context):
     json_data = context.response.json()
     assert "recommended_versions" in json_data
     assert json_data["recommended_versions"] == ""
+
+
+@then('I should check for snyk url cvss3 severity and title in result')
+def check_for_synk_url(context):
+    """Check for snyk url and various other feilds."""
+    json_data = context.response.json()
+    if "component_analyses" in json_data:
+        vulnerabilities = json_data['component_analyses']['vulnerability']
+        for v in vulnerabilities:
+            assert "url" in v, "No snyk url found for vulnerablity"
+            assert "cvss_v3" in v, "No CVSS_V3 found for vulnerablity"
+            assert "title" in v, "No title found for vulnerablity"
+            assert "severity" in v, "No severity found for vulnerablity"
+
+
+@then('I should find {cve} with {severity} severity and {title} title in result')
+def check_for_severity(context, cve, severity, title):
+    """Check for severity."""
+    json_data = context.response.json()
+    if "component_analyses" in json_data:
+        vulnerabilities = json_data['component_analyses']['vulnerability']
+        for v in vulnerabilities:
+            if v["vendor_cve_ids"] == cve:
+                assert v["title"] == title, "Title Doesn't Match"
+                assert v["severity"] == severity, "Severity Doesn't Match"
