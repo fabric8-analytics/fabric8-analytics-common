@@ -9,6 +9,7 @@ REPOSITORIES="
 fabric8-analytics-common
 fabric8-analytics-data-model
 fabric8-analytics-server
+fabric8-analytics-jobs
 fabric8-analytics-license-analysis
 fabric8-analytics-tagger
 fabric8-analytics-worker
