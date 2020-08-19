@@ -1,7 +1,9 @@
 """HTML generator."""
 from mako.template import Template
 
-from fastlog import log
+import logging
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__file__)
 
 
 def generate_index_page(results):
@@ -55,7 +57,7 @@ def generate_charts_page_for_repository(repository, results):
 def generate_details_pages(results, ignored_files_for_pylint, ignored_files_for_pydocstyle):
     """Generate all details pages."""
     for repository in results.repositories:
-        log.info(repository)
+        log.warning(repository)
         generate_details_page_for_repository(repository, results,
                                              ignored_files_for_pylint.get(repository, []),
                                              ignored_files_for_pydocstyle.get(repository, []))
@@ -64,21 +66,21 @@ def generate_details_pages(results, ignored_files_for_pylint, ignored_files_for_
 
 def generate_dashboard(results, ignored_files_for_pylint, ignored_files_for_pydocstyle):
     """Generate all pages with the dashboard and detailed information as well."""
-    log.info("Generating output")
+    log.warning("Generating output")
 
-    with log.indent():
-        log.info("Index page")
-        generate_index_page(results)
-        log.success("Index page generated")
+    # with log.indent():
+    log.warning("Index page")
+    generate_index_page(results)
+    log.debug("Index page generated")
 
-    with log.indent():
-        log.info("Metrics page")
-        generate_metrics_page(results)
-        log.success("Metrics page generated")
+    # with log.indent():
+    log.warning("Metrics page")
+    generate_metrics_page(results)
+    log.debug("Metrics page generated")
 
-    with log.indent():
-        log.info("Details about repository")
-        if results.code_quality_table_enabled:
-            generate_details_pages(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
-        log.success("Details generated")
-    log.success("Output generated")
+    # with log.indent():
+    log.warning("Details about repository")
+    if results.code_quality_table_enabled:
+        generate_details_pages(results, ignored_files_for_pylint, ignored_files_for_pydocstyle)
+    log.debug("Details generated")
+    log.debug("Output generated")

@@ -56,7 +56,7 @@
       And I should find bootstrap with 4.1.1 5.0.0-alpha1 4.5.0 with SNYK-JS-BOOTSTRAP-73560 and 6.5 for public vulnerbilities
       And I should find Cross-site Scripting (XSS) and medium for bootstrap in public vulnerbilities
       And I should find License MIT for bootstrap in analyzed dependencies
-      And I should find buefy with 0.7.10 0.8.20 0.8.19 with SNYK-JS-BUEFY-567814 and 7.3 for private vulnerbilities
+      And I should find buefy with 0.7.10 0.9.1 0.8.19 with SNYK-JS-BUEFY-567814 and 7.3 for private vulnerbilities
       And I should find Cross-site Scripting (XSS) and high for buefy in private vulnerbilities
       And I should find License MIT for buefy in analyzed dependencies
       
@@ -156,5 +156,5 @@
 
      Examples: Stack analyses POST params
      | ecosystem | manifest               | component | latest_version | component_2 | latest_version_2 |
-     | pypi      | pylist.json            | ansible   | 2.9.9          | coveralls   | 2.1.1            |
+     | pypi      | pylist.json            | ansible   | 2.9.9          | coveralls   | 2.1.2            |
      | npm       | valid_npmlist.json     | gatsby    | 2.9.2          | history     | 4.9.0            |

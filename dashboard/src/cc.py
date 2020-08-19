@@ -8,7 +8,9 @@ from source_files import get_source_files
 from unit_tests import read_unit_test_coverage_for_week
 from config import Config
 
-from fastlog import log
+import logging
+logging.basicConfig(level=logging.DEBUG)
+log = logging.getLogger(__file__)
 
 
 class Results():
@@ -50,30 +52,30 @@ def generate_coverage_pages(results):
 
 def log_improvements(repositories, results):
     """Log improvements in repositories."""
-    with log.indent():
-        for repository in repositories:
-            log.info("{repository} : {improvement}".format(
-                repository=repository, improvement=results.improvement[repository]))
+    # with log.indent():
+    for repository in repositories:
+        log.debug("{repository} : {improvement}".format(
+            repository=repository, improvement=results.improvement[repository]))
 
 
 def prepare_data_for_repositories(repositories, results, config):
     """Accumulate results."""
     results.repositories = repositories
     for repository in repositories:
-        log.info(repository)
-        with log.indent():
-            results.source_files[repository] = get_source_files(repository)
-            results.unit_test_coverage[repository] = []
-            for week in range(0, 2):
-                log.info("Week " + str(week))
-                with log.indent():
-                    coverage = read_unit_test_coverage_for_week(repository, week)
-                    results.unit_test_coverage[repository].append(coverage)
+        log.debug(repository)
+        # with log.indent():
+        results.source_files[repository] = get_source_files(repository)
+        results.unit_test_coverage[repository] = []
+        for week in range(0, 2):
+            log.debug("Week " + str(week))
+            # with log.indent():
+            coverage = read_unit_test_coverage_for_week(repository, week)
+            results.unit_test_coverage[repository].append(coverage)
 
-            update_improvement(results, repository)
-            update_coverage_delta(results, repository)
-            update_coverage_threshold_pass(results, repository, config)
-    log.info("Improvements")
+        update_improvement(results, repository)
+        update_coverage_delta(results, repository)
+        update_coverage_threshold_pass(results, repository, config)
+    log.debug("Improvements")
     log_improvements(repositories, results)
 
 
@@ -98,7 +100,7 @@ def update_improvement(results, repository):
     try:
         week0 = float(results.unit_test_coverage[repository][0].get("coverage"))
         week1 = float(results.unit_test_coverage[repository][1].get("coverage"))
-        log.info("Improvement: {week0} -> {week1}".format(week0=week0, week1=week1))
+        log.debug("Improvement: {week0} -> {week1}".format(week0=week0, week1=week1))
         if week0 == week1:
             result = "same"
         elif week0 > week1:
@@ -141,24 +143,24 @@ def calculate_pp_coverage(results, repository):
 
 def main():
     """Entry point to the CC reporter."""
-    log.setLevel(log.INFO)
+    log.setLevel(log.debug)
 
-    log.info("Config")
-    with log.indent():
-        config = Config()
-        results = Results()
-        repositories = Repositories(config)
-    log.success("Done")
+    log.debug("Config")
+    # with log.indent():
+    config = Config()
+    results = Results()
+    repositories = Repositories(config)
+    log.debug("Done")
 
-    log.info("Prepare data for repositories")
-    with log.indent():
-        prepare_data_for_repositories(repositories.repolist, results, config)
-    log.success("Done")
+    log.debug("Prepare data for repositories")
+    # with log.indent():
+    prepare_data_for_repositories(repositories.repolist, results, config)
+    log.debug("Done")
 
-    log.info("Generate coverage pages")
-    with log.indent():
-        generate_coverage_pages(results)
-    log.success("Done")
+    log.debug("Generate coverage pages")
+    # with log.indent():
+    generate_coverage_pages(results)
+    log.debug("Done")
 
 
 if __name__ == "__main__":
