@@ -137,6 +137,7 @@ Feature: Component analysis v2 API
       Then I should get 200 status code
         And I should receive a valid JSON response
       Then I should find one or more vulnerabilities in result with valid attributes
+        And I should check for snyk url cvss3 severity and title in result
       Then I should find a private vulnerability in v2 component analysis
 
   Scenario: Check one pypi package for private vulnerabilities
@@ -151,6 +152,7 @@ Feature: Component analysis v2 API
       Then I should get 200 status code
         And I should receive a valid JSON response
       Then I should find one or more vulnerabilities in result with valid attributes
+        And I should check for snyk url cvss3 severity and title in result
       Then I should find a private vulnerability in v2 component analysis
 
 
@@ -166,6 +168,7 @@ Feature: Component analysis v2 API
       Then I should get 200 status code
         And I should receive a valid JSON response
       Then I should find one or more vulnerabilities in result with valid attributes
+        And I should check for snyk url cvss3 severity and title in result
       Then I should find a private vulnerability in v2 component analysis
 
 
