@@ -207,4 +207,4 @@ Feature: Component analysis v2 API
      | ecosystem  | package                         | version |
      | pypi       | zulip                           | 0.6.4   |
      | maven      | org.webjars.npm:markdown-to-jsx | 6.6.6   |
-     | npm        | lodash                          | 4.17.4  |
+     | npm        | markdown                        | 0.5.0  |
