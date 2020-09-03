@@ -3,7 +3,7 @@
     "package_versions": [
         {
             "package": "io.vertx:vertx-core",
-            "version": "3.5.3 "
+            "version": "3.5.3"
         },
         {
             "package": "org.webjars.bower:jquery",

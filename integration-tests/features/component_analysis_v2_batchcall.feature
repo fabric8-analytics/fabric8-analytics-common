@@ -7,7 +7,7 @@ Feature: Component analysis V2 Batch Call API
         When I acquire the use_key for 3scale
         Then I should get the proper user_key
         When I start CA batch call for test_npm.json with user_key
-        Then I should get 202 status code
+        Then I should get 200 status code
          And I should receive a valid JSON response
         Then I should be able to validate all the feilds or vulnerablities in the result
         And I should find package sequence 3.0.0 has no recommendation
@@ -23,7 +23,7 @@ Feature: Component analysis V2 Batch Call API
         When I acquire the use_key for 3scale
         Then I should get the proper user_key
         When I start CA batch call for test_maven.json with user_key
-        Then I should get 202 status code
+        Then I should get 200 status code
          And I should receive a valid JSON response
         Then I should be able to validate all the feilds or vulnerablities in the result
         And I should find package org.apache.tomcat:tomcat-catalina 10.0.0-M5 has no recommendation
