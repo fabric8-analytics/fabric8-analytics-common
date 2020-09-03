@@ -1,0 +1,7 @@
+{
+    "ecosystem": "npm",
+    "package_versions": [
+        {"package": "ejs_unknown", "version": "1.0.0"},
+        {"package": "gangular", "version": "1.0.0"} 
+    ]
+}

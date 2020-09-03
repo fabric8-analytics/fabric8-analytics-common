@@ -1,0 +1,33 @@
+{
+    "ecosystem": "maven",
+    "package_versions": [
+        {
+            "package": "io.vertx:vertx-core",
+            "version": "3.5.3 "
+        },
+        {
+            "package": "org.webjars.bower:jquery",
+            "version": "3.4.1"
+        },
+        {
+            "package": "org.webjars:bootstrap-select",
+            "version": "1.7.3"
+        },
+        {
+            "package": "org.apache.camel:camel-rabbitmq",
+            "version": "2.22.0"
+        },
+        {
+            "package": "org.apache.tomcat:tomcat-catalina",
+            "version": "7.0.0"
+        },
+        {
+            "package": "org.webjars.npm:openpgp",
+            "version": "1.4.1"
+        },
+        {
+            "package": "org.apache.tomcat:tomcat-catalina",
+            "version": "10.0.0-M5"
+        }
+    ]
+}
