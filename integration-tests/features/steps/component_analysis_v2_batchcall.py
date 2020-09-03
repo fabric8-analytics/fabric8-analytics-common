@@ -63,6 +63,22 @@ def validate_vuln_feilds(vul):
         assert "fixed_in" in vuln
 
 
+def find_synk_vuln_id(item, vid, score):
+    """Find and validate vuln id and score."""
+    for i in item['vulnerability']:
+        if i["id"] == vid and str(i["cvss"]) == score:
+            return
+    raise Exception("Cannot find id {}".format(vid))
+
+
+def find_privates(item, vid):
+    """Find private vulns in result."""
+    for i in item['vulnerability']:
+        if i["id"] == vid and i['is_private']:
+            return
+    raise Exception("No private vulnerability found for id {}".format(vid))
+
+
 @when("I start CA batch call for {file} {user_key} user_key")
 def start_batch_call(context, file, user_key):
     """Start CA Batch call."""
@@ -106,3 +122,21 @@ def find_recommended_version(context, package, version, rec_version):
     for item in json_data:
         if item['package'] == package and item['version'] == version:
             assert item['recommended_versions'] == rec_version
+
+
+@then('I should find snyk id {vid} and {score} for package {package} and version {version}')
+def find_snyk_id(context, package, version, vid, score):
+    """I should be able to find snyk vuln id."""
+    json_data = context.response.json()
+    for item in json_data:
+        if item['package'] == package and item['version'] == version:
+            find_synk_vuln_id(item, vid, score)
+
+
+@then('I should find snyk id {vid} for package {package} and version {version} as private')
+def find_for_private_vuln(context, package, version, vid):
+    """Find for private vulnerability in result."""
+    json_data = context.response.json()
+    for item in json_data:
+        if item['package'] == package and item['version'] == version:
+            find_privates(item, vid)
