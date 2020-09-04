@@ -140,3 +140,12 @@ def find_for_private_vuln(context, package, version, vid):
     for item in json_data:
         if item['package'] == package and item['version'] == version:
             find_privates(item, vid)
+
+
+@then('I should not find package {package} with version {version} in result')
+def check_if_package_exists(context, package, version):
+    """I should not find a particular package in result."""
+    json_data = context.response.json()
+    for item in json_data:
+        if item['package'] == package and item['version'] == version:
+            raise Exception("Package {} with version {} found in result".format(package, version))

@@ -62,7 +62,7 @@ Feature: Component analysis V2 Batch Call API
 
     
     @cav2
-    Scenario: Check the component analysis V2 REST API Batch Call for unknown 
+    Scenario: Check the component analysis V2 REST API Batch Call for unknown packages
         Given System is running
         Given Three scale preview service is running
 
@@ -71,3 +71,17 @@ Feature: Component analysis V2 Batch Call API
         When I start CA batch call for invalid_packages.json with user_key
         Then I should get 202 status code
          And I should receive a valid JSON response
+
+     @cav2
+    Scenario: Check the component analysis V2 REST API Batch Call for 1 known 1 unknown package
+        Given System is running
+        Given Three scale preview service is running
+
+        When I acquire the use_key for 3scale
+        Then I should get the proper user_key
+        When I start CA batch call for one_known_one_unknown.json with user_key
+        Then I should get 202 status code
+         And I should receive a valid JSON response
+        Then I should be able to validate all the feilds or vulnerablities in the result
+         And I should not find package ejs_unknown with version 1.0.0 in result
+         And I should find package angular 1.0.0 has 1.8.0 recommended version
