@@ -1,0 +1,7 @@
+{
+    "invalid": "request",
+    "invalid_packages": [
+        {"package": "000", "version": "1.0.0"},
+        {"package": "invalid", "version": "1.0.0"} 
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "ecosystem": "npm",
+    "package_versions": [
+        {"package": "sequence", "version": "3.0.0"},
+        {"package": "aargh", "version": "1.1.0"},
+        {"package": "arrays", "version": "0.1.1"},
+        {"package": "jquery", "version": "3.5.0"},
+        {"package": "mocha", "version": "6.1.4"},
+        {"package": "underscore", "version": "1.9.1"}
+    ]
+}
