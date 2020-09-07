@@ -79,6 +79,15 @@ def find_privates(item, vid):
     raise Exception("No private vulnerability found for id {}".format(vid))
 
 
+def check_for_registered_user_feilds(item):
+    """I should check no registered user feilds are exposed."""
+    if "exploitable_vulnerabilities_count" in item:
+        raise Exception("Field exploitable_vulnerabilities_count Exposed in"
+                        " Free user result")
+    if "vendor_package_link" in item:
+        raise Exception("Field vendor_package_link has been exposed for free user")
+
+
 @when("I start CA batch call for {file} {user_key} user_key")
 def start_batch_call(context, file, user_key):
     """Start CA Batch call."""
@@ -149,3 +158,22 @@ def check_if_package_exists(context, package, version):
     for item in json_data:
         if item['package'] == package and item['version'] == version:
             raise Exception("Package {} with version {} found in result".format(package, version))
+
+
+@then('I should not find any vulnerablities in result')
+def check_for_no_vuln(context):
+    """I should not find any vulnerabilities in result."""
+    json_data = context.response.json()
+    for item in json_data:
+        assert 'package' in item
+        assert 'version' in item
+        assert 'recommendation' in item, "{} has vulnerablity".format(item['package'])
+        assert item['recommendation'] == {}
+
+
+@then('I should not find any registered user fields')
+def check_for_exposed(context):
+    """Exposed fields for free user check."""
+    json_data = context.response.json()
+    for item in json_data:
+        check_for_registered_user_feilds(item)
