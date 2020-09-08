@@ -8,7 +8,7 @@ features/server_api.feature
 features/component_analysis_v2.feature
 features/component_analysis_v2_smoke_tests.feature
 features/components.feature
-features/component_analysis.feature
+#features/component_analysis.feature
 #features/component_analysis_smoke_tests.feature
 #features/component_analysis_smoke_tests_100_npm_components.feature
 #features/component_analysis_smoke_tests_100_pypi_components.feature
@@ -25,8 +25,8 @@ features/component_analysis.feature
 #features/stack_analyses_smoke_tests_npm_ecosystem.feature
 # Stack analyses V2 features.
 features/stack_analyses_v2.feature
-#features/stack_analyses_v2_smoke.feature
-#features/stack_analyses_v2_valid_dynamic.feature
+features/stack_analyses_v2_smoke.feature
+features/stack_analyses_v2_valid_dynamic.feature
 # Not used in real production: features/user_feedback.feature
 #features/versions.feature
 features/selfcheck.feature
