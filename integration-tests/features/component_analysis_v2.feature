@@ -37,7 +37,7 @@ Feature: Component analysis v2 API
      | pypi       | fastapi                           | 0.36.0    | 0.58.0              | SNYK-PYTHON-FASTAPI-569038           | 5.3    | medium   | information leakage                          |
      | pypi       | sceptre                           | 2.2.1     | 2.3.0               | SNYK-PYTHON-SCEPTRE-569070           | 6.5    | medium   | Cross-site Scripting (XSS)                   |
      | pypi       | syft                              | 0.2.0a1   | 0.2.6               | SNYK-PYTHON-SYFT-568873              | 5.9    | medium   | Arbitrary Code Injection                     |
-     | pypi       | numpy                             | 1.15.4    | 1.18.5              | SNYK-PYTHON-NUMPY-73513              | 9.8    | critical | Arbitrary Code Execution                     |
+     | pypi       | numpy                             | 1.15.4    | 1.19.1              | SNYK-PYTHON-NUMPY-73513              | 9.8    | critical | Arbitrary Code Execution                     |
 
 
   Scenario Outline: Check the component analysis V2 REST API endpoint for components without recommendations
