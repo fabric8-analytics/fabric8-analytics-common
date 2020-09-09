@@ -103,7 +103,7 @@ def find_vulnerablities(context):
         if "vulnerability" in single_item:
             assert "package" in single_item, "No package Found!"
             assert "version" in single_item, "No Version Found!"
-            assert "package_unknown" in single_item 
+            assert "package_unknown" in single_item
             assert "message" in single_item, "No message found"
             assert "highest_severity" in single_item, "No severity found"
             assert "known_security_vulnerability_count" in single_item
@@ -189,7 +189,7 @@ def check_for_no_vuln(context):
         assert 'package' in item
         assert 'version' in item
         assert "package_unknown" in item
-        assert item["package_unknown"] == False
+        assert item["package_unknown"] is False
         assert 'recommendation' in item, "{} has vulnerablity".format(item['package'])
         assert item['recommendation'] == {}
 
