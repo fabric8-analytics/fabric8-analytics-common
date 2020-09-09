@@ -86,7 +86,7 @@ Feature: Component analysis V2 Batch Call API
         Then I should get 202 status code
          And I should receive a valid JSON response
         Then I should be able to validate all the feilds or vulnerablities in the result
-         And I should not find package ejs_unknown with version 1.0.0 in result
+         And I should find one or more unknown packages in result
          And I should find package angular 1.0.0 has 1.8.0 recommended version
           And I should not find any registered user fields
 

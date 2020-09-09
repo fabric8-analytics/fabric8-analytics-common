@@ -99,20 +99,27 @@ def start_batch_call(context, file, user_key):
 def find_vulnerablities(context):
     """I should be able to find some Vulnerablities."""
     json_data = context.response.json()
-    for item in json_data:
-        assert "package" in item, "No package Found!"
-        assert "version" in item, "No Version Found!"
-        if "vulnerability" in item:
-            assert "message" in item, "No message found"
-            assert "highest_severity" in item, "No severity found"
-            assert "known_security_vulnerability_count" in item
-            assert "security_advisory_count" in item
-            assert "recommended_versions" in item, "No Recommended version found"
-            assert "registration_link" in item, "No snyk registration link found"
-            validate_vuln_feilds(item['vulnerability'])
+    for single_item in json_data:
+        if "vulnerability" in single_item:
+            assert "package" in single_item, "No package Found!"
+            assert "version" in single_item, "No Version Found!"
+            assert "package_unknown" in single_item 
+            assert "message" in single_item, "No message found"
+            assert "highest_severity" in single_item, "No severity found"
+            assert "known_security_vulnerability_count" in single_item
+            assert "security_advisory_count" in single_item
+            assert "recommended_versions" in single_item, "No Recommended version found"
+            assert "registration_link" in single_item, "No snyk registration link found"
+            validate_vuln_feilds(single_item['vulnerability'])
+        elif single_item["package_unknown"]:
+            assert "name" in single_item
+            assert "version" in single_item
         else:
-            assert "recommendation" in item
-            assert item['recommendation'] == {}
+            assert "recommendation" in single_item
+            assert "package_unknown" in single_item
+            assert "package" in single_item
+            assert "version" in single_item
+            assert single_item['recommendation'] == {}
 
 
 @then('I should find package {package} {version} has no recommendation')
@@ -120,8 +127,11 @@ def find_package_versions(context, package, version):
     """I should find a particular package has no recommendation."""
     json_data = context.response.json()
     for item in json_data:
-        if item['package'] == package and item['version'] == version:
-            assert item['recommendation'] == {}
+        try:
+            if item['package'] == package and item['version'] == version:
+                assert item['recommendation'] == {}
+        except KeyError:
+            pass
 
 
 @then('I should find package {package} {version} has {rec_version} recommended version')
@@ -129,8 +139,11 @@ def find_recommended_version(context, package, version, rec_version):
     """I should be able to validate recommended version."""
     json_data = context.response.json()
     for item in json_data:
-        if item['package'] == package and item['version'] == version:
-            assert item['recommended_versions'] == rec_version
+        try:
+            if item['package'] == package and item['version'] == version:
+                assert item['recommended_versions'] == rec_version
+        except KeyError:
+            pass
 
 
 @then('I should find snyk id {vid} and {score} for package {package} and version {version}')
@@ -138,8 +151,11 @@ def find_snyk_id(context, package, version, vid, score):
     """I should be able to find snyk vuln id."""
     json_data = context.response.json()
     for item in json_data:
-        if item['package'] == package and item['version'] == version:
-            find_synk_vuln_id(item, vid, score)
+        try:
+            if item['package'] == package and item['version'] == version:
+                find_synk_vuln_id(item, vid, score)
+        except KeyError:
+            pass
 
 
 @then('I should find snyk id {vid} for package {package} and version {version} as private')
@@ -147,17 +163,22 @@ def find_for_private_vuln(context, package, version, vid):
     """Find for private vulnerability in result."""
     json_data = context.response.json()
     for item in json_data:
-        if item['package'] == package and item['version'] == version:
-            find_privates(item, vid)
+        try:
+            if item['package'] == package and item['version'] == version:
+                find_privates(item, vid)
+        except KeyError:
+            pass
 
 
-@then('I should not find package {package} with version {version} in result')
-def check_if_package_exists(context, package, version):
+@then('I should find one or more unknown packages in result')
+def check_if_package_exists(context):
     """I should not find a particular package in result."""
     json_data = context.response.json()
     for item in json_data:
-        if item['package'] == package and item['version'] == version:
-            raise Exception("Package {} with version {} found in result".format(package, version))
+        is_unknown = item['package_unknown']
+        if is_unknown:
+            assert "name" in item
+            assert "version" in item
 
 
 @then('I should not find any vulnerablities in result')
@@ -167,6 +188,8 @@ def check_for_no_vuln(context):
     for item in json_data:
         assert 'package' in item
         assert 'version' in item
+        assert "package_unknown" in item
+        assert item["package_unknown"] == False
         assert 'recommendation' in item, "{} has vulnerablity".format(item['package'])
         assert item['recommendation'] == {}
 
