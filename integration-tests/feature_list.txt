@@ -5,6 +5,7 @@ features/server_api.feature
 ## temporary: features/jobs_debug_api.feature
 #features/ecosystems.feature
 # Not used in real production: features/component_search.feature
+features/component_analysis_v2_batchcall.feature
 features/component_analysis_v2.feature
 features/component_analysis_v2_smoke_tests.feature
 features/components.feature

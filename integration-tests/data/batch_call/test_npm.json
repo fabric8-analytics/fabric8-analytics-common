@@ -1,0 +1,14 @@
+{
+    "ecosystem": "npm",
+    "package_versions": [
+        {"package": "ejs", "version": "1.0.0"},
+        {"package": "angular", "version": "1.0.0"},
+        {"package": "marked", "version": "0.3.4"},
+        {"package": "npmconf", "version": "0.0.24"},
+        {"package": "st", "version": "0.2.4"},
+        {"package": "moment", "version": "2.15.1"},
+        {"package": "mongoose", "version": "4.2.4"},
+        {"package": "sequence", "version": "3.0.0"}
+       
+    ]
+}

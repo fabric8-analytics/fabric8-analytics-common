@@ -1,0 +1,7 @@
+{
+    "ecosystem": "Unknown",
+    "package_versions": [
+        {"package": "ejs", "version": "1.0.0"},
+        {"package": "angular", "version": "1.0.0"} 
+    ]
+}
