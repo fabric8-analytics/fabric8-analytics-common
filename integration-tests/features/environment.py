@@ -558,6 +558,8 @@ def before_all(context):
     core_v2_api_url = _read_url_from_env_var('F8A_API_V2_URL')
     coreapi_url = _read_url_from_env_var('F8A_API_URL')
     core_v2_api_url = _read_url_from_env_var('F8A_API_V2_URL')
+    valid_synk_token = os.environ.get("SNYK_TOKEN")
+    uuid = os.environ.get("REGISTERED_USER_UUID")
     jobs_api_url = _read_url_from_env_var('F8A_JOB_API_URL')
     gremlin_url = _read_url_from_env_var('F8A_GREMLIN_URL')
     threescale_url = _read_url_from_env_var('F8A_3SCALE_URL')
@@ -578,6 +580,8 @@ def before_all(context):
                                            _FABRIC8_LICENSE_SERVICE)
     context.core_v2_api_url = core_v2_api_url
     context.threescale_url = threescale_url
+    context.valid_synk_token = valid_synk_token
+    context.uuid = uuid
 
     context.threescale_preview_url = threescale_preview_url
 
