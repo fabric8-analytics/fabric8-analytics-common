@@ -129,7 +129,6 @@ def make_get_request(context, user_key):
     """Start a get call on API."""
     use_user_key = parse_token_clause(user_key)
     uuid = context.uuid
-    print(uuid)
     make_get_call(context, use_user_key, uuid)
 
 
