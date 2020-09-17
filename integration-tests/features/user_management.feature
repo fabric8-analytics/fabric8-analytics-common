@@ -62,3 +62,17 @@ Feature: User Management API
             Then I should be able to validate the get request
             Then I should get user not found message
 
+    Scenario: Request for an Free Tier user
+        Given System is running
+        Given Three scale preview service is running
+        
+            When I acquire the use_key for 3scale
+            Then I should get the proper user_key
+            When I request user api for new UUID with user_key
+            Then I should get 200 status code
+            Then I should be able to validate post or put request
+            When I try to get user with user_key
+            Then I should get 404 status code
+            Then I should be able to validate the get request
+            Then I should get user not found message
+
