@@ -76,9 +76,9 @@ Feature: Smoketests for stack analysis V2 API tests
      | pypi      | scipy_1_2_0.json             | 1                   | 0                  | 1             | 0                     | 1                      | 0                   | 5               |
      | pypi      | scipy_1_2_1.json             | 1                   | 0                  | 0             | 0                     | 0                      | 0                   | 5               |
      #| maven     | basic.txt                    | 9                   | 0                  | 5             | 0                     | 5                      | 0                   | 5               |
-     | maven     | springboot_dependencies.txt  | 4                   | 0                  | 3             | 0                     | 3                      | 1                   | 0               |
-     | maven     | vertx_3_4_1_dependencies.txt | 7                   | 0                  | 8             | 0                     | 2                      | 1                   | 0               |
-     | maven     | vertx_3_4_2_dependencies.txt | 7                   | 0                  | 8             | 0                     | 2                      | 1                   | 0               |
+     #| maven     | springboot_dependencies.txt  | 4                   | 0                  | 3             | 0                     | 3                      | 1                   | 0               |
+     #| maven     | vertx_3_4_1_dependencies.txt | 7                   | 0                  | 8             | 0                     | 2                      | 1                   | 0               |
+     #| maven     | vertx_3_4_2_dependencies.txt | 7                   | 0                  | 8             | 0                     | 2                      | 1                   | 0               |
      # TODO :: This will be enabled once we have unknown dependency flow control flags in backend servers.
      #| maven     | vertx_dependencies.txt       | 7                   | 1                  | 8             | 1                     | 8                      | 1                   | 0               |
      | npm       | npm_1_direct.json            | 1                   | 0                  | 0             | 0                     | 0                      | 0                   | 0               |
