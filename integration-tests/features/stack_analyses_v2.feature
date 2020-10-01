@@ -151,7 +151,7 @@ Feature: Stack analysis v2 API
      | npm       | npm_svg_2_0_2.json     | svg.filter.js       | analyzed_dependencies/0/name  | 2.0.2   | analyzed_dependencies/0/version |
      | maven     | vertx_dependencies.txt | io.vertx:vertx-core | analyzed_dependencies/0/name  | 3.4.1   | analyzed_dependencies/0/version |
 
-  @sav2
+  @sav2 @skip
   Scenario: Check the outlier record for a known package
     Given System is running
     Given Three scale preview service is running
