@@ -15,8 +15,8 @@ check_python_version() {
 # this script is copied by CI, we don't need it
 rm -f env-toolkit
 
-#prep
-#check_python_version
+prep
+check_python_version
 ./qa/detect-common-errors.sh
 ./qa/detect-dead-code.sh
 ./qa/measure-cyclomatic-complexity.sh --fail-on-error
