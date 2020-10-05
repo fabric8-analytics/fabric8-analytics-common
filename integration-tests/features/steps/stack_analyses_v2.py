@@ -43,20 +43,24 @@ def get_endpoint(context):
 
 
 def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key,
-                 show_transitives):
+                 show_transitives, is_user_registered=False, is_invalid=False):
     """Send stack analyses v2 post request based on params."""
     logger.debug('ecosystem: {} manifest: {} with_user_key: {} '
                  'with_valid_user_key: {}'.format(ecosystem, manifest, with_user_key,
                                                   with_valid_user_key))
     context.manifest = manifest
-
+    if is_invalid:
+        is_user_registered = True
+        uuid = 'e48793e0-681e-45ce-b4d0-0fd992df1095g'
+    else:
+        uuid = context.uuid
     # set default values
+    print(is_invalid)
     files = {}
     data = {'show_transitive': show_transitives}
     # Add ecosystem if not None
     if ecosystem != 'None':
         data['ecosystem'] = ecosystem
-
     # Read manifest if not None
     if manifest != 'None':
         filename = 'data/{}'.format(manifest)
@@ -64,14 +68,26 @@ def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_ke
                              open(filename, 'rb'))
         data['file_path'] = os.path.abspath(os.path.dirname(filename))
 
-    if with_user_key:
+    if with_user_key and is_user_registered:
+        if with_valid_user_key:
+            headers = {"uuid": uuid}
+            print(headers)
+            params = {'user_key': context.three_scale_preview_user_key}
+        else:
+            params = {'user_key': 'INVALID_USER_KEY_FOR_TESTING'}
+        logger.debug('POST {} files: {} data: {} params: {}'.format(get_endpoint(context),
+                                                                    files, data, params))
+        response = requests.post(get_endpoint(context), headers=headers, files=files, data=data,
+                                 params=params)
+    elif with_user_key:
         if with_valid_user_key:
             params = {'user_key': context.three_scale_preview_user_key}
         else:
             params = {'user_key': 'INVALID_USER_KEY_FOR_TESTING'}
         logger.debug('POST {} files: {} data: {} params: {}'.format(get_endpoint(context),
                                                                     files, data, params))
-        response = requests.post(get_endpoint(context), files=files, data=data, params=params)
+        response = requests.post(get_endpoint(context), files=files, data=data,
+                                 params=params)
     else:
         response = requests.post(get_endpoint(context), files=files, data=data)
 
@@ -80,7 +96,8 @@ def post_request(context, ecosystem, manifest, with_user_key, with_valid_user_ke
 
 
 @when('I wait for stack analysis v2 to finish {token} user key')
-def wait_for_completion(context, token='without'):
+@when('I wait for stack analysis v2 to finish {token} user key {user} uuid')
+def wait_for_completion(context, token='without', user='without'):
     """Try to wait for the stack analysis to be finished.
 
     This step assumes that stack analysis has been started previously and
@@ -98,6 +115,7 @@ def wait_for_completion(context, token='without'):
     timeout = context.stack_analysis_timeout  # in seconds
     sleep_amount = 10  # we don't have to overload the API with too many calls
     with_user_key = parse_token_clause(token)
+    is_user_registered = parse_token_clause(user)
 
     id = context.response.json().get('id')
     context.stack_analysis_id = id
@@ -107,7 +125,12 @@ def wait_for_completion(context, token='without'):
     logger.debug('Get API url: {}'.format(url))
 
     for _ in range(timeout // sleep_amount):
-        if with_user_key:
+        if with_user_key and is_user_registered:
+            uuid = context.uuid
+            headers = {"uuid": uuid}
+            params = {'user_key': context.three_scale_preview_user_key}
+            context.response = requests.get(url, headers=headers, params=params)
+        elif with_user_key:
             params = {'user_key': context.three_scale_preview_user_key}
             context.response = requests.get(url, params=params)
         else:
@@ -190,6 +213,17 @@ def check_vulenrability_attributes(vul):
     check_attribute_presence(vul, 'cve_ids')
     check_attribute_presence(vul, 'cvss_v3')
     check_attribute_presence(vul, 'severity')
+
+
+def check_premium_vuln_attributes(vul):
+    """Verify all premium attributes present in result."""
+    check_attribute_presence(vul, 'description')
+    check_attribute_presence(vul, 'exploit')
+    check_attribute_presence(vul, 'fixable')
+    check_attribute_presence(vul, 'fixed_in')
+    check_attribute_presence(vul, 'malicious')
+    check_attribute_presence(vul, 'patch_exists')
+    check_attribute_presence(vul, 'references')
 
 
 def check_dependency_attributes(ad):
@@ -393,20 +427,28 @@ def access_url_method(context, url, action, token='without'):
       'to stack analysis v2 {token} {valid} user key')
 @when('I send {ecosystem} package request with manifest {manifest} '
       'to stack analysis v2 {token} {valid} user key {trans} transitives')
+@when('I send {ecosystem} package request with manifest {manifest} '
+      'to stack analysis v2 {token} {valid} user key {uuid} uuid')
+@when('I send {ecosystem} package request with manifest {manifest} '
+      'to stack analysis v2 {token} {valid} user key {invalid} invalid uuid')
 def send_request(context, ecosystem=None, manifest=None, token='without',
-                 valid='valid', trans="without"):
+                 valid='valid', trans="without", uuid="without", invalid="without"):
     """Send the ecosystem package manifest file to the stack analysis v2."""
     # Ecosystem is mandatory
     assert ecosystem is not None
 
     # Convert token text into a valid bool
     with_user_key = parse_token_clause(token)
+    is_user_registered = parse_token_clause(uuid)
+    is_invalid = parse_token_clause(invalid)
+    print(is_invalid)
 
     # Convert valid clause to bool
     with_valid_user_key = parse_valid_clause(valid)
 
     with_transitives = parse_token_clause(trans)
-    post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key, with_transitives)
+    post_request(context, ecosystem, manifest, with_user_key, with_valid_user_key,
+                 with_transitives, is_user_registered, is_invalid)
     # Send SA request
 
 
@@ -600,3 +642,19 @@ def verify_transitive_dependencies_count(context, expected, component):
 def verify_distinct_license(context, licenses):
     """Verify the checks for distinct licenses."""
     check_for_distinct_license(context, licenses)
+
+
+@then('I should find premium vulnerablities in result')
+def verify_premium_feilds(context):
+    """I should verify the registered user feilds in result."""
+    json_data = get_json_data(context)
+    check_attribute_presence(json_data, 'analyzed_dependencies')
+    for dep in json_data['analyzed_dependencies']:
+        if dep['public_vulnerabilities'] != []:
+            for vuln in dep['public_vulnerabilities']:
+                check_vulenrability_attributes(vuln)
+                check_premium_vuln_attributes(vuln)
+        elif dep['private_vulnerabilities'] != []:
+            for vuln in dep['private_vulnerabilities']:
+                check_vulenrability_attributes(vuln)
+                check_premium_vuln_attributes(vuln)

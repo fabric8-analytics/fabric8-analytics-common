@@ -48,6 +48,29 @@ def perform_CA_batch_call(context, use_user_key, packages_file):
     context.duration = end_time - start_time
 
 
+def perform_CA_batch_call_registered(context, use_user_key, packages_file, invalid_uuid):
+    """Perform Batch Call for component analysis."""
+    context.duration = None
+    start_time = time.time()
+    uuid = context.uuid
+    if invalid_uuid:
+        uuid = '13deddd7-be8b-4ad5-a97b-657d1302010u'
+    headers = {'uuid': uuid}
+    url = component_analysis_batch_call_url(context)
+    parms = {'user_key': context.three_scale_preview_user_key}
+
+    data = get_packages_from_json(packages_file)
+
+    if use_user_key:
+        context.response = requests.post(url, headers=headers, params=parms, json=data)
+        if context.response.status_code == 429:
+            raise Exception("429 Limit excceded")
+    else:
+        context.response = requests.post(url, json=data)
+    end_time = time.time()
+    context.duration = end_time - start_time
+
+
 def validate_vuln_feilds(vul):
     """Validate feilds present in vulnerability."""
     for vuln in vul:
@@ -88,6 +111,49 @@ def check_for_registered_user_feilds(item):
         raise Exception("Field vendor_package_link has been exposed for free user")
 
 
+def find_registered_user_feilds(item):
+    """I should check if registered user feilds are present."""
+    if "recommendation" not in item:
+        assert "exploitable_vulnerabilities_count" in item, "No exploits found"
+        assert "vendor_package_link" in item, "No vendor package link found"
+
+
+def validate_vuln_basic_feilds(single_item):
+    """Validate Basic Vulnerabity feilds."""
+    if "vulnerability" in single_item:
+        assert "package" in single_item, "No package Found!"
+        assert "version" in single_item, "No Version Found!"
+        assert "package_unknown" in single_item
+        assert "message" in single_item, "No message found"
+        assert "highest_severity" in single_item, "No severity found"
+        assert "known_security_vulnerability_count" in single_item
+        assert "security_advisory_count" in single_item
+        assert "recommended_versions" in single_item, "No Recommended version found"
+        validate_vuln_feilds(single_item['vulnerability'])
+    elif single_item["package_unknown"]:
+        assert "name" in single_item
+        assert "version" in single_item
+    else:
+        assert "recommendation" in single_item
+        assert "package_unknown" in single_item
+        assert "package" in single_item
+        assert "version" in single_item
+        assert single_item['recommendation'] == {}
+
+
+def check_for_registration_link(is_user_registered, single_item):
+    """Check for registration link."""
+    if not is_user_registered and "vulnerability" in single_item:
+        assert "registration_link" in single_item, "No snyk registration link found"
+
+
+def validate_all_feilds(json_data, is_user_registered=False):
+    """Validate all the feilds that are present in result."""
+    for single_item in json_data:
+        check_for_registration_link(is_user_registered, single_item)
+        validate_vuln_basic_feilds(single_item)
+
+
 @when("I start CA batch call for {file} {user_key} user_key")
 def start_batch_call(context, file, user_key):
     """Start CA Batch call."""
@@ -95,31 +161,22 @@ def start_batch_call(context, file, user_key):
     perform_CA_batch_call(context, use_user_key, file)
 
 
+@when("I start CA registered user batch call for {file} {user_key} user_key")
+@when("I start CA registered user batch call for {file} {user_key} user_key {uuid} invalid uuid")
+def start_registered_batch_call(context, file, user_key, uuid="without"):
+    """Start CA Batch call for registered user."""
+    use_user_key = parse_token_clause(user_key)
+    invalid_uuid = parse_token_clause(uuid)
+    perform_CA_batch_call_registered(context, use_user_key, file, invalid_uuid)
+
+
 @then('I should be able to validate all the feilds or vulnerablities in the result')
-def find_vulnerablities(context):
+@then('I should be able to validate all the feilds or vulnerablities in the result {user} userid')
+def find_vulnerablities(context, user="without"):
     """I should be able to find some Vulnerablities."""
     json_data = context.response.json()
-    for single_item in json_data:
-        if "vulnerability" in single_item:
-            assert "package" in single_item, "No package Found!"
-            assert "version" in single_item, "No Version Found!"
-            assert "package_unknown" in single_item
-            assert "message" in single_item, "No message found"
-            assert "highest_severity" in single_item, "No severity found"
-            assert "known_security_vulnerability_count" in single_item
-            assert "security_advisory_count" in single_item
-            assert "recommended_versions" in single_item, "No Recommended version found"
-            assert "registration_link" in single_item, "No snyk registration link found"
-            validate_vuln_feilds(single_item['vulnerability'])
-        elif single_item["package_unknown"]:
-            assert "name" in single_item
-            assert "version" in single_item
-        else:
-            assert "recommendation" in single_item
-            assert "package_unknown" in single_item
-            assert "package" in single_item
-            assert "version" in single_item
-            assert single_item['recommendation'] == {}
+    is_user_registered = parse_token_clause(user)
+    validate_all_feilds(json_data, is_user_registered)
 
 
 @then('I should find package {package} {version} has no recommendation')
@@ -134,14 +191,32 @@ def find_package_versions(context, package, version):
             pass
 
 
+def find_package_version(item, package, version, rec_version):
+    """Find package and version."""
+    try:
+        if item['package'] == package and item['version'] == version:
+            assert item['recommended_versions'] == rec_version
+    except KeyError:
+        pass
+
+
 @then('I should find package {package} {version} has {rec_version} recommended version')
 def find_recommended_version(context, package, version, rec_version):
     """I should be able to validate recommended version."""
     json_data = context.response.json()
     for item in json_data:
+        find_package_version(item, package, version, rec_version)
+
+
+@then('I should find package {package} {version} has {expolits} expolits and {link} vendor link')
+def find_expolits_link(context, package, version, expolits, link):
+    """I should be able to validate exploits and link."""
+    json_data = context.response.json()
+    for item in json_data:
         try:
             if item['package'] == package and item['version'] == version:
-                assert item['recommended_versions'] == rec_version
+                assert item['exploitable_vulnerabilities_count'] == int(expolits)
+                assert item['vendor_package_link'] == link
         except KeyError:
             pass
 
@@ -200,3 +275,11 @@ def check_for_exposed(context):
     json_data = context.response.json()
     for item in json_data:
         check_for_registered_user_feilds(item)
+
+
+@then('I should find all the registered user fields in result')
+def check_for_registered_user(context):
+    """Exposed fields for free user check."""
+    json_data = context.response.json()
+    for item in json_data:
+        find_registered_user_feilds(item)
