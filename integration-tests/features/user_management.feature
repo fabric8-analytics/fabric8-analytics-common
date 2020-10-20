@@ -190,7 +190,7 @@ Feature: User Management API
         
             Examples: Stack analyses POST params
             | ecosystem | manifest               |
-            | pypi      | pylist.json            |
+            #| pypi      | pylist.json            |
             | npm       | valid_npmlist.json     |
             | maven     | vertx_dependencies.txt |
     
