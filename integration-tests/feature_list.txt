@@ -27,7 +27,7 @@ features/components.feature
 #features/stack_analyses_smoke_tests_npm_ecosystem.feature
 # Stack analyses V2 features.
 features/stack_analyses_v2.feature
-features/stack_analyses_v2_smoke.feature
+#features/stack_analyses_v2_smoke.feature
 features/stack_analyses_v2_valid_dynamic.feature
 # Not used in real production: features/user_feedback.feature
 #features/versions.feature
