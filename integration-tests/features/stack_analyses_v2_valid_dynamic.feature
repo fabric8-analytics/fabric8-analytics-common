@@ -102,7 +102,7 @@
     When I wait 5 seconds
     When I tried to fetch dynamic manifests from s3
     Then I should be able to validate them
-    When I wait 10 seconds
+    When I wait 20 seconds
     When I send pypi package request with manifest valid_manifests/pylist.json to stack analysis v2 with valid user key
     Then I should get 200 status code
      And I should receive JSON response containing the status key
@@ -113,7 +113,7 @@
      And I should receive JSON response with the correct timestamp in attribute submitted_at
     When I wait for stack analysis v2 to finish with user key
     Then I should get stack analyses v2 response with all attributes
-    When I wait 10 seconds
+    When I wait 20 seconds
     When I send maven package request with manifest valid_manifests/dependencies.txt to stack analysis v2 with valid user key
      Then I should get 200 status code
      And I should receive JSON response containing the status key
@@ -124,7 +124,7 @@
      And I should receive JSON response with the correct timestamp in attribute submitted_at
     When I wait for stack analysis v2 to finish with user key
     Then I should get stack analyses v2 response with all attributes
-    When I wait 10 seconds
+    When I wait 20 seconds
     When I send npm package request with manifest valid_manifests/npmlist.json to stack analysis v2 with valid user key
      Then I should get 200 status code
      And I should receive JSON response containing the status key
