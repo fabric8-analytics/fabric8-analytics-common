@@ -2,100 +2,100 @@
   "ecosystem": "golang",
   "package_versions": [
     {
-      "package": "github.com/rancher/rancher/pkg/clusterrouter",
+      "package": "github.com/rancher/rancher/pkg/clusterrouter@github.com/rancher/rancher",
       "version": "2.2.4-rc22"
     },
-    { "package": "github.com/hashicorp/consul/acl", "version": "1.4.0" },
+    { "package": "github.com/hashicorp/consul/acl@github.com/hashicorp/consul", "version": "1.4.0" },
     { "package": "github.com/seccomp/libseccomp-golang", "version": "0.9.0" },
     { "package": "github.com/moby/moby", "version": "upstream/0.1.1" },
     {
-      "package": "github.com/coreos/etcd/pkg/httputil",
+      "package": "github.com/coreos/etcd/pkg/httputil@github.com/coreos/etcd",
       "version": "3.3.14-beta.0"
     },
-    { "package": "github.com/coreos/etcd/embed", "version": "2.3.0" },
-    { "package": "github.com/heketi/heketi/apps/glusterfs", "version": "0.5" },
+    { "package": "github.com/coreos/etcd/embed@github.com/coreos/etcd", "version": "2.3.0" },
+    { "package": "github.com/heketi/heketi/apps/glusterfs@github.com/heketi/heketi", "version": "0.5" },
     { "package": "github.com/docker/docker", "version": "upstream/0.1.1" },
     { "package": "github.com/openshift/origin", "version": "1.4.0" },
     {
-      "package": "github.com/opencontainers/runc/libcontainer/user",
+      "package": "github.com/opencontainers/runc/libcontainer/user@github.com/opencontainers/runc",
       "version": "0.0.7"
     },
     { "package": "gopkg.in/square/go-jose.v1", "version": "1.0.3" },
-    { "package": "github.com/hashicorp/vault/vault", "version": "1.1.4" },
+    { "package": "github.com/hashicorp/vault/vault@github.com/hashicorp/vault", "version": "1.1.4" },
     { "package": "github.com/ulikunitz/xz", "version": "0.5.4" },
     { "package": "github.com/dinever/golf", "version": "0.1.1" },
     {
-      "package": "github.com/pterodactyl/wings/server",
+      "package": "github.com/pterodactyl/wings/server@github.com/pterodactyl/wings",
       "version": "1.0.0-beta.7"
     },
     {
-      "package": "github.com/aws/aws-sdk-go/service/s3/s3crypto",
+      "package": "github.com/aws/aws-sdk-go/service/s3/s3crypto@github.com/aws/aws-sdk-go",
       "version": "1.16.33"
     },
-    { "package": "github.com/gophish/gophish/controllers", "version": "0.1.2" },
-    { "package": "github.com/Terry-Mao/goim/api/comet/grpc", "version": "1.0" },
-    { "package": "github.com/gophish/gophish/middleware", "version": "0.7.0" },
+    { "package": "github.com/gophish/gophish/controllers@github.com/gophish/gophish", "version": "0.1.2" },
+    { "package": "github.com/Terry-Mao/goim/api/comet/grpc@github.com/Terry-Mao/goim", "version": "1.0" },
+    { "package": "github.com/gophish/gophish/middleware@github.com/gophish/gophish", "version": "0.7.0" },
     {
       "package": "github.com/kubernetes/kubelet",
       "version": "kubernetes-1.14.0-beta.1"
     },
     {
-      "package": "github.com/kubernetes/kubernetes/pkg/volume/glusterfs",
+      "package": "github.com/kubernetes/kubernetes/pkg/volume/glusterfs@github.com/kubernetes/kubernetes",
       "version": "0.12.0"
     },
     {
-      "package": "github.com/kubernetes/kubernetes/pkg/volume/quobyte",
+      "package": "github.com/kubernetes/kubernetes/pkg/volume/quobyte@github.com/kubernetes/kubernetes",
       "version": "1.1.1"
     },
     {
-      "package": "github.com/opencontainers/runc/libcontainer",
+      "package": "github.com/opencontainers/runc/libcontainer@github.com/opencontainers/runc",
       "version": "0.0.8"
     },
     { "package": "github.com/oauth2-proxy/oauth2-proxy", "version": "5.1.0" },
     { "package": "github.com/gogs/gogs/models", "version": "0.11.79" },
     { "package": "github.com/shiyanhui/dht", "version": "0.1" },
     {
-      "package": "github.com/nats-io/nats-server/v2/server",
+      "package": "github.com/nats-io/nats-server/v2/server@github.com/nats-io/nats-server",
       "version": "0.6.0"
     },
-    { "package": "github.com/u-root/u-root/pkg/uzip", "version": "5.0.0" },
-    { "package": "github.com/unknwon/cae/zip", "version": "0.0.1" },
+    { "package": "github.com/u-root/u-root/pkg/uzip@github.com/u-root/u-root", "version": "5.0.0" },
+    { "package": "github.com/unknwon/cae/zip@github.com/unknwon/cae", "version": "0.0.1" },
     { "package": "github.com/go-macaron/macaron", "version": "1.2.3" },
     {
-      "package": "github.com/binance-chain/tss-lib/crypto/commitments",
+      "package": "github.com/binance-chain/tss-lib/crypto/commitments@github.com/binance-chain/tss-lib",
       "version": "1.0.0"
     },
     { "package": "github.com/pion/dtls", "version": "1.2.2" },
-    { "package": "github.com/go-gitea/gitea/models", "version": "1.6.2" },
+    { "package": "github.com/go-gitea/gitea/models@github.com/go-gitea/gitea", "version": "1.6.2" },
     {
-      "package": "github.com/gravitational/teleport/lib/client",
+      "package": "github.com/gravitational/teleport/lib/client@github.com/gravitational/teleport",
       "version": "0.2.1"
     },
     {
-      "package": "github.com/hashicorp/nomad/command/agent",
+      "package": "github.com/hashicorp/nomad/command/agent@github.com/hashicorp/nomad",
       "version": "0.9.6"
     },
     {
-      "package": "github.com/kubernetes/kubernetes/staging/src/k8s.io/apiserver/pkg/server",
+      "package": "github.com/kubernetes/kubernetes/staging/src/k8s.io/apiserver/pkg/server@github.com/kubernetes/kubernetes",
       "version": "0.7.0"
     },
     {
-      "package": "github.com/containers/buildah/imagebuildah",
+      "package": "github.com/containers/buildah/imagebuildah@github.com/containers/buildah",
       "version": "0.6"
     },
-    { "package": "github.com/kiali/kiali/config", "version": "1.0.9" },
+    { "package": "github.com/kiali/kiali/config@github.com/kiali/kiali", "version": "1.0.9" },
     {
-      "package": "github.com/containous/traefik/pkg/server",
+      "package": "github.com/containous/traefik/pkg/server@github.com/containous/traefik",
       "version": "1.0.0-beta.291"
     },
-    { "package": "github.com/rancher/rancher/server", "version": "2.2.4-rc23" },
-    { "package": "github.com/square/go-jose/cipher", "version": "1.0.3" },
+    { "package": "github.com/rancher/rancher/server@github.com/rancher/rancher", "version": "2.2.4-rc23" },
+    { "package": "github.com/square/go-jose/cipher@github.com/square/go-jose", "version": "1.0.3" },
     {
-      "package": "github.com/rancher/rancher/pkg/controllers/user/rbac",
+      "package": "github.com/rancher/rancher/pkg/controllers/user/rbac@github.com/rancher/rancher",
       "version": "2.1.3"
     },
     {
-      "package": "github.com/vmware-tanzu/velero/pkg/restore",
+      "package": "github.com/vmware-tanzu/velero/pkg/restore@github.com/vmware-tanzu/velero",
       "version": "1.5.2"
     }
   ]
