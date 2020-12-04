@@ -112,7 +112,7 @@ Feature: Component analysis V2 Batch Call API for Go lang ecosystem
 
         When I acquire the use_key for 3scale
         Then I should get the proper user_key
-        When I start CA batch call for both_module_package_vuln.json with user_key
+        When I start CA batch call for module_package_not_vuln.json with user_key
         Then I should get 200 status code
         And I should receive a valid JSON response
         Then I should be able to validate all the feilds or vulnerablities in the result
