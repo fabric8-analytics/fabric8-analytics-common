@@ -1,0 +1,13 @@
+{
+  "ecosystem": "golang",
+  "package_versions": [
+    {
+      "package": "k8s.io/kubernetes",
+      "version": "0.19.1"
+    },
+    {
+      "package": "k8s.io/kubernetes/pkg/kubelet@k8s.io/kubernetes/pkg",
+      "version": "1.4.9"
+    }
+  ]
+}
