@@ -100,7 +100,7 @@ Feature: Component analysis V2 Batch Call API for Go lang ecosystem
         And I should receive a valid JSON response
         Then I should be able to validate all the feilds or vulnerablities in the result
         And I should find package k8s.io/kubernetes 0.19.1  has v1.20.0-beta.1 recommended version
-        Then I should find snyk id SNYK-GOLANG-K8SIOKUBERNETES-50019 and 6.5 for package k8s.io/kubernetes 0.19.1 and version 0.19.1
+        Then I should find snyk id SNYK-GOLANG-K8SIOKUBERNETES-50019 and 6.5 for package k8s.io/kubernetes and version 0.19.1
         And I should find package k8s.io/kubernetes/pkg/kubelet@k8s.io/kubernetes/pkg 1.4.9  has v1.20.0-beta.1 recommended version
         Then I should find snyk id SNYK-GOLANG-K8SIOKUBERNETESPKGKUBELET-1015602 and 5.5 for package k8s.io/kubernetes/pkg/kubelet@k8s.io/kubernetes/pkg and version 1.4.9
 
@@ -117,5 +117,17 @@ Feature: Component analysis V2 Batch Call API for Go lang ecosystem
         And I should receive a valid JSON response
         Then I should be able to validate all the feilds or vulnerablities in the result
         And I should not find any vulnerablities in result
-        
 
+    @cav2
+    Scenario: Pesudo version checks 
+        Given System is running
+        Given Three scale preview service is running
+
+        When I acquire the use_key for 3scale
+        Then I should get the proper user_key
+        When I start CA batch call for pseudo_version.json with user_key
+        Then I should get 200 status code
+        And I should receive a valid JSON response
+        Then I should be able to validate all the feilds or vulnerablities in the result
+        And I should find package github.com/grafana/grafana v0.0.0-20200909125844-dfa808ea25a5  has v7.3.1 recommended version
+        Then I should find snyk id SNYK-GOLANG-GITHUBCOMORYFOSITE-1015594 and 6.1 for package github.com/ory/fosite and version v0.0.0-20200916092647-8daab21f97c5

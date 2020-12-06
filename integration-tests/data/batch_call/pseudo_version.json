@@ -1,0 +1,21 @@
+{
+  "ecosystem": "golang",
+  "package_versions": [
+    {
+      "package": "github.com/ory/fosite",
+      "version": "v0.0.0-20200916092647-8daab21f97c5"
+    },
+    {
+      "package": "github.com/hashicorp/nomad",
+      "version": "v0.0.0-20190821173104-a5c3aaffd1e1"
+    },
+    {
+      "package": "github.com/kubernetes/kube-proxy",
+      "version": "v0.0.0-20191212015419-c559daffcb0f"
+    },
+    {
+      "package": "github.com/grafana/grafana",
+      "version": "v0.0.0-20200909125844-dfa808ea25a5"
+    }
+  ]
+}
