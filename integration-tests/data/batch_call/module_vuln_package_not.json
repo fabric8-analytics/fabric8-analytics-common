@@ -1,0 +1,13 @@
+{
+  "ecosystem": "golang",
+  "package_versions": [
+    {
+      "package": "github.com/containous/traefik/",
+      "version": "1.4.2"
+    },
+    {
+      "package": "github.com/containous/traefik/api@github.com/containous/traefik",
+      "version": "1.7.26"
+    }
+  ]
+}

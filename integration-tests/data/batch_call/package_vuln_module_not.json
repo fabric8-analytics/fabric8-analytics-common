@@ -1,0 +1,13 @@
+{
+  "ecosystem": "golang",
+  "package_versions": [
+    {
+      "package": "github.com/hashicorp/nomad/client/allocrunner/taskrunner/template@github.com/hashicorp/nomad",
+      "version": "0.9.2"
+    },
+    {
+      "package": "github.com/hashicorp/nomad",
+      "version": "0.10.3"
+    }
+  ]
+}
