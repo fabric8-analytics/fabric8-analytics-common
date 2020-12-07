@@ -1,0 +1,17 @@
+{
+  "ecosystem": "golang",
+  "package_versions": [
+    { "package": "github.com/goharbor/harbor", "version": "1.8.4" },
+    { "package": "k8s.io/kubernetes/pkg/volume/scaleio@k8s.io/kubernetes", "version": "1.1.7" },
+    { "package": "k8s.io/kube-proxy", "version": "kubernetes-1.15.10" },
+    { "package": "github.com/grafana/grafana", "version": "1.5.0" },
+    {
+      "package": "github.com/u-root/u-root/pkg/tarutil@github.com/u-root/u-root",
+      "version": "test-image-amd64-v3.2.2"
+    },
+    {
+      "package": "github.com/opencontainers/runc/libcontainer@github.com/opencontainers/runc",
+      "version": "1.0.0-rc1"
+    }
+  ]
+}

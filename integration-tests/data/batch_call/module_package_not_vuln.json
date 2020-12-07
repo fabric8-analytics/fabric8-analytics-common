@@ -1,0 +1,13 @@
+{
+  "ecosystem": "golang",
+  "package_versions": [
+    {
+      "package": "github.com/ory/fosite/handler/oauth2@github.com/ory/fosite",
+      "version": "0.34.0"
+    },
+    {
+      "package": "github.com/ory/fosite",
+      "version": "0.34.1"
+    }
+  ]
+}
