@@ -50,7 +50,7 @@ Feature: User Management API
             Then I should be able to validate post or put request
             When I try the put call with invalid snyk token with user_key
             Then I should get 400 status code
-      
+    @skip  
     Scenario: Request for an invalid user
         Given System is running
         Given Three scale preview service is running
@@ -61,7 +61,7 @@ Feature: User Management API
             Then I should get 404 status code
             Then I should be able to validate the get request
             Then I should get user not found message
-
+    @skip
     Scenario: Request for an Free Tier user
         Given System is running
         Given Three scale preview service is running
