@@ -1,47 +1,6 @@
 Feature: Stack analysis v2 API Golang Ecosystem Tests
 
 
-    @sav2
-    Scenario: Check the golang API without user key
-        Given System is running
-        When I send golang package request with manifest golist.json to stack analysis v2 without valid user key
-        Then I should get 403 status code
-
-
-    @sav2
-    Scenario: Check the golang API with invalid user key
-        Given System is running
-        Given Three scale preview service is running
-        When I acquire the use_key for 3scale
-        Then I should get the proper user_key
-        When I send golang package request with manifest valid_golist.json to stack analysis v2 with invalid user key
-        Then I should get 403 status code
-
-    @sav2
-    Scenario: Check the golang API with valid user key
-        Given System is running
-        Given Three scale preview service is running
-        When I acquire the use_key for 3scale
-        Then I should get the proper user_key
-        When I wait 10 seconds
-        When I send golang package request with manifest valid_golist.json to stack analysis v2 with valid user key
-        Then I should get 200 status code
-        And I should receive JSON response containing the status key
-        And I should receive JSON response containing the id key
-        And I should receive JSON response containing the submitted_at key
-        And I should receive JSON response with the status key set to success
-        And I should receive JSON response with the correct id
-        And I should receive JSON response with the correct timestamp in attribute submitted_at
-
-    @sav2
-    Scenario Outline: Check the stack analysis v2 for invalid manifest data
-        Given System is running
-        Given Three scale preview service is running
-        When I acquire the use_key for 3scale
-        Then I should get the proper user_key
-        When I send go package request with manifest golist.json to stack analysis v2 with valid user key
-        Then I should get 400 status code
-
 
     @sav2
     Scenario Outline: Check the stack analysis v2 request and response for proper data
