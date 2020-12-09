@@ -1,0 +1,75 @@
+{
+  "version": "v1",
+  "main": "github.com/arajkumar/hello-vuln",
+  "packages": [
+    {
+      "package": "github.com/gravitational/teleport/lib/client@github.com/gravitational/teleport",
+      "version": "0.2.1"
+    },
+    {
+      "package": "code.cloudfoundry.org/archiver/extractor@code.cloudfoundry.org/archiver",
+      "version": "0.0.0-20200131002800-4ca7245c29b1",
+      "deps": [
+        {
+          "package": "github.com/cyphar/filepath-securejoin",
+          "version": "0.2.2"
+        },
+        { "package": "github.com/pkg/errors", "version": "0.9.1" }
+      ]
+    },
+    {
+      "package": "github.com/fabric8-analytics/mercator-go/core@github.com/fabric8-analytics/mercator-go",
+      "version": "0.0.0-20190409054931-df597af29646",
+      "deps": [{ "package": "gopkg.in/yaml.v2", "version": "2.3.0" }]
+    },
+    {
+      "package": "github.com/fabric8-analytics/mercator-go/core/fileutils@github.com/fabric8-analytics/mercator-go",
+      "version": "0.0.0-20190409054931-df597af29646"
+    },
+    { "package": "github.com/go-yaml/yaml", "version": "2.1.0" },
+    {
+      "package": "github.com/rancher/rancher/pkg/clusterrouter@github.com/rancher/rancher",
+      "version": "2.2.4-rc22",
+      "deps":[
+          {
+            "package": "github.com/coreos/etcd/embed@github.com/coreos/etcd",
+            "version": "2.3.0"
+          },
+          {
+            "package": "github.com/heketi/heketi/apps/glusterfs@github.com/heketi/heketi",
+            "version": "0.5"
+          },
+          {
+            "package": "github.com/docker/docker",
+            "version": "upstream/0.1.1"
+          },
+          { "package": "github.com/openshift/origin", "version": "1.4.0" }
+
+      ]
+    },
+    { "package": "github.com/hashicorp/consul/acl@github.com/hashicorp/consul", "version": "1.4.0" },
+    { "package": "github.com/seccomp/libseccomp-golang", "version": "0.9.0" },
+    { "package": "github.com/moby/moby", "version": "upstream/0.1.1" },
+    {
+      "package": "github.com/coreos/etcd/pkg/httputil@github.com/coreos/etcd",
+      "version": "3.3.14-beta.0"
+    },
+    {
+      "package": "github.com/ory/fosite",
+      "version": "v0.0.0-20200916092647-8daab21f97c5"
+    },
+    {
+      "package": "github.com/hashicorp/nomad",
+      "version": "v0.0.0-20190821173104-a5c3aaffd1e1"
+    },
+    {
+      "package": "github.com/kubernetes/kube-proxy",
+      "version": "v0.0.0-20191212015419-c559daffcb0f"
+    },
+    {
+      "package": "github.com/grafana/grafana",
+      "version": "v0.0.0-20200909125844-dfa808ea25a5"
+    }
+
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "version": "v1",
+  "main": "github.com/arajkumar/hello-vuln",
+  "packages": [
+    {
+      "package": "code.cloudfoundry.org/archiver/extractor@code.cloudfoundry.org/archiver",
+      "version": "0.0.0-20200131002800-4ca7245c29b1",
+      "deps": [
+        {
+          "package": "github.com/cyphar/filepath-securejoin",
+          "version": "0.2.2"
+        },
+        { "package": "github.com/pkg/errors", "version": "0.9.1" }
+      ]
+    },
+    {
+      "package": "github.com/fabric8-analytics/mercator-go/core@github.com/fabric8-analytics/mercator-go",
+      "version": "0.0.0-20190409054931-df597af29646",
+      "deps": [{ "package": "gopkg.in/yaml.v2", "version": "2.3.0" }]
+    },
+    {
+      "package": "github.com/fabric8-analytics/mercator-go/core/fileutils@github.com/fabric8-analytics/mercator-go",
+      "version": "0.0.0-20190409054931-df597af29646"
+    },
+    { "package": "github.com/go-yaml/yaml", "version": "2.1.0" }
+  ]
+}

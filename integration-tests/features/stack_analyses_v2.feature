@@ -103,6 +103,7 @@ Feature: Stack analysis v2 API
      | None      | valid_pylist.json  |
      | npm       | None               |
      | None      | None               |
+     | golang    | None               |
 
   @sav2
   Scenario Outline: Check the stack analysis v2 for invalid manifest data
@@ -117,6 +118,7 @@ Feature: Stack analysis v2 API
      | ecosystem | manifest               |
      | pypi      | valid_npmlist.json     |
      | npm       | valid_dependencies.txt |
+     
 
   @sav2
   Scenario Outline: Check the stack analysis v2 request and response for proper data

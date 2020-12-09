@@ -33,7 +33,8 @@ logger = logging.getLogger(__file__)
 ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
     'pypi': 'pylist.json',
     'npm': 'npmlist.json',
-    'maven': 'dependencies.txt'
+    'maven': 'dependencies.txt',
+    'golang': 'golist.json'
 }
 
 
