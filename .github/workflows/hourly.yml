@@ -1,9 +1,8 @@
 name: Hourlly Tests
 
 on:
-  push: 
   schedule:
-    - cron: '0 0 * * *'  
+    - cron: '0 * * * *'  
 
 jobs:
   Hourly-CA:
