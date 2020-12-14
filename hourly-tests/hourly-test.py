@@ -28,6 +28,7 @@ ECOSYSTEM_TO_MANIFEST_NAME_MAP = {
     'maven': 'dependencies.txt',
     'golang': 'golist.json'
 }
+MAX_TIME_OUT = 120
 
 
 def make_sa_post_req(manifest, ecosystem):
@@ -46,7 +47,6 @@ def make_sa_post_req(manifest, ecosystem):
         data['file_path'] = os.path.abspath(os.path.dirname(filename))
     response = requests.request("POST", url, files=files,
                                 data=data, params=params)
-    time.sleep(10)
     if response.status_code == 200:
         data = response.json()
         stack_id = data['id']
@@ -74,10 +74,15 @@ def check_for_feilds(data):
 
 def make_sa_get_request(s_id):
     """Make Stack Analysis get request."""
-    params = {'user_key': THREE_SCALE_TOKEN}
-    url = API_URL + "/api/v2/stack-analyses/{}".format(s_id)
-    response = requests.get(url, params=params)
-    return response
+    sleep_amount = 10
+    timeout = MAX_TIME_OUT
+    for _ in range(timeout // sleep_amount):
+        params = {'user_key': THREE_SCALE_TOKEN}
+        url = API_URL + "/api/v2/stack-analyses/{}".format(s_id)
+        response = requests.get(url, params=params)
+        return response
+    else:
+        raise Exception('Timeout waiting for the stack analysis results') 
 
 
 if __name__ == "__main__":
