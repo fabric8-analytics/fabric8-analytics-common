@@ -58,6 +58,7 @@ def make_sa_post_req(manifest, ecosystem):
 
 def check_for_feilds(data):
     """Check is analyzed deps present in data."""
+    print(data)
     assert 'analyzed_dependencies' in data, "Response Invalid"
 
 
@@ -70,15 +71,20 @@ def make_sa_get_request(s_id):
         url = API_URL + "/api/v2/stack-analyses/{}".format(s_id)
         response = requests.get(url, params=params)
         status_code = response.status_code
+        print(status_code)
         if status_code == 200:
             check_for_feilds(response.json())
-            return
-        elif status_code == 202:
-            check_for_feilds(response.json())
-            return
-        else:
-            raise Exception("Error status code {c}".format(c=status_code))
-        print(response.json())
+            break
+        elif status_code == 429:
+            break
+        # 403 code should be checked later
+        elif status_code == 403:
+            break
+        # 401 code should be checked later
+        elif status_code == 401:
+            break
+        elif status_code != 202:
+            raise Exception('Bad HTTP status code {c}'.format(c=status_code))
         time.sleep(sleep_amount)
     else:
         raise Exception('Timeout waiting for the stack analysis results')
