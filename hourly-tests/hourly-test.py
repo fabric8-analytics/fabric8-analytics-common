@@ -50,17 +50,7 @@ def make_sa_post_req(manifest, ecosystem):
     if response.status_code == 200:
         data = response.json()
         stack_id = data['id']
-        get_response = make_sa_get_request(stack_id)
-        status_code = get_response.status_code
-        if status_code == 200:
-            check_for_feilds(get_response.json())
-            return
-        elif status_code == 202:
-            check_for_feilds(get_response.json())
-            return
-        else:
-            raise Exception("Error status code {c}".format(c=status_code))
-        print(get_response.json())
+        make_sa_get_request(stack_id)
     else:
         raise Exception("Error status code {c}".format(
                         c=response.status_code))
@@ -68,7 +58,6 @@ def make_sa_post_req(manifest, ecosystem):
 
 def check_for_feilds(data):
     """Check is analyzed deps present in data."""
-    print(data)
     assert 'analyzed_dependencies' in data, "Response Invalid"
 
 
@@ -80,9 +69,19 @@ def make_sa_get_request(s_id):
         params = {'user_key': THREE_SCALE_TOKEN}
         url = API_URL + "/api/v2/stack-analyses/{}".format(s_id)
         response = requests.get(url, params=params)
-        return response
+        status_code = response.status_code
+        if status_code == 200:
+            check_for_feilds(response.json())
+            return
+        elif status_code == 202:
+            check_for_feilds(response.json())
+            return
+        else:
+            raise Exception("Error status code {c}".format(c=status_code))
+        print(response.json())
+        time.sleep(sleep_amount)
     else:
-        raise Exception('Timeout waiting for the stack analysis results') 
+        raise Exception('Timeout waiting for the stack analysis results')
 
 
 if __name__ == "__main__":
