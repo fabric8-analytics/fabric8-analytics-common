@@ -1,0 +1,53 @@
+name: Hourlly Tests
+
+on:
+  schedule:
+    - cron: '0 * * * *'  
+
+jobs:
+  Hourly-CA:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - shell: bash
+        env:
+          THREE_SCALE_PROD_USER_KEY: ${{ secrets.THREE_SCALE_PROD_USER_KEY }}
+          F8A_API_URL: ${{secrets.F8A_API_URL}}
+        name: Run Component Analysis 
+        run: |
+          status=$(curl \
+          --write-out %{http_code} \
+          -X POST $F8A_API_URL/api/v2/component-analyses?user_key=$THREE_SCALE_PROD_USER_KEY \
+          -H 'Content-Type: application/json' \
+          --data-raw '{
+            "ecosystem": "npm",
+            "package_versions": [
+            {"package": "ejs", "version": "1.0.0"}
+            ]}')
+          if [[ "$status" -ne 200 ]] ; then
+             exit 1;
+          else
+            exit 0
+          fi
+      - name: Failure
+        if: failure()
+        run: echo "FAILED TESTS"
+  Hourly-SA:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+      - name: Install Dependencies
+        run: pip install -U pip && pip install requests
+      - name: Run Stack Analysis
+        env:
+          THREE_SCALE_PROD_USER_KEY: ${{ secrets.THREE_SCALE_PROD_USER_KEY }}
+          F8A_API_URL: ${{secrets.F8A_API_URL}}
+        working-directory: ./hourly-tests 
+        run: python hourly-test.py
+      - name: Failure
+        if: failure()
+        run: echo "FAILED TESTS"
