@@ -91,12 +91,12 @@ jobs:
             export F8A_LICENSE_SERVICE_URL=${F8A_LICENSE_SERVICE_URL:-https://license-analysis.api.prod-preview.openshift.io};
             export OSIO_AUTH_SERVICE=${OSIO_AUTH_SERVICE:-https://auth.prod-preview.openshift.io};
             export MANIFESTS_BUCKET_URL=${MANIFESTS_BUCKET_URL:-https://public-dynamic-manifests.s3.amazonaws.com/};
-            export THREE_SCALE_PREVIEW_USER_KEY=${THREE_SCALE_PREVIEW_USER_KEY}
-            export RECOMMENDER_REFRESH_TOKEN=${RECOMMENDER_REFRESH_TOKEN}
-            export REGISTERED_USER_UUID=${REGISTERED_USER_UUID}
-            export SNYK_TOKEN=${SNYK_TOKEN}
+            export THREE_SCALE_PREVIEW_USER_KEY=${THREE_SCALE_PREVIEW_USER_KEY};
+            export RECOMMENDER_REFRESH_TOKEN=${RECOMMENDER_REFRESH_TOKEN};
+            export REGISTERED_USER_UUID=${REGISTERED_USER_UUID};
+            export SNYK_TOKEN=${SNYK_TOKEN};
 
-            
+            behave --tags=-skip --tags=-data-sanity -D dump_errors=true @feature_list.txt $@
 
         - name: Create Success comment
           if: github.event_name == 'repository_dispatch'  && github.event.action == 'run-e2e-command'
