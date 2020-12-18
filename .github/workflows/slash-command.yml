@@ -1,4 +1,3 @@
- 
 name: Slash Command Dispatch
 on:
   issue_comment:
@@ -12,4 +11,4 @@ jobs:
         with:
           token: ${{ secrets.CR_PAT }}
           commands: |
-            run-e2e
+            run-tests

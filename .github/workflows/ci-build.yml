@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [ master ]
+
    
 jobs:
   Code-Quality-Checks:
@@ -26,3 +26,4 @@ jobs:
       run: pip install -U pip && pip install virtualenv
     - name: ${{ matrix.scripts }}
       run: bash qa/${{ matrix.scripts }}.sh;
+      
