@@ -480,31 +480,6 @@ def check_token_structure(data):
     assert "expires_in" in token_structure
 
 
-def retrieve_access_token(refresh_token, auth_service_url):
-    """Retrieve temporary access token by using refresh/offline token."""
-    logger.info("Trying to retrieve access token")
-    if refresh_token is None:
-        logger.info("    aborting: RECOMMENDER_REFRESH_TOKEN environment variable is not set")
-        return None
-    if auth_service_url is None:
-        logger.info("    aborting: OSIO_AUTH_SERVICE environment variable is not set")
-        return None
-
-    payload = {'refresh_token': refresh_token}
-    url = urljoin(auth_service_url, _AUTH_ENDPOINT)
-    response = requests.post(url, json=payload)
-
-    assert response is not None and response.ok, "Error communicating with the OSIO AUTH service"
-    data = response.json()
-
-    # check the basic structure of the response
-    check_token_structure(data)
-
-    # seems like everything's ok, let's read the temporary access token
-    token_structure = data["token"]
-    return token_structure["access_token"]
-
-
 def before_all(context):
     """Perform the setup before the first event."""
     context.config.setup_logging()
@@ -592,8 +567,8 @@ def before_all(context):
     context.gemini_api_url = gemini_api_url
 
     # we can retrieve access token by using refresh/offline token
-    context.access_token = retrieve_access_token(os.environ.get("RECOMMENDER_REFRESH_TOKEN"),
-                                                 os.environ.get("OSIO_AUTH_SERVICE"))
+    #context.access_token = retrieve_access_token(os.environ.get("RECOMMENDER_REFRESH_TOKEN"),
+    #                                            os.environ.get("OSIO_AUTH_SERVICE"))
 
     # informations needed to access S3 database from tests
     _check_env_var_presence_s3_db('AWS_ACCESS_KEY_ID')

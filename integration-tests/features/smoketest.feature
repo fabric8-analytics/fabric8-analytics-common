@@ -41,31 +41,31 @@ Feature: Smoke test
     Then I should get 200 status code
 
 
-  @smoketest @production
-  Scenario: Check the 'readiness' REST API point for the Gemini service with using authorization token
-    Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
-     When I access the /api/v1/readiness endpoint of Gemini service with authorization token
-     Then I should get 200 status code
+  # @smoketest @production
+  # Scenario: Check the 'readiness' REST API point for the Gemini service with using authorization token
+  #   Given System is running
+  #    When I acquire the authorization token
+  #    Then I should get the proper authorization token
+  #    When I access the /api/v1/readiness endpoint of Gemini service with authorization token
+  #    Then I should get 200 status code
 
 
-  @smoketest @production
-  Scenario: Check the 'liveness' REST API entry point for the Gemini service with using authorization token
-    Given System is running
-     When I acquire the authorization token
-     Then I should get the proper authorization token
-     When I access the /api/v1/liveness endpoint of Gemini service with authorization token
-     Then I should get 200 status code
+  # @smoketest @production
+  # Scenario: Check the 'liveness' REST API entry point for the Gemini service with using authorization token
+  #   Given System is running
+  #    When I acquire the authorization token
+  #    Then I should get the proper authorization token
+  #    When I access the /api/v1/liveness endpoint of Gemini service with authorization token
+  #    Then I should get 200 status code
 
 
-  @smoketest @production
-  Scenario: Check the Gemini API /api/v1/register response
-    Given Gemini service is running
-      And Gemini service git url is https://github.com/jitpack/maven-simple
-      And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
-    When I post to Gemini API api/v1/register
-    Then I should get 401 status code
+  # @smoketest @production
+  # Scenario: Check the Gemini API /api/v1/register response
+  #   Given Gemini service is running
+  #     And Gemini service git url is https://github.com/jitpack/maven-simple
+  #     And Gemini service git sha is 9466faa13d65044c8430b418327df826f13ca07a
+  #   When I post to Gemini API api/v1/register
+  #   Then I should get 401 status code
 
 
 #  @smoketest @production
