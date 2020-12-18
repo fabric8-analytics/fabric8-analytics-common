@@ -1,0 +1,59 @@
+name: CI Run e2e
+
+on:
+  repository_dispatch:
+    types: [run-e2e-command]
+
+env:
+    THREE_SCALE_PREVIEW_USER_KEY: ${{ secrets.THREE_SCALE_PREVIEW_USER_KEY }}
+    RECOMMENDER_REFRESH_TOKEN: ${{ secrets.RECOMMENDER_REFRESH_TOKEN }} 
+    REGISTERED_USER_UUID: ${{secrets.REGISTERED_USER_UUID }} 
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+jobs:
+    Run-e2e-build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+          if: github.event_name == "repository_dispatch"  && github.event.action == 'run-e2e-command'
+        - run: |
+            git fetch origin +refs/pull/${{ github.event.client_payload.github.payload.issue.number }}/merge
+            git checkout FETCH_HEAD
+        - name: Prepare Environment
+          run: |
+            F8A_API_URL=${F8A_API_URL:-https://recommender.api.prod-preview.openshift.io};
+            F8A_JOB_API_URL=${F8A_JOB_API_URL:-http://bayesian-jobs-bayesian-preview.b6ff.rh-idev.openshiftapps.com};
+            F8A_API_V2_URL=${F8A_API_V2_URL:-https://f8a-analytics-preview-2445582058137.staging.gw.apicast.io};
+            F8A_GREMLIN_URL=${F8A_GREMLIN_URL:-http://bayesian-gremlin-http-preview-b6ff-bayesian-preview.b6ff.rh-idev.openshiftapps.com};
+            F8A_3SCALE_URL=${F8A_3SCALE_URL:-https://3scale-connect.api.prod-preview.openshift.io/};
+            F8A_THREE_SCALE_PREVIEW_URL=${F8A_THREE_SCALE_PREVIEW_URL:-https://f8a-analytics-preview-2445582058137.production.gw.apicast.io};
+            F8A_BACKBONE_API_URL=${F8A_BACKBONE_API_URL:-http://f8a-server-backbone-bayesian-preview.b6ff.rh-idev.openshiftapps.com/};
+            F8A_SERVICE_ID=${F8A_SERVICE_ID:-2555417755633};
+            F8A_GEMINI_API_URL=${F8A_GEMINI_API_URL:-https://gemini.api.prod-preview.openshift.io/};
+            F8A_LICENSE_SERVICE_URL=${F8A_LICENSE_SERVICE_URL:-https://license-analysis.api.prod-preview.openshift.io};
+            OSIO_AUTH_SERVICE=${OSIO_AUTH_SERVICE:-https://auth.prod-preview.openshift.io};
+            MANIFESTS_BUCKET_URL=${MANIFESTS_BUCKET_URL:-https://public-dynamic-manifests.s3.amazonaws.com/};
+        - name: Build Docker Image 
+          run: docker build -t f8a-e2e-tests .
+        - name: Run End to End
+          run: |
+            docker run -t \
+              -e F8A_API_URL=${F8A_API_URL} \
+              -e F8A_API_V2_URL=${F8A_API_V2_URL} \
+              -e F8A_JOB_API_URL=${F8A_JOB_API_URL} \
+              -e F8A_GREMLIN_URL=${F8A_GREMLIN_URL} \
+              -e F8A_3SCALE_URL=${F8A_3SCALE_URL} \
+              -e F8A_THREE_SCALE_PREVIEW_URL=${F8A_THREE_SCALE_PREVIEW_URL}\
+              -e F8A_SERVICE_ID=${F8A_SERVICE_ID} \
+              -e F8A_BACKBONE_API_URL=${F8A_BACKBONE_API_URL} \
+              -e F8A_GEMINI_API_URL=${F8A_GEMINI_API_URL} \
+              -e F8A_LICENSE_SERVICE_URL=${F8A_LICENSE_SERVICE_URL} \
+              -e MANIFESTS_BUCKET_URL=${MANIFESTS_BUCKET_URL} \
+              ${RECOMMENDER_API_TOKEN:+-e RECOMMENDER_API_TOKEN=${RECOMMENDER_API_TOKEN}} \
+              ${RECOMMENDER_REFRESH_TOKEN:+-e RECOMMENDER_REFRESH_TOKEN=${RECOMMENDER_REFRESH_TOKEN}} \
+              ${OSIO_AUTH_SERVICE:+-e OSIO_AUTH_SERVICE=${OSIO_AUTH_SERVICE}} \
+              ${THREE_SCALE_PREVIEW_USER_KEY:+-e THREE_SCALE_PREVIEW_USER_KEY=${THREE_SCALE_PREVIEW_USER_KEY}} \
+              ${REGISTERED_USER_UUID:+-e REGISTERED_USER_UUID=${REGISTERED_USER_UUID}} \
+              ${SNYK_TOKEN:+-e SNYK_TOKEN=${SNYK_TOKEN}} \
+              f8a-e2e-tests --tags=-jobs.requires_auth --tags=-requires.openshift.console.access --no-color $@
+        
