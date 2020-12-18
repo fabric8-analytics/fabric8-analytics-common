@@ -131,7 +131,7 @@ def validate_vuln_basic_feilds(single_item):
         assert "recommended_versions" in single_item, "No Recommended version found"
         validate_vuln_feilds(single_item['vulnerability'])
     elif single_item["package_unknown"]:
-        assert "name" in single_item
+        assert "package" in single_item
         assert "version" in single_item
     else:
         assert "recommendation" in single_item
@@ -252,7 +252,7 @@ def check_if_package_exists(context):
     for item in json_data:
         is_unknown = item['package_unknown']
         if is_unknown:
-            assert "name" in item
+            assert "package" in item
             assert "version" in item
 
 
