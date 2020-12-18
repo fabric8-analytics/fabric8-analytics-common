@@ -10,7 +10,7 @@ features/component_analysis_golang.feature
 features/component_analysis_v2_batchcall.feature
 features/component_analysis_v2.feature
 features/component_analysis_v2_smoke_tests.feature
-features/components.feature
+#features/components.feature
 # Stack analyses V2 features.
 features/stack_analyses_v2.feature
 features/stack_analyses_v2_golang.feature
@@ -22,7 +22,7 @@ features/stack_analyses_v2_valid_dynamic.feature
 #features/regression_tests.feature
 # Not used in real production: features/user_tag.feature
 ## temporary: features/gremlin.feature
-features/three_scale.feature
+#features/three_scale.feature
 #features/api_backbone.feature
 #features/gemini.feature
 features/resilient_infrastructure.feature
