@@ -21,12 +21,12 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - name : Checkout PR code 
-          if: github.event_name == 'repository_dispatch'  && github.event.action == 'run-e2e-command'
+          if: github.event_name == 'repository_dispatch'  && github.event.action == 'e2e-command'
           run: |
             git fetch origin +refs/pull/${{ github.event.client_payload.github.payload.issue.number }}/merge
             git checkout FETCH_HEAD
         - name: Create comment
-          if: github.event_name == 'repository_dispatch'  && github.event.action == 'run-e2e-command'
+          if: github.event_name == 'repository_dispatch'  && github.event.action == 'e2e-command'
           uses: peter-evans/create-or-update-comment@v1
           with:
             issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
@@ -62,14 +62,14 @@ jobs:
             behave --tags=-skip --tags=-data-sanity --tags=-requires.openshift.console.access -D dump_errors=true @feature_list.txt $@
 
         - name: Create Success comment
-          if: github.event_name == 'repository_dispatch'  && github.event.action == 'run-e2e-command'
+          if: github.event_name == 'repository_dispatch'  && github.event.action == 'e2e-command'
           uses: peter-evans/create-or-update-comment@v1
           with:
             issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
             body: |
               :v: [E2E Run Successfull](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}})
         - name: Create fail comment
-          if: failure() && github.event_name == 'repository_dispatch'  && github.event.action == 'run-e2e-command'
+          if: failure() && github.event_name == 'repository_dispatch'  && github.event.action == 'e2e-command'
           uses: peter-evans/create-or-update-comment@v1
           with:
             issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
