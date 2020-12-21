@@ -1,0 +1,78 @@
+name: CI Run e2e
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [e2e-command]
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+    THREE_SCALE_PREVIEW_USER_KEY: ${{ secrets.THREE_SCALE_PREVIEW_USER_KEY }}
+    RECOMMENDER_REFRESH_TOKEN: ${{ secrets.RECOMMENDER_REFRESH_TOKEN }} 
+    REGISTERED_USER_UUID: ${{secrets.REGISTERED_USER_UUID }} 
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+jobs:
+    Run-e2e-build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name : Checkout PR code 
+          if: github.event_name == 'repository_dispatch'  && github.event.action == 'e2e-command'
+          run: |
+            git fetch origin +refs/pull/${{ github.event.client_payload.github.payload.issue.number }}/merge
+            git checkout FETCH_HEAD
+        - name: Create comment
+          if: github.event_name == 'repository_dispatch'  && github.event.action == 'e2e-command'
+          uses: peter-evans/create-or-update-comment@v1
+          with:
+            issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+            body: |
+              :test_tube: [CI has Started E2E run]( https://github.com/${{github.repository}}/actions/runs/${{github.run_id}})
+        - name: Set up Python 3.6
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.6'
+        - name: Install Dependencies
+          working-directory: ./integration-tests
+          run: pip install -U pip && pip install -r requirements.txt
+        - name: Run End to End
+          working-directory: ./integration-tests
+          run: |
+            export F8A_API_URL=${F8A_API_URL:-https://recommender.api.prod-preview.openshift.io};
+            export F8A_JOB_API_URL=${F8A_JOB_API_URL:-http://bayesian-jobs-bayesian-preview.b6ff.rh-idev.openshiftapps.com};
+            export F8A_API_V2_URL=${F8A_API_V2_URL:-https://f8a-analytics-preview-2445582058137.staging.gw.apicast.io};
+            export F8A_GREMLIN_URL=${F8A_GREMLIN_URL:-http://bayesian-gremlin-http-preview-b6ff-bayesian-preview.b6ff.rh-idev.openshiftapps.com};
+            export F8A_3SCALE_URL=${F8A_3SCALE_URL:-https://3scale-connect.api.prod-preview.openshift.io/};
+            export F8A_THREE_SCALE_PREVIEW_URL=${F8A_THREE_SCALE_PREVIEW_URL:-https://f8a-analytics-preview-2445582058137.production.gw.apicast.io};
+            export F8A_BACKBONE_API_URL=${F8A_BACKBONE_API_URL:-http://f8a-server-backbone-bayesian-preview.b6ff.rh-idev.openshiftapps.com/};
+            export F8A_SERVICE_ID=${F8A_SERVICE_ID:-2555417755633};
+            export F8A_GEMINI_API_URL=${F8A_GEMINI_API_URL:-https://gemini.api.prod-preview.openshift.io/};
+            export F8A_LICENSE_SERVICE_URL=${F8A_LICENSE_SERVICE_URL:-https://license-analysis.api.prod-preview.openshift.io};
+            export OSIO_AUTH_SERVICE=${OSIO_AUTH_SERVICE:-https://auth.prod-preview.openshift.io};
+            export MANIFESTS_BUCKET_URL=${MANIFESTS_BUCKET_URL:-https://public-dynamic-manifests.s3.amazonaws.com/};
+            export THREE_SCALE_PREVIEW_USER_KEY=${THREE_SCALE_PREVIEW_USER_KEY};
+            export RECOMMENDER_REFRESH_TOKEN=${RECOMMENDER_REFRESH_TOKEN};
+            export REGISTERED_USER_UUID=${REGISTERED_USER_UUID};
+            export SNYK_TOKEN=${SNYK_TOKEN};
+
+            behave --tags=-skip --tags=-data-sanity --tags=-requires.openshift.console.access -D dump_errors=true @feature_list.txt $@
+
+        - name: Create Success comment
+          if: github.event_name == 'repository_dispatch'  && github.event.action == 'e2e-command'
+          uses: peter-evans/create-or-update-comment@v1
+          with:
+            issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+            body: |
+              :v: [E2E Run Successfull](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}})
+        - name: Create fail comment
+          if: failure() && github.event_name == 'repository_dispatch'  && github.event.action == 'e2e-command'
+          uses: peter-evans/create-or-update-comment@v1
+          with:
+            issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+            body: |
+              :facepalm: [Run E2E Failed](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}})
+        
