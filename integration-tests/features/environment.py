@@ -566,8 +566,6 @@ def before_all(context):
     context.gemini_api_url = gemini_api_url
 
     # we can retrieve access token by using refresh/offline token
-    # context.access_token = retrieve_access_token(os.environ.get("RECOMMENDER_REFRESH_TOKEN"),
-    # os.environ.get("OSIO_AUTH_SERVICE"))
 
     # informations needed to access S3 database from tests
     _check_env_var_presence_s3_db('AWS_ACCESS_KEY_ID')
