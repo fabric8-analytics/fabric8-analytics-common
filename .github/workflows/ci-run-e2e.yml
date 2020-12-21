@@ -4,7 +4,7 @@ on:
   push:
   workflow_dispatch:
   repository_dispatch:
-    types: [run-tests-command]
+    types: [e2e-command]
   schedule:
     - cron: '0 0 * * *'
 

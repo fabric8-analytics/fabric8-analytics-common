@@ -11,4 +11,4 @@ jobs:
         with:
           token: ${{ secrets.CR_PAT }}
           commands: |
-            run-tests
+            e2e
