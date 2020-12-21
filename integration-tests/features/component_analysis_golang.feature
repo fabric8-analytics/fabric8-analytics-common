@@ -29,7 +29,7 @@ Feature: Component analysis V2 Batch Call API for Go lang ecosystem
         Then I should get 202 status code
         And I should receive a valid JSON response
 
-    @cav2
+    @cav2 @skip
     Scenario: Check the component analysis V2 REST API Batch Call for 1 known 1 unknown package for golang ecosystem
         Given System is running
         Given Three scale preview service is running
