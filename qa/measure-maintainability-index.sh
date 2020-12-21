@@ -24,12 +24,9 @@ radon mi -e "integration-tests/*" -s -i venv .
 
 popd
 
-if [[ "$1" == "--fail-on-error" ]]
+defects="$(radon mi -e "integration-tests/*" -s -n B -i venv . | wc -l)"
+if [[ $defects -gt 0 ]]
 then
-    defects="$(radon mi -e "integration-tests/*" -s -n B -i venv . | wc -l)"
-    if [[ $defects -gt 0 ]]
-    then
-        echo "File(s) with too low maintainability index detected!"
-        exit 1
-    fi
+    echo "File(s) with too low maintainability index detected!"
+    exit 1
 fi

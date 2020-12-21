@@ -1,8 +1,7 @@
 [[fabric8-analytics-testing]]
 = Fabric8-Analytics Testing
 
-https://ci.centos.org/job/devtools-e2e-fabric8-analytics/[image:https://ci.centos.org/buildStatus/icon?job=devtools-e2e-fabric8-analytics[Build
-Status]]
+![CI](https://github.com/fabric8-analytics/fabric8-analytics-common/workflows/CI/badge.svg?branch=master)
 
 :icons:
 :toc: macro
