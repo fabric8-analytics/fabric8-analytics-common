@@ -1,6 +1,5 @@
 [[fabric8-analytics-testing]]
 = Fabric8-Analytics Testing
-
 ![CI](https://github.com/fabric8-analytics/fabric8-analytics-common/workflows/CI/badge.svg?branch=master)
 
 :icons:
