@@ -98,7 +98,7 @@ Feature: Component analysis v2 API
           Then I should get 400 status code
           And I should receive a valid JSON response
 
-  @skip
+  
   Scenario: Check the component analysis REST V2 API endpoint for unknown component in NPM ecosystem
     Given System is running
       Given Three scale preview service is running
@@ -111,7 +111,7 @@ Feature: Component analysis v2 API
       Then I should get 404 status code
       And I should receive a valid JSON response
 
-  @skip
+  
   Scenario: Check the component analysis V2 REST API endpoint for unknown component in PyPi ecosystem
     Given System is running
      Given Three scale preview service is running
