@@ -98,7 +98,7 @@ Feature: Component analysis v2 API
           Then I should get 400 status code
           And I should receive a valid JSON response
 
-
+  
   Scenario: Check the component analysis REST V2 API endpoint for unknown component in NPM ecosystem
     Given System is running
       Given Three scale preview service is running
@@ -108,10 +108,10 @@ Feature: Component analysis v2 API
       
 
      When I start v2 component analyses npm/really_unknown_component/1.0.0 with user_key
-      Then I should get 202 status code
+      Then I should get 404 status code
       And I should receive a valid JSON response
 
-
+  
   Scenario: Check the component analysis V2 REST API endpoint for unknown component in PyPi ecosystem
     Given System is running
      Given Three scale preview service is running
@@ -121,7 +121,7 @@ Feature: Component analysis v2 API
 
 
      When I start v2 component analyses pypi/really_unknown_component/1.0.0 with user_key
-     Then I should get 202 status code
+     Then I should get 404 status code
       And I should receive a valid JSON response
 
 
