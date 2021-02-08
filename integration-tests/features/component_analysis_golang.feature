@@ -26,7 +26,7 @@ Feature: Component analysis V2 Batch Call API for Go lang ecosystem
         When I acquire the use_key for 3scale
         Then I should get the proper user_key
         When I start CA batch call for test_golang_2.json with user_key
-        Then I should get 202 status code
+        Then I should get 200 status code
         And I should receive a valid JSON response
 
     @cav2 @skip
