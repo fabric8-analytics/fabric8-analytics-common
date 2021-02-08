@@ -1,0 +1,44 @@
+name: CI Run e2e
+
+on:
+  workflow_dispatch:
+
+env:
+    THREE_SCALE_PREVIEW_USER_KEY: ${{ secrets.THREE_SCALE_PREVIEW_USER_KEY }}
+    RECOMMENDER_REFRESH_TOKEN: ${{ secrets.RECOMMENDER_REFRESH_TOKEN }} 
+    REGISTERED_USER_UUID: ${{secrets.REGISTERED_USER_UUID }} 
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    F8A_API_URL: ${{secrets.F8A_API_URL}}
+
+jobs:
+    Run-e2e-build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: Set up Python 3.6
+          uses: actions/setup-python@v2
+          with:
+            python-version: '3.6'
+        - name: Install Dependencies
+          working-directory: ./integration-tests
+          run: pip install -U pip && pip install -r requirements.txt
+        - name: Run End to End
+          working-directory: ./integration-tests
+          run: |
+            export F8A_API_URL=${F8A_API_URL:-https://recommender.api.openshift.io};
+            export F8A_JOB_API_URL=${F8A_JOB_API_URL:-http://bayesian-jobs-bayesian-preview.b6ff.rh-idev.openshiftapps.com};
+            export F8A_API_V2_URL=$F8A_API_URL
+            export F8A_GREMLIN_URL=${F8A_GREMLIN_URL:-http://bayesian-gremlin-http-preview-b6ff-bayesian-preview.b6ff.rh-idev.openshiftapps.com};
+            export F8A_3SCALE_URL=${F8A_3SCALE_URL:-https://3scale-connect.api.prod-preview.openshift.io/};
+            export F8A_THREE_SCALE_PREVIEW_URL=$F8A_API_URL
+            export F8A_BACKBONE_API_URL=${F8A_BACKBONE_API_URL:-http://f8a-server-backbone-bayesian-preview.b6ff.rh-idev.openshiftapps.com/};
+            export F8A_SERVICE_ID=${F8A_SERVICE_ID:-2555417755633};
+            export F8A_GEMINI_API_URL=${F8A_GEMINI_API_URL:-https://gemini.api.prod-preview.openshift.io/};
+            export F8A_LICENSE_SERVICE_URL=${F8A_LICENSE_SERVICE_URL:-https://license-analysis.api.prod-preview.openshift.io};
+            export OSIO_AUTH_SERVICE=${OSIO_AUTH_SERVICE:-https://auth.prod-preview.openshift.io};
+            export MANIFESTS_BUCKET_URL=${MANIFESTS_BUCKET_URL:-https://public-dynamic-manifests.s3.amazonaws.com/};
+            export THREE_SCALE_PREVIEW_USER_KEY=${THREE_SCALE_PREVIEW_USER_KEY};
+            export RECOMMENDER_REFRESH_TOKEN=${RECOMMENDER_REFRESH_TOKEN};
+            export REGISTERED_USER_UUID=${REGISTERED_USER_UUID};
+            export SNYK_TOKEN=${SNYK_TOKEN};
+            behave --tags=-skip --tags=-data-sanity --tags=-requires.openshift.console.access -D dump_errors=true @feature_list.txt $@
