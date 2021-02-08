@@ -8,7 +8,7 @@ Feature: Stack analysis v2 API Golang Ecosystem Tests
         Given Three scale preview service is running
         When I acquire the use_key for 3scale
         Then I should get the proper user_key
-        When I wait 2 seconds
+        When I wait 0 seconds
         When I send golang package request with manifest golist.json to stack analysis v2 with valid user key
         Then I should get 200 status code
         When I wait for stack analysis v2 to finish with user key
@@ -22,7 +22,7 @@ Feature: Stack analysis v2 API Golang Ecosystem Tests
         Given Three scale preview service is running
         When I acquire the use_key for 3scale
         Then I should get the proper user_key
-        When I wait 2 seconds
+        When I wait 0 seconds
         When I send golang package request with manifest valid_golist.json to stack analysis v2 with valid user key with transitives
         Then I should get 200 status code
         And I should receive JSON response containing the status key
@@ -50,7 +50,7 @@ Feature: Stack analysis v2 API Golang Ecosystem Tests
         Given Three scale preview service is running
         When I acquire the use_key for 3scale
         Then I should get the proper user_key
-        When I wait 2 seconds
+        When I wait 0 seconds
         When I send golang package request with manifest valid_golist.json to stack analysis v2 with valid user key with transitives
         Then I should get 200 status code
         And I should receive JSON response containing the status key
@@ -72,7 +72,7 @@ Feature: Stack analysis v2 API Golang Ecosystem Tests
         Given Three scale preview service is running
         When I acquire the use_key for 3scale
         Then I should get the proper user_key
-        When I wait 2 seconds
+        When I wait 0 seconds
         When I send golang package request with manifest valid_golist.json to stack analysis v2 with valid user key with transitives
         Then I should get 200 status code
         And I should receive JSON response containing the status key
