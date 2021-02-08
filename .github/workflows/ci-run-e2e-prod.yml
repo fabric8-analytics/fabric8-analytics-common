@@ -1,4 +1,4 @@
-name: CI Run e2e
+name: CI Run e2e prod
 
 on:
   workflow_dispatch:
