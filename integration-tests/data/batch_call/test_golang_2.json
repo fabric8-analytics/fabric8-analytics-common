@@ -12,6 +12,7 @@
     {
       "package": "github.com/opencontainers/runc/libcontainer@github.com/opencontainers/runc",
       "version": "1.0.0-rc1"
-    }
+    },
+    { "package": "k8s.io/kube-roxy", "version": "kubernetes-1.15.10" }
   ]
 }
