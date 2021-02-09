@@ -18,7 +18,7 @@ Feature: Component analysis V2 Batch Call API for Go lang ecosystem
 
 
 
-    @cav2
+    @cav2 @skip
     Scenario: Check the component analysis V2 REST API Batch Call for unknown packages for golang ecosystem
         Given System is running
         Given Three scale preview service is running
