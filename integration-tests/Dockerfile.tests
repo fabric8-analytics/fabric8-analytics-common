@@ -1,0 +1,14 @@
+# Docker file for e2e tests with uib python image
+FROM registry.access.redhat.com/ubi8/python-36
+
+
+WORKDIR /tests 
+
+COPY  . /tests
+
+
+RUN pushd /tests &&\
+    pip3 install -r requirements.txt
+
+
+ENTRYPOINT ["/tests/e2e.sh"]
