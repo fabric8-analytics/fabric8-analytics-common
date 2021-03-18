@@ -1,0 +1,19 @@
+# Docker file for e2e tests with uib python image
+FROM registry.access.redhat.com/ubi8/python-36
+
+USER root
+
+WORKDIR /tests 
+
+COPY  . /tests
+
+RUN mkdir /tests/dynamic_manifests \
+     && chmod 777 /tests/dynamic_manifests \
+     && chmod 777 /tests/data
+
+
+RUN pushd /tests &&\
+    pip3 install -r requirements.txt
+
+
+ENTRYPOINT ["/tests/e2e.sh"]

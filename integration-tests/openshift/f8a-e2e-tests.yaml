@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: f8a-e2e-tests
+objects:
+- apiVersion: batch/v1
+  kind: Job
+  metadata:
+    name: f8a-e2e-tests-${SUFFIX}
+  spec:
+    backoffLimit: 2
+    selector: {}
+    template:
+      metadata:
+        name: f8a-e2e-tests
+      spec:
+        containers:
+            - image: ${IMAGE}
+              imagePullPolicy: Always
+              name: f8a-e2e-tests
+              env:
+                - name: SNYK_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: e2e-secrets
+                      key: snyk_token
+                - name: REGISTERED_USER_UUID
+                  valueFrom:
+                    secretKeyRef:
+                      name: e2e-secrets
+                      key: registered_user_uuid
+                - name: THREE_SCALE_PREVIEW_USER_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: e2e-secrets
+                      key: three_scale_preview_user_key
+        restartPolicy: Never
+parameters:
+- name: SUFFIX 
+  value: ''
+  required: true
+- name: IMAGE
+  value: 'quay.io/app-sre/f8a-e2e-tests'
+
