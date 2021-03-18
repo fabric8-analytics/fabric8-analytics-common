@@ -35,10 +35,6 @@ objects:
                     secretKeyRef:
                       name: e2e-secrets
                       key: three_scale_preview_user_key
-              command:
-                - make
-              args:
-                - e2e
         restartPolicy: Never
 parameters:
 - name: SUFFIX 
