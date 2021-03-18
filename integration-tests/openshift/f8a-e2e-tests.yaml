@@ -1,4 +1,3 @@
-  
 ---
 apiVersion: v1
 kind: Template
@@ -8,37 +7,43 @@ objects:
 - apiVersion: batch/v1
   kind: Job
   metadata:
-    name: f8a-e2e-tests-${IMAGE_TAG}
+    name: f8a-e2e-tests-${SUFFIX}
   spec:
-    backoffLimit: 5
+    backoffLimit: 2
+    selector: {}
     template:
+      metadata:
+        name: f8a-e2e-tests
       spec:
-        restartPolicy: Never
         containers:
-          - image: ${IMAGE}:${IMAGE_TAG}
-            imagePullPolicy: Always
-            name: github-mirror-acceptance
-            env:
-              - name: GITHUB_MIRROR_URL
-                value: ${GITHUB_MIRROR_URL}
-              - name: CLIENT_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                    name: ${CLIENT_TOKEN_SECRET}
-                    key: CLIENT_TOKEN
-            command:
-              - make
-            args:
-              - accept
+            - image: ${IMAGE}
+              imagePullPolicy: Always
+              name: f8a-e2e-tests
+              env:
+                - name: SNYK_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: e2e-secrets
+                      key: snyk_token
+                - name: REGISTERED_USER_UUID
+                  valueFrom:
+                    secretKeyRef:
+                      name: e2e-secrets
+                      key: registered_user_uuid
+                - name: THREE_SCALE_PREVIEW_USER_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: e2e-secrets
+                      key: three_scale_preview_user_key
+              command:
+                - make
+              args:
+                - e2e
+        restartPolicy: Never
 parameters:
+- name: SUFFIX 
+  value: ''
+  required: true
 - name: IMAGE
-  value: quay.io/app-sre/f8a-e2e-tests
-- name: IMAGE_TAG
-  value: 'latest'
-  required: true
-- name: GITHUB_MIRROR_URL
-  value: ''
-  required: true
-- name: CLIENT_TOKEN_SECRET
-  value: ''
-  required: true
+  value: 'quay.io/app-sre/f8a-e2e-tests'
+
