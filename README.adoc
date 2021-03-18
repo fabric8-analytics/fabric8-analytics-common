@@ -1,7 +1,8 @@
 [[fabric8-analytics-testing]]
 = Fabric8-Analytics Testing
 
-![CI](https://github.com/fabric8-analytics/fabric8-analytics-common/workflows/CI/badge.svg?branch=master)
+:url-job: https://github.com/fabric8-analytics/fabric8-analytics-common/actions/workflows/ci-run-e2e.yml
+image:https://github.com/fabric8-analytics/fabric8-analytics-common/actions/workflows/ci-run-e2e.yml/badge.svg[CI Run e2e , link={url-job}]
 
 :icons:
 :toc: macro
