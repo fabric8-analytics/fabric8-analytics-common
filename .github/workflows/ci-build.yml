@@ -32,4 +32,4 @@ jobs:
         - uses: actions/checkout@v2
         - name: Docker Build
           working-directory: ./integration-tests
-          run: docker build -t f8a-e2e-tests .
+          run: docker build -t f8a-e2e-tests -f Dockerfile.tests .
