@@ -6,8 +6,9 @@ BASE_IMG="f8a-e2e-tests"
 QUAY_IMAGE="quay.io/app-sre/${BASE_IMG}"
 IMG="${BASE_IMG}:latest"
 
-pushd integration-tests 
+
 GIT_HASH=`git rev-parse --short=7 HEAD`
+pushd integration-tests
 
 # build the image
 docker build  --no-cache \
