@@ -7,7 +7,7 @@ objects:
 - apiVersion: batch/v1
   kind: Job
   metadata:
-    name: f8a-e2e-tests-${SUFFIX}
+    name: f8a-e2e-tests-${SUFFIX}-${JOBID}
   spec:
     backoffLimit: 2
     selector: {}
@@ -42,4 +42,7 @@ parameters:
   required: true
 - name: IMAGE
   value: 'quay.io/app-sre/f8a-e2e-tests'
-
+- name: JOBID
+  generate: expression
+  from: "[0-9a-f]{7}"
+ 
