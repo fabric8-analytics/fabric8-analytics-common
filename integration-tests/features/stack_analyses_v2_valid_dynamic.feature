@@ -87,7 +87,7 @@
       And I should find io.vertx:vertx-core with 3.4.1 4.0.3 4.0.0-milestone5 with SNYK-JAVA-IOVERTX-32470 and 5.3 for public vulnerbilities
       And I should find HTTP Header Injection and medium for io.vertx:vertx-core in public vulnerbilities
       And I should find License The Apache Software License, Version 2.0 for io.vertx:vertx-core in analyzed dependencies
-      And I should find org.apache.ignite:ignite-core with 2.7.6 2.9.1 2.8.1 with SNYK-JAVA-ORGAPACHEIGNITE-456561 and 4.8 for private vulnerbilities
+      And I should find org.apache.ignite:ignite-core with 2.7.6 2.10.0 2.8.1 with SNYK-JAVA-ORGAPACHEIGNITE-456561 and 4.8 for private vulnerbilities
       And I should find Denial of Service (DoS) and medium for org.apache.ignite:ignite-core in private vulnerbilities
       And I should find License The Apache Software License, Version 2.0 for org.apache.ignite:ignite-core in analyzed dependencies
       
