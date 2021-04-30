@@ -56,7 +56,7 @@
       And I should find bootstrap with 4.1.1 4.6.0 4.5.0 with SNYK-JS-BOOTSTRAP-73560 and 6.5 for public vulnerbilities
       And I should find Cross-site Scripting (XSS) and medium for bootstrap in public vulnerbilities
       And I should find License MIT for bootstrap in analyzed dependencies
-      And I should find buefy with 0.7.10 0.9.6 0.8.19 with SNYK-JS-BUEFY-567814 and 7.3 for private vulnerbilities
+      And I should find buefy with 0.7.10 0.9.7 0.8.19 with SNYK-JS-BUEFY-567814 and 7.3 for private vulnerbilities
       And I should find Cross-site Scripting (XSS) and high for buefy in private vulnerbilities
       And I should find License MIT for buefy in analyzed dependencies
       
