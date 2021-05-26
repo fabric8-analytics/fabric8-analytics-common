@@ -2,7 +2,7 @@
     "ecosystem": "pypi",
     "package_versions": [
         { "package": "numpy", "version": "1.16.3" }, 
-        { "package": "flask", "version": "0.12" },
+        { "package": "flask", "version": "2.0.1" },
         {"package": "fastapi", "version": "0.36.0"},
         {"package":"sceptre","version":"2.2.1"},
         {"package":"syft","version":"0.2.0a1"},
