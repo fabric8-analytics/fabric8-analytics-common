@@ -13,7 +13,7 @@ from src.parsing import parse_token_clause
 def component_analysis_batch_call_url(context):
     """Construct url for batch call."""
     return urljoin(context.core_v2_api_url,
-                   '/api/v2/component-analyses')
+                   '/api/v2/component-analyses/')
 
 
 def get_packages_from_json(file):
