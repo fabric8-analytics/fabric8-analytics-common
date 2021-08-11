@@ -15,7 +15,6 @@ def vulnerability_analysis_batch_call_url(context):
                    '/api/v2/vulnerability-analysis')
 
 
-
 def perform_Vuln_batch_call(context, use_user_key, packages_file):
     """Perform Batch Call for vulnerability-analysis."""
     context.duration = None
@@ -77,7 +76,7 @@ def match_pkg_ver_key_val(item, pkg, ver, key, val, synk_id, match):
     try:
         if item['name'] == pkg and item['version'] == ver:
             for i in item['vulnerabilities']:
-                match_key_value_pair(k=i, key=key, val=val, id=synk_id, match_down=match)         
+                match_key_value_pair(k=i, key=key, val=val, id=synk_id, match_down=match)      
     except KeyError:
         pass
 
@@ -156,7 +155,7 @@ def match_package_version_id(context, package, version, id, key, value):
     json_data = context.response.json()
 
     for single_item in json_data:
-        match_data_in(item=single_item,pkg=package, ver=version,value_to_match=value,
+        match_data_in(item=single_item, pkg=package, ver=version, value_to_match=value,
                       synk_id=id, key=key)
 
 
@@ -165,7 +164,7 @@ def match_fixed_in_result(context, package, version, id, fix):
     """Match a Fixed in version in Result."""
     json_data = context.response.json()
     for single_item in json_data:
-        match_fixed_in(single_item, pkg=package, ver=version,value_to_match=fix, synk_id=id)
+        match_fixed_in(single_item, pkg=package, ver=version, value_to_match=fix, synk_id=id)
 
 
 @then('I should not find any vulnerabilities in the Result')
