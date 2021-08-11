@@ -97,7 +97,8 @@ def match_data_in(item, pkg, ver, value_to_match, synk_id, key):
             vuln_len = len(item['vulnerabilities'])
             for i in item['vulnerabilities']:
                 if i['id'] == synk_id:
-                    assert value_to_match == i[key], 'The Specified value {} doesnt exist'.format(value_to_match)
+                    assert value_to_match == i[key], 'The Specified value {}' 
+                    'doesnt exist'.format(value_to_match)
                 elif count >= vuln_len:
                     print(item)
                     assert False, 'Id not Found'
@@ -133,13 +134,15 @@ def no_vulns(context, name, ver):
         else:
             count = count + 1
 
-@then('I should find pkg {package} and version {version} with vulnerablity id {id} and {key} {value} in Result')
+@then('I should find pkg {package} and version {version} with vulnerablity id {id} '
+      'and {key} {value} in Result')
 def match_package_version_id(context, package, version, id, key=None, value=None):
     """Match the package and version provided."""
     json_data = context.response.json()
 
     for single_item in json_data:
-        match_data_in(item=single_item,pkg=package, ver=version,value_to_match=value, synk_id=id, key=key)
+        match_data_in(item=single_item,pkg=package, ver=version,value_to_match=value,
+                      synk_id=id, key=key)
 
 @then('I should find pkg {package} and version {version} with id {id} and a fixed in {fix}')
 def match_fixed_in_result(context, package, version, id, fix):
@@ -154,5 +157,3 @@ def no_vulns(context):
     json_data = context.response.json()
     for single_item in json_data:
         assert single_item['vulnerabilities'] == [], 'Vulnerabilities exists!'
-
-
