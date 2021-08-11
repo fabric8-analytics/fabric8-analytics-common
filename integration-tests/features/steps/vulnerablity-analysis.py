@@ -15,6 +15,12 @@ def vulnerability_analysis_batch_call_url(context):
                    '/api/v2/vulnerability-analysis')
 
 
+def get_token_call_url(context):
+    """Construct url for get-token call."""
+    return urljoin(context.core_v2_api_url,
+                   '/api/v2/get-token')
+
+
 def perform_Vuln_batch_call(context, use_user_key, packages_file):
     """Perform Batch Call for vulnerability-analysis."""
     context.duration = None
@@ -31,6 +37,24 @@ def perform_Vuln_batch_call(context, use_user_key, packages_file):
             raise Exception("429 Limit excceded")
     else:
         context.response = requests.post(url, json=data)
+    end_time = time.time()
+    context.duration = end_time - start_time
+
+
+def perform_get_token_call(context, use_user_key):
+    """Perform Call for get-token."""
+    context.duration = None
+    start_time = time.time()
+
+    url = get_token_call_url(context)
+    parms = {'user_key': context.three_scale_preview_user_key}
+
+    if use_user_key:
+        context.response = requests.get(url, params=parms)
+        if context.response.status_code == 429:
+            raise Exception("429 Limit excceded")
+    else:
+        context.response = requests.post(url)
     end_time = time.time()
     context.duration = end_time - start_time
 
@@ -61,24 +85,6 @@ def validate_all_feilds(json_data):
     """Validate all the feilds that are present in result."""
     for single_item in json_data:
         validate_vuln_basic_feilds(single_item)
-
-
-def match_key_value_pair(k, key, val, id, match_down):
-    """Validate one step further."""
-    if match_down and k['id'] == id:
-        assert k[key] == val, \
-            "Invalid {key} and {val}".format(key=key, val=val)
-        assert False
-
-
-def match_pkg_ver_key_val(item, pkg, ver, key, val, synk_id, match):
-    """Validate the package and version."""
-    try:
-        if item['name'] == pkg and item['version'] == ver:
-            for i in item['vulnerabilities']:
-                match_key_value_pair(k=i, key=key, val=val, id=synk_id, match_down=match)    
-    except KeyError:
-        pass
 
 
 def match_fixed_in(item, pkg, ver, value_to_match, synk_id):
@@ -123,6 +129,21 @@ def start_batch_call(context, file, user_key):
     """Start vulnerablity analysis Batch call."""
     use_user_key = parse_token_clause(user_key)
     perform_Vuln_batch_call(context, use_user_key, file)
+
+
+@when("I try to get token to access vulnerablity-analysis api {user_key} user_key")
+def step_get_token(context, user_key):
+    """Start to hit get-token api."""
+    use_user_key = parse_token_clause(user_key)
+    perform_get_token_call(context, use_user_key)
+
+
+@then('I should be able to find key and url in result')
+def step_get_token_validate(context):
+    """I should find three-scale key and url."""
+    json_data = context.response.json()
+    assert 'key' in json_data, 'Key not Present'
+    assert 'url' in json_data, 'Url not Present'
 
 
 @then('I should be able to find all feilds in the result')
