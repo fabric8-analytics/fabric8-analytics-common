@@ -72,17 +72,17 @@ def match_key_value_pair(k, key, val, id, match_down):
 
 
 def match_pkg_ver_key_val(item, pkg, ver, key, val, synk_id, match):
-    """Validate the package and version"""
+    """Validate the package and version."""
     try:
         if item['name'] == pkg and item['version'] == ver:
             for i in item['vulnerabilities']:
-                match_key_value_pair(k=i, key=key, val=val, id=synk_id, match_down=match)      
+                match_key_value_pair(k=i, key=key, val=val, id=synk_id, match_down=match)    
     except KeyError:
         pass
 
 
 def match_fixed_in(item, pkg, ver, value_to_match, synk_id):
-    """Match value preset in fixed in"""
+    """Match value preset in fixed in."""
     try:
         if item['name'] == pkg and item['version'] == ver:
             count = 1
@@ -100,7 +100,7 @@ def match_fixed_in(item, pkg, ver, value_to_match, synk_id):
 
 
 def match_data_in(item, pkg, ver, value_to_match, synk_id, key):
-    """Match value preset in fixed in"""
+    """Match value preset in fixed in."""
     try:
         if item['name'] == pkg and item['version'] == ver:
             count = 1
@@ -169,7 +169,7 @@ def match_fixed_in_result(context, package, version, id, fix):
 
 @then('I should not find any vulnerabilities in the Result')
 def no_vulns_step(context):
-    """Result should not have any vulnerabilities."""
+    """I should not have any vulnerabilities."""
     json_data = context.response.json()
     for single_item in json_data:
         assert single_item['vulnerabilities'] == [], 'Vulnerabilities exists!'
