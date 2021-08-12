@@ -11,6 +11,9 @@ features/component_analysis_v2_batchcall.feature
 features/component_analysis_v2.feature
 features/component_analysis_v2_smoke_tests.feature
 
+#clair API tests
+features/vulnerability_analysis.feature
+
 # Stack analyses V2 features.
 features/stack_analyses_v2.feature
 features/stack_analyses_v2_golang.feature
