@@ -156,4 +156,4 @@
      Examples: Stack analyses POST params
      | ecosystem | manifest               | component | latest_version | component_2 | latest_version_2 |
      #| pypi      | pylist.json            | ansible   | 2.9.9          | coveralls   | 2.1.2            |
-     | npm       | valid_npmlist.json     | gatsby    | 2.9.2          | history     | 5.0.0            |
+     | npm       | valid_npmlist.json     | gatsby    | 2.9.2          | history     | 5.0.1            |
