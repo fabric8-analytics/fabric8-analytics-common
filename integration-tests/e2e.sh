@@ -16,4 +16,4 @@ export THREE_SCALE_PREVIEW_USER_KEY=${THREE_SCALE_PREVIEW_USER_KEY}
 export REGISTERED_USER_UUID=${REGISTERED_USER_UUID}
 export SNYK_TOKEN=${SNYK_TOKEN}
 
-PYTHONDONTWRITEBYTECODE=1 python3 `which behave` --tags=-skip --tags=-data-sanity --tags=-jobs.requires_auth --tags=-requires.openshift.console.access --no-color -D dump_errors=true @feature_list.txt $@
+#PYTHONDONTWRITEBYTECODE=1 python3 `which behave` --tags=-skip --tags=-data-sanity --tags=-jobs.requires_auth --tags=-requires.openshift.console.access --no-color -D dump_errors=true @feature_list.txt $@
