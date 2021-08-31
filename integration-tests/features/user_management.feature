@@ -96,7 +96,7 @@ Feature: User Management API
             And I should receive a valid JSON response
             Then I should be able to validate all the feilds or vulnerablities in the result with userid
             And I should find package sequence 3.0.0 has no recommendation
-            And I should find package ejs 1.0.0 has 3.1.3 recommended version
+            And I should find package ejs 1.0.0 has 3.1.6 recommended version
             Then I should find snyk id SNYK-JS-EJS-10218 and 8.1 for package ejs and version 1.0.0
             Then I should find snyk id SNYK-JS-ANGULAR-471882 for package angular and version 1.0.0 as private
             Then I should find all the registered user fields in result
@@ -116,7 +116,7 @@ Feature: User Management API
             And I should receive a valid JSON response
             Then I should be able to validate all the feilds or vulnerablities in the result
             And I should find package sequence 3.0.0 has no recommendation
-            And I should find package ejs 1.0.0 has 3.1.3 recommended version
+            And I should find package ejs 1.0.0 has 3.1.6 recommended version
             Then I should find snyk id SNYK-JS-EJS-10218 and 8.1 for package ejs and version 1.0.0
             Then I should find snyk id SNYK-JS-ANGULAR-471882 for package angular and version 1.0.0 as private
             And I should not find any registered user fields
