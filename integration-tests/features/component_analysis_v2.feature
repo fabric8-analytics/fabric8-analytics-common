@@ -21,9 +21,9 @@ Feature: Component analysis v2 API
 
      Examples: EPV
      | ecosystem  | package                           | version   | recommended-version | cve                                  | score  | severity | title                                        |
-     | npm        | ejs                               | 1.0.0     | 3.1.3               | SNYK-JS-EJS-10218                    | 8.1    | high     | Arbitrary Code Execution                     |
+     | npm        | ejs                               | 1.0.0     | 3.1.6               | SNYK-JS-EJS-10218                    | 8.1    | high     | Arbitrary Code Execution                     |
      | npm        | marked                            | 0.3.5     | 1.1.0               | SNYK-JS-MARKED-10377                 | 7.5    | high     | Cross-site Scripting (XSS)                   |
-     | npm        | st                                | 0.2.4     | 2.0.0               | SNYK-JS-ST-10820                     | 4.3    | medium   | Open Redirect                                |
+     | npm        | st                                | 0.2.4     | 3.0.0               | SNYK-JS-ST-10820                     | 4.3    | medium   | Open Redirect                                |
      | npm        | npmconf                           | 0.0.24    | 2.1.3               | SNYK-JS-NPMCONF-12143                | 7.4    | high     | Uninitialized Memory Exposure                |
      | npm        | moment                            | 2.15.1    | 2.27.0              | SNYK-JS-MOMENT-10841                 | 3.7    | low      | Regular Expression Denial of Service (ReDoS) |
      | npm        | mongoose                          | 4.2.4     | 5.9.19              | SNYK-JS-MONGOOSE-10081               | 5.1    | medium   | Remote Memory Exposure                       |
