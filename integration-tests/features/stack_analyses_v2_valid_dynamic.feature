@@ -53,7 +53,7 @@
       And I should be able to validate github data for all dependencies
       And I should get 16 transitive dependencies for serve-static
       And I should get 6 transitive vulnerabilities for serve-static
-      And I should find bootstrap with 4.1.1 5.1.0 4.5.0 with SNYK-JS-BOOTSTRAP-73560 and 6.5 for public vulnerbilities
+      And I should find bootstrap with 4.1.1 5.1.1 4.5.0 with SNYK-JS-BOOTSTRAP-73560 and 6.5 for public vulnerbilities
       And I should find Cross-site Scripting (XSS) and medium for bootstrap in public vulnerbilities
       And I should find License MIT for bootstrap in analyzed dependencies
       And I should find buefy with 0.7.10 0.9.8 0.8.19 with SNYK-JS-BUEFY-567814 and 7.3 for private vulnerbilities
@@ -84,7 +84,7 @@
       And I should be able to validate github data for all dependencies
       And I should get 15 transitive dependencies for io.vertx:vertx-core
       And I should get 6 transitive vulnerabilities for io.vertx:vertx-core
-      And I should find io.vertx:vertx-core with 3.4.1 4.1.2 4.0.0-milestone5 with SNYK-JAVA-IOVERTX-32470 and 5.3 for public vulnerbilities
+      And I should find io.vertx:vertx-core with 3.4.1 4.2.0.Beta1 4.0.0-milestone5 with SNYK-JAVA-IOVERTX-32470 and 5.3 for public vulnerbilities
       And I should find HTTP Header Injection and medium for io.vertx:vertx-core in public vulnerbilities
       And I should find License The Apache Software License, Version 2.0 for io.vertx:vertx-core in analyzed dependencies
       And I should find org.apache.ignite:ignite-core with 2.7.6 2.10.0 2.8.1 with SNYK-JAVA-ORGAPACHEIGNITE-456561 and 4.8 for private vulnerbilities
