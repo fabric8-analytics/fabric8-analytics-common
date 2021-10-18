@@ -30,7 +30,7 @@ Feature: Component analysis v2 API
      | maven      | io.vertx:vertx-core               | 3.5.3     | 4.0.0-milestone5    | SNYK-JAVA-IOVERTX-72443              | 6.5    | medium   | Denial of Service (DoS)                      |
      | maven      | org.webjars.bower:jquery          | 3.4.1     | 3.5.1               | SNYK-JAVA-ORGWEBJARSBOWER-567881     | 6.5    | medium   | Cross-site Scripting (XSS)                   |
      | maven      | org.webjars:bootstrap-select      | 1.7.3     | 1.13.15             | SNYK-JAVA-ORGWEBJARS-479517          | 7.0    | high     | Cross-site Scripting (XSS)                   |
-     | maven      | org.apache.camel:camel-rabbitmq   | 2.22.0    | 3.3.0               | SNYK-JAVA-ORGAPACHECAMEL-569123      | 6.5    | medium   | Insecure Default                             |
+     | maven      | org.apache.camel:camel-rabbitmq   | 2.22.0    | 3.12.0               | SNYK-JAVA-ORGAPACHECAMEL-569123      | 6.5    | medium   | Insecure Default                             |
      | maven      | org.apache.tomcat:tomcat-catalina | 7.0.0     | 10.0.0-M6           | SNYK-JAVA-ORGAPACHETOMCAT-32110      | 6.5    | medium   | Directory Traversal                          |
      | maven      | org.webjars.npm:openpgp           | 1.4.1     | 4.7.1               | SNYK-JAVA-ORGWEBJARSNPM-480073       | 7.0    | high     | Invalid Curve Attack                         |
      | pypi       | flask                             | 0.12      | 2.0.1               | SNYK-PYTHON-FLASK-42185              | 7.5    | high     | Improper Input Validation                    |
